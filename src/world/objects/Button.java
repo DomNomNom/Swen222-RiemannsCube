@@ -1,4 +1,4 @@
-package game.objects;
+package world.objects;
 
 public class Button implements Trigger {
 

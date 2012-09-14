@@ -1,4 +1,4 @@
-package cube;
+package world.cubes;
 
 public class Floor extends Cube {
 

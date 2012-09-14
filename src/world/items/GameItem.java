@@ -1,4 +1,4 @@
-package game.items;
+package world.items;
 
 public interface GameItem {
 

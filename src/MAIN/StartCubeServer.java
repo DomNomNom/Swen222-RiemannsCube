@@ -1,9 +1,7 @@
+package MAIN;
 
-public class MAIN {
+public class StartCubeServer {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		System.out.println("HELLO WORLD");
 	}
