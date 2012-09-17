@@ -6,9 +6,23 @@ import world.objects.GameObject;
 public class RiemannCube {
     //public Cube[][][] cubes;
 
-    private Cube[][][] cubes;
-    private int width, height, depth;
+    /**
+     * this is the cube-accessing interface. no encapsulation required as these are final.
+     * 
+     * how to use:
+     * cubes[x][y][z]
+     * 
+     * X        Y       Z 
+     * RIGHT    DOWN    TOWARDS 
+     * Therefore (0,0,0) is
+     * top-left-deep
+     */
+    public final Cube[][][] cubes;
+    
+    public final int width, height, depth;
 
+    
+    
     public RiemannCube(int width, int height, int depth) {
         this.width = width;
         this.height = height;
@@ -18,10 +32,10 @@ public class RiemannCube {
     }
 
     private void fillCubes() {
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++)
-                for (int k = 0; k < depth; k++)
-                    cubes[i][j][k] = new Floor();
+        for (int x=0; x<width; ++x)
+            for (int y=0; y<height; ++y)
+                for (int z=0; z<depth; ++z)
+                    cubes[x][y][z] = new Floor();
     }
 
     public void setCube(int x, int y, int z, Cube c) {
@@ -44,7 +58,15 @@ public class RiemannCube {
         return depth;
     }
 
-    // TODO
+    public Cube[][] getSlice(int x, int y, int z, int norm_x, int norm_y, int norm_z) {
+        int sliceWd = 0;
+        int sliceHt = 0;
+        Cube[][] slice = new Cube[sliceWd][sliceHt];
+
+        // TODO
+
+        return slice;
+    }
 
     public Cube[][] verticalSlice(int x) {
         return cubes[x];
@@ -69,4 +91,6 @@ public class RiemannCube {
     public Cube getCube(int x, int y, int z) {
         return cubes[x][y][z];
     }
+    
+    
 }
