@@ -16,6 +16,12 @@ import world.cubes.*;
 import world.objects.*;
 import world.items.*;
 
+/**
+ * 
+ * @author mudgejayd 300221669
+ * Allows user to design/edit their own levels.
+ *
+ */
 public class EditorCanvas extends JComponent implements MouseListener, KeyListener {
 
 	private RiemannCube level;
@@ -35,6 +41,9 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		addMouseListener(this);
 	}
 	
+	/**
+	 * Draws canvas according to the current view mode.
+	 */
 	public void paint(Graphics g){
 		if(level==null) return;
 		if(isometric) {
@@ -45,11 +54,13 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		height = slice[0].length;
 		for(int i = 0; i < width; i++)
 			for(int j = 0; j < height; j++){
+				//Choose colour based on cube being drawn.
 				if(slice[i][j].type()==1)g.setColor(Color.RED);
 				if(slice[i][j].type()==2)g.setColor(Color.GRAY);
 				g.fillRect(left + i*squareLength, top + j*squareLength, squareLength, squareLength);
 				g.setColor(Color.BLACK);
 				g.drawRect(left + i*squareLength, top + j*squareLength, squareLength, squareLength);
+				//draw top object.
 				if(!slice[i][j].objects().isEmpty())
 					drawObject(g, slice[i][j].objects().get(0), left + i*squareLength, top + j*squareLength);
 			}
@@ -66,12 +77,20 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 			i = x;
 			j = y;
 		}
+		//Draw highlighted square.
 		g.setColor(new Color(255,255,255,100));
 		g.fillRect(left + i*squareLength, top + j*squareLength, squareLength, squareLength);
 		g.setColor(Color.GREEN);
 		g.drawRect(left + i*squareLength, top + j*squareLength, squareLength, squareLength);
 	}
 	
+	/**
+	 * Draw an object at the (x,y) co-ordinate.
+	 * @param g Graphics shown on canvas
+	 * @param obj Object to be drawn on
+	 * @param x Co-ordinate
+	 * @param y Co-ordinate
+	 */
 	private void drawObject(Graphics g, GameObject obj, int x, int y){
 		if(obj instanceof Door) {
 			g.setColor(Color.BLUE);
@@ -87,10 +106,14 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		g.drawOval(x, y, squareLength, squareLength);
 	}
 	
+	/**
+	 * Draws level isometrically, rather than with a square grid.
+	 * @param g Graphics shown on canvas
+	 */
 	public void drawIsometric(Graphics g){
 		int top, height = level.height(), width = level.width();
-		int floorHeight = (width+height)*squareLength/2;
-		float dWidth = (float) (squareLength*3/Math.sqrt(2));
+		int floorHeight = (width+height)*squareLength/2; //Height of entire floor.
+		float dWidth = (float) (squareLength*3/Math.sqrt(2)); //width of diamond
 		float left;
 		Cube[][] slice;
 		for(int floor = 0; floor < height; floor++){
@@ -100,6 +123,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 				top = this.top + i*squareLength/2 - floor*floorHeight + floorHeight/2 + height*floorHeight/2;
 				left = this.left + i*dWidth/2 + height; //lefthand side of starting column.
 				for(int j = 0; j < height; j++){
+					//Chooses colour depending on cube type.
 					if(slice[i][j].type()==1)g.setColor(Color.RED);
 					if(slice[i][j].type()==2)g.setColor(Color.GRAY);
 					if(this.i == i && this.j == j && y == floor){
@@ -118,6 +142,13 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		}
 	}
 	
+	/**
+	 * Draw a single diamond section of the isometric grid.
+	 * @param g Graphics shown on canvas
+	 * @param top Top corner of the diamond
+	 * @param left Left corder of the diamond
+	 * @param height How wall the diamond is
+	 */
 	public void drawDiamond(Graphics g, int top, int left, int height){
 		float width = (float) (3/Math.sqrt(2));
 		float middle = left + width*height/2;
@@ -137,11 +168,18 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		g.drawLine((int)middle, top + height, (int)(middle*2 - left), top + height/2);
 	}
 	
+	/**
+	 * Changes to and from isometric view.
+	 */
 	public void changeIsometric(){
 		this.isometric = !isometric;
 		repaint();
 	}
 	
+	/**
+	 * Chooses the level to edit.
+	 * @param level Level for editing.
+	 */
 	public void setLevel(RiemannCube level) {
 		this.level = level;
 		slice = level.verticalSlice(0);
@@ -149,11 +187,24 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		repaint();
 	}
 	
+	/**
+	 * Current level being edited
+	 * @return Level being edited
+	 */
 	public RiemannCube level(){
 		return this.level;
 	}
 	
+	public void zoom(float magnify){
+		squareLength = (int)(magnify*squareLength);
+	}
+	
+	/**
+	 * Flip around currently selected point to chosen orientation.
+	 * @param orientation horizontal, vertical or orthogonal
+	 */
 	public void flip(String orientation){
+		isometric=false;
 		this.orientation = orientation;
 		if(orientation.equals("horizontal")){
 			slice = level.horizontalSlice(y);
@@ -167,7 +218,12 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		repaint();
 	}
 	
+	/**
+	 * Changes which floor, within the same view.
+	 * @param step How many steps you take up (negative for down).
+	 */
 	public void changeFloor(int step){
+		isometric=false;
 		if(orientation.equals("horizontal")){
 			y += step;
 			if(y < 0 || y >= height) y -= step;
@@ -194,23 +250,24 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		int i = e.getX()-left, j = e.getY()-top;
 		if(!isometric){
 			if(orientation.equals("horizontal")){
-				x = i/50;
-				z = j/50;
+				x = i/squareLength;
+				z = j/squareLength;
 			}
 			else if(orientation.equals("vertical")){
-				y = i/50;
-				z = j/50;
+				y = i/squareLength;
+				z = j/squareLength;
 			}
 			else if(orientation.equals("orthogonal")){
-				x = i/50;
-				y = j/50;
+				x = i/squareLength;
+				y = j/squareLength;
 			}
 		}else{
+			//linear transform from isometric to grid-based.
 			i = (int)(i - 3*squareLength/(2*Math.sqrt(2)));
-			x = (int) ((i)*Math.sqrt(2)/3 + j)/50;
-			z = (int) ((-i*Math.sqrt(2)/3 + j)/50);
-			int diamondHeight = (level.height() + level.width())*squareLength/2;
-			y = (e.getY()-top)/diamondHeight;
+			x = (int) ((i)*Math.sqrt(2)/3 + j)/squareLength;
+			z = (int) ((-i*Math.sqrt(2)/3 + j)/squareLength);
+			int floorHeight = (level.height() + level.width())*squareLength/2;
+			y = (e.getY()-top)/floorHeight;
 			x-= y*level.width();
 			z-= y*level.width();
 			y=level.height()-y-1;
@@ -223,10 +280,10 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-		if(code==KeyEvent.VK_UP) top -= 50;
-		else if(code==KeyEvent.VK_DOWN) top += 50;
-		else if(code==KeyEvent.VK_LEFT) left -= 50;
-		else if(code==KeyEvent.VK_RIGHT) left += 50;
+		if(code==KeyEvent.VK_UP) top -= squareLength;
+		else if(code==KeyEvent.VK_DOWN) top += squareLength;
+		else if(code==KeyEvent.VK_LEFT) left -= squareLength;
+		else if(code==KeyEvent.VK_RIGHT) left += squareLength;
 		repaint();
 	}
 	public void keyReleased(KeyEvent e) {
@@ -263,7 +320,6 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 				}
 			}
 		}
-		System.out.println(x+" "+y+" "+z);
-		flip(orientation);
+		if(!isometric) flip(orientation);
 	}
 }
