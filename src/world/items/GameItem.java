@@ -1,5 +1,7 @@
 package world.items;
 
-public interface GameItem {
+import world.objects.GameObject;
+
+public interface GameItem extends GameObject{
 
 }
