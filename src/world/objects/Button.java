@@ -2,7 +2,7 @@ package world.objects;
 
 import java.awt.Color;
 
-public class Button implements Trigger {
+public class Button extends Trigger {
 
 	Color color;
 	

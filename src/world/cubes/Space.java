@@ -2,7 +2,7 @@ package world.cubes;
 
 public class Space extends Cube{
 
-	public Space(){
-		super(0);
-	}
+    public Space(){
+        super(0);
+    }
 }

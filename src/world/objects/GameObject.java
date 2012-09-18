@@ -1,5 +1,5 @@
 package world.objects;
 
-public interface GameObject {
+public abstract class GameObject {
 
 }

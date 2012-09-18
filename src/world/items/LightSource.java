@@ -1,5 +1,5 @@
 package world.items;
 
-public class LightSource implements GameItem {
+public class LightSource extends GameItem {
 
 }
