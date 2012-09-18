@@ -12,6 +12,12 @@ import world.RiemannCube;
 import editor.EditorCanvas;
 import data.LevelPipeline;
 
+/**
+ * 
+ * @author mudgejayd 300221669
+ * Creates a new frame, for running the Level Editor in.
+ *
+ */
 public class EditorFrame extends JFrame {
 	
 	JPanel contentPane = new JPanel(new BorderLayout());
@@ -33,9 +39,13 @@ public class EditorFrame extends JFrame {
 		setContentPane(contentPane);
 	}
 	
+	/**
+	 * Creates a menu bar on the North, for menu commands.
+	 */
 	private void addMenuBar(){
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("File");
+		//"New" option in the menu bar, to create empty map.
 		JMenuItem item = new JMenuItem("New");
 		item.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -47,6 +57,7 @@ public class EditorFrame extends JFrame {
 				setContentPane(contentPane);
 			}});
 		menu.add(item);
+		//"Save" option in the menu bar, to save to XML
 		item = new JMenuItem("Save");
 			item.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e) {
@@ -60,6 +71,10 @@ public class EditorFrame extends JFrame {
 		contentPane.add(menuBar, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * Creates a bar on the West side, complete with basic buttons
+	 * for performing important actions.
+	 */
 	private void addSideBar(){
 		JPanel sideBar = new JPanel(new GridLayout(20,1));
 		JButton button = new JButton("View Horizontal");
