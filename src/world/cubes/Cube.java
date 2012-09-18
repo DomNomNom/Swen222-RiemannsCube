@@ -3,7 +3,7 @@ package world.cubes;
 import java.util.ArrayList;
 import java.util.List;
 
-import world.Player;
+import world.objects.Player;
 import world.objects.GameObject;
 
 public abstract class Cube {

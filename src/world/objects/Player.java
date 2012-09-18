@@ -1,7 +1,7 @@
-package world;
+package world.objects;
 import world.items.*;
 
-public class Player {
+public class Player extends GameObject {
 
     private GameItem item;
     public GameItem item() {  return item; }

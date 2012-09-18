@@ -5,7 +5,7 @@ import java.io.File;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import world.Player;
+import world.objects.Player;
 import world.RiemannCube;
 import world.cubes.Cube;
 import world.items.GameItem;
