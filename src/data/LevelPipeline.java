@@ -11,6 +11,7 @@ import world.cubes.Cube;
 import world.items.GameItem;
 import world.objects.GameObject;
 
+import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -40,10 +41,6 @@ import javax.xml.transform.stream.StreamResult;
  *
  */
 public class LevelPipeline {
-
-	public LevelPipeline(){
-		
-	}
 	
 	public void save(RiemannCube level, String fname){
 		try {
@@ -142,6 +139,20 @@ public class LevelPipeline {
 			System.out.println("File saved!");
 			
 		} catch (Exception e) {e.printStackTrace();}
+	}
+	
+	public void load(){
+		JFileChooser fc = new JFileChooser("src");
+		File f = null;
+		
+		int value = fc.showDialog(null, "Select File");
+		if(value == JFileChooser.APPROVE_OPTION){
+			f = fc.getSelectedFile();
+		}
+		
+		if(f != null){
+			XMLParser parser = new XMLParser(f);
+		}
 	}
 }
 
