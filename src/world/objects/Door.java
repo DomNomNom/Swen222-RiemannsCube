@@ -4,24 +4,34 @@ import java.awt.Color;
 
 public class Door implements GameObject {
 
-	Lock[] locks;
+	Trigger[] triggers;
 	int index = 0;
 	Color color;
 	
 	public Door(int numLocks){
-		locks = new Lock[numLocks];
+		triggers = new Trigger[numLocks];
+		this.color = Color.BLUE;
 	}
 	
-	public void addLock(Lock lock){
-		if (allLocksPlaced()) System.out.println("All locks placed!");
-		else locks[index++] = lock;
+	public Door(int numLocks, Color color){
+		triggers = new Trigger[numLocks];
+		this.color = color;
 	}
 	
-	public Lock[] locks(){
-		return locks;
+	public void addTrigger(Trigger trigger){
+		if (allTriggersPlaced()) System.out.println("All triggers placed!");
+		else triggers[index++] = trigger;
 	}
 	
-	public boolean allLocksPlaced(){
-		return index == locks.length;
+	public Trigger[] triggers(){
+		return triggers;
+	}
+	
+	public boolean allTriggersPlaced(){
+		return index == triggers.length;
+	}
+	
+	public Color color(){
+		return this.color;
 	}
 }

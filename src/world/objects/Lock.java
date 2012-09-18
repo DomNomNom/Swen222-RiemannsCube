@@ -1,12 +1,16 @@
 package world.objects;
 
+import java.awt.Color;
+
 import world.items.Key;
 
 public class Lock implements Trigger {
 
 	Key key;
+	Color color;
 	
-	public Lock(){
+	public Lock(Color color){
+		this.color = color;
 	}
 	
 	public Key key(){
@@ -15,5 +19,9 @@ public class Lock implements Trigger {
 	
 	public void setKey(Key key){
 		this.key = key;
+	}
+	
+	public Color color(){
+		return color;
 	}
 }

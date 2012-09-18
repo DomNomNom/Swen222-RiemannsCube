@@ -3,12 +3,14 @@ package world.cubes;
 import java.util.ArrayList;
 import java.util.List;
 
+import world.Player;
 import world.objects.GameObject;
 
 public abstract class Cube {
 
 	private int type;
-	private List<GameObject> objects = new ArrayList<GameObject>();
+	private GameObject object;
+	private Player player;
 	
 	public Cube(int type){
 		this.type = type;
@@ -19,10 +21,18 @@ public abstract class Cube {
 	}
 	
 	public void setObject(GameObject o){
-		objects.add(o);
+		object= o;
 	}
 	
-	public List<GameObject> objects(){
-		return objects;
+	public GameObject object(){
+		return object;
+	}
+
+	public Player player() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

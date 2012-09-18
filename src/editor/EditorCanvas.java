@@ -33,7 +33,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 	boolean isometric = false;
 	Door curDoor = null;
 	Lock curLock = null;
-	Key curKey = new Key();
+	Key curKey = new Key(Color.BLUE);
 	
 	public EditorCanvas(){
 		super();
@@ -61,8 +61,8 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 				g.setColor(Color.BLACK);
 				g.drawRect(left + i*squareLength, top + j*squareLength, squareLength, squareLength);
 				//draw top object.
-				if(!slice[i][j].objects().isEmpty())
-					drawObject(g, slice[i][j].objects().get(0), left + i*squareLength, top + j*squareLength);
+				if(slice[i][j].object()!=null)
+					drawObject(g, slice[i][j].object(), left + i*squareLength, top + j*squareLength);
 			}
 
 		if(orientation.equals("horizontal")){
@@ -133,8 +133,8 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 						g.setColor(new Color(red,blue,green,100));
 					}
 					drawDiamond(g, top, (int)left, squareLength);
-					if(!slice[i][j].objects().isEmpty())
-						drawObject(g, slice[i][j].objects().get(0), (int) left + squareLength/2, top);
+					if(slice[i][j].object()!=null)
+						drawObject(g, slice[i][j].object(), (int) left + squareLength/2, top);
 					top += squareLength/2;
 					left -= dWidth/2;
 				}
@@ -295,9 +295,9 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		}
 		else if(key=='w'){
 			level.setCube(x, y, z, new Wall());
-		}else if(level.getCube(x, y, z).objects().isEmpty()){
+		}else if(level.getCube(x, y, z).object()==null){
 			if(key=='d'){
-				if(curDoor==null || curDoor.allLocksPlaced()){
+				if(curDoor==null || curDoor.allTriggersPlaced()){
 					int num = Integer.parseInt(JOptionPane.showInputDialog(null, "How many locks?", "4"));
 					curDoor = new Door(num);
 					level.setObject(x, y, z, curDoor);
@@ -305,15 +305,15 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 					System.out.println("Finish placing the locks for the last door!");
 				}
 			}else if(key=='l'){
-				if(curDoor!=null && !curDoor.allLocksPlaced() && curKey!=null){
-					curLock = new Lock();
+				if(curDoor!=null && !curDoor.allTriggersPlaced() && curKey!=null){
+					curLock = new Lock(curDoor.color());
 					level.setObject(x, y, z, curLock);
-					curDoor.addLock(curLock);
+					curDoor.addTrigger(curLock);
 					curKey=null;
 				}
 			}else if(key =='k'){
 				if(curLock!=null){
-					curKey = new Key();
+					curKey = new Key(curLock.color());
 					level.setObject(x, y, z, curKey);
 					curLock.setKey(curKey);
 					curLock=null;

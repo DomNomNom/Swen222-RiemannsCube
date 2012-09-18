@@ -5,8 +5,10 @@ import java.io.File;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import world.Player;
 import world.RiemannCube;
 import world.cubes.Cube;
+import world.items.GameItem;
 import world.objects.GameObject;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -62,11 +64,30 @@ public class LevelPipeline {
 						//Record the numerical value of the cube to the document.
 						cube.setAttribute("type", String.valueOf(curCube.type()));
 						
-						for(GameObject obj : curCube.objects()){
+						GameObject obj = curCube.object();
+						if(obj!=null){
 							Element gameObj = doc.createElement("object");
 							gameObj.setAttribute("type", obj.getClass().getName());
-							gameObj.setAttribute("id", ""); //FIXME
+							cube.appendChild(gameObj);
 						}
+						
+						Player curPlayer = curCube.player();
+						Element player = doc.createElement("player");
+						if(curPlayer!=null){
+							player.setAttribute("num", String.valueOf(curPlayer.num()));
+							
+							GameItem curItem = curPlayer.item();
+							Element item = doc.createElement("item");
+							if(curItem!=null){
+								item.setAttribute("type", item.getClass().getName());
+							}else item.setAttribute("type", "null");
+							
+							player.appendChild(item);
+						}else{
+							player.setAttribute("num", "-1");
+						}
+						
+						cube.appendChild(player);
 						
 						row.appendChild(cube);
 						slice.appendChild(row);
