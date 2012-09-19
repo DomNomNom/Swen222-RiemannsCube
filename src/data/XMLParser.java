@@ -53,7 +53,8 @@ public class XMLParser {
 		
 		doc.getDocumentElement().normalize();
 		
-		
+		// More to do:
+		// Needs dimension of the 3D array in the XML file
 		
 		return null;
 	}
