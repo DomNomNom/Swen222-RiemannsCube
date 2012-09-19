@@ -151,7 +151,7 @@ public class LevelPipeline {
 		}
 		
 		if(f != null){
-			XMLParser parser = new XMLParser(f);
+
 		}
 	}
 }
