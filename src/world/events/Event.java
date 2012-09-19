@@ -1,5 +1,7 @@
 package world.events;
 
-public abstract class Event {
+import java.io.Serializable;
+
+public abstract class Event implements Serializable {
   // TODO make instances of this
 }

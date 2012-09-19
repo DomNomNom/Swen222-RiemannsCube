@@ -1,6 +1,7 @@
 package world;
 
 import world.cubes.*;
+import world.events.Action;
 import world.objects.GameObject;
 
 public class RiemannCube {
@@ -23,7 +24,14 @@ public class RiemannCube {
     public final int width, height, depth;
 
     
-    
+    /**
+     * Creates the RiemannCube with the given dimentions.
+     * It will be filled with FloorTiles
+     * 
+     * @param width
+     * @param height
+     * @param depth
+     */
     public RiemannCube(int width, int height, int depth) {
         this.width = width;
         this.height = height;
@@ -39,7 +47,22 @@ public class RiemannCube {
                     cubes[x][y][z] = new Floor();
     }
 
-
+    
+    /**
+     * Tries to apply the given action.
+     * This uses isValidAction() for action validation.
+     * 
+     * @param a The action that should be applied
+     * @return Whether it succeeded.
+     */
+    public boolean applyAction(Action a) {
+        
+        return true;
+    }
+    
+    public boolean isValidAction(Action a) {
+        return true;
+    }
     
     
     
