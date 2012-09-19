@@ -6,4 +6,4 @@
 *.ear
 
 # library folder
-#libraries/*
+libraries/*
