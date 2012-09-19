@@ -20,10 +20,24 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * Saves a 3D map state to XML. Form of: <map> <slice> <floor> <cube>
- * <object></> <player> <item></> <lightsource></> </> </> </> </> </> If player
- * is null, set number value to -1 Null items have type "null".
- * 
+
+ * Saves a 3D map state to XML. Form of:
+ *<map> - width, height, depth 
+ * <slice> - z
+ * 	<floor> - y
+ *   <cube> - x, type
+ *    <object>type, id</>
+ *    <player> - number
+ *     <item>type, id</>
+ *     <lightsource>type</>
+ *    </>
+ *   </>
+ *  </>
+ * </>
+ *</>
+ * If player is null, set number value to -1
+ * Null items have type "null".
+ *     
  * @author mudgejayd 300221669
  * 
  */
