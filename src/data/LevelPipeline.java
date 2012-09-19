@@ -18,6 +18,27 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+/**
+ * Saves a 3D map state to XML. Form of:
+ *<map> 
+ * <slice>
+ * 	<floor>
+ *   <cube>
+ *    <object></>
+ *    <player>
+ *     <item></>
+ *     <lightsource></>
+ *    </>
+ *   </>
+ *  </>
+ * </>
+ *</>
+ * If player is null, set number value to -1
+ * Null items have type "null".
+ *     
+ * @author mudgejayd 300221669
+ *
+ */
 public class LevelPipeline {
 
 	public LevelPipeline(){
@@ -38,8 +59,11 @@ public class LevelPipeline {
 			DOMSource source = new DOMSource(doc);
 			StreamResult result = new StreamResult(new File(fname+".xml"));
 	 
-			// root elements
+			// root element
 			Element rootElement = doc.createElement("map");
+            rootElement.setAttribute("width", String.valueOf(level.width()));
+            rootElement.setAttribute("height", String.valueOf(level.height()));
+            rootElement.setAttribute("depth", String.valueOf(level.depth()));
 			doc.appendChild(rootElement);
 			
 			
@@ -65,24 +89,40 @@ public class LevelPipeline {
 						cube.setAttribute("type", String.valueOf(curCube.type()));
 						
 						GameObject obj = curCube.object();
+						//Adding object
+						Element gameObj = doc.createElement("object");
 						if(obj!=null){
-							Element gameObj = doc.createElement("object");
 							gameObj.setAttribute("type", obj.getClass().getName());
+							gameObj.setAttribute("id", String.valueOf(obj.color().getRGB()));
 							cube.appendChild(gameObj);
+						}else{
+							gameObj.setAttribute("type", "null");
+							gameObj.setAttribute("id", "0");
 						}
 						
+						//Adding player
 						Player curPlayer = curCube.player();
 						Element player = doc.createElement("player");
 						if(curPlayer!=null){
 							player.setAttribute("num", String.valueOf(curPlayer.num()));
 							
 							GameItem curItem = curPlayer.item();
+							//Adding item
 							Element item = doc.createElement("item");
 							if(curItem!=null){
 								item.setAttribute("type", item.getClass().getName());
 							}else item.setAttribute("type", "null");
 							
 							player.appendChild(item);
+							
+							GameItem curTorch = curPlayer.torch();
+                            //Adding item
+                            Element torch = doc.createElement("lightsource");
+                            if(curTorch!=null){
+                                torch.setAttribute("type", item.getClass().getName());
+                            }else item.setAttribute("type", "null");
+                            
+                            player.appendChild(torch);
 						}else{
 							player.setAttribute("num", "-1");
 						}

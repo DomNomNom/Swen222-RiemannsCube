@@ -1,23 +1,20 @@
 package world.cubes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import world.Player;
 import world.objects.GameObject;
 
 public abstract class Cube {
 
-	private int type;
 	private GameObject object;
 	private Player player;
+	public CubeType cubeType;
 	
 	public Cube(int type){
-		this.type = type;
+		this.cubeType = CubeType.values()[type];
 	}
 	
 	public int type(){
-		return type;
+		return cubeType.ordinal();
 	}
 	
 	public void setObject(GameObject o){

@@ -82,6 +82,10 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		g.fillRect(left + i*squareLength, top + j*squareLength, squareLength, squareLength);
 		g.setColor(Color.GREEN);
 		g.drawRect(left + i*squareLength, top + j*squareLength, squareLength, squareLength);
+	
+		g.setColor(Color.PINK);
+	    drawDiamond(g, top+j*squareLength, left+i*squareLength, squareLength);
+	
 	}
 	
 	/**
@@ -124,6 +128,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 				left = this.left + i*dWidth/2 + height; //lefthand side of starting column.
 				for(int j = 0; j < height; j++){
 					//Chooses colour depending on cube type.
+					if(slice[i][j].type()==0)g.setColor(Color.BLACK);
 					if(slice[i][j].type()==1)g.setColor(Color.RED);
 					if(slice[i][j].type()==2)g.setColor(Color.GRAY);
 					if(this.i == i && this.j == j && y == floor){
@@ -266,11 +271,11 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 			i = (int)(i - 3*squareLength/(2*Math.sqrt(2)));
 			x = (int) ((i)*Math.sqrt(2)/3 + j)/squareLength;
 			z = (int) ((-i*Math.sqrt(2)/3 + j)/squareLength);
-			int floorHeight = (level.height() + level.width())*squareLength/2;
+			int floorHeight = (level.height() + level.width()+1)*squareLength/2;
 			y = (e.getY()-top)/floorHeight;
 			x-= y*level.width();
 			z-= y*level.width();
-			y=level.height()-y-1;
+			y=level.height()-y;
 			this.i = x;
 			this.j = z;
 			System.out.println(x+" "+y+" "+z);
@@ -295,6 +300,8 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 		}
 		else if(key=='w'){
 			level.setCube(x, y, z, new Wall());
+		}else if(key==' '){
+			level.setCube(x, y, z, new Space());
 		}else if(level.getCube(x, y, z).object()==null){
 			if(key=='d'){
 				if(curDoor==null || curDoor.allTriggersPlaced()){
