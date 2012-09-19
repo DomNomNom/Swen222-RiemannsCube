@@ -76,6 +76,7 @@ public class EditorFrame extends JFrame {
 				pipe.save(canvas.level(), fname);
 			}
 		});
+		menu.add(item);
 		
 		item = new JMenuItem("Load");
 		item.addActionListener(new ActionListener() {

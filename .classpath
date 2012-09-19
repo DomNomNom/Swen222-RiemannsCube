@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/david/Dropbox/Programming/Java/SWEN222/Assignments/Project/Swen222-RiemannsCube/libraries/jogamp-all-platforms/jar/gluegen-rt.jar">
+	<classpathentry kind="lib" path="/u/students/sandilalex/Documents/Swen222/Group/Swen222-RiemannsCube/libraries/jogamp-all-platforms/jar/gluegen-rt.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/home/david/Dropbox/Programming/Java/SWEN222/Assignments/Project/Swen222-RiemannsCube/libraries/jogamp-all-platforms/jar"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/u/students/sandilalex/Documents/Swen222/Group/Swen222-RiemannsCube/libraries/jogamp-all-platforms/jar"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/david/Dropbox/Programming/Java/SWEN222/Assignments/Project/Swen222-RiemannsCube/libraries/jogamp-all-platforms/jar/jogl-all.jar">
+	<classpathentry kind="lib" path="/am/phoenix/home1/sandilalex/Documents/Swen222/Group/Swen222-RiemannsCube/libraries/jogamp-all-platforms/jar/jogl-all.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/home/david/Dropbox/Programming/Java/SWEN222/Assignments/Project/Swen222-RiemannsCube/libraries/jogamp-all-platforms/jar"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/u/students/sandilalex/Documents/Swen222/Group/Swen222-RiemannsCube/libraries/jogamp-all-platforms/jar"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
