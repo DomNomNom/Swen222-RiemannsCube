@@ -111,7 +111,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
      * @param g Graphics shown on canvas
      */
     public void drawIsometric(Graphics g){
-        int top, height = level.height(), width = level.width();
+        int top, height = level.height, width = level.width;
         int floorHeight = (width+height)*squareLength/2; //Height of entire floor.
         float dWidth = (float) (squareLength*3/Math.sqrt(2)); //width of diamond
         float left;
@@ -236,7 +236,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
         }
         else if(orientation.equals("orthogonal")){
             z += step;
-            if(z < 0 || z >= level.depth()) z -= step;
+            if(z < 0 || z >= level.depth) z -= step;
             slice = level.orthogonalSlice(z);
         }
         repaint();
@@ -266,11 +266,11 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
             i = (int)(i - 3*squareLength/(2*Math.sqrt(2)));
             x = (int) ((i)*Math.sqrt(2)/3 + j)/squareLength;
             z = (int) ((-i*Math.sqrt(2)/3 + j)/squareLength);
-            int floorHeight = (level.height() + level.width())*squareLength/2;
+            int floorHeight = (level.height + level.width)*squareLength/2;
             y = (e.getY()-top)/floorHeight;
-            x-= y*level.width();
-            z-= y*level.width();
-            y=level.height()-y-1;
+            x-= y*level.width;
+            z-= y*level.width;
+            y=level.height-y-1;
             this.i = x;
             this.j = z;
             System.out.println(x+" "+y+" "+z);
@@ -300,21 +300,21 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
                 if(curDoor==null || curDoor.allTriggersPlaced()){
                     int num = Integer.parseInt(JOptionPane.showInputDialog(null, "How many locks?", "4"));
                     curDoor = new Door(num);
-                    level.setObject(x, y, z, curDoor);
+                    level.getCube(x, y, z).setObject(curDoor);
                 }else{
                     System.out.println("Finish placing the locks for the last door!");
                 }
             }else if(key=='l'){
                 if(curDoor!=null && !curDoor.allTriggersPlaced() && curKey!=null){
                     curLock = new Lock(curDoor.color());
-                    level.setObject(x, y, z, curLock);
+                    level.getCube(x, y, z).setObject(curLock);
                     curDoor.addTrigger(curLock);
                     curKey=null;
                 }
             }else if(key =='k'){
                 if(curLock!=null){
                     curKey = new Key(curLock.color());
-                    level.setObject(x, y, z, curKey);
+                    level.getCube(x, y, z).setObject(curLock);
                     curLock.setKey(curKey);
                     curLock=null;
                 }

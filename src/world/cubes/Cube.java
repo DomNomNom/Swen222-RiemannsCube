@@ -8,20 +8,15 @@ import world.objects.GameObject;
 
 public abstract class Cube {
 
-    private int type;
     private GameObject object;
     private Player player;
+
     
-    public Cube(int type){
-        this.type = type;
-    }
-    
-    public int type(){
-        return type;
-    }
+    abstract public int type();
+
     
     public void setObject(GameObject o){
-        object= o;
+        object = o;
     }
     
     public GameObject object(){

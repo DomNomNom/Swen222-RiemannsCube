@@ -4,7 +4,6 @@ import world.cubes.*;
 import world.objects.GameObject;
 
 public class RiemannCube {
-    //public Cube[][][] cubes;
 
     /**
      * this is the cube-accessing interface. no encapsulation required as these are final.
@@ -18,6 +17,8 @@ public class RiemannCube {
      * top-left-deep
      */
     public final Cube[][][] cubes;
+    public Cube getCube(int x, int y, int z) {    return cubes[x][y][z];  }
+    public void setCube(int x, int y, int z, Cube c) {   cubes[x][y][z] = c;  }
     
     public final int width, height, depth;
 
@@ -38,26 +39,13 @@ public class RiemannCube {
                     cubes[x][y][z] = new Floor();
     }
 
-    public void setCube(int x, int y, int z, Cube c) {
-        cubes[x][y][z] = c;
-    }
 
-    public void setObject(int x, int y, int z, GameObject o) {
-        cubes[x][y][z].setObject(o);
-    }
-
-    public int width() {
-        return width;
-    }
-
-    public int height() {
-        return height;
-    }
-
-    public int depth() {
-        return depth;
-    }
-
+    
+    
+    
+    
+    // ====== Slicing ======
+    
     public Cube[][] getSlice(int x, int y, int z, int norm_x, int norm_y, int norm_z) {
         int sliceWd = 0;
         int sliceHt = 0;
@@ -88,9 +76,6 @@ public class RiemannCube {
         return slice;
     }
 
-    public Cube getCube(int x, int y, int z) {
-        return cubes[x][y][z];
-    }
-    
+
     
 }

@@ -1,9 +1,10 @@
 package world.cubes;
 
 public class Floor extends Cube {
+    public Floor() { }
     
-    public Floor(){
-        super(1);
+    public int type(){
+        return 1; // TODO: enums
     }
     
 }
