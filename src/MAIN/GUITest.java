@@ -8,8 +8,8 @@ import gui.GameFrame;
  */
 public class GUITest {
     
-    public static void main(String args[]) {        
-        GameFrame window = new GameFrame();
+    public static void main(String[] args) {
+      GameFrame window = new GameFrame();
         window.init();
         window.execute();
     }
