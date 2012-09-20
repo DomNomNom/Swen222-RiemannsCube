@@ -65,6 +65,9 @@ public class LevelPipeline {
 
             // root elements
             Element rootElement = doc.createElement("map");
+            rootElement.setAttribute("width", String.valueOf(width));
+            rootElement.setAttribute("height", String.valueOf(height));
+            rootElement.setAttribute("depth", String.valueOf(depth));
             doc.appendChild(rootElement);
 
             // Iterate over each orthogonal 'slice' of the cube
