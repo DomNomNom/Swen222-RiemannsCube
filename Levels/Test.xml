@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <map>
-    
+
     <slice z="0" >
 
         <floor y="0" >
@@ -8,8 +8,6 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
