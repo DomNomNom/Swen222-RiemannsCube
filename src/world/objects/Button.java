@@ -13,4 +13,9 @@ public class Button extends Trigger {
 	public Color color(){
 		return color;
 	}
+
+    @Override
+    public String getClassName() {
+        return "Trigger";
+    }
 }

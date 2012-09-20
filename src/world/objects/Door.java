@@ -34,4 +34,9 @@ public class Door extends GameObject {
     public Color color(){
         return this.color;
     }
+
+    @Override
+    public String getClassName() {
+        return "Door";
+    }
 }

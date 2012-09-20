@@ -24,4 +24,9 @@ public class Lock extends Trigger {
     public Color color(){
         return color;
     }
+
+    @Override
+    public String getClassName() {
+        return "Lock";
+    }
 }

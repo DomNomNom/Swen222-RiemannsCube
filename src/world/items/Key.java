@@ -13,4 +13,9 @@ public class Key extends GameItem {
     public Color color(){
         return color;
     }
+
+    @Override
+    public String getClassName() {
+        return "Key";
+    }
 }

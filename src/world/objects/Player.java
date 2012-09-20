@@ -22,4 +22,8 @@ public class Player extends GameObject {
     public int num() {
         return num;
     }
+    @Override
+    public String getClassName() {
+        return "Player";
+    }
 }
