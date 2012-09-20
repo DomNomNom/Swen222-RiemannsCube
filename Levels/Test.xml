@@ -13,22 +13,16 @@
             <cube
                 type="1"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -37,31 +31,27 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="2" >
 
-                <player num="-1" />
+                <Lightsource />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
 
-                <object type="world.objects.Lock" />
-
-                <player num="-1" />
+                <Lock
+                    id="4"
+                    color="Red" />
             </cube>
         </floor>
 
@@ -70,29 +60,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -101,31 +83,25 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
 
-                <object type="world.objects.Lock" />
-
-                <player num="-1" />
+                <Lock
+                    id="3"
+                    color="Red" />
             </cube>
         </floor>
     </slice>
@@ -137,29 +113,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -168,29 +136,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -199,29 +159,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -230,29 +182,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
     </slice>
@@ -264,29 +208,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -295,29 +231,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -326,29 +254,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -357,29 +277,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="2"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
     </slice>
@@ -391,29 +303,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -422,29 +326,21 @@
             <cube
                 type="1"
                 x="0" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
 
@@ -454,32 +350,28 @@
                 type="1"
                 x="0" >
 
-                <object type="world.objects.Door" />
-
-                <player num="-1" />
+                <Door
+                    lockIDs="1 2 3 4"
+                    color="Red" />
             </cube>
 
             <cube
                 type="1"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
 
-                <object type="world.objects.Lock" />
-
-                <player num="-1" />
+                <Lock
+                    id="2"
+                    color="Red" />
             </cube>
         </floor>
 
@@ -489,30 +381,24 @@
                 type="1"
                 x="0" >
 
-                <object type="world.objects.Lock" />
-
-                <player num="-1" />
+                <Lock
+                    id="1"
+                    color="Red" />
             </cube>
 
             <cube
                 type="1"
                 x="1" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="2" >
-
-                <player num="-1" />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
-
-                <player num="-1" />
             </cube>
         </floor>
     </slice>
