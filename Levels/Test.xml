@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<map>
+    
+    <slice z="0" >
+
+        <floor y="0" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="1" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <object type="world.objects.Lock" />
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="2" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="3" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <object type="world.objects.Lock" />
+
+                <player num="-1" />
+            </cube>
+        </floor>
+    </slice>
+
+    <slice z="1" >
+
+        <floor y="0" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="1" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="2" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="3" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+    </slice>
+
+    <slice z="2" >
+
+        <floor y="0" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="1" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="2" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="3" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="2"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+    </slice>
+
+    <slice z="3" >
+
+        <floor y="0" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="1" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="2" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <object type="world.objects.Door" />
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <object type="world.objects.Lock" />
+
+                <player num="-1" />
+            </cube>
+        </floor>
+
+        <floor y="3" >
+
+            <cube
+                type="1"
+                x="0" >
+
+                <object type="world.objects.Lock" />
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="1" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="2" >
+
+                <player num="-1" />
+            </cube>
+
+            <cube
+                type="1"
+                x="3" >
+
+                <player num="-1" />
+            </cube>
+        </floor>
+    </slice>
+
+</map>

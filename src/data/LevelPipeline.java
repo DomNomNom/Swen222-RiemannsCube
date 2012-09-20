@@ -64,7 +64,7 @@ public class LevelPipeline {
             StreamResult result = new StreamResult(new File(fname + ".xml"));
 
             // root elements
-            Element rootElement = doc.createElement("map");
+            Element rootElement = doc.createElement("riemann cube");
             rootElement.setAttribute("width", String.valueOf(width));
             rootElement.setAttribute("height", String.valueOf(height));
             rootElement.setAttribute("depth", String.valueOf(depth));

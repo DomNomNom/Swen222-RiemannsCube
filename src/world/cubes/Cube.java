@@ -8,7 +8,6 @@ public abstract class Cube {
 
     private GameObject object;
     private Player player;
-
     
     abstract public int type();
 

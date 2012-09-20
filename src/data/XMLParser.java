@@ -9,6 +9,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import world.RiemannCube;
@@ -55,6 +57,12 @@ public class XMLParser {
 		
 		// More to do:
 		// Needs dimension of the 3D array in the XML file
+		Node cube = doc.getDocumentElement();
+		System.out.println(cube.getNodeName());
+		
+		NodeList intern = cube.getChildNodes();
+		
+		System.out.println(intern.item(2).getNodeName());
 		
 		return null;
 	}
