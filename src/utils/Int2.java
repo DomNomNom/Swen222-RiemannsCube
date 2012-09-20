@@ -14,7 +14,7 @@ public class Int2 {
     
     
     public Int2(int X, int Y) {
-        x = Y;
+        x = X;
         y = Y;
     }
     

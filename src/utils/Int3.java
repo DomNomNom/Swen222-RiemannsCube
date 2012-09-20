@@ -1,8 +1,10 @@
 package utils;
 
+
 /**
- * A very simple 3D integer vector
+ * A very simple 3D integer vector.
  * The code is simple enough to be intuitive to anyone knowing about vectors 
+ * It builds upon Int2 but extending it would not serve a useful purpose.
  * 
  * @author schmiddomi
  *

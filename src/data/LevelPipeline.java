@@ -102,7 +102,7 @@ public class LevelPipeline {
                         Element player = doc.createElement("player");
                         if (curPlayer != null) {
                             player.setAttribute("num",
-                                    String.valueOf(curPlayer.num()));
+                                    String.valueOf(curPlayer.id()));
 
                             GameItem curItem = curPlayer.item();
                             Element item = doc.createElement("item");
