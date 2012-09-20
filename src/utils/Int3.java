@@ -13,12 +13,18 @@ public class Int3 {
     
     public int x, y, z;
     
-    public Int3(int X, int Y, int Z) {
+    
+    /** Default constructor. Initializes ints to (0 0 0) */
+    public Int3()                    { set(0, 0, 0); }
+    public Int3(int X, int Y, int Z) { set(X, Y, Z); }
+    
+    
+    /** sets the (x y z) values to the parameters */
+    public void set(int X, int Y, int Z) {
         x = X;
         y = Y;
         z = Z;
     }
-    
 
     public void add(Int3 o)              { x+=o.x; y+=o.y; z+=o.z; }
     public void add(int X, int Y, int Z) { x+=  X; y+=  Y; z+=  Z; }

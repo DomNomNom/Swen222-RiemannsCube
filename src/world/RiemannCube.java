@@ -1,5 +1,7 @@
 package world;
 
+import utils.Int2;
+import utils.Int3;
 import world.cubes.*;
 import world.events.Action;
 import world.objects.GameObject;
@@ -69,12 +71,19 @@ public class RiemannCube {
     
     // ====== Slicing ======
     
-    public Cube[][] getSlice(int x, int y, int z, int norm_x, int norm_y, int norm_z) {
-        int sliceWd = 0;
-        int sliceHt = 0;
-        Cube[][] slice = new Cube[sliceWd][sliceHt];
+    /**
+     * Gets the cube slice though the cube.
+     * The slice plane is defined by the position it passes though and the normal vector of the plane
+     *   
+     * @param pos The position it passes
+     * @param normal The normal vector of the plane 
+     * @return The slice
+     */
+    public Cube[][] getSlice(Int3 pos, Int3 normal) {
+        Int2 sliceSize = new Int2(0, 0);
+        Cube[][] slice = new Cube[sliceSize.x][sliceSize.y];
 
-        // TODO
+        slice = verticalSlice(0); // FIXME do this properly
 
         return slice;
     }

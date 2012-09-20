@@ -8,6 +8,7 @@ public class Door extends GameObject {
     int index = 0;
     Color color;
     
+    // TODO     public Door(Set<Integer> lockIDs, Map<Integer, Lock> locks) {
     public Door(int numLocks){
         triggers = new Trigger[numLocks];
         this.color = Color.BLUE;
