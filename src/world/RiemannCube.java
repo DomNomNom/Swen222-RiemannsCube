@@ -25,7 +25,7 @@ public class RiemannCube {
 
     
     /**
-     * Creates the RiemannCube with the given dimentions.
+     * Creates the RiemannCube with the given dimensions.
      * It will be filled with FloorTiles
      * 
      * @param width
