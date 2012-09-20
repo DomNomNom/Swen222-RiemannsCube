@@ -26,7 +26,9 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
 
     private RiemannCube level;
     Cube[][] slice = new Cube[0][0];
-    int x, y, z, width, height, squareLength = 50, i=0, j=0, k=0, 
+    //x, y and z represent selected cube in 3D. i, j are selected square
+    // and depend on your viewing angle.
+    int x, y, z, width, height, squareLength = 50, i=0, j=0, 
     left = 350,
     top = 350;
     String orientation = "horizontal";
@@ -129,7 +131,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
                     //Chooses colour depending on cube type.
                     if(slice[i][j].type()==1)g.setColor(Color.RED);
                     if(slice[i][j].type()==2)g.setColor(Color.GRAY);
-                    if(this.i == i && this.j == j && y == floor){
+                    if(this.x == i && this.z == j && y == floor){
                         int red = g.getColor().getRed();
                         int green = g.getColor().getGreen();
                         int blue = g.getColor().getBlue();
@@ -273,7 +275,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
             y = (e.getY()-top)/floorHeight;
             x-= y*level.width;
             z-= y*level.width;
-            y=level.height-y-1;
+            y=level.height-y-2;
             this.i = x;
             this.j = z;
             System.out.println(x+" "+y+" "+z);
