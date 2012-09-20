@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<map>
+<riemanncube
+    depth="3"
+    height="3"
+    width="3" >
 
     <slice z="0" >
 
@@ -42,14 +45,14 @@
                 type="1"
                 x="2" >
 
-                <Lightsource />
+                <lightsource />
             </cube>
 
             <cube
                 type="1"
                 x="3" >
 
-                <Lock
+                <lock
                     id="4"
                     color="Red" />
             </cube>
@@ -99,7 +102,7 @@
                 type="1"
                 x="3" >
 
-                <Lock
+                <lock
                     id="3"
                     color="Red" />
             </cube>
@@ -350,7 +353,7 @@
                 type="1"
                 x="0" >
 
-                <Door
+                <door
                     lockIDs="1 2 3 4"
                     color="Red" />
             </cube>
@@ -369,7 +372,7 @@
                 type="1"
                 x="3" >
 
-                <Lock
+                <lock
                     id="2"
                     color="Red" />
             </cube>
@@ -381,7 +384,7 @@
                 type="1"
                 x="0" >
 
-                <Lock
+                <lock
                     id="1"
                     color="Red" />
             </cube>
@@ -403,4 +406,4 @@
         </floor>
     </slice>
 
-</map>
+</riemanncube>
