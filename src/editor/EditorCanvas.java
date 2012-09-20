@@ -125,7 +125,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
                 //Draws top of column, then iterates down, and to the left.
                 top = this.top + i*squareLength/2 - floor*floorHeight + floorHeight/2 + height*floorHeight/2;
                 left = this.left + i*dWidth/2 + height; //lefthand side of starting column.
-                for(int j = 0; j < height; j++){
+                for(int j = 0; j < level.depth; j++){
                     //Chooses colour depending on cube type.
                     if(slice[i][j].type()==1)g.setColor(Color.RED);
                     if(slice[i][j].type()==2)g.setColor(Color.GRAY);
