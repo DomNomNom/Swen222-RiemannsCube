@@ -63,6 +63,9 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
                 //draw top object.
                 if(slice[i][j].object()!=null)
                     drawObject(g, slice[i][j].object(), left + i*squareLength, top + j*squareLength);
+                if(slice[i][j].player()!=null){
+                    g.drawString(slice[i][j].player().toString(), left+i*squareLength, top+j*squareLength);
+                }
             }
 
         if(orientation.equals("horizontal")){
@@ -295,6 +298,10 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
         }
         else if(key=='w'){
             level.setCube(x, y, z, new Wall());
+        }else if(key==' '){
+            level.setCube(x, y, z, new Space());
+        }else if(key=='1'){
+            level.cubes[x][y][z].setPlayer(new Player(1));
         }else if(level.getCube(x, y, z).object()==null){
             if(key=='d'){
                 if(curDoor==null || curDoor.allTriggersPlaced()){

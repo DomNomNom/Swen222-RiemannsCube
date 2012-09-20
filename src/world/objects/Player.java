@@ -28,5 +28,6 @@ public class Player extends GameObject {
     public String getClassName() {
         return "Player";
     }
-    
+
+    public String toString(){return "Player "+id;}
 }
