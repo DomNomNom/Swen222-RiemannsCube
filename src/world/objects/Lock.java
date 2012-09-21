@@ -29,4 +29,9 @@ public class Lock extends Trigger {
     public String getClassName() {
         return "Lock";
     }
+
+    @Override
+    public int id() {
+        return 0; //FIXME
+    }
 }

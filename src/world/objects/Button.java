@@ -18,4 +18,9 @@ public class Button extends Trigger {
     public String getClassName() {
         return "Trigger";
     }
+
+    @Override
+    public int id() {
+        return 0; //FIXME
+    }
 }

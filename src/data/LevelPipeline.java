@@ -5,7 +5,9 @@ import java.io.File;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import world.objects.Door;
 import world.objects.Player;
+import world.objects.Trigger;
 import world.RiemannCube;
 import world.cubes.Cube;
 import world.items.GameItem;
@@ -92,10 +94,7 @@ public class LevelPipeline {
 
                         GameObject obj = curCube.object();
                         if (obj != null) {
-                            Element gameObj = doc.createElement("object");
-                            gameObj.setAttribute("type", obj.getClass()
-                                    .getName());
-                            cube.appendChild(gameObj);
+                            Element gameObj = getObjectElement(obj, doc);
                         }
 
                         Player curPlayer = curCube.player();
@@ -148,5 +147,20 @@ public class LevelPipeline {
         if (f != null) {
 
         }
+    }
+    
+    private Element getObjectElement(GameObject obj, Document doc){
+        Element element;
+        if(obj instanceof Door){
+            Door door = (Door) obj;
+            element = doc.createElement("door");
+            element.setAttribute("id", String.valueOf(door.id()));
+        }else if(obj instanceof Trigger){
+            element = doc.createElement(obj.getClassName().toLowerCase());
+            element.setAttribute("id", String.valueOf(((Trigger)obj).id()));
+        }else{
+            element = doc.createElement(obj.getClassName());
+        }
+        return element;
     }
 }
