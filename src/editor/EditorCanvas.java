@@ -273,11 +273,11 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
             i = (int)(i - 3*squareLength/(2*Math.sqrt(2)));
             x = (int) ((i)*Math.sqrt(2)/3 + j)/squareLength;
             z = (int) ((-i*Math.sqrt(2)/3 + j)/squareLength);
-            int floorHeight = (level.height + level.width)*squareLength/2;
+            int floorHeight = (level.height + level.width +1)*squareLength/2;
             y = (e.getY()-top)/floorHeight;
             x-= y*level.width;
             z-= y*level.width;
-            y=level.height-y-2;
+            y=level.height-y-1;
             this.i = x;
             this.j = z;
             System.out.println(x+" "+y+" "+z);
