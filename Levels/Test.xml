@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <riemanncube
-    depth="3"
-    height="3"
-    width="3" >
+    depth="4"
+    height="4"
+    width="4" >
 
     <slice z="0" >
 
@@ -45,7 +45,7 @@
                 type="1"
                 x="2" >
 
-                <lightsource />
+                <key color="#FF0000" />
             </cube>
 
             <cube
@@ -354,7 +354,7 @@
                 x="0" >
 
                 <door
-                    lockIDs="1 2 3 4"
+                    triggerIDs="1 2 3 4"
                     color="Red" />
             </cube>
 

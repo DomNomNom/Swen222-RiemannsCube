@@ -1,38 +1,53 @@
 package world.objects;
 
 import java.awt.Color;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Door extends GameObject {
 
-    Trigger[] triggers;
-    int index = 0;
-    Color color;
-    
-    // TODO     public Door(Set<Integer> lockIDs, Map<Integer, Lock> locks) {
-    public Door(int numLocks){
-        triggers = new Trigger[numLocks];
+    private Set<Integer> triggerIDs;
+    private Map<Integer, Trigger> triggersMap;
+
+    private int index = 0;
+    private Color color;
+
+    public Door(Set<Integer> triggerIDs, Map<Integer, Trigger> triggers,
+            Color col) {
+        this.triggerIDs = triggerIDs;
+        this.triggersMap = triggers;
+        this.color = col;
+    }
+
+    public Door(int numLocks) {
+        triggerIDs = new HashSet<Integer>();
         this.color = Color.BLUE;
     }
-    
-    public Door(int numLocks, Color color){
-        triggers = new Trigger[numLocks];
+
+    public Door(int numLocks, Color color) {
+        triggerIDs = new HashSet<Integer>();
         this.color = color;
     }
-    
-    public void addTrigger(Trigger trigger){
-        if (allTriggersPlaced()) System.out.println("All triggers placed!");
-        else triggers[index++] = trigger;
+
+    public void addTrigger(int id) {
+        if (allTriggersPlaced())
+            System.out.println("All triggers placed!");
+        else {
+            triggerIDs.add(id);
+            index++;
+        }
     }
-    
-    public Trigger[] triggers(){
-        return triggers;
+
+    public Set<Integer> triggers() {
+        return triggerIDs;
     }
-    
-    public boolean allTriggersPlaced(){
-        return index == triggers.length;
+
+    public boolean allTriggersPlaced() {
+        return index == triggerIDs.size();
     }
-    
-    public Color color(){
+
+    public Color color() {
         return this.color;
     }
 

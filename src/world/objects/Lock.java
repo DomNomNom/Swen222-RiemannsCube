@@ -6,23 +6,20 @@ import world.items.Key;
 
 public class Lock extends Trigger {
 
-    Key key;
-    Color color;
+    private Color color;
+    private int ID;
     
-    public Lock(Color color){
+    public Lock(int ID, Color color){
+        this.ID = ID;
         this.color = color;
-    }
-    
-    public Key key(){
-        return key;
-    }
-    
-    public void setKey(Key key){
-        this.key = key;
     }
     
     public Color color(){
         return color;
+    }
+    
+    public int getID(){
+        return ID;
     }
 
     @Override

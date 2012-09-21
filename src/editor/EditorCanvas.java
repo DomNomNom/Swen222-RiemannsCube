@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
@@ -35,6 +36,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
     boolean isometric = false;
     Door curDoor = null;
     Lock curLock = null;
+    int lockID = 0;
     Key curKey = new Key(Color.BLUE);
     
     public EditorCanvas(){
@@ -303,28 +305,30 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
         }else if(key==' '){
             level.setCube(x, y, z, new Space());
         }else if(key=='1'){
-            level.cubes[x][y][z].setPlayer(new Player(1));
+            level.cubes[x][y][z].addObject(new Player(1));
         }else if(level.getCube(x, y, z).object()==null){
             if(key=='d'){
                 if(curDoor==null || curDoor.allTriggersPlaced()){
+                    
+                    Color col = JColorChooser.showDialog(null, "Choose a Color for the Door", Color.WHITE);
+                    
                     int num = Integer.parseInt(JOptionPane.showInputDialog(null, "How many locks?", "4"));
                     curDoor = new Door(num);
-                    level.getCube(x, y, z).setObject(curDoor);
+                    level.getCube(x, y, z).addObject(curDoor);
                 }else{
                     System.out.println("Finish placing the locks for the last door!");
                 }
             }else if(key=='l'){
                 if(curDoor!=null && !curDoor.allTriggersPlaced() && curKey!=null){
-                    curLock = new Lock(curDoor.color());
-                    level.getCube(x, y, z).setObject(curLock);
-                    curDoor.addTrigger(curLock);
+                    curLock = new Lock(lockID++, curDoor.color());
+                    level.getCube(x, y, z).addObject(curLock);
+                    curDoor.addTrigger(curLock.getID());
                     curKey=null;
                 }
             }else if(key =='k'){
                 if(curLock!=null){
                     curKey = new Key(curLock.color());
-                    level.getCube(x, y, z).setObject(curLock);
-                    curLock.setKey(curKey);
+                    level.getCube(x, y, z).addObject(curLock);
                     curLock=null;
                 }
             }
