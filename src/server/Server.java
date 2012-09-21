@@ -1,48 +1,61 @@
 package server;
 
 import java.io.*;
-import java.net.Socket;
+import java.net.*;
+
+import world.RiemannCube;
+import world.events.Action;
+import world.events.ChatMessage;
+import world.events.PlayerMove;
 
 public class Server extends Thread {
 
-    private final int broadcastClock;
-    private final int uid;
-    private final Socket socket;
+    private int broadcastClock;
+    private int uid;
+    private ServerSocket socket;
+    private RiemannCube world;
 
-    public Server(Socket socket, int uid, int broadcastClock) {
-        this.broadcastClock = broadcastClock;
-        this.uid = uid;
-        this.socket = socket;
+    public Server(RiemannCube w) {
+        try {
+            this.socket = new ServerSocket();
+            socket.bind(new InetSocketAddress(55554));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.world = w;
     }
 
     public void run() {
         try {
-            DataInputStream input = new DataInputStream(socket.getInputStream());
-            DataOutputStream output = new DataOutputStream(
-                    socket.getOutputStream());
             // First, write the period to the stream
-            output.writeInt(uid);
 
-            // output.writeInt(board.width());
-            // output.writeInt(board.height());
-            // output.write(board.wallsToByteArray());
+            Object obj = null;
 
             boolean exit = false;
             while (!exit) {
+                Socket clientSocket = socket.accept();
+                // TODO create new thread here!
+                ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
+                ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
                 try {
-                    if (input.available() != 0) {
-                        // read direction event from client.
-                        int dir = input.readInt();
-                        switch (dir) {
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                            break;
-                        }
+                    // read object from socket input
+                    try {
+                        obj = input.readObject();
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("Problem reading from input.");
+                        e.printStackTrace();
+                    }
+                    // object is an action
+                    if (obj instanceof Action) {
+                        Action act = (Action) obj;
+                    }
+                    // object is a player move
+                    else if (obj instanceof PlayerMove) {
+                        PlayerMove move = (PlayerMove) obj;
+                    }
+                    // object is a chat message
+                    else if (obj instanceof ChatMessage) {
+                        ChatMessage message = (ChatMessage) obj;
                     }
 
                     // Now, broadcast the state of the board to client
@@ -61,5 +74,4 @@ public class Server extends Thread {
             System.err.println("PLAYER " + uid + " DISCONNECTED");
         }
     }
-
 }
