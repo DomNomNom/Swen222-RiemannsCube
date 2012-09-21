@@ -100,7 +100,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
      */
     private void drawObject(Graphics g, GameObject obj, int x, int y){
         if(obj instanceof Door) {
-            g.setColor(Color.BLUE);
+            g.setColor(((Door) obj).color());
             g.fillRect(x, y, squareLength, squareLength);
             g.setColor(Color.BLACK);
             g.drawRect(x, y, squareLength, squareLength);
@@ -313,7 +313,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
                     Color col = JColorChooser.showDialog(null, "Choose a Color for the Door", Color.WHITE);
                     
                     int num = Integer.parseInt(JOptionPane.showInputDialog(null, "How many locks?", "4"));
-                    curDoor = new Door(num);
+                    curDoor = new Door(num, col);
                     level.getCube(x, y, z).addObject(curDoor);
                 }else{
                     System.out.println("Finish placing the locks for the last door!");

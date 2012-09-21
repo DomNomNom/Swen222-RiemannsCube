@@ -151,5 +151,4 @@ public class EditorFrame extends JFrame {
 	public static void main(String[] args) {
 		JFrame edFrame = new EditorFrame();
 	}
-//>>>>>>> f6ff72f749313e62046c4d7edb16c4519649d04b
 }
