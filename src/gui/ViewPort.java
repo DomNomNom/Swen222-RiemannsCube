@@ -8,10 +8,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
@@ -20,6 +25,8 @@ import javax.media.opengl.glu.GLU;
 import com.jogamp.newt.event.InputEvent;
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 /**
  * This is the pane that displays all player's view of the game
@@ -61,7 +68,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     private float stepHeight = 0.03f;
 
     static GLU glu = new GLU(); //for glu methods
-    private Robot robot; //a robot that insures the mouse is always in the centre of the screen
+    private Robot robot; //a robot that insres the mouse is always in the centre of the screen
     public static Animator animator; // the animator makes sure the canvas is always being updated
     
     //TODO: move these into a resources class
@@ -95,6 +102,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 
         gl.glEnable(GL.GL_DEPTH_TEST); // enable depth testing
         gl.glEnable(GL.GL_BLEND); // enable transparency
+        gl.glEnable(GL.GL_TEXTURE_2D);
+        //gl.glEnable(GL.GL_TEXTURE_3D);
+        
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA); // set the blending function
 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set the transparency colour
@@ -109,7 +119,16 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
         
-        //TODO: move this into resouces aswell
+        //TODO: move this into resources as well
+        //Load Texture
+        try {
+            InputStream stream = new FileInputStream("resources/gfx/testTexture.png");
+            TextureData data = TextureIO.newTextureData(GLProfile.get(GLProfile.GL2), stream, false, "png"); //??
+            floorTexture = TextureIO.newTexture(data);
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+        }
         
     }
 
@@ -171,8 +190,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         }
         
         gl.glLoadIdentity();
+        
+        floorTexture.bind(gl);
+        
         gl.glRotatef(yRotation, 1.0f, 0.0f, 0.0f);
         gl.glRotatef(zRotation, 0.0f, 1.0f, 0.0f);
+        
         gl.glTranslatef(xPos, yPos, zPos);
         
         //FOR TESTING
@@ -181,14 +204,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         for (int i = -8; i < 1; ++i) {
             for (int j = -6; j < 6; ++j) {
                 gl.glBegin(GL2.GL_QUADS);
-                gl.glColor4f(0.75f, 0.0f, 0.0f, 1.0f);
-                gl.glVertex3f(j, -1.0f, i);
-                gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-                gl.glVertex3f(j, -1.0f, i + 1);
-                gl.glColor4f(0.25f, 0.0f, 0.0f, 1.0f);
-                gl.glVertex3f(j + 1, -1.0f, i + 1);
-                gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-                gl.glVertex3f(j + 1, -1.0f, i);
+                gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(j, -1.0f, i);
+                gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(j, -1.0f, i + 1);
+                gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(j + 1, -1.0f, i + 1);
+                gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(j + 1, -1.0f, i);
                 gl.glEnd();
             }
         }
