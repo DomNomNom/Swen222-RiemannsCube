@@ -55,4 +55,8 @@ public class Door extends GameObject {
     public String getClassName() {
         return "Door";
     }
+    
+    public int id(){
+        return 0; //FIXME
+    }
 }

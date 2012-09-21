@@ -1,65 +1,80 @@
 package client;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
-public class Client extends Thread implements KeyListener {
+import world.events.Action;
+import world.events.ChatMessage;
+import world.events.Event;
+import world.events.PlayerMove;
 
-    private final Socket socket;
-    private DataOutputStream output;
-    private DataInputStream input;
-    private int uid;
+public class Client {
+
+    private Socket socket;
+    private ObjectOutputStream output;
+    private ObjectInputStream input;
+    private int port;
     private int totalSent;
 
-    public Client(Socket socket) {
-        this.socket = socket;
+    public Client(String ip) {
+        this.port = 55554;  //Random port number
+        try {
+            InetAddress ipAddress = InetAddress.getByName(ip);
+            this.socket = new Socket(ipAddress, port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
-    public void run() {
-        try {            
-            output = new DataOutputStream(socket.getOutputStream());
-            input = new DataInputStream(socket.getInputStream());
-            
-            // First job, is to read the period so we can create the clock                
-            uid = input.readInt();                    
-            int width = input.readInt();
-            int height = input.readInt();    
-            int bitwidth = width%8 == 0 ? width : width+8;
-            int bitsize = (bitwidth/8)*height;
-            byte[] wallBytes = new byte[bitsize];
-            input.read(wallBytes);            
-            System.out.println("Game Client UID: " + uid);
-            
-//            game = new Board(width,height);
-//            game.wallsFromByteArray(wallBytes);            
-//            BoardFrame display = new BoardFrame("Pacman (client@" + socket.getInetAddress() + ")",game,uid,this);            
-            
-            boolean exit=false;
-            long totalRec = 0;
-
-            while(!exit) {
-                // read event
-                int amount = input.readInt();
-                byte[] data = new byte[amount];
-                input.readFully(data);
-                
-//                game.fromByteArray(data);                
-//                display.repaint();
-                
-                totalRec += amount;
-                // print out some useful information about the amount of data
-                // sent and received
-                System.out.print("\rREC: " + (totalRec / 1024) + "KB ("
-                        + (rate(amount) / 1024) + "KB/s) TX: " + totalSent
-                        + " Bytes");            
-            }
-            socket.close(); // release socket ... v.important!
-        } catch(IOException e) {
-            System.err.println("I/O Error: " + e.getMessage());
-            e.printStackTrace(System.err);
+    public void push(Event event){
+        try {
+            output = new ObjectOutputStream(socket.getOutputStream());
+            output.writeObject(event);
+            output.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                output.close(); //close the stream.
+            } catch (IOException e) {
+                e.printStackTrace();
+            }            
         }
+    }
+    
+    public Event pull(){
+        Object obj = null;
+        try {
+            input = new ObjectInputStream(socket.getInputStream());
+            obj = input.readObject();
+            //TODO what here !
+            
+            if (obj instanceof Action) {
+                Action act = (Action) obj;
+            }
+            // object is a player move
+            else if (obj instanceof PlayerMove) {
+                PlayerMove move = (PlayerMove) obj;
+            }
+            // object is a chat message
+            else if (obj instanceof ChatMessage) {
+                ChatMessage message = (ChatMessage) obj;
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        if(obj instanceof Event){
+            return (Event)obj;
+        }
+        return null;
     }
 
     /**
@@ -85,22 +100,4 @@ public class Client extends Thread implements KeyListener {
     private int rateTotal = 0; // total accumulated this second
     private int currentRate = 0; // rate of reception last second
     private long rateStart = System.currentTimeMillis(); // start of this accumulation period
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
 }
