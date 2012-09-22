@@ -21,10 +21,14 @@ public class GameFrame extends JFrame{
     private ViewPort view; //the view panel
     private ChatPanel chat; //the chat panel
     
+    private boolean high;
+    
     //CONSTUCTOR
-    /**Constructs a new game frame*/
-    public GameFrame() {
+    /**Constructs a new game frame
+     * @param highGraphics is true if the game should be run at full graphics*/
+    public GameFrame(boolean high) {
         super("Riemann's cube");
+        this.high = high;
     }
     
     //METHODS
@@ -32,11 +36,11 @@ public class GameFrame extends JFrame{
     public void init() {
     	setSize(900, 600);
         chat = new ChatPanel(this);
-        view = new ViewPort(700, 600); 
+        view = new ViewPort(700, 600, high); 
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        //hide the curosor by giving it a blank image
+        //hide the cursor by giving it a blank image
         BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
         getContentPane().setCursor(blankCursor);
