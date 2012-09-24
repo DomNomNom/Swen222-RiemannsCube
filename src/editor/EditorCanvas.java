@@ -12,6 +12,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import utils.Int3;
 import world.*;
 import world.cubes.*;
 import world.objects.*;
@@ -305,7 +306,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
         }else if(key==' '){
             level.setCube(x, y, z, new Space());
         }else if(key=='1'){
-            level.cubes[x][y][z].addObject(new Player(1));
+            level.cubes[x][y][z].addObject(new Player(1, new Int3(x,y,z)));
         }else if(level.getCube(x, y, z).object()==null){
             if(key=='d'){
                 if(curDoor==null || curDoor.allTriggersPlaced()){
