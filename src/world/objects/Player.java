@@ -1,9 +1,15 @@
 package world.objects;
+import java.awt.Color;
+
+import utils.Int3;
+import utils.Float3;
 import world.items.*;
 
 public class Player extends GameObject {
 
+    public final Int3 pos = new Int3();
     
+    public final Float3 relPos = new Float3(); // relative position to the center of the tile (only used by  ) 
     
     private GameItem item;
     public GameItem item() {  return item; }
