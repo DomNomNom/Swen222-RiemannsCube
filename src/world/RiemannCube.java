@@ -1,10 +1,16 @@
 package world;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import utils.Int2;
 import utils.Int3;
 import world.cubes.*;
 import world.events.Action;
+import world.events.PlayerMove;
 import world.objects.GameObject;
+import world.objects.Player;
+import world.objects.Trigger;
 
 public class RiemannCube {
 
@@ -22,6 +28,9 @@ public class RiemannCube {
     public final Cube[][][] cubes;
     public Cube getCube(int x, int y, int z) {    return cubes[x][y][z];  }
     public void setCube(int x, int y, int z, Cube c) {   cubes[x][y][z] = c;  }
+
+    public final Map<Integer, Player > players  = new HashMap<Integer, Player >();
+    public final Map<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
     
     public final int width, height, depth;
 
@@ -50,6 +59,10 @@ public class RiemannCube {
     }
 
     
+    private boolean movePlayer(PlayerMove action) {
+        return true; // TODO
+    }
+    
     /**
      * Tries to apply the given action.
      * This uses isValidAction() for action validation.
@@ -58,8 +71,9 @@ public class RiemannCube {
      * @return Whether it succeeded.
      */
     public boolean applyAction(Action a) {
-        
-        return true;
+        if (a instanceof PlayerMove)
+            return movePlayer((PlayerMove) a);
+        else return false;
     }
     
     public boolean isValidAction(Action a) {
@@ -73,18 +87,30 @@ public class RiemannCube {
     
     /**
      * Gets the cube slice though the cube.
-     * The slice plane is defined by the position it passes though and the normal vector of the plane
+     * The slice plane is defined by the position it passes though and the normal vector of the plane.
      *   
      * @param pos The position it passes
-     * @param normal The normal vector of the plane 
+     * @param normal The normal vector of the plane. It must be non-zero in exactly one dimension 
      * @return The slice
      */
     public Cube[][] getSlice(Int3 pos, Int3 normal) {
+        
+        // enforce the normal-condition
+        int nonZeroCount = 0;
+        if (normal.x != 0) ++nonZeroCount;
+        if (normal.y != 0) ++nonZeroCount;
+        if (normal.y != 0) ++nonZeroCount;
+        if (nonZeroCount != 1) throw new IllegalArgumentException("The normal vector must be non-zero in exactly one dimension");
+        
+        //int TODO 
+        
         Int2 sliceSize = new Int2(0, 0);
         Cube[][] slice = new Cube[sliceSize.x][sliceSize.y];
 
         slice = verticalSlice(0); // FIXME do this properly
 
+        
+        
         return slice;
     }
 
