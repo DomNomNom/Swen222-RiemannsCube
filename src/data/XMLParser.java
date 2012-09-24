@@ -79,7 +79,7 @@ public class XMLParser {
         // ===========================================================
 
         Node root = doc.getDocumentElement();
-        System.out.println(root.getNodeName());
+//        System.out.println(root.getNodeName());
 
         Element dimensions = (Element) root;
         int width = Integer.parseInt(dimensions.getAttribute("width"));
@@ -95,22 +95,14 @@ public class XMLParser {
         NodeList slices = root.getChildNodes();
 
         for (int z = 1; z < slices.getLength(); z += 2) {
-            // System.out.println(slices.item(z).getNodeName());
-
             NodeList floors = slices.item(z).getChildNodes();
-
             h = 0;
+            
             for (int y = 1; y < floors.getLength(); y += 2) {
-                // System.out.println(floors.item(y).getNodeName());
-
                 NodeList cubes = floors.item(y).getChildNodes();
-
                 w = 0;
+
                 for (int x = 1; x < cubes.getLength(); x += 2) {
-                    // System.out.println(cubes.item(x).getNodeName());
-
-                    // System.out.println(w + " " + h + " " + d);
-
                     Element c = (Element) cubes.item(x);
                     int type = Integer.parseInt(c.getAttribute("type"));
 
@@ -124,11 +116,8 @@ public class XMLParser {
                         cube = new Wall();
                     }
 
-                    List<GameObject> objectsInCube = new ArrayList<GameObject>();
-
                     NodeList obs = c.getChildNodes();
                     for (int o = 1; o < obs.getLength(); o += 2) {
-                        System.out.println(obs.item(o).getNodeName());
                         cube.addObject(createInternalObject(obs.item(o),
                                 riemannCube, new Int3(x, y, z)));
                     }
@@ -161,8 +150,8 @@ public class XMLParser {
             Element e = (Element) n;
             int id = Integer.parseInt(e.getAttribute("id"));
             
-//            ret = new Player(id, cubePos);
-            
+            ret = new Player(id, cubePos);
+
         } else if (n.getNodeName().equals("key")) {
             // Get the color for the Key
             Element e = (Element) n;
@@ -170,8 +159,7 @@ public class XMLParser {
             Color newCol = Color.decode(col);
 
             ret = new Key(newCol);
-            System.out.println("Created: " + ret.getClassName() + ", Color: "
-                    + newCol.toString());
+
         } else if (n.getNodeName().equals("lock")) {
             // Get the color for the lock
             Element e = (Element) n;
@@ -182,8 +170,7 @@ public class XMLParser {
             int id = Integer.parseInt(e.getAttribute("id"));
 
             ret = new Lock(id, newCol);
-            System.out.println("Created: " + ret.getClassName() + ", Color: "
-                    + newCol.toString() + ", ID: " + id);
+
         } else if (n.getNodeName().equals("door")) {
             // Get the color for the door
             Element e = (Element) n;
@@ -202,17 +189,8 @@ public class XMLParser {
 
             ret = new Door(triggerIDs, riemannCube.triggers, newCol);
 
-            // Testing
-            System.out.print("Created: " + ret.getClassName() + ", Color: "
-                    + newCol.toString() + "IDs: ");
-
-            for (Integer id : triggerIDs) {
-                System.out.print(id);
-            }
-            System.out.println();
         } else if (n.getNodeName().equals("lightsource")) {
             ret = new LightSource();
-            System.out.println("Created: " + ret.getClassName());
         }
 
         return ret;
