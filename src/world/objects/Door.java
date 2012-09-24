@@ -10,7 +10,7 @@ public class Door extends GameObject {
     private Set<Integer> triggerIDs;
     private Map<Integer, Trigger> triggersMap;
 
-    private int index = 0;
+    private int index = 0, numLocks;
     private Color color;
 
     public Door(Set<Integer> triggerIDs, Map<Integer, Trigger> triggers,
@@ -20,13 +20,9 @@ public class Door extends GameObject {
         this.color = col;
     }
 
-    public Door(int numLocks) {
-        triggerIDs = new HashSet<Integer>();
-        this.color = Color.BLUE;
-    }
-
     public Door(int numLocks, Color color) {
-        triggerIDs = new HashSet<Integer>();
+        triggerIDs = new HashSet<Integer>(numLocks);
+        this.numLocks = numLocks;
         this.color = color;
     }
 
@@ -44,7 +40,7 @@ public class Door extends GameObject {
     }
 
     public boolean allTriggersPlaced() {
-        return index == triggerIDs.size();
+        return numLocks == triggerIDs.size();
     }
 
     public Color color() {

@@ -1,6 +1,8 @@
 package data;
 
+import java.awt.Color;
 import java.io.File;
+import java.util.Collections;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -11,6 +13,7 @@ import world.objects.Trigger;
 import world.RiemannCube;
 import world.cubes.Cube;
 import world.items.GameItem;
+import world.items.Key;
 import world.objects.GameObject;
 
 import javax.swing.JFileChooser;
@@ -24,14 +27,14 @@ import javax.xml.transform.stream.StreamResult;
 /**
 
  * Saves a 3D map state to XML. Form of:
- *<map> - width, height, depth 
+ *<map> - depth, height, width
  * <slice> - z
  * 	<floor> - y
  *   <cube> - x, type
- *    <object>type, id</>
- *    <player> - number
- *     <item>type, id</>
- *     <lightsource>type</>
+ *    <player> - id
+ *     <item> -type, id</>
+ *     <lightsource> - type</>
+ *    <object> - type, id</>
  *    </>
  *   </>
  *  </>
@@ -66,10 +69,10 @@ public class LevelPipeline {
             StreamResult result = new StreamResult(new File(fname + ".xml"));
 
             // root elements
-            Element rootElement = doc.createElement("riemann cube");
-            rootElement.setAttribute("width", String.valueOf(width));
-            rootElement.setAttribute("height", String.valueOf(height));
+            Element rootElement = doc.createElement("riemann");
             rootElement.setAttribute("depth", String.valueOf(depth));
+            rootElement.setAttribute("height", String.valueOf(height));
+            rootElement.setAttribute("width", String.valueOf(width));
             doc.appendChild(rootElement);
 
             // Iterate over each orthogonal 'slice' of the cube
@@ -92,32 +95,43 @@ public class LevelPipeline {
                         cube.setAttribute("type",
                                 String.valueOf(curCube.type()));
 
+                        //Save object on square, if exists.
                         GameObject obj = curCube.object();
                         if (obj != null) {
                             Element gameObj = getObjectElement(obj, doc);
+                            cube.appendChild(gameObj);
                         }
 
+                        //Create the player
                         Player curPlayer = curCube.player();
                         Element player = doc.createElement("player");
                         if (curPlayer != null) {
-                            player.setAttribute("num",
+                            player.setAttribute("id",
                                     String.valueOf(curPlayer.id()));
 
+                            //add non-lightsource items
                             GameItem curItem = curPlayer.item();
                             Element item = doc.createElement("item");
                             if (curItem != null) {
                                 item.setAttribute("type", item.getClass()
                                         .getName());
-                            } else
-                                item.setAttribute("type", "null");
 
-                            player.appendChild(item);
-                        } else {
-                            player.setAttribute("num", "-1");
+                                player.appendChild(item);
+                            }
+                            
+                            //add lightsource
+                            GameItem curLight = curPlayer.torch();
+                            Element light = doc.createElement("lightsource");
+                            if (curLight != null) {
+                                light.setAttribute("type", item.getClass()
+                                        .getName());
+
+                                player.appendChild(light);
+                            }
+
+                            cube.appendChild(player);
                         }
-
-                        cube.appendChild(player);
-
+                            
                         row.appendChild(cube);
                         slice.appendChild(row);
                         rootElement.appendChild(slice);
@@ -154,13 +168,29 @@ public class LevelPipeline {
         if(obj instanceof Door){
             Door door = (Door) obj;
             element = doc.createElement("door");
-            element.setAttribute("id", String.valueOf(door.id()));
+            String triggerIDs = "";
+            for(Integer i : door.triggers())
+                triggerIDs+=i.toString()+" ";
+            element.setAttribute("triggerIDs", triggerIDs);
+            element.setAttribute("color", hexCode(door.color()));
         }else if(obj instanceof Trigger){
             element = doc.createElement(obj.getClassName().toLowerCase());
             element.setAttribute("id", String.valueOf(((Trigger)obj).getID()));
+            element.setAttribute("color", hexCode(((Trigger) obj).color()));
+        }else if(obj instanceof Key){
+            element = doc.createElement(obj.getClassName());
+            element.setAttribute("color", hexCode(((Key) obj).color()));
         }else{
             element = doc.createElement(obj.getClassName());
         }
+        
         return element;
+    }
+    
+    private String hexCode(Color c){
+      String s = Integer.toHexString( c.getRGB() & 0xffffff );
+      if(s.length() < 6)
+          s = "000000".substring(0, 6 - s.length()) + s;
+      return '#' + s;
     }
 }
