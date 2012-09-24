@@ -1,30 +1,13 @@
 package gui;
 
-
-
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Robot;
-import java.awt.Transparency;
-import java.awt.color.ColorSpace;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -35,12 +18,17 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
+import utils.Float2;
+import utils.Float3;
+import utils.Int2;
+import utils.Int3;
 import world.RiemannCube;
+import world.cubes.Cube;
+import world.cubes.Floor;
+import world.cubes.Glass;
+import world.cubes.Wall;
 
 import com.jogamp.opengl.util.Animator;
-import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureData;
-import com.jogamp.opengl.util.texture.TextureIO;
 
 /**
  * This is the pane that displays all player's view of the game
@@ -58,31 +46,22 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     private static final long serialVersionUID = 1L;
     
     private GLCapabilities caps; //the capabilities
+    private GameFrame frame;
     private boolean high; //is true if the game is running in high graphics
+    private boolean free; //is true when free camera is enabled
     
     private RiemannCube level; //the level
     private Resources resources; //the resources
     
-    private int width; // the width of the window
-    private int height; // the height of the window
+    private Int2 windowDim; //the window dimension
     
+    private Float2 mouse = new Float2(0f, 0f); //the current mouse x position
+    private Int2 mouseCentre = new Int2(450, 300); //the mouse x centre
     private int keyDown = 0; //an integer representing the current key being pressed
-    //TODO:Change these to a vector
-    private double mouseX = 0; //the current mouse x position
-    private double mouseY = 0; //the current mouse y position
-    private int mouseXCentre = 450; //the mouse x centre
-    private int mouseYCentre = 300; //the mouse y centre
     
-    private float xPos = 0.0f; //the x position of the camera
-    private float yPos = 0.0f; //the y position of the camera
-    private float zPos = 0.5f; //the z position of the camera
+    private Float3 pos = new Float3(0.0f, 0.0f, 0.0f); //the position of the camera
     
-    private float lastX = 0.0f; //the x position from the previous frame
-    private float lastY = 0.0f; //the y position from the previous frame
-    private float lastZ = 0.0f; //the z position from the previous frame
-    
-    private float yRotation = 0.0f; //the y rotation of the camera
-    private float zRotation = 0.0f; //the z rotation of the camera
+    private Float2 rotation = new Float2(0.0f, 0.0f); //the x rotation of the camera
     
     private float moveSpeed = 0.04f; //the move speed of the camera
     private float turnSpeed = 4.0f; //the turn speed of the camera
@@ -94,26 +73,32 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     static GLU glu = new GLU(); //for glu methods
     private Robot robot; //a robot that insures the mouse is always in the centre of the screen
     public static Animator animator; // the animator makes sure the canvas is always being updated
+    
+    public List<Int3> glassRender; //a list that hold all the glass to render
 
     // CONSTRUCTOR
     /** Creates a new view port
+     * @param frame the window this is enclosed in
      * @param width the width of the view port
      * @param height the height of the view port
-     * @param chat a reference to the chat panel
+     * @param high true to enable high graphics
+     * @param free true to enable free camera mode
+     * @param level the current level
      */
-    public ViewPort(int width, int height, boolean high, RiemannCube level) {
+    public ViewPort(GameFrame frame, int width, int height, boolean high, boolean free, RiemannCube level) {
         addGLEventListener(this);
-        this.width = width;
-        this.height = height;
+        this.frame = frame;
+        windowDim = new Int2(width, height);
         this.high = high;
+        this.free = free;
         this.level = level;
-        mouseX = MouseInfo.getPointerInfo().getLocation().getX();
-        mouseY = MouseInfo.getPointerInfo().getLocation().getY();
+        mouse = new Float2((float) MouseInfo.getPointerInfo().getLocation().getX(),
+        				   (float) MouseInfo.getPointerInfo().getLocation().getY());
         addKeyListener(this);
         try {
         	robot = new Robot(); //make a new robot
         } catch (Exception e) {}
-        robot.mouseMove(mouseXCentre, mouseYCentre); //move the mouse to the centre of the window
+        robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
     }
 
     // METHODS
@@ -126,9 +111,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 
         gl.glEnable(GL.GL_DEPTH_TEST); // enable depth testing
         gl.glEnable(GL.GL_BLEND); // enable transparency
-        
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA); // set the blending function
         gl.glShadeModel(GL2.GL_SMOOTH);
+        gl.glEnable(GL.GL_CULL_FACE);
+        gl.glCullFace(GL.GL_BACK);
         
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
@@ -140,7 +126,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
 
-        glu.gluPerspective(45.0f, width/height, 0.001f, 200.0f);
+        glu.gluPerspective(45.0f, windowDim.x/windowDim.y, 0.001f, 200.0f);
 
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
@@ -155,80 +141,116 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     public void display(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         
+        if (keyDown == 27) frame.exit(); //quit the game
+        
         //Process movement
-        boolean move = false; //is true when the player is moving
-        switch (keyDown) {
-        	case 27: //exit the game
-        		System.exit(0);
-        		break;
-	        case 38: //move forward
-	        	zPos += moveSpeed*Math.cos(zRotation*(Math.PI/180.0));
-	        	xPos -= moveSpeed*Math.sin(zRotation*(Math.PI/180.0));
-	        	move = true;
-	        	break;
-	        case 40: //move backwards
-	        	zPos -= moveSpeed*Math.cos(zRotation*(Math.PI/180.0));
-	        	xPos += moveSpeed*Math.sin(zRotation*(Math.PI/180.0));
-	        	move = true;
-	        	break;
-	        case 37: //move left
-	        	xPos += moveSpeed*Math.cos(zRotation*(Math.PI/180.0));
-	        	zPos += moveSpeed*Math.sin(zRotation*(Math.PI/180.0));
-	        	move = true;
-	        	break;
-	        case 39: //move right
-	        	xPos -= moveSpeed*Math.cos(zRotation*(Math.PI/180.0));
-	        	zPos -= moveSpeed*Math.sin(zRotation*(Math.PI/180.0));
-	        	move = true;
-        }
+        processMovement();
         
         //Process turning
-        mouseX = MouseInfo.getPointerInfo().getLocation().getX();
-        mouseY = MouseInfo.getPointerInfo().getLocation().getY();
+        mouse = new Float2((float) MouseInfo.getPointerInfo().getLocation().getX(),
+				   (float) MouseInfo.getPointerInfo().getLocation().getY());
         
-        if (mouseX != mouseXCentre) { //turn right or left
-        	zRotation += (float) ((mouseX-mouseXCentre)/turnSpeed);
+        if (mouse.x != mouseCentre.x) { //turn right or left
+        	rotation.y += (float) ((mouse.x-mouseCentre.x)/turnSpeed);
         }
-        if (mouseY != mouseYCentre && yRotation > -90  && yRotation < 90) { //turn up or down
-        	yRotation += (float) (((mouseY-mouseYCentre)/turnSpeed));
+        if (mouse.y != mouseCentre.y && rotation.x > -90  && rotation.x < 90) { //turn up or down
+        	rotation.x += (float) (((mouse.y-mouseCentre.y)/turnSpeed));
         	//bounce back a little when looking straight up or down
-        	if (yRotation <= -90) yRotation = -87;
-        	else if (yRotation >= 90) yRotation = 87;
+        	if (rotation.x <= -90) rotation.x = -87;
+        	else if (rotation.x >= 90) rotation.x = 87;
         }
         
-        robot.mouseMove(mouseXCentre, 300); //move the mouse to the centre of the window
+        robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
         
+        //START DRAWING
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); //clear the screen
+        
+        gl.glLoadIdentity(); //load the identity matrix
+        
+        gl.glRotatef(rotation.x, 1.0f, 0.0f, 0.0f); //apply the x rotation
+        gl.glRotatef(rotation.y, 0.0f, 1.0f, 0.0f); //apply the y rotation
+        
+        gl.glTranslatef(pos.x-5f, pos.y-3f, pos.z-9f); //apply the translations
+        
+        drawSpaceBox(gl); //draw the space box
+        
+        glassRender = new ArrayList<Int3>(); //create the glass render list
+        
+        //TODO: make this more efficient so that is doesn't always draw the entire cube
+        //iterate through the level and draw all the tiles
+        for (int x = 0; x < level.width; ++x) {
+        	for (int y = 0; y < level.height; ++y) {
+        		for (int z = 0; z < level.depth; ++z) {
+        			Cube c = level.getCube(z, x, y); //gets the cube from the level
+        			if (c instanceof Floor) drawFloor(gl, x*2, y*2, z*2); //draw a floor cube
+        			else if (c instanceof Wall) drawWall(gl, x*2, y*2, z*2); //draw a wall cube
+        			else if (c instanceof Glass) glassRender.add(new Int3(x*2, y*2, z*2));
+        		}
+        	}
+        }
+        
+        //draw the glass last
+        for (Int3 i: glassRender) {
+        	drawGlass(gl, i.x, i.y, i.z);
+        }
+    }
+
+    /**Process the movement*/
+    private void processMovement() {
+		boolean move = false; //is true when the player is moving
+		switch (keyDown) {
+			case 87: //move forward
+			   	if (!free) {
+			       	pos.x -= moveSpeed*Math.sin(rotation.y*(Math.PI/180.0));
+			       	pos.z += moveSpeed*Math.cos(rotation.y*(Math.PI/180.0));
+			   	}
+			   	if (free) {
+			   		pos.y += moveSpeed*Math.sin(rotation.x*(Math.PI/180.0));
+			   		pos.x -= moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.sin(rotation.y*(Math.PI/180.0));
+			   		pos.z += moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.cos(rotation.y*(Math.PI/180.0));
+			   	}
+			   	move = true;
+			   	break;
+			case 83: //move backwards
+				if (!free) {
+				   	pos.x += moveSpeed*Math.sin(rotation.y*(Math.PI/180.0));
+				   	pos.z -= moveSpeed*Math.cos(rotation.y*(Math.PI/180.0));
+				}
+				if (free) {
+					pos.y -= moveSpeed*Math.sin(rotation.x*(Math.PI/180.0));
+					pos.x += moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.sin(rotation.y*(Math.PI/180.0));
+					pos.z -= moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.cos(rotation.y*(Math.PI/180.0));
+				}
+				move = true;
+				break;
+			case 65: //move left
+			   	pos.x += moveSpeed*Math.cos(rotation.y*(Math.PI/180.0));
+			   	pos.z += moveSpeed*Math.sin(rotation.y*(Math.PI/180.0));
+			   	move = true;
+			   	break;
+		   	case 68: //move right
+			   	pos.x -= moveSpeed*Math.cos(rotation.y*(Math.PI/180.0));
+			   	pos.z -= moveSpeed*Math.sin(rotation.y*(Math.PI/180.0));
+			   	move = true;
+		}
+		
         //Create the stepping motion
-        if (move) {
-	        if (stepCycle < Math.PI) stepCycle += 0.14f;
-	        else stepCycle = 0.0f;
-	        
-	        yPos = (float) (stepHeight*Math.cos(stepCycle+(Math.PI/2)));
+        if (!free) {
+	        if (move) {
+		        if (stepCycle < Math.PI) stepCycle += 0.14f;
+		        else stepCycle = 0.0f;
+		        
+		        pos.y = (float) (stepHeight*Math.cos(stepCycle+(Math.PI/2)));
+	        }
         }
-        
-        //calculate movement changes here
-        float dx = xPos-lastX;
-        float dy = yPos-lastY;
-        float dz = zPos-lastZ;
-        
-        //save the last positions
-        lastX = xPos;
-        lastY = yPos;
-        lastZ = zPos;
-        
-        //START DRAWING HERE
-        
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        
-        gl.glLoadIdentity();
-        
-        gl.glRotatef(yRotation, 1.0f, 0.0f, 0.0f);
-        gl.glRotatef(zRotation, 0.0f, 1.0f, 0.0f);
-        
-        gl.glTranslatef(xPos, yPos, zPos);
+    }
     
-        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[3]); //bind the sky image
-        
+    /**Process the rotation*/
+    
+	/**Draws the space box
+	 * @gl*/
+    private void drawSpaceBox(GL2 gl) {
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[3]); //bind the space texture
         gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, -100.0f);
         gl.glTexCoord2f(0.0f, 7.0f); gl.glVertex3f(-100.0f, 100.0f, -100.0f);
@@ -237,9 +259,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(100.0f, 100.0f, -100.0f);
+        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(100.0f, -100.0f, 100.0f);
         gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f(100.0f, 100.0f, 100.0f);
-        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(100.0f, -100.0f, 100.0f);
+        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(100.0f, 100.0f, -100.0f);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, -100.0f);
@@ -249,15 +271,15 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, 100.0f);
-        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(100.0f, -100.0f, 100.0f);
+        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(-100.0f, 100.0f, 100.0f);
         gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f(100.0f, 100.0f, 100.0f);
-        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(-100.0f, 100.0f, 100.0f);
+        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(100.0f, -100.0f, 100.0f);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(100.0f, -100.0f, -100.0f);
+        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(-100.0f, -100.0f, 100.0f);
         gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f(100.0f, -100.0f, 100.0f);
-        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, 100.0f);
+        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(100.0f, -100.0f, -100.0f);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, 100.0f, -100.0f);
@@ -265,159 +287,125 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f(100.0f, 100.0f, 100.0f);
         gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(-100.0f, 100.0f, 100.0f);
         gl.glEnd();
-        
-        // floor tiles
-        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile image
-        
-        for (int i = -8; i < 1; ++i) {
-            for (int j = -6; j < 6; ++j) {
-                gl.glBegin(GL2.GL_QUADS);
-                gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(j, -1.0f, i);
-                gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(j, -1.0f, i + 1);
-                gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(j + 1, -1.0f, i + 1);
-                gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(j + 1, -1.0f, i);
-                gl.glEnd();
-            }
-        }
-        // roof tiles
-        for (int i = -8; i < 1; ++i) {
-            for (int j = -6; j < 6; ++j) {
-                gl.glBegin(GL2.GL_QUADS);
-                gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(j, 1.0f, i);
-                gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(j, 1.0f, i + 1);
-                gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(j + 1, 1.0f, i + 1);
-                gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(j + 1, 1.0f, i);
-                gl.glEnd();
-            }
-        }
-        
-        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[1]); //bind the wall tile image
-        // side wall tiles
-        for (int i = -8; i < 1; ++i) {
-            gl.glBegin(GL2.GL_QUADS);
-            if (i != -4 && i != -3) {
-	            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-6, 0.0f, i);
-	            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-6, -1.0f, i);
-	            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-6, -1.0f, i + 1);
-	            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-6, 0.0f, i + 1);
-	            gl.glEnd();
-	            gl.glBegin(GL2.GL_QUADS);
-	            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-6, 1.0f, i);
-	            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-6, 0.0f, i);
-	            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-6, 0.0f, i + 1);
-	            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-6, 1.0f, i + 1);
-	            gl.glEnd();
-            }
-            gl.glBegin(GL2.GL_QUADS);
-            gl.glTexCoord2f(0.0f, 0.0f); gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(6, 0.0f, i);
-            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(6, -1.0f, i);
-            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(6, -1.0f, i + 1);
-            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(6, 0.0f, i + 1);
-            gl.glEnd();
-            gl.glBegin(GL2.GL_QUADS);
-            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(6, 1.0f, i);
-            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(6, 0.0f, i);
-            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(6, 0.0f, i + 1);
-            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(6, 1.0f, i + 1);
-            gl.glEnd();
-        }
-        // front and back wall tiles
-        for (int i = -6; i < 6; ++i) {
-            gl.glBegin(GL2.GL_QUADS);
-            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(i, 0.0f, -8);
-            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(i, -1.0f, -8);
-            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(i + 1, -1.0f, -8);
-            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(i + 1, 0.0f, -8);
-            gl.glEnd();
-            gl.glBegin(GL2.GL_QUADS);
-            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(i, 1.0f, -8);
-            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(i, 0.0f, -8);
-            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(i + 1, 0.0f, -8);
-            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(i + 1, 1.0f, -8);
-            gl.glEnd();
-            gl.glBegin(GL2.GL_QUADS);
-            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(i, 0.0f, 1);
-            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(i, -1.0f, 1);
-            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(i + 1, -1.0f, 1);
-            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(i + 1, 0.0f, 1);
-            gl.glEnd();
-            gl.glBegin(GL2.GL_QUADS);
-            gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(i, 1.0f, 1);
-            gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(i, 0.0f, 1);
-            gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(i + 1, 0.0f, 1);
-            gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(i + 1, 1.0f, 1);
-            gl.glEnd();
-        }
-        // create middle wall
-        for (int i = -6; i < 6; ++i) {
-            if (i != -1 && i != 0) {
-                gl.glBegin(GL2.GL_QUADS);
-                gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(i, 0.0f, -6);
-                gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(i, -1.0f, -6);
-                gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(i + 1, -1.0f, -6);
-                gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(i + 1, 0.0f, -6);
-                gl.glEnd();
-                gl.glBegin(GL2.GL_QUADS);
-                gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(i, 1.0f, -6);
-                gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(i, 0.0f, -6);
-                gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(i + 1, 0.0f, -6);
-                gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(i + 1, 1.0f, -6);
-                gl.glEnd();
-            }
-        }
-        
-        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass tile image
-        // now create glass
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1, 0.0f, -6);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-1, -1.0f, -6);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(0, -1.0f, -6);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(0, 0.0f, -6);
+    }
+    
+    /**Draws a floor cube
+     * @param gl
+     * @param x the x position
+     * @param y the y position
+     * @param z the z position*/
+    private void drawFloor(GL2 gl, int x, int y, int z) {
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y, z+2);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y, z);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1, 1.0f, -6);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-1, 0.0f, -6);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(0, 0.0f, -6);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(0, 1.0f, -6);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(0, 0.0f, -6);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(0, -1.0f, -6);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(1, -1.0f, -6);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(1, 0.0f, -6);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(0, 1.0f, -6);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(0, 0.0f, -6);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(1, 0.0f, -6);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(1, 1.0f, -6);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-6, 0.0f, -3);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-6, -1.0f, -3);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-6, -1.0f, -2);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-6, 0.0f, -2);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-6, 1.0f, -3);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-6, 0.0f, -3);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-6, 0.0f, -2);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-6, 1.0f, -2);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-6, 0.0f, -4);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-6, -1.0f, -4);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-6, -1.0f, -3);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-6, 0.0f, -3);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-6, 1.0f, -4);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-6, 0.0f, -4);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-6, 0.0f, -3);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-6, 1.0f, -3);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y+2, z);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2,   y+2, z);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y+2, z+2);
         gl.glEnd();
     }
-
+    
+    /**Draw a wall cube
+     * @param gl
+     * @param x the x position
+     * @param y the y position
+     * @param z the z position
+     */
+    private void drawWall(GL2 gl, int x, int y, int z) {
+		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[1]); //bind the wall tile texture
+		//draw front part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y+2,   z);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y, z);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x, y, z+2);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y+2,   z+2);
+		gl.glEnd();
+		//draw back part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x+2, y+2, z+2);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y+2,   z);
+		gl.glEnd();
+		//draw left part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y,   z);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y, z);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y+2, z);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2,   z);
+		gl.glEnd();
+		//draw right part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y+2,   z+2);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y, z+2);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y, z+2);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2,   z+2);
+		gl.glEnd();
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2,   y, z);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y, z+2);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y+2, z);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y+2, z+2);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y+2, z);
+        gl.glEnd();
+    }
+    
+    /**Draw a glass cube*/
+    private void drawGlass(GL2 gl, int x, int y, int z) {
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass tile texture
+		//draw front part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y+2,   z);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y, z);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x, y, z+2);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y+2,   z+2);
+		gl.glEnd();
+		//draw back part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x+2, y+2, z+2);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y+2,   z);
+		gl.glEnd();
+		//draw left part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y,   z);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y, z);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y+2, z);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2,   z);
+		gl.glEnd();
+		//draw right part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y+2,   z+2);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y, z+2);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y, z+2);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2,   z+2);
+		gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2,   y, z);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y, z+2);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y+2, z);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y+2, z+2);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y+2, z);
+        gl.glEnd();
+    }
+    
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keyDown = e.getKeyCode();

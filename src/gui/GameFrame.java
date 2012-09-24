@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -16,7 +17,7 @@ import com.jogamp.opengl.util.Animator;
  * 
  * @author David Saxon 300199370
  */
-public class GameFrame extends JFrame{
+public class GameFrame extends JFrame {
     
     //FIELDS
     private static final long serialVersionUID = 1L;
@@ -26,14 +27,16 @@ public class GameFrame extends JFrame{
     
     private RiemannCube level;
     
-    private boolean high;
+    private boolean high; //is true when high graphics is enable
+    private boolean free; //is true when free cam is enabled
     
     //CONSTUCTOR
     /**Constructs a new game frame
-     * @param highGraphics is true if the game should be run at full graphics*/
-    public GameFrame(boolean high, RiemannCube level) {
+     * @param high Graphics is true if the game should be run at full graphics*/
+    public GameFrame(boolean high, boolean free, RiemannCube level) {
         super("Riemann's cube");
         this.high = high;
+        this.free = free;
         this.level = level;
     }
     
@@ -42,7 +45,7 @@ public class GameFrame extends JFrame{
     public void init() {
     	setSize(900, 600);
         chat = new ChatPanel(this);
-        view = new ViewPort(700, 600, high, level); 
+        view = new ViewPort(this, 700, 600, high, free, level); 
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -65,6 +68,7 @@ public class GameFrame extends JFrame{
     
     /**Quits the game*/
     public void exit() {
-    	System.exit(0);
+    	WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
     }
 }
