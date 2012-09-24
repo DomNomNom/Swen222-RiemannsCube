@@ -15,6 +15,7 @@ public class Float3 {
         y = Y;
         z = Z;
     }
+    public void set(Float3 copyFrom) {    set(copyFrom.x, copyFrom.y, copyFrom.z);  }
 
     public void add(Float3 o)            { x+=o.x; y+=o.y; z+=o.z; }
     public void add(int X, int Y, int Z) { x+=  X; y+=  Y; z+=  Z; }
