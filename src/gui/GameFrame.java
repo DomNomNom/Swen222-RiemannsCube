@@ -7,6 +7,9 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+
+import world.RiemannCube;
+
 import com.jogamp.opengl.util.Animator;
 
 /**Game Frame is the overall window of the game
@@ -21,14 +24,17 @@ public class GameFrame extends JFrame{
     private ViewPort view; //the view panel
     private ChatPanel chat; //the chat panel
     
+    private RiemannCube level;
+    
     private boolean high;
     
     //CONSTUCTOR
     /**Constructs a new game frame
      * @param highGraphics is true if the game should be run at full graphics*/
-    public GameFrame(boolean high) {
+    public GameFrame(boolean high, RiemannCube level) {
         super("Riemann's cube");
         this.high = high;
+        this.level = level;
     }
     
     //METHODS
@@ -36,7 +42,7 @@ public class GameFrame extends JFrame{
     public void init() {
     	setSize(900, 600);
         chat = new ChatPanel(this);
-        view = new ViewPort(700, 600, high); 
+        view = new ViewPort(700, 600, high, level); 
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         

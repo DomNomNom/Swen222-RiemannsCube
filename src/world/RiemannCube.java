@@ -12,6 +12,13 @@ import world.objects.GameObject;
 import world.objects.Player;
 import world.objects.Trigger;
 
+
+/**
+ * The RiemannCube holds all world state
+ * 
+ * @author schmiddomi
+ *
+ */
 public class RiemannCube {
 
     /**
@@ -83,36 +90,9 @@ public class RiemannCube {
     
     
     
-    // ====== Slicing ======
+    // ====== Slicing (used in editor) ======
     
-    /**
-     * Gets the cube slice though the cube.
-     * The slice plane is defined by the position it passes though and the normal vector of the plane.
-     *   
-     * @param pos The position it passes
-     * @param normal The normal vector of the plane. It must be non-zero in exactly one dimension 
-     * @return The slice
-     */
-    public Cube[][] getSlice(Int3 pos, Int3 normal) {
-        
-        // enforce the normal-condition
-        int nonZeroCount = 0;
-        if (normal.x != 0) ++nonZeroCount;
-        if (normal.y != 0) ++nonZeroCount;
-        if (normal.y != 0) ++nonZeroCount;
-        if (nonZeroCount != 1) throw new IllegalArgumentException("The normal vector must be non-zero in exactly one dimension");
-        
-        //int TODO 
-        
-        Int2 sliceSize = new Int2(0, 0);
-        Cube[][] slice = new Cube[sliceSize.x][sliceSize.y];
-
-        slice = verticalSlice(0); // FIXME do this properly
-
-        
-        
-        return slice;
-    }
+    
 
     public Cube[][] verticalSlice(int x) {
         return cubes[x];

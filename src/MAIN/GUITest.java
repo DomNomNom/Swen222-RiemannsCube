@@ -1,5 +1,7 @@
 package MAIN;
 
+import world.RiemannCube;
+import world.cubes.Wall;
 import gui.GameFrame;
 
 /**A testing class that runs the GUI
@@ -9,7 +11,20 @@ import gui.GameFrame;
 public class GUITest {
     
     public static void main(String[] args) {
-    	GameFrame window = new GameFrame(true);
+    	//create a level for testing the game
+    	RiemannCube testLevel = new RiemannCube(6, 6, 6);
+    	for (int x = 0; x < 6; ++x) {
+    		for (int y = 0; y < 6; ++y) {
+    			for (int z = 0; z < 6; ++z) {
+    				if (x == 0) testLevel.setCube(x, y, z, new Wall());
+    				else if (x == 5) testLevel.setCube(x, y, z, new Wall());
+    				else if (y == 0) testLevel.setCube(x, y, z, new Wall());
+    				else if (y == 5) testLevel.setCube(x, y, z, new Wall());
+    			}
+    		}
+    	}
+    
+    	GameFrame window = new GameFrame(true, testLevel);
         window.init();
         window.execute();
     }
