@@ -54,7 +54,7 @@
 
                 <lock
                     id="4"
-                    color="Red" />
+                    color="#FF0000" />
             </cube>
         </floor>
 
@@ -104,7 +104,7 @@
 
                 <lock
                     id="3"
-                    color="Red" />
+                    color="#FF0000" />
             </cube>
         </floor>
     </slice>
@@ -329,6 +329,8 @@
             <cube
                 type="1"
                 x="0" >
+
+                <lightsource />
             </cube>
 
             <cube
@@ -355,7 +357,7 @@
 
                 <door
                     triggerIDs="1 2 3 4"
-                    color="Red" />
+                    color="#FF0000" />
             </cube>
 
             <cube
@@ -366,6 +368,8 @@
             <cube
                 type="1"
                 x="2" >
+
+                <player id="1" />
             </cube>
 
             <cube
@@ -374,7 +378,7 @@
 
                 <lock
                     id="2"
-                    color="Red" />
+                    color="#FF0000" />
             </cube>
         </floor>
 
@@ -386,7 +390,7 @@
 
                 <lock
                     id="1"
-                    color="Red" />
+                    color="#FF0000" />
             </cube>
 
             <cube

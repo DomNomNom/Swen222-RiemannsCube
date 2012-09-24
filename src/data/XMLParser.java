@@ -21,14 +21,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import utils.Int3;
 import world.RiemannCube;
 import world.cubes.Cube;
 import world.cubes.Floor;
 import world.cubes.Space;
 import world.cubes.Wall;
 import world.items.Key;
+import world.items.LightSource;
+import world.objects.Door;
 import world.objects.GameObject;
 import world.objects.Lock;
+import world.objects.Player;
 
 /**
  * Class to parse an XMLFile into a 3D Array which can be loaded by the game.
@@ -125,6 +129,8 @@ public class XMLParser {
                     NodeList obs = c.getChildNodes();
                     for (int o = 1; o < obs.getLength(); o += 2) {
                         System.out.println(obs.item(o).getNodeName());
+                        cube.addObject(createInternalObject(obs.item(o),
+                                riemannCube, new Int3(x, y, z)));
                     }
 
                     riemannCube.setCube(w, h, d, cube);
@@ -141,51 +147,74 @@ public class XMLParser {
 
     /**
      * Takes a node and creates and returns a GameObject represented by it.
-     * There is potentially a lot of 
+     * There is potentially a lot of
      * 
      * @param n
      * @return GameObject
      */
-    private GameObject createInternalObject(Node n){
+    private static GameObject createInternalObject(Node n,
+            RiemannCube riemannCube, Int3 cubePos) {
         GameObject ret = null;
-        
-        if(n.getNodeName().equals("key")){
-            //Get the color for the Key
-            Element e = (Element)n;
-            String col = e.getAttribute("color");
-            Color newCol = Color.decode(col);
-            
-            ret = new Key(newCol);
-        } else if(n.getNodeName().equals("lock")){
-            //Get the color for the lock
-            Element e = (Element)n;
-            String col = e.getAttribute("color");
-            Color newCol = Color.decode(col);
-            
-            //Get the ID for the Lock
+
+        if (n.getNodeName().equals("player")) {
+            //Get the ID for the player
+            Element e = (Element) n;
             int id = Integer.parseInt(e.getAttribute("id"));
             
-            ret = new Lock(id, newCol);
-        } else if(n.getNodeName().equals("Door")){
-            //Get the color for the door
-            Element e = (Element)n;
+//            ret = new Player(id, cubePos);
+            
+        } else if (n.getNodeName().equals("key")) {
+            // Get the color for the Key
+            Element e = (Element) n;
             String col = e.getAttribute("color");
             Color newCol = Color.decode(col);
-            
-            //Get the set of IDs for the triggers of this door
+
+            ret = new Key(newCol);
+            System.out.println("Created: " + ret.getClassName() + ", Color: "
+                    + newCol.toString());
+        } else if (n.getNodeName().equals("lock")) {
+            // Get the color for the lock
+            Element e = (Element) n;
+            String col = e.getAttribute("color");
+            Color newCol = Color.decode(col);
+
+            // Get the ID for the Lock
+            int id = Integer.parseInt(e.getAttribute("id"));
+
+            ret = new Lock(id, newCol);
+            System.out.println("Created: " + ret.getClassName() + ", Color: "
+                    + newCol.toString() + ", ID: " + id);
+        } else if (n.getNodeName().equals("door")) {
+            // Get the color for the door
+            Element e = (Element) n;
+            String col = e.getAttribute("color");
+            Color newCol = Color.decode(col);
+
+            // Get the set of IDs for the triggers of this door
             String ids = e.getAttribute("triggerIDs");
             Scanner scan = new Scanner(ids);
-            
+
             Set<Integer> triggerIDs = new HashSet<Integer>();
-            
-            //Adding the trigger IDs from the attribute of the door
-            while(scan.hasNext()){
+
+            // Adding the trigger IDs from the attribute of the door
+            while (scan.hasNext())
                 triggerIDs.add(Integer.parseInt(scan.next()));
+
+            ret = new Door(triggerIDs, riemannCube.triggers, newCol);
+
+            // Testing
+            System.out.print("Created: " + ret.getClassName() + ", Color: "
+                    + newCol.toString() + "IDs: ");
+
+            for (Integer id : triggerIDs) {
+                System.out.print(id);
             }
-            
-//            ret = new Door(triggerIDs, RiemannCube.)
+            System.out.println();
+        } else if (n.getNodeName().equals("lightsource")) {
+            ret = new LightSource();
+            System.out.println("Created: " + ret.getClassName());
         }
-        
+
         return ret;
     }
 }
