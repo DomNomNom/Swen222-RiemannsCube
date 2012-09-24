@@ -7,7 +7,7 @@ import world.items.*;
 
 public class Player extends GameObject {
 
-    public final Float3 relPos = new Float3(); // relative position to the center of the tile (only used by  ) 
+    public final Float3 relPos = new Float3(); // relative position to the center of the tile (only used by the UI) 
     
     private GameItem item;
     public GameItem item() {  return item; }
@@ -17,10 +17,8 @@ public class Player extends GameObject {
     public LightSource torch() { return torch;  }
     public void setTorch(LightSource torch) { this.torch = torch; }
     
-    private int id;
-    public int id() {
-        return id;
-    }
+    public final int id;
+    public int id() { return id; }
     
     
     

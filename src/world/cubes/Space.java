@@ -6,6 +6,6 @@ public class Space extends Cube{
     
     
     public int type(){
-        return 0; // TODO: enums
+        return CubeType.SPACE.ordinal(); // TODO: proper enums
     }
 }
