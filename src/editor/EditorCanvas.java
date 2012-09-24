@@ -108,7 +108,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
             return;
         }
         if(obj instanceof Key) g.setColor(Color.YELLOW);
-        else if(obj instanceof Lock) g.setColor(Color.BLUE);
+        else if(obj instanceof Trigger) g.setColor(((Lock) obj).color());
         g.fillOval(x, y, squareLength, squareLength);
         g.setColor(Color.BLACK);
         g.drawOval(x, y, squareLength, squareLength);
