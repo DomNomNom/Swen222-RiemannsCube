@@ -179,7 +179,7 @@ public class LevelPipeline {
             element.setAttribute("color", hexCode(((Trigger) obj).color()));
         }else if(obj instanceof Key){
             element = doc.createElement(obj.getClassName());
-            element.setAttribute("color", hexCode(((Key) obj).color()));
+            element.setAttribute("color", hexCode(((Key) obj).colour()));
         }else{
             element = doc.createElement(obj.getClassName());
         }
