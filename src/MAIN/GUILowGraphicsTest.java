@@ -9,8 +9,8 @@ import gui.GameFrame;
 public class GUILowGraphicsTest {
     
     public static void main(String[] args) {
-    	GameFrame window = new GameFrame(false);
-        window.init();
-        window.execute();
+    	//GameFrame window = new GameFrame(false);
+        //window.init();
+        //window.execute();
     }
 }
