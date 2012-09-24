@@ -4,15 +4,14 @@ import java.awt.Color;
 
 public class Key extends GameItem {
 
-    Color color;
+    // The colour identifies what locks it belongs to
+    Color colour;
+    public Color colour() {return colour;  }
     
-    public Key(Color color){
-        this.color = color;
+    public Key(Color colour){
+        this.colour = colour;
     }
     
-    public Color color(){
-        return color;
-    }
 
     @Override
     public String getClassName() {
