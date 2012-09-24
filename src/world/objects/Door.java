@@ -5,6 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * A
+ * @author schmiddomi
+ *
+ */
 public class Door extends GameObject {
 
     private Set<Integer> triggerIDs;
@@ -13,8 +18,9 @@ public class Door extends GameObject {
     private int index = 0, numLocks;
     private Color color;
 
-    public Door(Set<Integer> triggerIDs, Map<Integer, Trigger> triggers,
-            Color col) {
+    // TODO: push, rather than poll architecture
+    
+    public Door(Set<Integer> triggerIDs, Map<Integer, Trigger> triggers, Color col) {
         this.triggerIDs = triggerIDs;
         this.triggersMap = triggers;
         this.color = col;

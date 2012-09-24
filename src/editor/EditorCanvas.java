@@ -306,7 +306,7 @@ public class EditorCanvas extends JComponent implements MouseListener, KeyListen
         }else if(key==' '){
             level.setCube(x, y, z, new Space());
         }else if(key=='1'){
-            level.cubes[x][y][z].addObject(new Player(1, new Int3(x,y,z)));
+            level.cubes[x][y][z].addObject(new Player(new Int3(x,y,z), 1));
         }else if(level.getCube(x, y, z).object()==null){
             if(key=='d'){
                 if(curDoor==null || curDoor.allTriggersPlaced()){

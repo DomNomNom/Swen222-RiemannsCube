@@ -4,25 +4,20 @@ import java.awt.Color;
 
 public class Button extends Trigger {
 
-	Color color;
-	int ID;
-	
-	public Button(int ID, Color color){
+    Color color;
+    public Color color() { return color; }
+
+    public final int id;
+    public int getID() { return id; }
+    
+
+    public Button(int id, Color color){
         this.color = color;
-        this.ID = ID;
+        this.id = id;
     }
-	
-	public Button(Color color){
-		this.color = color;
-	}
-	
-	public Color color(){
-		return color;
-	}
-	
-	public int getID(){
-	    return ID;
-	}
+    
+    
+    
 
     @Override
     public String getClassName() {

@@ -24,7 +24,7 @@ public class Player extends GameObject {
     
     
     
-    public Player(int id, Int3 pos){
+    public Player(Int3 pos, int id){
         this.id = id;
         this.pos.set(pos);
     }

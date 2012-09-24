@@ -150,7 +150,7 @@ public class XMLParser {
             Element e = (Element) n;
             int id = Integer.parseInt(e.getAttribute("id"));
             
-            ret = new Player(id, cubePos);
+            ret = new Player(cubePos, id);
 
         } else if (n.getNodeName().equals("key")) {
             // Get the color for the Key
