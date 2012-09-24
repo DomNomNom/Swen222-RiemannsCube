@@ -1,8 +1,14 @@
 package data;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +26,9 @@ import world.cubes.Cube;
 import world.cubes.Floor;
 import world.cubes.Space;
 import world.cubes.Wall;
+import world.items.Key;
+import world.objects.GameObject;
+import world.objects.Lock;
 
 /**
  * Class to parse an XMLFile into a 3D Array which can be loaded by the game.
@@ -38,8 +47,9 @@ public class XMLParser {
      * @throws FileNotFoundException
      */
     public static RiemannCube readXML(File file) throws FileNotFoundException {
-        //Ignore this, it just sets up the DOM parser. Truth is, I don't even understand it. /Shrug
-        //==========================================================
+        // Ignore this, it just sets up the DOM parser. Truth is, I don't even
+        // understand it. /Shrug
+        // ==========================================================
         if (!file.exists())
             throw new FileNotFoundException();
 
@@ -62,7 +72,7 @@ public class XMLParser {
         }
 
         doc.getDocumentElement().normalize();
-        //===========================================================
+        // ===========================================================
 
         Node root = doc.getDocumentElement();
         System.out.println(root.getNodeName());
@@ -77,42 +87,47 @@ public class XMLParser {
         int w = 0;
         int h = 0;
         int d = 0;
-        
+
         NodeList slices = root.getChildNodes();
 
-        
-        
         for (int z = 1; z < slices.getLength(); z += 2) {
-//            System.out.println(slices.item(z).getNodeName());
+            // System.out.println(slices.item(z).getNodeName());
 
             NodeList floors = slices.item(z).getChildNodes();
 
             h = 0;
             for (int y = 1; y < floors.getLength(); y += 2) {
-//                System.out.println(floors.item(y).getNodeName());
+                // System.out.println(floors.item(y).getNodeName());
 
                 NodeList cubes = floors.item(y).getChildNodes();
-                
+
                 w = 0;
                 for (int x = 1; x < cubes.getLength(); x += 2) {
-//                    System.out.println(cubes.item(x).getNodeName());
-                    
-//                    System.out.println(w + " " + h + " " + d);
-                    
+                    // System.out.println(cubes.item(x).getNodeName());
+
+                    // System.out.println(w + " " + h + " " + d);
+
                     Element c = (Element) cubes.item(x);
                     int type = Integer.parseInt(c.getAttribute("type"));
-                    
-                    if(type == 0){
-                        Cube cube = new Space();
-                        riemannCube.setCube(w, h, d, cube);
-                    } else if(type == 1){
-                        Cube cube = new Floor();
-                        riemannCube.setCube(w, h, d, cube);
-                    } else if(type == 1){
-                        Cube cube = new Wall();
-                        riemannCube.setCube(w, h, d, cube);
+
+                    Cube cube = null;
+
+                    if (type == 0) {
+                        cube = new Space();
+                    } else if (type == 1) {
+                        cube = new Floor();
+                    } else if (type == 1) {
+                        cube = new Wall();
                     }
-                    
+
+                    List<GameObject> objectsInCube = new ArrayList<GameObject>();
+
+                    NodeList obs = c.getChildNodes();
+                    for (int o = 1; o < obs.getLength(); o += 2) {
+                        System.out.println(obs.item(o).getNodeName());
+                    }
+
+                    riemannCube.setCube(w, h, d, cube);
                     w++;
                 }
 
@@ -122,5 +137,55 @@ public class XMLParser {
         }
 
         return null;
+    }
+
+    /**
+     * Takes a node and creates and returns a GameObject represented by it.
+     * There is potentially a lot of 
+     * 
+     * @param n
+     * @return GameObject
+     */
+    private GameObject createInternalObject(Node n){
+        GameObject ret = null;
+        
+        if(n.getNodeName().equals("key")){
+            //Get the color for the Key
+            Element e = (Element)n;
+            String col = e.getAttribute("color");
+            Color newCol = Color.decode(col);
+            
+            ret = new Key(newCol);
+        } else if(n.getNodeName().equals("lock")){
+            //Get the color for the lock
+            Element e = (Element)n;
+            String col = e.getAttribute("color");
+            Color newCol = Color.decode(col);
+            
+            //Get the ID for the Lock
+            int id = Integer.parseInt(e.getAttribute("id"));
+            
+            ret = new Lock(id, newCol);
+        } else if(n.getNodeName().equals("Door")){
+            //Get the color for the door
+            Element e = (Element)n;
+            String col = e.getAttribute("color");
+            Color newCol = Color.decode(col);
+            
+            //Get the set of IDs for the triggers of this door
+            String ids = e.getAttribute("triggerIDs");
+            Scanner scan = new Scanner(ids);
+            
+            Set<Integer> triggerIDs = new HashSet<Integer>();
+            
+            //Adding the trigger IDs from the attribute of the door
+            while(scan.hasNext()){
+                triggerIDs.add(Integer.parseInt(scan.next()));
+            }
+            
+//            ret = new Door(triggerIDs, RiemannCube.)
+        }
+        
+        return ret;
     }
 }
