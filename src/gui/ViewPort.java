@@ -66,6 +66,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     private float moveSpeed = 0.04f; //the move speed of the camera
     private float turnSpeed = 4.0f; //the turn speed of the camera
     
+    //TODO: a better way that incorpriates slicing
+    private int floor = 1; //the floor the player is on
+    
     //For stepping movement
     private float stepCycle = 0.0f; //where the camera is in the step
     private float stepHeight = 0.015f;
@@ -172,7 +175,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         
         gl.glTranslatef(pos.x-5f, pos.y-3f, pos.z-9f); //apply the translations
         
-        drawSpaceBox(gl); //draw the space box
+        if (high) drawSpaceBoxHigh(gl); //draw the space box in high graphics
+        //TODO: draw low graphics space
         
         glassRender = new ArrayList<Int3>(); //create the glass render list
         
@@ -180,18 +184,28 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         //iterate through the level and draw all the tiles
         for (int x = 0; x < level.width; ++x) {
         	for (int y = 0; y < level.height; ++y) {
-        		for (int z = 0; z < level.depth; ++z) {
-        			Cube c = level.getCube(z, x, y); //gets the cube from the level
-        			if (c instanceof Floor) drawFloor(gl, x*2, y*2, z*2); //draw a floor cube
-        			else if (c instanceof Wall) drawWall(gl, x*2, y*2, z*2); //draw a wall cube
-        			else if (c instanceof Glass) glassRender.add(new Int3(x*2, y*2, z*2));
+        		if (free || y == floor || (y == floor-1) || y == floor+1) { //only draw if this is the current floor
+	        		for (int z = 0; z < level.depth; ++z) {
+	        			Cube c = level.getCube(x, y, z); //gets the cube from the level
+	        			if (high) { //draw the high graphics cubes
+		        			if (c instanceof Floor) drawFloorHigh(gl, x*2, y*2, z*2); //draw a floor cube
+		        			else if (c instanceof Wall) drawWallHigh(gl, x*2, y*2, z*2); //draw a wall cube
+		        			else if (c instanceof Glass) glassRender.add(new Int3(x*2, y*2, z*2));
+	        			}
+	        			else { //draw the low graphics alternatives
+	        				if (c instanceof Floor) drawFloorLow(gl, x*2, y*2, z*2); //draw a floor cube
+	        				else if (c instanceof Wall) drawWallLow(gl, x*2, y*2, z*2); //draw a wall cube
+	        				else if (c instanceof Glass) glassRender.add(new Int3(x*2, y*2, z*2));
+	        			}
+	        		}
         		}
         	}
         }
         
         //draw the glass last
         for (Int3 i: glassRender) {
-        	drawGlass(gl, i.x, i.y, i.z);
+        	if (high) drawGlassHigh(gl, i.x, i.y, i.z);
+        	else drawGlassLow(gl, i.x, i.y, i.z);
         }
     }
 
@@ -247,9 +261,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     
     /**Process the rotation*/
     
-	/**Draws the space box
+	/**Draws the space box in high graphics
 	 * @gl*/
-    private void drawSpaceBox(GL2 gl) {
+    private void drawSpaceBoxHigh(GL2 gl) {
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[3]); //bind the space texture
         gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, -100.0f);
@@ -289,12 +303,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glEnd();
     }
     
-    /**Draws a floor cube
+    /**Draws a floor cube in high graphics
      * @param gl
      * @param x the x position
      * @param y the y position
      * @param z the z position*/
-    private void drawFloor(GL2 gl, int x, int y, int z) {
+    private void drawFloorHigh(GL2 gl, int x, int y, int z) {
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
     	gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z);
@@ -310,13 +324,82 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glEnd();
     }
     
-    /**Draw a wall cube
+    /**Draws a floor cube in low graphics
+     * @param gl
+     * @param x the x position
+     * @param y the y position
+     * @param z the z position*/
+    private void drawFloorLow(GL2 gl, int x, int y, int z) {
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	gl.glColor4f(0.15f, 0.15f, 0.15f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f(x,   y, z);
+    	gl.glVertex3f(x,   y, z+2);
+    	gl.glVertex3f(x+2, y, z+2);
+    	gl.glVertex3f(x+2, y, z);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glVertex3f(x,   y+2, z);
+        gl.glVertex3f(x+2,   y+2, z);
+        gl.glVertex3f(x+2, y+2, z+2);
+        gl.glVertex3f(x, y+2, z+2);
+        gl.glEnd();
+        //draw the lines on the tile
+        gl.glColor4f(0.0f, 1.0f, 1.0f, 0.9f);
+        gl.glBegin(GL2.GL_LINE_LOOP);
+        gl.glVertex3f(x+0.05f,   y+0.01f, z+0.05f);
+    	gl.glVertex3f(x+0.05f,   y+0.01f, z+2-0.05f);
+    	gl.glVertex3f(x+2-0.05f, y+0.01f, z+2-0.05f);
+    	gl.glVertex3f(x+2-0.05f, y+0.01f, z+0.05f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_LINE_LOOP);
+    	gl.glVertex3f(x+0.05f,   y+2-0.01f, z+0.05f);
+        gl.glVertex3f(x+2-0.05f,   y+2-0.01f, z+0.05f);
+        gl.glVertex3f(x+2-0.05f, y+2-0.01f, z+2-0.05f);
+        gl.glVertex3f(x+0.05f, y+2-0.01f, z+2-0.05f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x,   y+0.01f, z+1.05f);
+        gl.glVertex3f(x+2,   y+0.01f, z+1.05f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x,   y+0.01f, z+0.95f);
+        gl.glVertex3f(x+2,   y+0.01f, z+0.95f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x+1.05f,   y+0.01f, z);
+        gl.glVertex3f(x+1.05f,   y+0.01f, z+2);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x+0.95f,   y+0.01f, z);
+        gl.glVertex3f(x+0.95f,   y+0.01f, z+2);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x,   y+2-0.01f, z+1.05f);
+        gl.glVertex3f(x+2,   y+2-0.01f, z+1.05f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x,   y+2-0.01f, z+0.95f);
+        gl.glVertex3f(x+2,   y+2-0.01f, z+0.95f);
+        gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1.05f,   y+2-0.01f, z);
+		gl.glVertex3f(x+1.05f,   y+2-0.01f, z+2);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+0.95f,   y+2-0.01f, z);
+		gl.glVertex3f(x+0.95f,   y+2-0.01f, z+2);
+		gl.glEnd();
+        
+    }
+    
+    /**Draw a wall cube in high graphics
      * @param gl
      * @param x the x position
      * @param y the y position
      * @param z the z position
      */
-    private void drawWall(GL2 gl, int x, int y, int z) {
+    private void drawWallHigh(GL2 gl, int x, int y, int z) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[1]); //bind the wall tile texture
 		//draw front part
 		gl.glBegin(GL2.GL_QUADS);
@@ -361,9 +444,275 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glEnd();
     }
     
-    /**Draw a glass cube*/
-    private void drawGlass(GL2 gl, int x, int y, int z) {
+    /**Draw a wall cube in low graphics
+     * @param gl
+     * @param x the x position
+     * @param y the y position
+     * @param z the z position
+     */
+    private void drawWallLow(GL2 gl, int x, int y, int z) {
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+		gl.glColor4f(0.15f, 0.15f, 0.15f, 1.0f);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(x, y+2,   z);
+		gl.glVertex3f(x, y, z);
+		gl.glVertex3f(x, y, z+2);
+		gl.glVertex3f(x, y+2,   z+2);
+		gl.glEnd();
+		//draw back part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(x+2, y+2, z+2);
+		gl.glVertex3f(x+2, y, z+2);
+		gl.glVertex3f(x+2, y, z);
+		gl.glVertex3f(x+2, y+2,   z);
+		gl.glEnd();
+		//draw left part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(x+2, y,   z);
+		gl.glVertex3f(x, y, z);
+		gl.glVertex3f(x, y+2, z);
+		gl.glVertex3f(x+2, y+2,   z);
+		gl.glEnd();
+		//draw right part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(x, y+2,   z+2);
+		gl.glVertex3f(x, y, z+2);
+		gl.glVertex3f(x+2, y, z+2);
+		gl.glVertex3f(x+2, y+2,   z+2);
+		gl.glEnd();
+		//draw the floor
+		gl.glColor4f(0.15f, 0.15f, 0.15f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f(x,   y+2, z);
+    	gl.glVertex3f(x,   y+2, z+2);
+    	gl.glVertex3f(x+2, y+2, z+2);
+    	gl.glVertex3f(x+2, y+2, z);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glVertex3f(x,   y, z);
+        gl.glVertex3f(x+2,   y, z);
+        gl.glVertex3f(x+2, y, z+2);
+        gl.glVertex3f(x, y, z+2);
+        gl.glEnd();
+        //draw the lines on the floor tile
+        gl.glColor4f(0.0f, 1.0f, 1.0f, 0.9f);
+        gl.glBegin(GL2.GL_LINE_LOOP);
+        gl.glVertex3f(x+0.05f,   y+2+0.01f, z+0.05f);
+    	gl.glVertex3f(x+0.05f,   y+2+0.01f, z+2-0.05f);
+    	gl.glVertex3f(x+2-0.05f, y+2+0.01f, z+2-0.05f);
+    	gl.glVertex3f(x+2-0.05f, y+2+0.01f, z+0.05f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_LINE_LOOP);
+    	gl.glVertex3f(x+0.05f,   y-0.01f, z+0.05f);
+        gl.glVertex3f(x+2-0.05f,   y-0.01f, z+0.05f);
+        gl.glVertex3f(x+2-0.05f, y-0.01f, z+2-0.05f);
+        gl.glVertex3f(x+0.05f, y-0.01f, z+2-0.05f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x,   y+2.01f, z+1.05f);
+        gl.glVertex3f(x+2,   y+2.01f, z+1.05f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x,   y+2.01f, z+0.95f);
+        gl.glVertex3f(x+2,   y+2.01f, z+0.95f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x+1.05f,   y+2.01f, z);
+        gl.glVertex3f(x+1.05f,   y+2.01f, z+2);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x+0.95f,   y+2.01f, z);
+        gl.glVertex3f(x+0.95f,   y+2.01f, z+2);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x,   y-0.01f, z+1.05f);
+        gl.glVertex3f(x+2,   y-0.01f, z+1.05f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_LINE);
+    	gl.glVertex3f(x,   y-0.01f, z+0.95f);
+        gl.glVertex3f(x+2,   y-0.01f, z+0.95f);
+        gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1.05f,   y-0.01f, z);
+		gl.glVertex3f(x+1.05f,   y-0.01f, z+2);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+0.95f,   y-0.01f, z);
+		gl.glVertex3f(x+0.95f,   y-0.01f, z+2);
+		gl.glEnd();
+		
+        drawWallLines(gl, x, y, z);
+    }
+    
+    /**Draws the lines for the wall cube*/
+    private void drawWallLines(GL2 gl, int x, int y, int z) {
+    	gl.glColor4f(1.0f, 0.0f, 1.0f, 0.9f);
+    	gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x, y+1.9f, z-0.01f);
+		gl.glVertex3f(x+1, y+1.9f,z-0.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1, y+1.9f, z-0.01f);
+		gl.glVertex3f(x+2, y+1f,z-0.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x, y+0.10f, z-0.01f);
+		gl.glVertex3f(x+1, y+0.10f,z-0.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1, y+0.10f, z-0.01f);
+		gl.glVertex3f(x+2, y+1f,z-0.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x, y+1f, z-0.01f);
+		gl.glVertex3f(x+1, y+1f,z-0.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1, y+1f, z-0.01f);
+		gl.glVertex3f(x+2, y+1.9f,z-0.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1, y+1f, z-0.01f);
+		gl.glVertex3f(x+2, y+0.10f,z-0.01f);
+		gl.glEnd();
+		
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2, y+1.9f, z+2.01f);
+		gl.glVertex3f(x+1, y+1.9f,z+2.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1, y+1.9f, z+2.01f);
+		gl.glVertex3f(x, y+1f, z+2.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2, y+0.10f, z+2.01f);
+		gl.glVertex3f(x+1, y+0.10f,z+2.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1, y+0.10f, z+2.01f);
+		gl.glVertex3f(x, y+1f, z+2.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2, y+1f, z+2.01f);
+		gl.glVertex3f(x+1, y+1f,z+2.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1, y+1f, z+2.01f);
+		gl.glVertex3f(x, y+1.9f, z+2.01f);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+1, y+1f, z+2.01f);
+		gl.glVertex3f(x, y+0.10f,z+2.01f);
+		gl.glEnd();
+		
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x-0.01f, y+1.9f, z+2);
+		gl.glVertex3f(x-0.01f, y+1.9f,z+1);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x-0.01f, y+1.9f, z+1);
+		gl.glVertex3f(x-0.01f, y+1f, z);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x-0.01f, y+0.10f, z+2);
+		gl.glVertex3f(x-0.01f, y+0.10f,z+1);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x-0.01f, y+0.10f, z+1);
+		gl.glVertex3f(x-0.01f, y+1f, z);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x-0.01f, y+1f, z+2);
+		gl.glVertex3f(x-0.01f, y+1f,z+1);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x-0.01f, y+1f, z+1);
+		gl.glVertex3f(x-0.01f, y+1.9f, z);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x-0.01f, y+1f, z+1);
+		gl.glVertex3f(x-0.01f, y+0.10f,z);
+		gl.glEnd();
+		
+    	gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2.01f, y+1.9f, z);
+		gl.glVertex3f(x+2.01f, y+1.9f,z+1);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2.01f, y+1.9f, z+1);
+		gl.glVertex3f(x+2.01f, y+1f,z+2);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2.01f, y+0.10f, z);
+		gl.glVertex3f(x+2.01f, y+0.10f,z+1);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2.01f, y+0.10f, z+1);
+		gl.glVertex3f(x+2.01f, y+1f,z+2);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2.01f, y+1f, z);
+		gl.glVertex3f(x+2.01f, y+1f,z+1);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2.01f, y+1f, z+1);
+		gl.glVertex3f(x+2.01f, y+1.9f,z+2);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINE);
+		gl.glVertex3f(x+2.01f, y+1f, z+1);
+		gl.glVertex3f(x+2.01f, y+0.10f,z+2);
+		gl.glEnd();
+    }
+    
+    /**Draw a glass cube in high graphics*/
+    private void drawGlassHigh(GL2 gl, int x, int y, int z) {
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass tile texture
+		//draw front part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y+2,   z);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y, z);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x, y, z+2);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y+2,   z+2);
+		gl.glEnd();
+		//draw back part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x+2, y+2, z+2);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y+2,   z);
+		gl.glEnd();
+		//draw left part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y,   z);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y, z);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y+2, z);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2,   z);
+		gl.glEnd();
+		//draw right part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y+2,   z+2);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y, z+2);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y, z+2);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2,   z+2);
+		gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2,   y, z);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y, z+2);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y+2, z);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y+2, z+2);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y+2, z);
+        gl.glEnd();
+    }
+    
+    /**Draw a glass cube in low graphics*/
+    private void drawGlassLow(GL2 gl, int x, int y, int z) {
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 0.4f);
 		//draw front part
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y+2,   z);
