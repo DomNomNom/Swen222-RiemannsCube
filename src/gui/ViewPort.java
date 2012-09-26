@@ -123,7 +123,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set the clear colour
         gl.glClearAccum(0.0f, 0.0f, 0.0f, 0.0f);
-        gl.glClearDepth(100.0f); // set the clear depth
+        gl.glClearDepth(1000.0f); // set the clear depth
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); // clear the screen for the first time
 
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);

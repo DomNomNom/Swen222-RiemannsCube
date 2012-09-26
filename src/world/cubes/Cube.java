@@ -36,4 +36,14 @@ public abstract class Cube {
         return null;
     }
 
+    @Override
+    public final boolean equals(Object o) {
+        if (o == null || ! (o instanceof Cube)) return false;
+        
+        Cube other = (Cube) o;
+        if(getClass() != o.getClass()) return false; // since this is for subclasses
+        for (GameObject g :       objects) if (!other.objects.contains(g)) return false;
+        for (GameObject g : other.objects) if (!      objects.contains(g)) return false;
+        return true;
+    }
 }
