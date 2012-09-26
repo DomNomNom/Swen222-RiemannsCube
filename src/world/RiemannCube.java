@@ -1,5 +1,6 @@
 package world;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,11 +89,28 @@ public class RiemannCube {
     }
     
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)        return true;
+        if (obj == null)        return false;
+        if (!(obj instanceof RiemannCube))        return false;
+        
+        RiemannCube other = (RiemannCube) obj;
+        
+        if (depth != other.depth || height != other.height || width != other.width)    return false;
+        
+        for (int x=width; x --> 0;)
+            for (int y=0; y<height; ++y)
+                if (!Arrays.equals(cubes[x][y], other.cubes[x][y]))
+                    return false;
+ 
+        return true;
+    }
     
     // ====== Slicing (used in editor) ======
     
     
+
 
     public Cube[][] verticalSlice(int x) {
         return cubes[x];

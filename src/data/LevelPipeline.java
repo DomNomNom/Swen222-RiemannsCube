@@ -2,6 +2,7 @@ package data;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collections;
 
 import org.w3c.dom.Document;
@@ -149,8 +150,8 @@ public class LevelPipeline {
         }
     }
 
-    public void load() {
-        JFileChooser fc = new JFileChooser("src");
+    public RiemannCube load() {
+        JFileChooser fc = new JFileChooser(".");
         File f = null;
 
         int value = fc.showDialog(null, "Select File");
@@ -158,9 +159,16 @@ public class LevelPipeline {
             f = fc.getSelectedFile();
         }
 
-        if (f != null) {
-
+        RiemannCube cube = null;
+        if (f.exists()) {
+            try {
+                cube = XMLParser.readXML(f);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+        
+        return cube;
     }
     
     private Element getObjectElement(GameObject obj, Document doc){
@@ -178,7 +186,7 @@ public class LevelPipeline {
             element.setAttribute("id", String.valueOf(((Trigger)obj).getID()));
             element.setAttribute("color", hexCode(((Trigger) obj).color()));
         }else if(obj instanceof Key){
-            element = doc.createElement(obj.getClassName());
+            element = doc.createElement(obj.getClassName().toLowerCase());
             element.setAttribute("color", hexCode(((Key) obj).colour()));
         }else{
             element = doc.createElement(obj.getClassName());

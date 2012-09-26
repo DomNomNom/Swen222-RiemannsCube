@@ -9,5 +9,5 @@ public class Glass extends Cube {
     public int type() {
         return CubeType.GLASS.ordinal();
     }
-
+    
 }

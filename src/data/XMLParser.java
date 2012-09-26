@@ -41,7 +41,6 @@ import world.objects.Player;
  * 
  */
 public class XMLParser {
-
     /**
      * Parses an XML file and returns the RiemannCube represented by it. Returns
      * null if the file doesn't exist or if the file is null.
@@ -79,7 +78,6 @@ public class XMLParser {
         // ===========================================================
 
         Node root = doc.getDocumentElement();
-//        System.out.println(root.getNodeName());
 
         Element dimensions = (Element) root;
         int width = Integer.parseInt(dimensions.getAttribute("width"));
@@ -110,14 +108,18 @@ public class XMLParser {
 
                     if (type == 0) {
                         cube = new Space();
+//                        System.out.println("Space");
                     } else if (type == 1) {
                         cube = new Floor();
-                    } else if (type == 1) {
+//                        System.out.println("Floor");
+                    } else if (type == 2) {
                         cube = new Wall();
+//                        System.out.println("Wall");
                     }
 
                     NodeList obs = c.getChildNodes();
                     for (int o = 1; o < obs.getLength(); o += 2) {
+//                        System.out.println("OBJECT: ---------> " + obs.item(o).getNodeName());
                         cube.addObject(createInternalObject(obs.item(o),
                                 riemannCube, new Int3(x, y, z)));
                     }
@@ -131,7 +133,7 @@ public class XMLParser {
             d++;
         }
 
-        return null;
+        return riemannCube;
     }
 
     /**

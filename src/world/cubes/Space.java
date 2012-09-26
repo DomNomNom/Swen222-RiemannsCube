@@ -8,4 +8,5 @@ public class Space extends Cube{
     public int type(){
         return CubeType.SPACE.ordinal(); // TODO: proper enums
     }
+    
 }
