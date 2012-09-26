@@ -30,7 +30,11 @@ public class GUITest {
     	//add some glass
     	testLevel.setCube(3, 1, 0, new Glass());
     
-    	GameFrame window = new GameFrame(true, true, true, null);
+		//settings
+		GameFrame.high = true;
+		GameFrame.free = true;
+		GameFrame.noFloor = true;
+    	GameFrame window = new GameFrame(null);
         window.init();
         window.execute();
     }

@@ -32,20 +32,16 @@ public class GameFrame extends JFrame {
     private String ip; //the IP address of the level
     private RiemannCube level;
     
-    private boolean high; //is true when high graphics is enable
-    private boolean free; //is true when free camera is enabled
-    private boolean noFloor;
+    public static boolean high = true; //is true when high graphics is enable
+    public static boolean free = false; //is true when free camera is enabled
+    public static boolean noFloor = false;
     
     //CONSTUCTOR
     /**Constructs a new game frame
-     * @param high is true if the game should be run at full graphics
-     * @param free is true if the game should run in free camera mode*/
-    public GameFrame(boolean high, boolean free, boolean noFloor, String ip) {
+     @param ip the IP address of server*/
+    public GameFrame(String ip) {
         super("Riemann's cube");
-        this.high = high;
-        this.free = free;
-        this.ip = ip;
-        this.noFloor = noFloor;
+        this.ip = ip;;
     }
     
     //METHODS
@@ -61,7 +57,10 @@ public class GameFrame extends JFrame {
     	
     	setSize(900, 600);
         chat = new ChatPanel(this);
-        view = new ViewPort(this, 700, 600, high, free, noFloor); 
+        ViewPort.high = high;
+        ViewPort.free = free;
+        ViewPort.noFloor = noFloor;
+        view = new ViewPort(this, 700, 600);
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -73,12 +72,15 @@ public class GameFrame extends JFrame {
 
 	/**Runs the game*/
     public void execute() {
+    	//add the displays
         getContentPane().add(view, BorderLayout.CENTER);
         getContentPane().add(chat, BorderLayout.WEST);
+        //create and start the animators for the displays
         ViewPort.animator = new Animator(view); 
         ViewPort.animator.start();
         ChatPanel.animator = new Animator(chat);
         ChatPanel.animator.start();
+        //set the window to be visible
         setVisible(true);        
     }
     
