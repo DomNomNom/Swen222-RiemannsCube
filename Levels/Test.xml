@@ -1,111 +1,289 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<riemanncube
-    depth="4"
-    height="4"
-    width="4" >
+<riemann
+    depth="8"
+    height="8"
+    width="8" >
 
     <slice z="0" >
 
         <floor y="0" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
+                type="2"
+                x="0" />
 
             <cube
-                type="1"
-                x="1" >
-            </cube>
+                type="2"
+                x="1" />
 
             <cube
-                type="1"
-                x="2" >
-            </cube>
+                type="2"
+                x="2" />
 
             <cube
-                type="1"
-                x="3" >
-            </cube>
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
+                type="2"
+                x="0" />
 
             <cube
-                type="1"
-                x="1" >
-            </cube>
+                type="2"
+                x="1" />
 
             <cube
-                type="1"
-                x="2" >
-
-                <key color="#FF0000" />
-            </cube>
+                type="2"
+                x="2" />
 
             <cube
-                type="1"
-                x="3" >
+                type="2"
+                x="3" />
 
-                <lock
-                    id="4"
-                    color="#FF0000" />
-            </cube>
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
 
             <cube
                 type="1"
-                x="1" >
-            </cube>
+                x="3" />
 
             <cube
                 type="1"
-                x="2" >
-            </cube>
+                x="4" />
 
             <cube
-                type="1"
-                x="3" >
-            </cube>
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="4" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
 
             <cube
                 type="1"
-                x="1" >
-            </cube>
+                x="4" />
 
             <cube
-                type="1"
-                x="2" >
-            </cube>
+                type="2"
+                x="5" />
 
             <cube
-                type="1"
-                x="3" >
+                type="2"
+                x="6" />
 
-                <lock
-                    id="3"
-                    color="#FF0000" />
-            </cube>
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="5" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="6" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="7" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
     </slice>
 
@@ -114,93 +292,286 @@
         <floor y="0" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
-
-            <cube
                 type="2"
-                x="1" >
-            </cube>
-
-            <cube
-                type="2"
-                x="2" >
-            </cube>
+                x="0" />
 
             <cube
                 type="1"
-                x="3" >
-            </cube>
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
-
-            <cube
                 type="2"
-                x="1" >
-            </cube>
-
-            <cube
-                type="2"
-                x="2" >
-            </cube>
+                x="0" />
 
             <cube
                 type="1"
-                x="3" >
-            </cube>
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
-
-            <cube
                 type="2"
-                x="1" >
-            </cube>
-
-            <cube
-                type="2"
-                x="2" >
-            </cube>
+                x="0" />
 
             <cube
                 type="1"
-                x="3" >
-            </cube>
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
+                type="2"
+                x="0" />
 
             <cube
-                type="2"
+                type="1"
                 x="1" >
-            </cube>
 
-            <cube
-                type="2"
-                x="2" >
+                <lock
+                    id="3"
+                    color="#6666ff" />
             </cube>
 
             <cube
                 type="1"
-                x="3" >
-            </cube>
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="4" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="5" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="6" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="7" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
     </slice>
 
@@ -209,93 +580,281 @@
         <floor y="0" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
+                type="2"
+                x="0" />
 
             <cube
                 type="2"
-                x="1" >
-            </cube>
+                x="1" />
 
             <cube
                 type="2"
-                x="2" >
-            </cube>
+                x="2" />
 
             <cube
-                type="1"
-                x="3" >
-            </cube>
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
-
-            <cube
                 type="2"
-                x="1" >
-            </cube>
-
-            <cube
-                type="2"
-                x="2" >
-            </cube>
+                x="0" />
 
             <cube
                 type="1"
-                x="3" >
-            </cube>
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
-
-            <cube
                 type="2"
-                x="1" >
-            </cube>
-
-            <cube
-                type="2"
-                x="2" >
-            </cube>
+                x="0" />
 
             <cube
                 type="1"
-                x="3" >
-            </cube>
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
-
-            <cube
                 type="2"
-                x="1" >
-            </cube>
-
-            <cube
-                type="2"
-                x="2" >
-            </cube>
+                x="0" />
 
             <cube
                 type="1"
-                x="3" >
-            </cube>
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="4" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="5" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="6" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="7" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
     </slice>
 
@@ -304,73 +863,908 @@
         <floor y="0" >
 
             <cube
-                type="1"
-                x="0" >
-            </cube>
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
 
             <cube
                 type="1"
-                x="1" >
-            </cube>
+                x="3" />
 
             <cube
                 type="1"
-                x="2" >
-            </cube>
+                x="4" />
 
             <cube
-                type="1"
-                x="3" >
-            </cube>
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="1"
-                x="0" >
+                type="2"
+                x="0" />
 
-                <lightsource />
-            </cube>
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
 
             <cube
                 type="1"
-                x="1" >
-            </cube>
+                x="3" />
 
             <cube
-                type="1"
-                x="2" >
-            </cube>
+                type="2"
+                x="4" />
 
             <cube
-                type="1"
-                x="3" >
-            </cube>
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
                 type="1"
-                x="0" >
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="3" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="4" >
+
+            <cube
+                type="1"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" >
+
+                <key color="#6666ff" />
+            </cube>
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="5" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="6" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="7" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+    </slice>
+
+    <slice z="4" >
+
+        <floor y="0" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="1" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="2" >
+
+            <cube
+                type="1"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="3" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="4" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="1"
+                x="7" />
+        </floor>
+
+        <floor y="5" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="6" >
+
+            <cube
+                type="1"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="7" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+    </slice>
+
+    <slice z="5" >
+
+        <floor y="0" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="1" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" >
 
                 <door
-                    triggerIDs="1 2 3 4"
-                    color="#FF0000" />
+                    triggerIDs="2 3 "
+                    color="#6666ff" />
             </cube>
 
             <cube
                 type="1"
-                x="1" >
-            </cube>
+                x="5" />
 
             <cube
                 type="1"
-                x="2" >
+                x="6" />
 
-                <player id="1" />
-            </cube>
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="2" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="3" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="4" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="5" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="6" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="7" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+    </slice>
+
+    <slice z="6" >
+
+        <floor y="0" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="1" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
 
             <cube
                 type="1"
@@ -378,36 +1772,521 @@
 
                 <lock
                     id="2"
-                    color="#FF0000" />
+                    color="#6666ff" />
             </cube>
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="2" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="1"
-                x="0" >
-
-                <lock
-                    id="1"
-                    color="#FF0000" />
-            </cube>
+                type="2"
+                x="0" />
 
             <cube
                 type="1"
                 x="1" >
+
+                <key color="#6666ff" />
             </cube>
 
             <cube
                 type="1"
-                x="2" >
-            </cube>
+                x="2" />
 
             <cube
                 type="1"
-                x="3" >
-            </cube>
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="4" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="5" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="6" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="1"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="7" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="1"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="1"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
         </floor>
     </slice>
 
-</riemanncube>
+    <slice z="7" >
+
+        <floor y="0" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="1" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="2" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="3" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="4" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="5" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="6" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="1"
+                x="2" />
+
+            <cube
+                type="1"
+                x="3" />
+
+            <cube
+                type="1"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+
+        <floor y="7" >
+
+            <cube
+                type="2"
+                x="0" />
+
+            <cube
+                type="2"
+                x="1" />
+
+            <cube
+                type="2"
+                x="2" />
+
+            <cube
+                type="2"
+                x="3" />
+
+            <cube
+                type="2"
+                x="4" />
+
+            <cube
+                type="2"
+                x="5" />
+
+            <cube
+                type="2"
+                x="6" />
+
+            <cube
+                type="2"
+                x="7" />
+        </floor>
+    </slice>
+
+</riemann>
