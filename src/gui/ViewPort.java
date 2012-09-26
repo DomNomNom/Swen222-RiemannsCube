@@ -55,6 +55,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     
     private Int2 windowDim; //the window dimension
     
+    private Random rand = new Random();
+    
     private Float2 mouse = new Float2(0f, 0f); //the current mouse x position
     private Int2 mouseCentre = new Int2(450, 300); //the mouse x centre
     private int keyDown = 0; //an integer representing the current key being pressed
@@ -129,7 +131,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
 
-        glu.gluPerspective(45.0f, windowDim.x/windowDim.y, 0.001f, 200.0f);
+        glu.gluPerspective(rand.nextInt(91), windowDim.x/windowDim.y, 0.001f, 200.0f);
 
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
@@ -143,6 +145,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     @Override
     public void display(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
+        
+        /*gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+        gl.glLoadIdentity();
+
+        glu.gluPerspective(rand.nextInt(45)+45, windowDim.x/windowDim.y, 0.001f, 200.0f);
+
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        gl.glLoadIdentity();*/
         
         if (keyDown == 27) frame.exit(); //quit the game
         
