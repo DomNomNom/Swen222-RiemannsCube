@@ -43,6 +43,7 @@ public class RiemannCube {
     public final int width, height, depth;
 
     
+    
     /**
      * Creates the RiemannCube with the given dimensions.
      * It will be filled with FloorTiles
@@ -67,16 +68,18 @@ public class RiemannCube {
     }
 
     
-    private boolean movePlayer(PlayerMove action) {
-        return true; // TODO
+    public boolean isValidPlayer(int playerID) {
+        return players.containsKey(playerID);
     }
+    
+    // ====== Action ======
     
     /**
      * Tries to apply the given action.
      * This uses isValidAction() for action validation.
      * 
      * @param a The action that should be applied
-     * @return Whether it succeeded.
+     * @return Whether the action is valid and has been applied.
      */
     public boolean applyAction(Action a) {
         if (a instanceof PlayerMove)
@@ -84,9 +87,17 @@ public class RiemannCube {
         else return false;
     }
     
-    public boolean isValidAction(Action a) {
-        return true;
+    private boolean movePlayer(PlayerMove action) {
+        if (!isValidPlayer(action.playerID)) return false;
+        
+        Int3 to = players.get(action.playerID).getPos().copy().add(action.movement);
+        // TODO check bounds, etc
+        return true; // TODO
     }
+    
+    
+
+    // ====== equals (used for testing) ======
     
     
     @Override
@@ -107,8 +118,8 @@ public class RiemannCube {
         return true;
     }
     
-    // ====== Slicing (used in editor) ======
     
+    // ====== Slicing (used in editor) ======
     
 
 

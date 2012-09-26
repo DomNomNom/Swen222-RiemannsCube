@@ -32,7 +32,15 @@ public class WorldTests {
     public void testNoMoveAction() {        
         RiemannCube world  = generateWorld();
         RiemannCube world2 = generateWorld();
-        assertTrue(world2.applyAction(new PlayerMove(0, 0,0,0)));
-        assertEquals(world, world2);
+        assertTrue(world2.applyAction(new PlayerMove(0, null)));
+        assertTrue(world.equals(world2));
+    }
+    
+    @Test
+    public void testMoveAction() {        
+        RiemannCube world  = generateWorld();
+        RiemannCube world2 = generateWorld();
+        assertTrue(world2.applyAction(new PlayerMove(0, new Int3(1, 0, 0))));
+        assertFalse(world.equals(world2));
     }
 }
