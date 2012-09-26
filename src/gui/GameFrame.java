@@ -34,17 +34,18 @@ public class GameFrame extends JFrame {
     
     private boolean high; //is true when high graphics is enable
     private boolean free; //is true when free camera is enabled
+    private boolean noFloor;
     
     //CONSTUCTOR
     /**Constructs a new game frame
      * @param high is true if the game should be run at full graphics
      * @param free is true if the game should run in free camera mode*/
-    public GameFrame(boolean high, boolean free, String ip, RiemannCube level) {
+    public GameFrame(boolean high, boolean free, boolean noFloor, String ip) {
         super("Riemann's cube");
         this.high = high;
         this.free = free;
         this.ip = ip;
-        this.level = level;
+        this.noFloor = noFloor;
     }
     
     //METHODS
@@ -60,7 +61,7 @@ public class GameFrame extends JFrame {
     	
     	setSize(900, 600);
         chat = new ChatPanel(this);
-        view = new ViewPort(this, 700, 600, high, free, level); 
+        view = new ViewPort(this, 700, 600, high, free, noFloor); 
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         

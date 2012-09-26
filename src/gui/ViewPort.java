@@ -4,6 +4,8 @@ import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,6 +32,8 @@ import world.cubes.Wall;
 
 import com.jogamp.opengl.util.Animator;
 
+import data.XMLParser;
+
 /**
  * This is the pane that displays all player's view of the game
  * The view port is essentially the player's camera
@@ -49,6 +53,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     private GameFrame frame;
     private boolean high; //is true if the game is running in high graphics
     private boolean free; //is true when free camera is enabled
+    private boolean noFloor;
     
     private RiemannCube level; //the level
     private Resources resources; //the resources
@@ -90,13 +95,19 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
      * @param free true to enable free camera mode
      * @param level the current level
      */
-    public ViewPort(GameFrame frame, int width, int height, boolean high, boolean free, RiemannCube level) {
+    public ViewPort(GameFrame frame, int width, int height, boolean high, boolean free, boolean noFloor) {
         addGLEventListener(this);
         this.frame = frame;
         windowDim = new Int2(width, height);
         this.high = high;
         this.free = free;
-        this.level = level;
+        this.noFloor = noFloor;
+        try {
+			this.level = XMLParser.readXML(new File("Levels/Test.xml"));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         mouse = new Float2((float) MouseInfo.getPointerInfo().getLocation().getX(),
         				   (float) MouseInfo.getPointerInfo().getLocation().getY());
         addKeyListener(this);
@@ -131,7 +142,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
 
-        glu.gluPerspective(rand.nextInt(91), windowDim.x/windowDim.y, 0.001f, 200.0f);
+        glu.gluPerspective(45.0f, windowDim.x/windowDim.y, 0.001f, 200.0f);
 
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
@@ -321,19 +332,21 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
      * @param y the y position
      * @param z the z position*/
     private void drawFloorHigh(GL2 gl, int x, int y, int z) {
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
-    	gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y, z+2);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y, z);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y+2, z);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2,   y+2, z);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y+2, z+2);
-        gl.glEnd();
+    	if (!noFloor) {
+	    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
+	    	gl.glBegin(GL2.GL_QUADS);
+	        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z);
+	        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y, z+2);
+	        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+	        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y, z);
+	        gl.glEnd();
+	        gl.glBegin(GL2.GL_QUADS);
+	        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y+2, z);
+	        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2,   y+2, z);
+	        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
+	        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y+2, z+2);
+	        gl.glEnd();
+    	}
     }
     
     /**Draw a wall cube in high graphics
@@ -372,6 +385,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y, z+2);
 		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2,   z+2);
 		gl.glEnd();
+		//draw floor
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
     	gl.glBegin(GL2.GL_QUADS);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z);
@@ -426,23 +440,25 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
      * @param y the y position
      * @param z the z position*/
     private void drawFloorLow(GL2 gl, int x, int y, int z) {
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    	gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(x,   y, z);
-    	gl.glVertex3f(x,   y, z+2);
-    	gl.glColor4f(0.0f, 0.5f, 1.0f, 1.0f);
-    	gl.glVertex3f(x+2, y, z+2);
-    	gl.glVertex3f(x+2, y, z);
-        gl.glEnd();
-        gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glVertex3f(x,   y+2, z);
-        gl.glVertex3f(x+2,   y+2, z);
-        gl.glColor4f(0.0f, 0.5f, 1.0f, 1.0f);
-        gl.glVertex3f(x+2, y+2, z+2);
-        gl.glVertex3f(x, y+2, z+2);
-        gl.glEnd();
+    	if (!noFloor) {
+	    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+	    	gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
+	    	gl.glBegin(GL2.GL_QUADS);
+	    	gl.glVertex3f(x,   y, z);
+	    	gl.glVertex3f(x,   y, z+2);
+	    	gl.glColor4f(0.0f, 0.5f, 1.0f, 1.0f);
+	    	gl.glVertex3f(x+2, y, z+2);
+	    	gl.glVertex3f(x+2, y, z);
+	        gl.glEnd();
+	        gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
+	        gl.glBegin(GL2.GL_QUADS);
+	        gl.glVertex3f(x,   y+2, z);
+	        gl.glVertex3f(x+2,   y+2, z);
+	        gl.glColor4f(0.0f, 0.5f, 1.0f, 1.0f);
+	        gl.glVertex3f(x+2, y+2, z+2);
+	        gl.glVertex3f(x, y+2, z+2);
+	        gl.glEnd();
+    	}
     }
     
     /**Draw a wall cube in low graphics
