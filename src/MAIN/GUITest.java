@@ -29,11 +29,8 @@ public class GUITest {
     	
     	//add some glass
     	testLevel.setCube(3, 1, 0, new Glass());
-    	
-    	//add some empty spaces
-    	testLevel.setCube(2, 1, 0, null);
     
-    	GameFrame window = new GameFrame(true, true, testLevel);
+    	GameFrame window = new GameFrame(true, true, null, testLevel);
         window.init();
         window.execute();
     }

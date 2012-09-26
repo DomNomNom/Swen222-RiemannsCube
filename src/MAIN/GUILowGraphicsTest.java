@@ -29,11 +29,8 @@ public class GUILowGraphicsTest {
     	
     	//add some glass
     	testLevel.setCube(3, 1, 0, new Glass());
-    	
-    	//add some empty spaces
-    	testLevel.setCube(2, 1, 0, null);
     
-    	GameFrame window = new GameFrame(false, false, testLevel);
+    	GameFrame window = new GameFrame(false, false, null, testLevel);
         window.init();
         window.execute();
     }
