@@ -2,18 +2,31 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import client.Client;
 
 import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatMessage;
 import world.events.PlayerMove;
 
+/**
+ * A server for the game that holds all of the clients 
+ * and there allocated sockets. 
+ * @author feshersiva
+ *
+ */
 public class Server extends Thread {
 
-    private int broadcastClock;
     private int uid;
     private ServerSocket socket;
     private RiemannCube world;
+    
+    protected Map<Integer, RemotePlayer> clientsList;
+    protected BlockingQueue<Change> changes = new LinkedBlockingQueue<Change>();
 
     public Server(RiemannCube w) {
         try {
@@ -23,55 +36,35 @@ public class Server extends Thread {
             e.printStackTrace();
         }
         this.world = w;
+        this.clientsList = new HashMap<Integer, RemotePlayer>();
     }
 
     public void run() {
         try {
-            // First, write the period to the stream
-
-            Object obj = null;
-
+            int id = 1;
+            ChangeThread changeT = new ChangeThread(this);
+            changeT.start();
+            
             boolean exit = false;
             while (!exit) {
                 Socket clientSocket = socket.accept();
-                // TODO create new thread here!
-                ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
-                ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
-                try {
-                    // read object from socket input
-                    try {
-                        obj = input.readObject();
-                    } catch (ClassNotFoundException e) {
-                        System.out.println("Problem reading from input.");
-                        e.printStackTrace();
-                    }
-                    // object is an action
-                    if (obj instanceof Action) {
-                        Action act = (Action) obj;
-                    }
-                    // object is a player move
-                    else if (obj instanceof PlayerMove) {
-                        PlayerMove move = (PlayerMove) obj;
-                    }
-                    // object is a chat message
-                    else if (obj instanceof ChatMessage) {
-                        ChatMessage message = (ChatMessage) obj;
-                    }
-
-                    // Now, broadcast the state of the board to client
-
-                    // byte[] state = board.toByteArray();
-                    // output.writeInt(state.length);
-                    // output.write(state);
-
-                    output.flush();
-                    Thread.sleep(broadcastClock);
-                } catch (InterruptedException e) {
-                }
+                clientsList.put(id, new RemotePlayer(clientSocket, new ObjectOutputStream(clientSocket.getOutputStream())));
+                WorkerThread wThread = new WorkerThread(this, id, clientSocket);
+                wThread.start();
+                id++;
             }
             socket.close(); // release socket ... v.important!
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.println("PLAYER " + uid + " DISCONNECTED");
         }
+    }
+
+    public static void main(String[] args) {
+        Thread t = new Server(new RiemannCube(1, 1, 1));
+        t.start();
+        Client c = new Client("127.0.0.1");
+        PlayerMove pm = new PlayerMove(0, 2, 0);
+        c.push(pm);
     }
 }
