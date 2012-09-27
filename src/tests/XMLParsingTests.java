@@ -82,8 +82,8 @@ public class XMLParsingTests {
         Lock lock = (Lock) load.cubes[0][1][1].object();
         
         if(door.triggers()!=null)
-                assertTrue(door.triggers().contains(lock.getID()));
-            else fail("Need to initialise door.triggers()");
+            assertTrue(door.triggers().contains(lock.getID()));
+        else fail("Need to initialise door.triggers()");
     }
 
 }
