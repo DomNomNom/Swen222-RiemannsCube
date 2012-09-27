@@ -41,7 +41,7 @@ public class LevelPipeline {
     public void save(RiemannCube level, Writer writer) {
         try {
             // Document we're writing XML to.
-            int width = level.width, height = level.height, depth = level.depth;
+            int width = level.size.x, height = level.size.y, depth = level.size.z;
             DocumentBuilderFactory docFactory = DocumentBuilderFactory
                     .newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();

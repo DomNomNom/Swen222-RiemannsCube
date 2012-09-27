@@ -1,4 +1,4 @@
-package world;
+    package world;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,31 +44,31 @@ public class RiemannCube {
     public final Map<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
     public final Map<Integer, Cube> spawnCubes = new HashMap<Integer, Cube>();
     
-    public final int width, height, depth;
+    public final Int3 size;
 
     
     
     /**
      * Creates the RiemannCube with the given dimensions.
      * It will be filled with FloorTiles
+     * size must be at least 1x1x1
      * 
-     * @param width
-     * @param height
-     * @param depth
+     * @param size The dimentions of the cube
      */
-    public RiemannCube(int width, int height, int depth) {
-        this.width = width;
-        this.height = height;
-        this.depth = depth;
-        cubes = new Cube[width][height][depth];
+    public RiemannCube(Int3 size) {
+        if (size == null) throw new IllegalArgumentException();
+        if (size.x <= 0 || size.z <= 0 || size.z <= 0) throw new IllegalArgumentException("A cube must be at least 1x1x1");
+        
+        this.size = size; // as it is a final vector, no copying is required
+        cubes = new Cube[size.x][size.y][size.z];
         fillCubes();
     }
 
     private void fillCubes() {
-        for (int x=0; x<width; ++x)
-            for (int y=0; y<height; ++y)
-                for (int z=0; z<depth; ++z)
-                    cubes[x][y][z] = new Floor(new Int3(x,y,z));
+        for (int x=0; x<size.x; ++x)
+         for (int y=0; y<size.y; ++y)
+          for (int z=0; z<size.z; ++z)
+            cubes[x][y][z] = new Floor(new Int3(x,y,z));
     }
 
 
@@ -79,9 +79,9 @@ public class RiemannCube {
     }
     
     public boolean isInBounds(Int3 pos) {
-        if (pos.x < 0 || pos.x >= width ) return false;
-        if (pos.y < 0 || pos.y >= height) return false;
-        if (pos.z < 0 || pos.z >= depth ) return false;
+        if (pos.x < 0 || pos.x >= size.x) return false;
+        if (pos.y < 0 || pos.y >= size.y) return false;
+        if (pos.z < 0 || pos.z >= size.z) return false;
         return true;
     }
     
@@ -123,10 +123,10 @@ public class RiemannCube {
         
         RiemannCube other = (RiemannCube) obj;
         
-        if (depth != other.depth || height != other.height || width != other.width)    return false;
+        if (size.z != other.size.z || size.y != other.size.y || size.x != other.size.x)    return false;
         
-        for (int x=width; x --> 0;)
-            for (int y=0; y<height; ++y)
+        for (int x=size.x; x --> 0;)
+            for (int y=0; y<size.y; ++y)
                 if (!Arrays.equals(cubes[x][y], other.cubes[x][y]))
                     return false;
  
@@ -143,17 +143,17 @@ public class RiemannCube {
     }
 
     public Cube[][] horizontalSlice(int y) {
-        Cube[][] slice = new Cube[width][depth];
-        for (int i = 0; i < width; i++) {
+        Cube[][] slice = new Cube[size.x][size.z];
+        for (int i = 0; i < size.x; i++) {
             slice[i] = cubes[i][y];
         }
         return slice;
     }
 
     public Cube[][] orthogonalSlice(int z) {
-        Cube[][] slice = new Cube[width][height];
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++)
+        Cube[][] slice = new Cube[size.x][size.y];
+        for (int i = 0; i < size.x; i++)
+            for (int j = 0; j < size.y; j++)
                 slice[i][j] = cubes[i][j][z];
         return slice;
     }

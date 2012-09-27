@@ -172,10 +172,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         glassRender = new ArrayList<Int3>(); //create the glass render list
         
         //iterate through the level and draw all the tiles
-        for (int x = 0; x < level.width; ++x) {
-        	for (int y = 0; y < level.height; ++y) {
+        for (int x = 0; x < level.size.x; ++x) {
+        	for (int y = 0; y < level.size.y; ++y) {
         		if (free || y == floor || (y == floor-1) || y == floor+1) { //only draw if this is the current floor
-	        		for (int z = 0; z < level.depth; ++z) {
+	        		for (int z = 0; z < level.size.z; ++z) {
 	        			Cube c = level.getCube(x, y, z); //gets the cube from the level
 	        			if (high) { //draw the high graphics cubes
 		        			if (c instanceof Floor) drawFloorHigh(gl, x*2, y*2, z*2); //draw a floor cube
@@ -487,40 +487,40 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     private void drawOuterGlassHigh(GL2 gl) {
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass texture
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f       ); gl.glVertex3f(0.0f, level.height*2, 0.0f         );
-        gl.glTexCoord2f(0.0f,         level.depth); gl.glVertex3f(0.0f, level.height*2, level.depth*2);
-        gl.glTexCoord2f(level.height, level.depth); gl.glVertex3f(0.0f, 0.0f,           level.depth*2);
-        gl.glTexCoord2f(level.height, 0.0f       ); gl.glVertex3f(0.0f, 0.0f,           0.0f         );
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(0.0f, level.size.y*2, 0.0f          );
+        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(0.0f, level.size.y*2, level.size.z*2);
+        gl.glTexCoord2f(level.size.y, level.size.z); gl.glVertex3f(0.0f, 0.0f,           level.size.z*2);
+        gl.glTexCoord2f(level.size.y, 0.0f        ); gl.glVertex3f(0.0f, 0.0f,           0.0f          );
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f       ); gl.glVertex3f(level.width*2, level.height*2, 0.0f         );
-        gl.glTexCoord2f(0.0f,         level.depth); gl.glVertex3f(level.width*2, 0.0f,           0.0f         );
-        gl.glTexCoord2f(level.height, level.depth); gl.glVertex3f(level.width*2, 0.0f,           level.depth*2);
-        gl.glTexCoord2f(level.height, 0.0f       ); gl.glVertex3f(level.width*2, level.height*2, level.depth*2);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(level.size.x*2, level.size.y*2, 0.0f          );
+        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(level.size.x*2, 0.0f,           0.0f          );
+        gl.glTexCoord2f(level.size.y, level.size.z); gl.glVertex3f(level.size.x*2, 0.0f,           level.size.z*2);
+        gl.glTexCoord2f(level.size.y, 0.0f        ); gl.glVertex3f(level.size.x*2, level.size.y*2, level.size.z*2);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,        0.0f        ); gl.glVertex3f(0.0f,          level.height*2, level.depth*2);
-        gl.glTexCoord2f(0.0f,        level.height); gl.glVertex3f(level.width*2, level.height*2, level.depth*2);
-        gl.glTexCoord2f(level.width, level.height); gl.glVertex3f(level.width*2, 0.0f,           level.depth*2);
-        gl.glTexCoord2f(level.width, 0.0f        ); gl.glVertex3f(0.0f,          0.0f,           level.depth*2);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(0.0f,           level.size.y*2, level.size.z*2);
+        gl.glTexCoord2f(0.0f,         level.size.y); gl.glVertex3f(level.size.x*2, level.size.y*2, level.size.z*2);
+        gl.glTexCoord2f(level.size.x, level.size.y); gl.glVertex3f(level.size.x*2, 0.0f,           level.size.z*2);
+        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(0.0f,           0.0f,           level.size.z*2);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,        0.0f        ); gl.glVertex3f(0.0f,          level.height*2, 0.0f);
-        gl.glTexCoord2f(0.0f,        level.height); gl.glVertex3f(0.0f,          0.0f,           0.0f);
-        gl.glTexCoord2f(level.width, level.height); gl.glVertex3f(level.width*2, 0.0f,           0.0f);
-        gl.glTexCoord2f(level.width, 0.0f        ); gl.glVertex3f(level.width*2, level.height*2, 0.0f);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(0.0f,           level.size.y*2, 0.0f);
+        gl.glTexCoord2f(0.0f,         level.size.y); gl.glVertex3f(0.0f,           0.0f,           0.0f);
+        gl.glTexCoord2f(level.size.x, level.size.y); gl.glVertex3f(level.size.x*2, 0.0f,           0.0f);
+        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(level.size.x*2, level.size.y*2, 0.0f);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,        0.0f       ); gl.glVertex3f(0.0f,          level.height*2, level.depth*2);
-        gl.glTexCoord2f(0.0f,        level.depth); gl.glVertex3f(0.0f,          level.height*2, 0.0f         );
-        gl.glTexCoord2f(level.width, level.depth); gl.glVertex3f(level.width*2, level.height*2, 0.0f         );
-        gl.glTexCoord2f(level.width, 0.0f       ); gl.glVertex3f(level.width*2, level.height*2, level.depth*2);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(0.0f,           level.size.y*2, level.size.z*2);
+        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(0.0f,           level.size.y*2, 0.0f          );
+        gl.glTexCoord2f(level.size.x, level.size.z); gl.glVertex3f(level.size.x*2, level.size.y*2, 0.0f          );
+        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(level.size.x*2, level.size.y*2, level.size.z*2);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,        0.0f       ); gl.glVertex3f(level.width*2, 0.0f, 0.0f         );
-        gl.glTexCoord2f(0.0f,        level.depth); gl.glVertex3f(0.0f,          0.0f, 0.0f         );
-        gl.glTexCoord2f(level.width, level.depth); gl.glVertex3f(0.0f,          0.0f, level.depth*2);
-        gl.glTexCoord2f(level.width, 0.0f       ); gl.glVertex3f(level.width*2, 0.0f, level.depth*2);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(level.size.x*2, 0.0f, 0.0f          );
+        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(0.0f,           0.0f, 0.0f          );
+        gl.glTexCoord2f(level.size.x, level.size.z); gl.glVertex3f(0.0f,           0.0f, level.size.z*2);
+        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(level.size.x*2, 0.0f, level.size.z*2);
         gl.glEnd();
     }
     
@@ -653,40 +653,40 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 0.4f);
         gl.glBegin(GL2.GL_QUADS);
-        gl.glVertex3f(0.0f, level.height*2, 0.0f         );
-        gl.glVertex3f(0.0f, level.height*2, level.depth*2);
-        gl.glVertex3f(0.0f, 0.0f,           level.depth*2);
-        gl.glVertex3f(0.0f, 0.0f,           0.0f         );
+        gl.glVertex3f(0.0f, level.size.y*2, 0.0f          );
+        gl.glVertex3f(0.0f, level.size.y*2, level.size.z*2);
+        gl.glVertex3f(0.0f, 0.0f,           level.size.z*2);
+        gl.glVertex3f(0.0f, 0.0f,           0.0f          );
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glVertex3f(level.width*2, level.height*2, 0.0f         );
-        gl.glVertex3f(level.width*2, 0.0f,           0.0f         );
-        gl.glVertex3f(level.width*2, 0.0f,           level.depth*2);
-        gl.glVertex3f(level.width*2, level.height*2, level.depth*2);
+        gl.glVertex3f(level.size.x*2, level.size.y*2, 0.0f          );
+        gl.glVertex3f(level.size.x*2, 0.0f,           0.0f          );
+        gl.glVertex3f(level.size.x*2, 0.0f,           level.size.z*2);
+        gl.glVertex3f(level.size.x*2, level.size.y*2, level.size.z*2);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glVertex3f(0.0f,          level.height*2, level.depth*2);
-        gl.glVertex3f(level.width*2, level.height*2, level.depth*2);
-        gl.glVertex3f(level.width*2, 0.0f,           level.depth*2);
-        gl.glVertex3f(0.0f,          0.0f,           level.depth*2);
+        gl.glVertex3f(0.0f,           level.size.y*2, level.size.z*2);
+        gl.glVertex3f(level.size.x*2, level.size.y*2, level.size.z*2);
+        gl.glVertex3f(level.size.x*2, 0.0f,           level.size.z*2);
+        gl.glVertex3f(0.0f,           0.0f,           level.size.z*2);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glVertex3f(0.0f,          level.height*2, 0.0f);
-        gl.glVertex3f(0.0f,          0.0f,           0.0f);
-        gl.glVertex3f(level.width*2, 0.0f,           0.0f);
-        gl.glVertex3f(level.width*2, level.height*2, 0.0f);
+        gl.glVertex3f(0.0f,           level.size.y*2, 0.0f);
+        gl.glVertex3f(0.0f,           0.0f,           0.0f);
+        gl.glVertex3f(level.size.x*2, 0.0f,           0.0f);
+        gl.glVertex3f(level.size.x*2, level.size.y*2, 0.0f);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glVertex3f(0.0f,          level.height*2, level.depth*2);
-        gl.glVertex3f(0.0f,          level.height*2, 0.0f         );
-        gl.glVertex3f(level.width*2, level.height*2, 0.0f         );
-        gl.glVertex3f(level.width*2, level.height*2, level.depth*2);
+        gl.glVertex3f(0.0f,           level.size.y*2, level.size.z*2);
+        gl.glVertex3f(0.0f,           level.size.y*2, 0.0f          );
+        gl.glVertex3f(level.size.x*2, level.size.y*2, 0.0f          );
+        gl.glVertex3f(level.size.x*2, level.size.y*2, level.size.z*2);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glVertex3f(level.width*2, 0.0f, 0.0f         );
-        gl.glVertex3f(0.0f,          0.0f, 0.0f         );
-        gl.glVertex3f(0.0f,          0.0f, level.depth*2);
-        gl.glVertex3f(level.width*2, 0.0f, level.depth*2);
+        gl.glVertex3f(level.size.x*2, 0.0f, 0.0f          );
+        gl.glVertex3f(0.0f,           0.0f, 0.0f          );
+        gl.glVertex3f(0.0f,           0.0f, level.size.z*2);
+        gl.glVertex3f(level.size.x*2, 0.0f, level.size.z*2);
         gl.glEnd();
     }
     

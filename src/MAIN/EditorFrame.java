@@ -14,6 +14,7 @@ import java.io.Writer;
 
 import javax.swing.*;
 
+import utils.Int3;
 import world.RiemannCube;
 import world.items.Key;
 import world.objects.Lock;
@@ -69,7 +70,7 @@ public class EditorFrame extends JFrame {
                         "Height?", "3"));
                 int depth = Integer.parseInt(JOptionPane.showInputDialog(null,
                         "Depth?", "3"));
-                canvas.setLevel(new RiemannCube(width, height, depth));
+                canvas.setLevel(new RiemannCube(new Int3(width, height, depth)));
                 contentPane.add(canvas, BorderLayout.CENTER);
                 setContentPane(contentPane);
             }

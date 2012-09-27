@@ -62,7 +62,7 @@ public class Server extends Thread {
     }
 
     public static void main(String[] args) {
-        Thread t = new Server(new RiemannCube(1, 1, 1));
+        Thread t = new Server(new RiemannCube(new Int3(1, 1, 1)));
         t.start();
         Client c = new Client("127.0.0.1");
         PlayerMove pm = new PlayerMove(0, new Int3());

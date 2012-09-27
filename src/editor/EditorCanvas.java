@@ -151,7 +151,7 @@ public class EditorCanvas extends JComponent implements MouseListener,
      *            Graphics shown on canvas
      */
     public void drawIsometric(Graphics g) {
-        int top, height = level.height, width = level.width;
+        int top, height = level.size.y, width = level.size.x;
         int floorHeight = (width + height) * squareLength / 2; // Height of
                                                                // entire floor.
         float dWidth = (float) (squareLength * 3 / Math.sqrt(2)); // width of
@@ -166,7 +166,7 @@ public class EditorCanvas extends JComponent implements MouseListener,
                         + floorHeight / 2 + height * floorHeight / 2;
                 left = this.left + i * dWidth / 2 + height; // lefthand side of
                                                             // starting column.
-                for (int j = 0; j < level.depth; j++) {
+                for (int j = 0; j < level.size.z; j++) {
                     // Chooses colour depending on cube type.
                     if (slice[i][j].type() == CubeType.FLOOR) {
                         if (slice[i][j].isSpawnPoint()) {
@@ -308,7 +308,7 @@ public class EditorCanvas extends JComponent implements MouseListener,
             slice = level.verticalSlice(x);
         } else if (orientation.equals("orthogonal")) {
             z += step;
-            if (z < 0 || z >= level.depth)
+            if (z < 0 || z >= level.size.z)
                 z -= step;
             slice = level.orthogonalSlice(z);
         }
@@ -345,12 +345,12 @@ public class EditorCanvas extends JComponent implements MouseListener,
             i = (int) (i - 3 * squareLength / (2 * Math.sqrt(2)));
             x = (int) ((i) * Math.sqrt(2) / 3 + j) / squareLength;
             z = (int) ((-i * Math.sqrt(2) / 3 + j) / squareLength);
-            int floorHeight = (level.height + level.width + 1) * squareLength
+            int floorHeight = (level.size.y + level.size.x + 1) * squareLength
                     / 2;
             y = (e.getY() - top) / floorHeight;
-            x -= y * level.width;
-            z -= y * level.width;
-            y = level.height - y - 1;
+            x -= y * level.size.x;
+            z -= y * level.size.x;
+            y = level.size.y - y - 1;
             this.i = x;
             this.j = z;
             System.out.println(x + " " + y + " " + z);

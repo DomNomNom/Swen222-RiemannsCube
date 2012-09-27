@@ -21,7 +21,7 @@ public class XMLParsingTests {
     RiemannCube riemann;
     @Test
     public void test() {
-        riemann = new RiemannCube(2, 2, 2);
+        riemann = new RiemannCube(new Int3(2, 2, 2));
         Player p = new Player(riemann.getCube(0,0,0), 1);
         riemann.getCube(0,0,0).addObject(p);
         LevelPipeline pipe = new LevelPipeline();

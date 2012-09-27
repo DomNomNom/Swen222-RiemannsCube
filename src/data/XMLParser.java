@@ -88,7 +88,7 @@ public class XMLParser {
         int height = Integer.parseInt(dimensions.getAttribute("height"));
         int depth = Integer.parseInt(dimensions.getAttribute("depth"));
 
-        RiemannCube riemannCube = new RiemannCube(width, height, depth);
+        RiemannCube riemannCube = new RiemannCube(new Int3(width, height, depth));
 
         int w = 0;
         int h = 0;
