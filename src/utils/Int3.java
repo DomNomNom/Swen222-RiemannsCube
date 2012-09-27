@@ -1,5 +1,7 @@
 package utils;
 
+import java.io.Serializable;
+
 
 /**
  * A very simple IMMUTABLE 3D integer vector.
@@ -9,7 +11,7 @@ package utils;
  * @author schmiddomi
  *
  */
-public class Int3 {
+public class Int3 implements Serializable{
     
     public final int x, y, z;
     

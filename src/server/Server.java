@@ -8,6 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import client.Client;
 
+import utils.Int3;
 import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatMessage;
@@ -64,7 +65,7 @@ public class Server extends Thread {
         Thread t = new Server(new RiemannCube(1, 1, 1));
         t.start();
         Client c = new Client("127.0.0.1");
-        PlayerMove pm = new PlayerMove(0, 2, 0);
+        PlayerMove pm = new PlayerMove(0, new Int3());
         c.push(pm);
     }
 }
