@@ -396,7 +396,61 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     
     /**Draw a glass cube in high graphics*/
     private void drawGlassHigh(GL2 gl, int x, int y, int z) {
+    	//draw floor
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z  );
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2, y, z  );
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x,   y, z+2);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y+2, z  );
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y+2, z+2);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y+2, z  );
+        gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y, z  );
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y, z+2);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y, z  );
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y+2, z  );
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2, y+2, z  );
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x,   y+2, z+2);
+        gl.glEnd();
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass tile texture
+    	//draw front part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x+2, y+2, z  );
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x+2, y,   z  );
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y,   z+2);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y+2, z+2);
+		gl.glEnd();
+		//draw back part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y+2, z+2);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x, y,   z+2);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x, y,   z  );
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x, y+2, z  );
+		gl.glEnd();
+		//draw left part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y,   z+2);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y,   z+2);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y+2, z+2);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
+		gl.glEnd();
+		//draw right part
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(x,   y+2, z);
+		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x,   y,   z);
+		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y,   z);
+		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z);
+		gl.glEnd();
 		//draw front part
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(x, y+2, z  );
@@ -425,6 +479,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 		gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(x+2, y,   z+2);
 		gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(x+2, y+2, z+2);
 		gl.glEnd();
+		
     }
     
     /**Draws an outer box of glass around the level in high graphics
