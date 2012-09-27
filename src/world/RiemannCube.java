@@ -37,8 +37,10 @@ public class RiemannCube {
     public Cube getCube(int x, int y, int z) {    return cubes[x][y][z];  }
     public void setCube(int x, int y, int z, Cube c) {   cubes[x][y][z] = c;  }
 
+    
     public final Map<Integer, Player > players  = new HashMap<Integer, Player >();
     public final Map<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
+    public final Map<Integer, Cube> spawnCubes = new HashMap<Integer, Cube>();
     
     public final int width, height, depth;
 

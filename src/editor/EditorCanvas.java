@@ -70,7 +70,7 @@ public class EditorCanvas extends JComponent implements MouseListener,
                     }
                 } else if (slice[i][j].type() == CubeType.WALL) {
                     g.setColor(Color.GRAY);
-                } else if(slice[i][j].type() == CubeType.GLASS){
+                } else if (slice[i][j].type() == CubeType.GLASS) {
                     g.setColor(new Color(202, 225, 255));
                 }
 
@@ -176,7 +176,7 @@ public class EditorCanvas extends JComponent implements MouseListener,
                         }
                     } else if (slice[i][j].type() == CubeType.WALL) {
                         g.setColor(Color.GRAY);
-                    } else if(slice[i][j].type() == CubeType.GLASS){
+                    } else if (slice[i][j].type() == CubeType.GLASS) {
                         g.setColor(new Color(202, 225, 255));
                     }
 
@@ -393,12 +393,28 @@ public class EditorCanvas extends JComponent implements MouseListener,
         } else if (level.getCube(x, y, z).object() == null) {
             if (key == 'd') {
                 if (curDoor == null || curDoor.allTriggersPlaced()) {
+                    if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
+                        JOptionPane.showMessageDialog(null,
+                                "You can only add objects to a floor cube.");
+                        return;
+                    }
 
                     Color col = JColorChooser.showDialog(null,
                             "Choose a Color for the Door", Color.WHITE);
+                    if (col == null) {
+                        return;
+                    }
 
-                    int num = Integer.parseInt(JOptionPane.showInputDialog(
-                            null, "How many locks?", "4"));
+                    int num = 0;
+                    try {
+                        num = Integer.parseInt(JOptionPane.showInputDialog(
+                                null, "How many locks?", "4"));
+                    } catch (NumberFormatException numE) {
+                        JOptionPane.showMessageDialog(null,
+                                "Make sure you enter a number.");
+                        return;
+                    }
+                    
                     curDoor = new Door(num, col);
                     level.getCube(x, y, z).addObject(curDoor);
                 } else {
@@ -408,6 +424,12 @@ public class EditorCanvas extends JComponent implements MouseListener,
             } else if (key == 'l') {
                 if (curDoor != null && !curDoor.allTriggersPlaced()
                         && curKey != null) {
+                    if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
+                        JOptionPane.showMessageDialog(null,
+                                "You can only add objects to a floor cube.");
+                        return;
+                    }
+
                     curLock = new Lock(lockID++, curDoor.color());
                     level.getCube(x, y, z).addObject(curLock);
                     curDoor.addTrigger(curLock.getID());
@@ -415,6 +437,12 @@ public class EditorCanvas extends JComponent implements MouseListener,
                 }
             } else if (key == 'k') {
                 if (curLock != null) {
+                    if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
+                        JOptionPane.showMessageDialog(null,
+                                "You can only add objects to a floor cube.");
+                        return;
+                    }
+
                     curKey = new Key(curLock.color());
                     level.getCube(x, y, z).addObject(curKey);
                     curLock = null;

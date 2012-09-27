@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 import javax.swing.*;
 
@@ -78,7 +80,10 @@ public class EditorFrame extends JFrame {
                 pipe = new LevelPipeline();
                 String fname = JOptionPane.showInputDialog(null, "What name?",
                         "New level");
+                //OutputStream out = new FileOutputStream(new File(fname));
+//                string
                 pipe.save(canvas.level(), fname);
+                //out.close();
             }
         });
         file.add(item);
@@ -97,20 +102,20 @@ public class EditorFrame extends JFrame {
             }
         });
         file.add(item);
-        
+
         // Creates the buttons that lets the user open a help screen.
         JMenu help = new JMenu("Help");
         item = new JMenuItem("Help Screen");
         item.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 new HelpFrame();
             }
         });
-        
+
         help.add(item);
-        
+
         menuBar.add(file);
         menuBar.add(help);
         contentPane.add(menuBar, BorderLayout.NORTH);
@@ -175,6 +180,6 @@ public class EditorFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-        JFrame edFrame = new EditorFrame();
+        new EditorFrame();
     }
 }

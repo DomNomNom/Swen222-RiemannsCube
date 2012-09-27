@@ -37,10 +37,6 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class LevelPipeline {
 
-    public LevelPipeline() {
-
-    }
-
     public void save(RiemannCube level, String fname) {
         try {
             // Document we're writing XML to.
@@ -87,7 +83,7 @@ public class LevelPipeline {
                         // Adds spawn location
                         if (curCube.isSpawnPoint()) {
                             cube.setAttribute("spawn", "true");
-                        } else{
+                        } else {
                             cube.setAttribute("spawn", "false");
                         }
 
@@ -105,25 +101,31 @@ public class LevelPipeline {
                             player.setAttribute("id",
                                     String.valueOf(curPlayer.id()));
 
-                            // add non-lightsource items
+                            // Add non-lightsource items
                             GameItem curItem = curPlayer.item();
-                            Element item = doc.createElement("item");
+                            Element item;
                             if (curItem != null) {
-                                item.setAttribute("type", item.getClass()
-                                        .getName());
-
-                                player.appendChild(item);
+                                item = doc.createElement(curItem
+                                        .getClassName());
                             }
+                            
+//                            if (curItem != null) {
+//                                item.setAttribute(curItem.getClassName(), item
+//                                        .getClass().getName());
+//
+//                                player.appendChild(item);
+//                            }
 
-                            // add lightsource
-                            GameItem curLight = curPlayer.torch();
-                            Element light = doc.createElement("lightsource");
-                            if (curLight != null) {
-                                light.setAttribute("type", item.getClass()
-                                        .getName());
-
-                                player.appendChild(light);
-                            }
+                            // Players dont have light sources anymore
+                            // // add lightsource
+                            // GameItem curLight = curPlayer.torch();
+                            // Element light = doc.createElement("lightsource");
+                            // if (curLight != null) {
+                            // light.setAttribute("type", item.getClass()
+                            // .getName());
+                            //
+                            // player.appendChild(light);
+                            // }
 
                             cube.appendChild(player);
                         }

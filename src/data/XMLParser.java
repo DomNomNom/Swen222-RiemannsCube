@@ -93,6 +93,7 @@ public class XMLParser {
         int w = 0;
         int h = 0;
         int d = 0;
+        int spawnCount = 0; // Keeps track of how many spawn cubes have been added, so it can update the map in RiemannCube correctly.
 
         // Get all the slice nodes, so we can iterate through them getting all the floor nodes, then all the cube nodes.
         // Note, Slices are the vertical slices through the cube, starting at the front going to the back. 
@@ -126,6 +127,8 @@ public class XMLParser {
                     
                     if(spawn.equals("true")){
                         cube.setSpawnPoint(true);
+                        riemannCube.spawnCubes.put(spawnCount, cube);
+                        spawnCount++;
                     } else if(spawn.equals("false")){
                         cube.setSpawnPoint(false);
                     } else {
