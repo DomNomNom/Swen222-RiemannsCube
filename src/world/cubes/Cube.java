@@ -47,6 +47,7 @@ public abstract class Cube {
      * @return Whether it was possible to add this object
      */
     public boolean addObject(GameObject o) {
+        //System.err.println("adding at " + pos);
         return objects.add(o);
     }
     
@@ -56,6 +57,7 @@ public abstract class Cube {
      * @return Whether it was possible to add this object
      */
     public boolean removeObject(GameObject o) {
+        //System.err.println("removing at " + pos);
         return objects.remove(o);
     }
 

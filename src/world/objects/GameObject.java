@@ -37,7 +37,17 @@ public abstract class GameObject {
         return true;
     }
     
-    
-    public abstract String getClassName();
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)      return true;
+        if (obj == null)      return false;
+        if (!(obj instanceof GameObject))  return false;  
+        GameObject other = (GameObject) obj;
+        if (!getClassName().equals(other.getClassName())) return false;
+        if (!getPos().equals(other.getPos())) return false;
+        
+        return true;
+    }
 
+    public abstract String getClassName();
 }

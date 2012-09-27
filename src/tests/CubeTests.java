@@ -33,7 +33,7 @@ public class CubeTests {
         f1.addObject(new Key(f1, new Color(0)));
         assertFalse(f1.equals(f2));
         assertFalse(f2.equals(f1));
-        f1.addObject(new Key(f1, new Color(0))); // TODO: automatic adding
+        f2.addObject(new Key(f2, new Color(0))); // TODO: automatic adding
         assertTrue(f1.equals(f2));
         assertTrue(f2.equals(f1));
     }

@@ -17,7 +17,9 @@ public class WorldTests {
     /** returns a new World with a player(id=0) */
     public RiemannCube generateWorld() {
         RiemannCube world = new RiemannCube(new Int3(6, 6, 6));
-        world.players.put(0, new Player(new Floor(new Int3()), 0));
+        Player p = new Player(world.getCube(new Int3()), 0);
+        world.players.put(p.id, p);
+        world.getCube(new Int3()).addObject(p);
         return world;
     }
     
