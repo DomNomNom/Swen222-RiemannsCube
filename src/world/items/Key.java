@@ -17,4 +17,5 @@ public class Key extends GameItem {
     public String getClassName() {
         return "Key";
     }
+    
 }

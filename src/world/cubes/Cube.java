@@ -65,7 +65,7 @@ public abstract class Cube {
         if (o == null || ! (o instanceof Cube)) return false;
         
         Cube other = (Cube) o;
-        if(getClass() != o.getClass()) return false; // same subclass?\
+        if(getClass() != o.getClass()) return false; // same subclass?
         
         // equivalent contents
         if (!containsEquivalentContent(this, other)) return false;
