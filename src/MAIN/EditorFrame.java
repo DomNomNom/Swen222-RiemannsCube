@@ -15,6 +15,7 @@ import world.objects.Lock;
 import world.objects.Trigger;
 
 import editor.EditorCanvas;
+import editor.HelpFrame;
 import data.LevelPipeline;
 
 /**
@@ -52,7 +53,7 @@ public class EditorFrame extends JFrame {
      */
     private void addMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("File");
+        JMenu file = new JMenu("File");
         // "New" option in the menu bar, to create empty map.
         JMenuItem item = new JMenuItem("New");
         item.addActionListener(new ActionListener() {
@@ -69,7 +70,7 @@ public class EditorFrame extends JFrame {
             }
         });
 
-        menu.add(item);
+        file.add(item);
         // "Save" option in the menu bar, to save to XML
         item = new JMenuItem("Save");
         item.addActionListener(new ActionListener() {
@@ -80,7 +81,7 @@ public class EditorFrame extends JFrame {
                 pipe.save(canvas.level(), fname);
             }
         });
-        menu.add(item);
+        file.add(item);
 
         item = new JMenuItem("Load");
         item.addActionListener(new ActionListener() {
@@ -95,9 +96,23 @@ public class EditorFrame extends JFrame {
                 }
             }
         });
-
-        menu.add(item);
-        menuBar.add(menu);
+        file.add(item);
+        
+        // Creates the buttons that lets the user open a help screen.
+        JMenu help = new JMenu("Help");
+        item = new JMenuItem("Help Screen");
+        item.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new HelpFrame();
+            }
+        });
+        
+        help.add(item);
+        
+        menuBar.add(file);
+        menuBar.add(help);
         contentPane.add(menuBar, BorderLayout.NORTH);
     }
 

@@ -25,6 +25,7 @@ import utils.Int3;
 import world.RiemannCube;
 import world.cubes.Cube;
 import world.cubes.Floor;
+import world.cubes.Glass;
 import world.cubes.Space;
 import world.cubes.Wall;
 import world.items.Key;
@@ -77,8 +78,11 @@ public class XMLParser {
         doc.getDocumentElement().normalize();
         // ===========================================================
 
+        //Riemann Tag
         Node root = doc.getDocumentElement();
 
+        //Get the dimension of the Cube, which is described in the XML file 
+        // --> Attributes in the root node.
         Element dimensions = (Element) root;
         int width = Integer.parseInt(dimensions.getAttribute("width"));
         int height = Integer.parseInt(dimensions.getAttribute("height"));
@@ -90,31 +94,42 @@ public class XMLParser {
         int h = 0;
         int d = 0;
 
+        // Get all the slice nodes, so we can iterate through them getting all the floor nodes, then all the cube nodes.
+        // Note, Slices are the vertical slices through the cube, starting at the front going to the back. 
+        // Floors are the birds eye view of each horizontal slice of the cube.
         NodeList slices = root.getChildNodes();
 
-        for (int z = 1; z < slices.getLength(); z += 2) {
-            NodeList floors = slices.item(z).getChildNodes();
-            h = 0;
+        for (int z = 1; z < slices.getLength(); z += 2) {        // Iterate through the slice nodes
+            NodeList floors = slices.item(z).getChildNodes();    // Get the floor nodes from each slice
+            h = 0; 
             
-            for (int y = 1; y < floors.getLength(); y += 2) {
-                NodeList cubes = floors.item(y).getChildNodes();
+            for (int y = 1; y < floors.getLength(); y += 2) {    // Iterate through the floor nodes
+                NodeList cubes = floors.item(y).getChildNodes(); // Get the cubes on each Slice of the floor
                 w = 0;
 
-                for (int x = 1; x < cubes.getLength(); x += 2) {
+                for (int x = 1; x < cubes.getLength(); x += 2) { // Iterate through all the cubes on each slice/floor
                     Element c = (Element) cubes.item(x);
-                    int type = Integer.parseInt(c.getAttribute("type"));
-
+                    String type = c.getAttribute("type");
+                    String spawn = c.getAttribute("spawn");
+                    
                     Cube cube = null;
 
-                    if (type == 0) {
+                    if (type.equals("Space")) {
                         cube = new Space();
-//                        System.out.println("Space");
-                    } else if (type == 1) {
+                    } else if (type.equals("Floor")) {
                         cube = new Floor();
-//                        System.out.println("Floor");
-                    } else if (type == 2) {
+                    } else if (type.equals("Wall")) {
                         cube = new Wall();
-//                        System.out.println("Wall");
+                    } else if(type.equals("Glass")){
+                        cube = new Glass();
+                    }
+                    
+                    if(spawn.equals("true")){
+                        cube.setSpawnPoint(true);
+                    } else if(spawn.equals("false")){
+                        cube.setSpawnPoint(false);
+                    } else {
+                        throw new Error("Something wrong happened in XMLParser, to do with spawn cubes");
                     }
 
                     NodeList obs = c.getChildNodes();
@@ -147,6 +162,7 @@ public class XMLParser {
             RiemannCube riemannCube, Int3 cubePos) {
         GameObject ret = null;
 
+        //TODO Let parser also add the items the player is holding to the player.
         if (n.getNodeName().equals("player")) {
             //Get the ID for the player
             Element e = (Element) n;

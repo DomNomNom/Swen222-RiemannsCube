@@ -26,24 +26,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
-
- * Saves a 3D map state to XML. Form of:
- *<map> - depth, height, width
- * <slice> - z
- * 	<floor> - y
- *   <cube> - x, type
- *    <player> - id
- *     <item> -type, id</>
- *     <lightsource> - type</>
- *    <object> - type, id</>
- *    </>
- *   </>
- *  </>
- * </>
- *</>
- * If player is null, set number value to -1
- * Null items have type "null".
- *     
+ * 
+ * Saves a 3D map state to XML. Form of: <map> - depth, height, width <slice> -
+ * z <floor> - y <cube> - x, type <player> - id <item> -type, id</>
+ * <lightsource> - type</> <object> - type, id</> </> </> </> </> </> If player
+ * is null, set number value to -1 Null items have type "null".
+ * 
  * @author mudgejayd 300221669
  * 
  */
@@ -96,21 +84,28 @@ public class LevelPipeline {
                         cube.setAttribute("type",
                                 String.valueOf(curCube.type()));
 
-                        //Save object on square, if exists.
+                        // Adds spawn location
+                        if (curCube.isSpawnPoint()) {
+                            cube.setAttribute("spawn", "true");
+                        } else{
+                            cube.setAttribute("spawn", "false");
+                        }
+
+                        // Save object on square, if exists.
                         GameObject obj = curCube.object();
                         if (obj != null) {
                             Element gameObj = getObjectElement(obj, doc);
                             cube.appendChild(gameObj);
                         }
 
-                        //Create the player
+                        // Create the player
                         Player curPlayer = curCube.player();
                         Element player = doc.createElement("player");
                         if (curPlayer != null) {
                             player.setAttribute("id",
                                     String.valueOf(curPlayer.id()));
 
-                            //add non-lightsource items
+                            // add non-lightsource items
                             GameItem curItem = curPlayer.item();
                             Element item = doc.createElement("item");
                             if (curItem != null) {
@@ -119,8 +114,8 @@ public class LevelPipeline {
 
                                 player.appendChild(item);
                             }
-                            
-                            //add lightsource
+
+                            // add lightsource
                             GameItem curLight = curPlayer.torch();
                             Element light = doc.createElement("lightsource");
                             if (curLight != null) {
@@ -132,7 +127,7 @@ public class LevelPipeline {
 
                             cube.appendChild(player);
                         }
-                            
+
                         row.appendChild(cube);
                         slice.appendChild(row);
                         rootElement.appendChild(slice);
@@ -167,38 +162,38 @@ public class LevelPipeline {
                 e.printStackTrace();
             }
         }
-        
+
         return cube;
     }
-    
-    private Element getObjectElement(GameObject obj, Document doc){
+
+    private Element getObjectElement(GameObject obj, Document doc) {
         Element element;
-        if(obj instanceof Door){
+        if (obj instanceof Door) {
             Door door = (Door) obj;
             element = doc.createElement("door");
             String triggerIDs = "";
-            for(Integer i : door.triggers())
-                triggerIDs+=i.toString()+" ";
+            for (Integer i : door.triggers())
+                triggerIDs += i.toString() + " ";
             element.setAttribute("triggerIDs", triggerIDs);
             element.setAttribute("color", hexCode(door.color()));
-        }else if(obj instanceof Trigger){
+        } else if (obj instanceof Trigger) {
             element = doc.createElement(obj.getClassName().toLowerCase());
-            element.setAttribute("id", String.valueOf(((Trigger)obj).getID()));
+            element.setAttribute("id", String.valueOf(((Trigger) obj).getID()));
             element.setAttribute("color", hexCode(((Trigger) obj).color()));
-        }else if(obj instanceof Key){
+        } else if (obj instanceof Key) {
             element = doc.createElement(obj.getClassName().toLowerCase());
             element.setAttribute("color", hexCode(((Key) obj).colour()));
-        }else{
+        } else {
             element = doc.createElement(obj.getClassName());
         }
-        
+
         return element;
     }
-    
-    private String hexCode(Color c){
-      String s = Integer.toHexString( c.getRGB() & 0xffffff );
-      if(s.length() < 6)
-          s = "000000".substring(0, 6 - s.length()) + s;
-      return '#' + s;
+
+    private String hexCode(Color c) {
+        String s = Integer.toHexString(c.getRGB() & 0xffffff);
+        if (s.length() < 6)
+            s = "000000".substring(0, 6 - s.length()) + s;
+        return '#' + s;
     }
 }

@@ -9,280 +9,344 @@
         <floor y="0" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="4" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="5" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="6" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="7" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
     </slice>
@@ -292,116 +356,142 @@
         <floor y="0" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="true"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" >
 
                 <lock
@@ -410,167 +500,211 @@
             </cube>
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="true"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="4" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="5" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="6" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
-                x="1" />
+                spawn="false"
+                type="Floor"
+                x="1" >
+
+                <key color="#ff66cc" />
+            </cube>
 
             <cube
-                type="1"
-                x="2" />
+                spawn="false"
+                type="Floor"
+                x="2" >
+
+                <key color="#ff66cc" />
+            </cube>
 
             <cube
-                type="1"
+                spawn="false"
+                type="Glass"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="true"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="7" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
     </slice>
@@ -580,280 +714,344 @@
         <floor y="0" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Glass"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="4" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="5" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="6" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Glass"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="7" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
     </slice>
@@ -863,283 +1061,347 @@
         <floor y="0" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Glass"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="4" >
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" >
 
                 <key color="#6666ff" />
             </cube>
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="5" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="6" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Glass"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="7" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
     </slice>
@@ -1149,280 +1411,349 @@
         <floor y="0" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="4" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="true"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="7" />
         </floor>
 
         <floor y="5" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="6" >
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Glass"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Glass"
                 x="4" />
 
             <cube
-                type="1"
-                x="5" />
+                spawn="false"
+                type="Floor"
+                x="5" >
+
+                <door
+                    triggerIDs="0 1 "
+                    color="#ff66cc" />
+            </cube>
 
             <cube
-                type="1"
+                spawn="false"
+                type="Glass"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="7" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
     </slice>
@@ -1432,58 +1763,71 @@
         <floor y="0" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" >
 
                 <door
@@ -1492,225 +1836,286 @@
             </cube>
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="true"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="4" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="5" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="6" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
-                x="4" />
+                spawn="false"
+                type="Floor"
+                x="4" >
+
+                <lock
+                    id="1"
+                    color="#ff66cc" />
+            </cube>
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
-                x="6" />
+                spawn="false"
+                type="Floor"
+                x="6" >
+
+                <lock
+                    id="0"
+                    color="#ff66cc" />
+            </cube>
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="7" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
     </slice>
@@ -1720,54 +2125,66 @@
         <floor y="0" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" >
 
                 <lock
@@ -1776,232 +2193,284 @@
             </cube>
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" >
 
                 <key color="#6666ff" />
             </cube>
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="4" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="5" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="6" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="7" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
     </slice>
@@ -2011,280 +2480,344 @@
         <floor y="0" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="1" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="2" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="3" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="4" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="5" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="6" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="2" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="3" />
 
             <cube
-                type="1"
+                spawn="false"
+                type="Floor"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
 
         <floor y="7" >
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="0" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="1" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="2" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="3" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="4" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="5" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="6" />
 
             <cube
-                type="2"
+                spawn="false"
+                type="Wall"
                 x="7" />
         </floor>
     </slice>

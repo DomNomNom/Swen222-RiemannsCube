@@ -3,11 +3,13 @@ package world.cubes;
 
 public class Glass extends Cube {
 
-    public Glass(){ }
-    
+//    public int type() {
+//        return CubeType.GLASS.ordinal();
+//    }
+
     @Override
-    public int type() {
-        return CubeType.GLASS.ordinal();
+    public CubeType type() {
+        return CubeType.GLASS;
     }
     
 }

@@ -62,10 +62,18 @@ public class EditorCanvas extends JComponent implements MouseListener,
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
                 // Choose colour based on cube being drawn.
-                if (slice[i][j].type() == 1)
-                    g.setColor(Color.RED);
-                if (slice[i][j].type() == 2)
+                if (slice[i][j].type() == CubeType.FLOOR) {
+                    if (slice[i][j].isSpawnPoint()) {
+                        g.setColor(Color.RED);
+                    } else {
+                        g.setColor(Color.WHITE);
+                    }
+                } else if (slice[i][j].type() == CubeType.WALL) {
                     g.setColor(Color.GRAY);
+                } else if(slice[i][j].type() == CubeType.GLASS){
+                    g.setColor(new Color(202, 225, 255));
+                }
+
                 g.fillRect(left + i * squareLength, top + j * squareLength,
                         squareLength, squareLength);
                 g.setColor(Color.BLACK);
@@ -124,7 +132,8 @@ public class EditorCanvas extends JComponent implements MouseListener,
             g.setColor(Color.YELLOW);
             g.fillOval(x, y, squareLength, squareLength);
             g.setColor(((Key) obj).colour());
-            g.fillOval(x + squareLength/4, y + squareLength/4, squareLength/2, squareLength/2);
+            g.fillOval(x + squareLength / 4, y + squareLength / 4,
+                    squareLength / 2, squareLength / 2);
             g.setColor(Color.BLACK);
             g.drawOval(x, y, squareLength, squareLength);
         } else if (obj instanceof Trigger) {
@@ -159,10 +168,18 @@ public class EditorCanvas extends JComponent implements MouseListener,
                                                             // starting column.
                 for (int j = 0; j < level.depth; j++) {
                     // Chooses colour depending on cube type.
-                    if (slice[i][j].type() == 1)
-                        g.setColor(Color.RED);
-                    if (slice[i][j].type() == 2)
+                    if (slice[i][j].type() == CubeType.FLOOR) {
+                        if (slice[i][j].isSpawnPoint()) {
+                            g.setColor(Color.RED);
+                        } else {
+                            g.setColor(Color.WHITE);
+                        }
+                    } else if (slice[i][j].type() == CubeType.WALL) {
                         g.setColor(Color.GRAY);
+                    } else if(slice[i][j].type() == CubeType.GLASS){
+                        g.setColor(new Color(202, 225, 255));
+                    }
+
                     if (this.x == i && this.z == j && y == floor) {
                         int red = g.getColor().getRed();
                         int green = g.getColor().getGreen();
@@ -363,6 +380,12 @@ public class EditorCanvas extends JComponent implements MouseListener,
             level.setCube(x, y, z, new Floor());
         } else if (key == 'w') {
             level.setCube(x, y, z, new Wall());
+        } else if (key == 's') {
+            Cube spawnPoint = new Floor();
+            spawnPoint.setSpawnPoint(true);
+            level.setCube(x, y, z, spawnPoint);
+        } else if (key == 'g') {
+            level.setCube(x, y, z, new Glass());
         } else if (key == ' ') {
             level.setCube(x, y, z, new Space());
         } else if (key == '1') {

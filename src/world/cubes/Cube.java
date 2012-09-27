@@ -11,12 +11,16 @@ public abstract class Cube {
 
     public final Collection<GameObject> objects = new HashSet<GameObject>();
 
-    abstract public int type();
+    private boolean spawnPoint;
+    public boolean isSpawnPoint(){ return spawnPoint;}
+    public void setSpawnPoint(boolean b){ spawnPoint = b;}
+    
+    public abstract CubeType type();
     
     public GameObject object() {
-        for (GameObject go : objects)
-            if (!(go instanceof Player))
-                return go;
+        for (GameObject gObj : objects)
+            if (!(gObj instanceof Player))
+                return gObj;
 
         return null;
     }
