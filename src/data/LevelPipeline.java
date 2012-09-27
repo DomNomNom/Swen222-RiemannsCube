@@ -3,6 +3,7 @@ package data;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Writer;
 import java.util.Collections;
 
 import org.w3c.dom.Document;
@@ -37,7 +38,7 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class LevelPipeline {
 
-    public void save(RiemannCube level, String fname) {
+    public void save(RiemannCube level, Writer writer) {
         try {
             // Document we're writing XML to.
             int width = level.width, height = level.height, depth = level.depth;
@@ -51,7 +52,7 @@ public class LevelPipeline {
                     .newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(fname + ".xml"));
+            StreamResult result = new StreamResult(writer);
 
             // root elements
             Element rootElement = doc.createElement("riemann");

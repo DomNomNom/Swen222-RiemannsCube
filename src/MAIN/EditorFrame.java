@@ -7,7 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Writer;
 
 import javax.swing.*;
 
@@ -80,10 +83,20 @@ public class EditorFrame extends JFrame {
                 pipe = new LevelPipeline();
                 String fname = JOptionPane.showInputDialog(null, "What name?",
                         "New level");
-                //OutputStream out = new FileOutputStream(new File(fname));
-//                string
-                pipe.save(canvas.level(), fname);
-                //out.close();
+
+                if(fname == null){
+                    JOptionPane.showMessageDialog(null, "Enter a valid name for the level (no extension).");
+                    return;
+                }
+                
+                Writer filewriter;
+                try {
+                    filewriter = new FileWriter(new File(fname + ".xml"));
+                    pipe.save(canvas.level(), filewriter);
+                    filewriter.close();
+                } catch (IOException e1) {
+                    throw new Error(e1);
+                }
             }
         });
         file.add(item);
