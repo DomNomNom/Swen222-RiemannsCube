@@ -1,6 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -8,6 +11,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLJPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import com.jogamp.opengl.util.Animator;
 
@@ -38,7 +42,25 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         width = frame.getSize().width;
         setPreferredSize(new java.awt.Dimension((int) (width*panelScale), frame.getSize().height));
         setLayout(new BorderLayout());
-        add(new JLabel("Chat:"), BorderLayout.NORTH);
+        
+        setBackground(Color.gray.darker());
+        
+        JLabel chatLabel = new JLabel("Chat");
+        chatLabel.setFont(new Font("Serif", Font.BOLD, 25));
+        chatLabel.setForeground(Color.WHITE);
+        chatLabel.setHorizontalAlignment(JLabel.CENTER);
+        
+        createCenterPanel();
+        add(chatLabel, BorderLayout.NORTH);
+        
+//        add(new JLabel("Chat:"), BorderLayout.NORTH);
+    }
+    
+    private void createCenterPanel(){
+        JPanel center = new JPanel();
+        center.setBackground(Color.GRAY.darker());
+        
+        add(center, BorderLayout.CENTER);
     }
     
     //METHODS
