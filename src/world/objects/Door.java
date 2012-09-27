@@ -5,10 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import world.cubes.Cube;
+
 /**
- * A
- * @author schmiddomi
+ * A Door conditionally impedes movement to a tile
+ * The colour on this is just decorative.
  *
+ * @author schmiddomi
  */
 public class Door extends GameObject {
 
@@ -20,13 +23,15 @@ public class Door extends GameObject {
 
     // TODO: push, rather than poll architecture
     
-    public Door(Set<Integer> triggerIDs, Map<Integer, Trigger> triggers, Color col) {
+    public Door(Cube cube, Set<Integer> triggerIDs, Map<Integer, Trigger> triggers, Color col) {
+        super(cube);
         this.triggerIDs = triggerIDs;
         this.triggersMap = triggers;
         this.color = col;
     }
 
-    public Door(int numLocks, Color color) {
+    public Door(Cube cube, int numLocks, Color color) {
+        super(cube);
         triggerIDs = new HashSet<Integer>(numLocks);
         this.numLocks = numLocks;
         this.color = color;

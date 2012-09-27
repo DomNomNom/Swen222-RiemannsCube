@@ -84,9 +84,9 @@ public class XMLParser {
         //Get the dimension of the Cube, which is described in the XML file 
         // --> Attributes in the root node.
         Element dimensions = (Element) root;
-        int width = Integer.parseInt(dimensions.getAttribute("width"));
+        int width  = Integer.parseInt(dimensions.getAttribute("width"));
         int height = Integer.parseInt(dimensions.getAttribute("height"));
-        int depth = Integer.parseInt(dimensions.getAttribute("depth"));
+        int depth  = Integer.parseInt(dimensions.getAttribute("depth"));
 
         RiemannCube riemannCube = new RiemannCube(new Int3(width, height, depth));
 
@@ -178,7 +178,7 @@ public class XMLParser {
             String col = e.getAttribute("color");
             Color newCol = Color.decode(col);
 
-            ret = new Key(newCol);
+            ret = new Key(cube, newCol);
 
         } else if (n.getNodeName().equals("lock")) {
             // Get the color for the lock
@@ -189,7 +189,7 @@ public class XMLParser {
             // Get the ID for the Lock
             int id = Integer.parseInt(e.getAttribute("id"));
 
-            ret = new Lock(id, newCol);
+            ret = new Lock(cube, id, newCol);
 
         } else if (n.getNodeName().equals("door")) {
             // Get the color for the door
@@ -207,10 +207,10 @@ public class XMLParser {
             while (scan.hasNext())
                 triggerIDs.add(Integer.parseInt(scan.next()));
 
-            ret = new Door(triggerIDs, riemannCube.triggers, newCol);
+            ret = new Door(cube, triggerIDs, riemannCube.triggers, newCol);
 
         } else if (n.getNodeName().equals("lightsource")) {
-            ret = new LightSource();
+            ret = new LightSource(cube);
         }
 
         return ret;

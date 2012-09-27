@@ -34,7 +34,7 @@ public class WorldTests {
     public void testNoMoveAction() {        
         RiemannCube world  = generateWorld();
         RiemannCube world2 = generateWorld();
-        assertTrue(world2.applyAction(new PlayerMove(0, null)));
+        assertTrue(world2.applyAction(new PlayerMove(0, new Int3())));
         assertTrue(world.equals(world2));
     }
     

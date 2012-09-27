@@ -30,10 +30,10 @@ public class CubeTests {
     public void testElementEquality() {
         Floor f1 = new Floor(new Int3());
         Floor f2 = new Floor(new Int3());
-        f1.addObject(new Key(new Color(0)));
+        f1.addObject(new Key(f1, new Color(0)));
         assertFalse(f1.equals(f2));
         assertFalse(f2.equals(f1));
-        f1.addObject(new Key(new Color(0)));
+        f1.addObject(new Key(f1, new Color(0))); // TODO: automatic adding
         assertTrue(f1.equals(f2));
         assertTrue(f2.equals(f1));
     }

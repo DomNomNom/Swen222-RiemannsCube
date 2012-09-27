@@ -24,7 +24,7 @@ public class Player extends GameObject {
     
     
     public Player(Cube pos, int id){
-        this.cube = cube;
+        super(pos);
         this.id = id;
     }
     

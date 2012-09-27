@@ -15,6 +15,11 @@ public abstract class GameObject {
     public Cube getCube() { return cube; }
     public Int3 getPos() { return cube.pos(); }
     
+    public GameObject(Cube c) {
+        if (c==null) throw new IllegalArgumentException();
+        cube = c;
+    }
+    
     /**
      * This will remove this object from the old cube and add to the new   
      * 

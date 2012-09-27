@@ -23,8 +23,7 @@ import world.items.*;
  * @author mudgejayd 300221669 Allows user to design/edit their own levels.
  * 
  */
-public class EditorCanvas extends JComponent implements MouseListener,
-        KeyListener {
+public class EditorCanvas extends JComponent implements MouseListener,  KeyListener {
 
     private RiemannCube level;
     Cube[][] slice = new Cube[0][0];
@@ -37,7 +36,6 @@ public class EditorCanvas extends JComponent implements MouseListener,
     Door curDoor = null;
     Lock curLock = null;
     int lockID = 0;
-    Key curKey = new Key(Color.BLUE);
 
     public EditorCanvas() {
         super();
@@ -376,10 +374,12 @@ public class EditorCanvas extends JComponent implements MouseListener,
 
     public void keyTyped(KeyEvent e) {
         char key = e.getKeyChar();
+        Int3 currentPos = new Int3(x, y, z);
+        Cube currentCube = level.getCube(currentPos);
         if (key == 'f') {
-            level.setCube(x, y, z, new Floor(new Int3(x, y, z)));
+            level.setCube(x, y, z, new Floor(currentPos));
         } else if (key == 'w') {
-            level.setCube(x, y, z, new Wall(new Int3(x, y, z)));
+            level.setCube(x, y, z, new Wall(currentPos));
         } else if (key == 's') {
             Cube spawnPoint = new Floor(new Int3(x, y, z));
             spawnPoint.setSpawnPoint(true);
@@ -415,25 +415,23 @@ public class EditorCanvas extends JComponent implements MouseListener,
                         return;
                     }
                     
-                    curDoor = new Door(num, col);
+                    curDoor = new Door(currentCube, num, col);
                     level.getCube(x, y, z).addObject(curDoor);
                 } else {
                     System.out
                             .println("Finish placing the locks for the last door!");
                 }
             } else if (key == 'l') {
-                if (curDoor != null && !curDoor.allTriggersPlaced()
-                        && curKey != null) {
+                if (curDoor != null && !curDoor.allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
                                 "You can only add objects to a floor cube.");
                         return;
                     }
 
-                    curLock = new Lock(lockID++, curDoor.color());
+                    curLock = new Lock(currentCube, lockID++, curDoor.color());
                     level.getCube(x, y, z).addObject(curLock);
                     curDoor.addTrigger(curLock.getID());
-                    curKey = null;
                 }
             } else if (key == 'k') {
                 if (curLock != null) {
@@ -443,8 +441,8 @@ public class EditorCanvas extends JComponent implements MouseListener,
                         return;
                     }
 
-                    curKey = new Key(curLock.color());
-                    level.getCube(x, y, z).addObject(curKey);
+                    Key newKey = new Key(currentCube, curLock.color());
+                    level.getCube(x, y, z).addObject(newKey);
                     curLock = null;
                 }
             }
