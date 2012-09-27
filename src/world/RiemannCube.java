@@ -68,7 +68,7 @@ public class RiemannCube {
         for (int x=0; x<width; ++x)
             for (int y=0; y<height; ++y)
                 for (int z=0; z<depth; ++z)
-                    cubes[x][y][z] = new Floor();
+                    cubes[x][y][z] = new Floor(new Int3(x,y,z));
     }
 
 
@@ -105,7 +105,7 @@ public class RiemannCube {
         
         Player player = players.get(action.playerID); 
         Cube to = getCube(player.getPos().add(action.movement));
-        if (!isInBounds(to.pos)) return false;
+        if (!isInBounds(to.pos())) return false;
         
         return player.move(to);
     }

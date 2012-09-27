@@ -1,10 +1,12 @@
 package world.cubes;
 
+import utils.Int3;
+
 public class Space extends Cube{
     
-//    public int type(){
-//        return CubeType.SPACE.ordinal(); // TODO: proper enums
-//    }
+    public Space(Int3 pos) { 
+        super(pos);
+    }
 
 
     @Override

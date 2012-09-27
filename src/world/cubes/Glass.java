@@ -1,11 +1,14 @@
 package world.cubes;
 
+import utils.Int3;
 import world.objects.GameObject;
 
 
 public class Glass extends Cube {
 
-    public Glass(){ }
+    public Glass(Int3 pos) { 
+        super(pos);
+    }
     
     @Override
     public CubeType type() {

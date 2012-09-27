@@ -116,13 +116,13 @@ public class XMLParser {
                     Cube cube = null;
 
                     if (type.equals("Space")) {
-                        cube = new Space();
+                        cube = new Space(new Int3(x, y, z));
                     } else if (type.equals("Floor")) {
-                        cube = new Floor();
+                        cube = new Floor(new Int3(x, y, z));
                     } else if (type.equals("Wall")) {
-                        cube = new Wall();
+                        cube = new Wall(new Int3(x, y, z));
                     } else if(type.equals("Glass")){
-                        cube = new Glass();
+                        cube = new Glass(new Int3(x, y, z));
                     }
                     
                     if(spawn.equals("true")){

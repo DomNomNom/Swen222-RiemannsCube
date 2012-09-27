@@ -377,17 +377,17 @@ public class EditorCanvas extends JComponent implements MouseListener,
     public void keyTyped(KeyEvent e) {
         char key = e.getKeyChar();
         if (key == 'f') {
-            level.setCube(x, y, z, new Floor());
+            level.setCube(x, y, z, new Floor(new Int3(x, y, z)));
         } else if (key == 'w') {
-            level.setCube(x, y, z, new Wall());
+            level.setCube(x, y, z, new Wall(new Int3(x, y, z)));
         } else if (key == 's') {
-            Cube spawnPoint = new Floor();
+            Cube spawnPoint = new Floor(new Int3(x, y, z));
             spawnPoint.setSpawnPoint(true);
             level.setCube(x, y, z, spawnPoint);
         } else if (key == 'g') {
-            level.setCube(x, y, z, new Glass());
+            level.setCube(x, y, z, new Glass(new Int3(x, y, z)));
         } else if (key == ' ') {
-            level.setCube(x, y, z, new Space());
+            level.setCube(x, y, z, new Space(new Int3(x, y, z)));
         } else if (key == '1') {
             level.cubes[x][y][z].addObject(new Player(level.cubes[x][y][z], 1));
         } else if (level.getCube(x, y, z).object() == null) {

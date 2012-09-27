@@ -13,7 +13,7 @@ public abstract class GameObject {
     
     protected Cube cube;
     public Cube getCube() { return cube; }
-    public Int3 getPos() { return cube.pos; }
+    public Int3 getPos() { return cube.pos(); }
     
     /**
      * This will remove this object from the old cube and add to the new   

@@ -1,12 +1,13 @@
 package world.cubes;
 
+import utils.Int3;
 import world.objects.GameObject;
 
 public class Wall extends Cube {
     
-//    public int type(){
-//        return CubeType.WALL.ordinal(); // TODO: proper enums
-//    }
+    public Wall(Int3 pos) { 
+        super(pos);
+    }
 
     @Override
     public CubeType type() {

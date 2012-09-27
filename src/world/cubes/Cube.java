@@ -16,7 +16,13 @@ import world.objects.GameObject;
 
 public abstract class Cube {
     
-    public final Int3 pos = new Int3();
+    Cube(Int3 pos) {
+        if (pos==null) throw new IllegalArgumentException("position may not be null");
+        this.pos = pos;
+    }
+    
+    protected Int3 pos;
+    public Int3 pos() { return pos; }
 
     protected final Collection<GameObject> objects = new HashSet<GameObject>();
 
