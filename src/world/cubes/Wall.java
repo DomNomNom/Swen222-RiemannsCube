@@ -1,5 +1,7 @@
 package world.cubes;
 
+import world.objects.GameObject;
+
 public class Wall extends Cube {
     
 //    public int type(){
@@ -11,4 +13,8 @@ public class Wall extends Cube {
         return CubeType.WALL;
     }
 
+    @Override
+    public boolean addObject(GameObject o) {
+        return false; // we won't allow any objects in here
+    }
 }

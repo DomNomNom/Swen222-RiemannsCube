@@ -23,7 +23,7 @@ public class PlayerMove extends Action implements Serializable{
         this.playerID = playerID;
         
         if (movement == null) this.movement = new Int3();
-        else                  this.movement = movement.copy(); // easy defensive copy FTW
+        else                  this.movement = movement;
     }
     
    

@@ -2,7 +2,7 @@ package utils;
 
 
 /**
- * A very simple 2D integer vector.
+ * A very simple MUTABLE 2D integer vector.
  * The source code is simple enough to be intuitive to anyone knowing about vectors 
  * 
  * 

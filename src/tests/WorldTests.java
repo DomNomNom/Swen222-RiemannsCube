@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import utils.Int3;
 import world.RiemannCube;
+import world.cubes.Floor;
 import world.events.PlayerMove;
 import world.objects.Player;
 
@@ -15,7 +16,7 @@ public class WorldTests {
     /** returns a new World with a player(id=0) */
     public RiemannCube generateWorld() {
         RiemannCube world = new RiemannCube(6, 6, 6);
-        world.players.put(0, new Player(new Int3(0,0,0), 0));
+        world.players.put(0, new Player(new Floor(), 0));
         return world;
     }
     

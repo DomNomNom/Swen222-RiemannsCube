@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import utils.Int3;
 import utils.Int2;
 import utils.Int3;
 import world.cubes.*;
@@ -34,6 +35,7 @@ public class RiemannCube {
      * top-left-deep
      */
     public final Cube[][][] cubes;
+    public Cube getCube(Int3 v) { return cubes[v.x][v.y][v.z]; }
     public Cube getCube(int x, int y, int z) {    return cubes[x][y][z];  }
     public void setCube(int x, int y, int z, Cube c) {   cubes[x][y][z] = c;  }
 
@@ -69,9 +71,18 @@ public class RiemannCube {
                     cubes[x][y][z] = new Floor();
     }
 
+
+    // ====== validating ======
     
     public boolean isValidPlayer(int playerID) {
         return players.containsKey(playerID);
+    }
+    
+    public boolean isInBounds(Int3 pos) {
+        if (pos.x < 0 || pos.x >= width ) return false;
+        if (pos.y < 0 || pos.y >= height) return false;
+        if (pos.z < 0 || pos.z >= depth ) return false;
+        return true;
     }
     
     // ====== Action ======
@@ -92,9 +103,11 @@ public class RiemannCube {
     private boolean movePlayer(PlayerMove action) {
         if (!isValidPlayer(action.playerID)) return false;
         
-        Int3 to = players.get(action.playerID).getPos().copy().add(action.movement);
-        // TODO check bounds, etc
-        return true; // TODO
+        Player player = players.get(action.playerID); 
+        Cube to = getCube(player.getPos().add(action.movement));
+        if (!isInBounds(to.pos)) return false;
+        
+        return player.move(to);
     }
     
     

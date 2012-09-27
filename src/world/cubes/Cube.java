@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import utils.Int3;
 import world.objects.Player;
 import world.objects.GameObject;
 
@@ -14,12 +15,15 @@ import world.objects.GameObject;
  */
 
 public abstract class Cube {
+    
+    public final Int3 pos = new Int3();
 
-    public final Collection<GameObject> objects = new HashSet<GameObject>();
+    protected final Collection<GameObject> objects = new HashSet<GameObject>();
 
     private boolean spawnPoint;
-    public boolean isSpawnPoint(){ return spawnPoint;}
+    public boolean isSpawnPoint(){ return spawnPoint; }
     public void setSpawnPoint(boolean b){ spawnPoint = b;}
+    
     
     public abstract CubeType type();
     
@@ -31,8 +35,22 @@ public abstract class Cube {
         return null;
     }
 
-    public void addObject(GameObject o) {
-        objects.add(o);
+    /**
+     * Adds a GameObject to this cube or returns false
+     * @param o The object to add
+     * @return Whether it was possible to add this object
+     */
+    public boolean addObject(GameObject o) {
+        return objects.add(o);
+    }
+    
+    /**
+     * Adds a GameObject to this cube or returns false
+     * @param o The object to add
+     * @return Whether it was possible to add this object
+     */
+    public boolean removeObject(GameObject o) {
+        return objects.remove(o);
     }
 
     

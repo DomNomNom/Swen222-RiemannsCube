@@ -3,6 +3,7 @@ import java.awt.Color;
 
 import utils.Int3;
 import utils.Float3;
+import world.cubes.Cube;
 import world.items.*;
 
 public class Player extends GameObject {
@@ -22,9 +23,9 @@ public class Player extends GameObject {
     
     
     
-    public Player(Int3 pos, int id){
+    public Player(Cube pos, int id){
+        this.cube = cube;
         this.id = id;
-        this.pos.set(pos);
     }
     
     

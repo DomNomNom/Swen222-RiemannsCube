@@ -139,7 +139,7 @@ public class XMLParser {
                     for (int o = 1; o < obs.getLength(); o += 2) {
 //                        System.out.println("OBJECT: ---------> " + obs.item(o).getNodeName());
                         cube.addObject(createInternalObject(obs.item(o),
-                                riemannCube, new Int3(x, y, z)));
+                                riemannCube, riemannCube.getCube(x, y, z)));
                     }
 
                     riemannCube.setCube(w, h, d, cube);
@@ -161,8 +161,7 @@ public class XMLParser {
      * @param n
      * @return GameObject
      */
-    private static GameObject createInternalObject(Node n,
-            RiemannCube riemannCube, Int3 cubePos) {
+    private static GameObject createInternalObject(Node n, RiemannCube riemannCube, Cube cube) {
         GameObject ret = null;
 
         //TODO Let parser also add the items the player is holding to the player.
@@ -171,7 +170,7 @@ public class XMLParser {
             Element e = (Element) n;
             int id = Integer.parseInt(e.getAttribute("id"));
             
-            ret = new Player(cubePos, id);
+            ret = new Player(cube, id);
 
         } else if (n.getNodeName().equals("key")) {
             // Get the color for the Key
