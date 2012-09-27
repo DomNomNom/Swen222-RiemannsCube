@@ -12,6 +12,7 @@ import org.junit.Test;
 import data.LevelPipeline;
 import data.XMLParser;
 
+import utils.Int3;
 import world.RiemannCube;
 import world.items.Key;
 import world.objects.Door;
@@ -22,7 +23,7 @@ import world.objects.Trigger;
 public class XMLParsingTests {
 
 
-    RiemannCube riemann = new RiemannCube(3, 3, 3);
+    RiemannCube riemann = new RiemannCube(new Int3(3, 3, 3));
 
     LevelPipeline pipe = new LevelPipeline();
     File file = new File("testCase.xml");
@@ -34,17 +35,17 @@ public class XMLParsingTests {
     public void initMap(){
 
         Color col = Color.PINK;
-        Door door = new Door(2, col);
+        Door door = new Door(riemann.getCube(0,1,2), 2, col);
         
-        Trigger trig = new Lock(1, col);
+        Trigger trig = new Lock(riemann.getCube(0,1,1), 1, col);
         door.addTrigger(1);
-        Key key = new Key(col);
+        Key key = new Key(riemann.getCube(0,1,0), col);
 
         riemann.getCube(0,1,2).addObject(door);
         riemann.getCube(0,1,1).addObject(trig);
         riemann.getCube(0,1,0).addObject(key);
         
-        trig = new Lock(2, col);
+        trig = new Lock(riemann.getCube(0,2,1), 2, col);
         
         riemann.getCube(0,2,1).addObject(trig);
         riemann.getCube(0,2,0).addObject(key);
