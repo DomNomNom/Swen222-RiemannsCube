@@ -155,7 +155,6 @@ public class LevelPipeline {
                 }
             }
 
-            System.out.println(writer.toString());
             source = new DOMSource(doc);
             transformer.transform(source, result);
 
