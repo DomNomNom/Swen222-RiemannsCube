@@ -4,7 +4,7 @@ public class Float3 {
     public float x, y, z;
     
     
-    /** Default constructor. Initializes values to (0 0 0) */
+    /** Default constructor. Initialises values to (0 0 0) */
     public Float3()                          { set(0, 0, 0); }
     public Float3(float X, float Y, float Z) { set(X, Y, Z); }
     
