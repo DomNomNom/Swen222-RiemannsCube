@@ -22,9 +22,8 @@ import world.events.PlayerMove;
  */
 public class Server extends Thread {
 
-    private int uid;
     private ServerSocket socket;
-    private RiemannCube world;
+    protected RiemannCube world;
     
     protected Map<Integer, RemotePlayer> clientsList;
     protected BlockingQueue<Change> changes = new LinkedBlockingQueue<Change>();
@@ -57,7 +56,6 @@ public class Server extends Thread {
             socket.close(); // release socket ... v.important!
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("PLAYER " + uid + " DISCONNECTED");
         }
     }
 

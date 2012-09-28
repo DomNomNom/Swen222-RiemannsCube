@@ -13,7 +13,6 @@ import world.events.PlayerMove;
 /**
  * A class that represents a client for every player.
  * @author feshersiva
- *
  */
 public class Client {
 
@@ -21,7 +20,6 @@ public class Client {
     private ObjectOutputStream output;
     private ObjectInputStream input;
     private int port;
-    private int totalSent;
 
     public Client(String ip) {
         this.port = 55554;  //Random port number
