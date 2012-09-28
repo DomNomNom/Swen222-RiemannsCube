@@ -4,6 +4,8 @@ import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ import data.XMLParser;
  * 
  * @author David Saxon 300199370
  */
-public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
+public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, MouseListener {
     
     // FIELDS
     private static final long serialVersionUID = 1L;
@@ -70,6 +72,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     private boolean shift = false; //is true if shift is pressed
     private boolean space = false; //is true if space is pressed
     private boolean ctrl = false; //is true if crtl is pressed
+    private boolean rightMouse = false; //is true if right mouse has been releasedvv
     private boolean exit = false; //is true when to exit
     
     private Float3 pos = new Float3(0.0f, 0.0f, 0.0f); //the position of the camera
@@ -79,7 +82,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     private Float3 normal = new Float3(0.0f, 1.0f, 0.0f); //the normal of the player
     
     private float moveSpeed = 0.04f; //the move speed of the camera
-    private float turnSpeed = 4.0f; //the turn speed of the camera
+    private float turnSpeed = 10.0f; //the turn speed of the camera
     
     //TODO: a better way that incorporates slicing
     private int floor = 1; //the floor the player is on
@@ -102,6 +105,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
      */
     public ViewPort(GameFrame frame, int width, int height) {
         addGLEventListener(this);
+        addMouseListener(this);
         this.frame = frame;
         windowDim = new Int2(width, height);
         
@@ -179,6 +183,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         if (accumTime >= frameLength) { //a frame has passed
 			//Process movement and rotation
 		    processMovement();
+		    processTurning();
 		    processRotation();
 		    
 		    robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
@@ -216,8 +221,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 	        				if (c instanceof Floor) drawFloorHigh(gl, v, n); //draw a floor
 	        			}
 	        			else { //draw the low graphics alternatives
-	        				//if (c instanceof Floor) drawFloorLow(gl, x*2, y*2, z*2); //draw a floor cube
-	        				//else if (c instanceof Wall) drawWallLow(gl, x*2, y*2, z*2); //draw a wall cube
+	        				if (c instanceof Floor) drawFloorLow(gl, v, n); //draw a floor cube
+	        				else if (c instanceof Wall) drawWallLow(gl, v, n); //draw a wall cube
 	        			}
 	        			
 	        			if (c instanceof Glass) glassRender.add(new Pair<Float3, Float3>(v, n));
@@ -229,7 +234,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         //draw the glass last
         for (Pair<Float3, Float3> p: glassRender) {
         	if (high) drawGlassHigh(gl, p.first(), p.second());
-        	//else drawGlassLow(gl, i.x, i.y, i.z);
+        	else drawGlassLow(gl, p.first(), p.second());
         }
         
         //draw the glass around the outside of the cube
@@ -294,20 +299,26 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         }
     }
     
-    /**Process the rotation*/
-    private void processRotation() {
+    /**Process the turning*/
+    private void processTurning() {
         mouse = new Float2((float) MouseInfo.getPointerInfo().getLocation().getX(),
 				   (float) MouseInfo.getPointerInfo().getLocation().getY());
         
         if (mouse.x != mouseCentre.x) { //turn right or left
         	rotation.y += (float) ((mouse.x-mouseCentre.x)/turnSpeed);
         }
-        if (mouse.y != mouseCentre.y && rotation.x > -90  && rotation.x < 90) { //turn up or down
+        if (mouse.y != mouseCentre.y) { //turn up or down
         	rotation.x += (float) (((mouse.y-mouseCentre.y)/turnSpeed));
-        	//bounce back a little when looking straight up or down
-        	if (rotation.x <= -90) rotation.x = -87;
-        	else if (rotation.x >= 90) rotation.x = 87;
         }
+    }
+    
+    /**Process any rotations*/
+    private void processRotation() {
+    	if (rightMouse) {
+    		//TODO: change normal here
+    		
+    		rightMouse = false;
+    	}
     }
     
     /**Draws a openGL textured quad
@@ -349,6 +360,49 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glPopMatrix(); //pop the matrix
     }
     
+    /**Draws a openGL coloured quad
+     * @param gl
+     * @param v the position vector of the cube
+     * @param n the normal vector of the quad
+     * @param col = the rgb colour of the quad
+     * @param a the alpha value of the colour of the quad*/
+    private void drawQuadCol(GL2 gl, Float3 v, Float3 n, boolean inside, Float3 col, float a) {
+    	//find the difference between the point and the normal
+    	Float3 dv = new Float3((n.x-v.x), (n.y-v.y), (n.z-v.z));
+    	
+    	//Find the rotation amounts
+    	float xRot = Math.abs(dv.y)*(90.0f+dv.y*90.0f);
+    	float yRot = Math.abs(dv.z)*(dv.z*90.0f);
+    	float zRot = Math.abs(dv.x)*(dv.x*90.0f);
+
+    	gl.glPushMatrix(); //push new matrix
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the rotations
+    	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
+    	gl.glRotatef(yRot, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(xRot, 1.0f, 0.0f, 0.0f);
+    	
+    	if (!inside) gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f); //flip if outside
+    	
+    	//translate to the edge of the cube
+    	if (inside) gl.glTranslatef(0, -1, 0);
+    	else gl.glTranslatef(0, 1, 0);
+    	
+    	//now draw the quad
+    	gl.glColor4f(col.x, col.y, col.z, a);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1, 0, -1);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1, 0,  1);
+        gl.glColor4f(col.x*0.75f, col.y*0.75f, col.z*0.75f, a);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 1, 0,  1);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 1, 0, -1);
+        gl.glEnd();
+        
+        gl.glPopMatrix(); //pop the matrix
+    }
+    
     /**Draw a floor cube in high graphics
      * @param gl
      * @param v the position vector of the cube
@@ -366,12 +420,13 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
      * @param v the position vector of the cube
      * @param n the normal vector of the cube*/
     private void drawWallHigh(GL2 gl, Float3 v, Float3 n) {
+    	
     	//draw the 4 walls
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[1]); //bind the wall tile texture
-		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z), false);
-		drawQuadTex(gl, v, new Float3(v.x+1, v.y, v.z), false);
-		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z+1), false);
-		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z-1), false);
+		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z  ), false);
+		drawQuadTex(gl, v, new Float3(v.x+1, v.y, v.z  ), false);
+		drawQuadTex(gl, v, new Float3(v.x,   v.y, v.z+1), false);
+		drawQuadTex(gl, v, new Float3(v.x,   v.y, v.z-1), false);
 		//draw the floor
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
 		drawQuadTex(gl, v, new Float3(v.x, v.y-1, v.z), false);
@@ -398,7 +453,63 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z), false);
 		drawQuadTex(gl, v, new Float3(v.x+1, v.y, v.z), false);
 		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z+1), false);
-		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z-1), false);	
+		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z-1), false);
+    }
+    
+    /**Draw a floor cube in low graphics
+     * @param gl
+     * @param v the position vector of the cube
+     * @param n the normal vector of the cube*/
+    private void drawFloorLow(GL2 gl, Float3 v, Float3 n) {
+    	if (!noFloor) {
+    		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    		Float3 colour = new Float3(0.0f, 1.0f, 1.0f); //set the colour of the floor
+	    	drawQuadCol(gl, v, new Float3(v.x, v.y-1, v.z), true, colour, 1.0f);
+			drawQuadCol(gl, v, new Float3(v.x, v.y+1, v.z), true, colour, 1.0f);
+    	}
+    }
+    
+    /**Draw a wall cube in low graphics
+     * @param gl
+     * @param v the position vector of the cube
+     * @param n the normal vector of the cube*/
+    private void drawWallLow(GL2 gl, Float3 v, Float3 n) {
+    	
+    	//draw the 4 walls
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	Float3 colour = new Float3(1.0f, 0.0f, 1.0f); //set the colour of the wall
+		drawQuadCol(gl, v, new Float3(v.x-1, v.y, v.z  ), false, colour, 1.0f);
+		drawQuadCol(gl, v, new Float3(v.x+1, v.y, v.z  ), false, colour, 1.0f);
+		drawQuadCol(gl, v, new Float3(v.x,   v.y, v.z+1), false, colour, 1.0f);
+		drawQuadCol(gl, v, new Float3(v.x,   v.y, v.z-1), false, colour, 1.0f);
+		//draw the floor
+		colour = new Float3(0.0f, 1.0f, 1.0f); //set the colour of the floor
+		drawQuadCol(gl, v, new Float3(v.x, v.y-1, v.z), false, colour, 1.0f);
+		drawQuadCol(gl, v, new Float3(v.x, v.y+1, v.z), false, colour, 1.0f);
+    }
+    
+    /**Draw a glass cube in low graphics
+     * @param gl
+     * @param v the position vector of the cube
+     * @param n the normal vector of the cube*/
+    private void drawGlassLow(GL2 gl, Float3 v, Float3 n) {
+    	//draw the floor
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+		Float3 colour = new Float3(0.0f, 1.0f, 1.0f); //set the colour of the floor
+		drawQuadCol(gl, v, new Float3(v.x, v.y-1, v.z), true,  colour, 1.0f);
+		drawQuadCol(gl, v, new Float3(v.x, v.y+1, v.z), true,  colour, 1.0f);
+		drawQuadCol(gl, v, new Float3(v.x, v.y-1, v.z), false, colour, 1.0f);
+		drawQuadCol(gl, v, new Float3(v.x, v.y+1, v.z), false, colour, 1.0f);
+    	//draw the 4 walls
+		colour = new Float3(1.0f, 1.0f, 1.0f);
+		drawQuadCol(gl, v, new Float3(v.x-1, v.y, v.z), true,  colour, 0.4f);
+		drawQuadCol(gl, v, new Float3(v.x+1, v.y, v.z), true,  colour, 0.4f);
+		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z+1), true,  colour, 0.4f);
+		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z-1), true,  colour, 0.4f);
+		drawQuadCol(gl, v, new Float3(v.x-1, v.y, v.z), false, colour, 0.4f);
+		drawQuadCol(gl, v, new Float3(v.x+1, v.y, v.z), false, colour, 0.4f);
+		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z+1), false, colour, 0.4f);
+		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z-1), false, colour, 0.4f);
     }
     
     /**Draws an outer box of glass around the level in high graphics
@@ -519,8 +630,22 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 		if (keyUp == 17) ctrl = false; //ctrl is released
 		if (keyUp == 10) frame.getInputField().requestFocus(); //enter is released
 	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		int button = e.getID();
+		if (button == 502) rightMouse = true; //right mouse has been released
+	}
 
 	public void keyTyped(KeyEvent e) {}
     public void dispose(GLAutoDrawable drawable) {}
     public void reshape(GLAutoDrawable drawable, int x1, int y1, int x2, int y2) {}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+
+
+
+
 }
