@@ -30,7 +30,7 @@ public class Client {
         this.chat = chat;
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
-//            System.out.println(ipAddress.toString());
+            System.out.println(ipAddress.toString());
             this.socket = new Socket(ipAddress, port);
             output = new ObjectOutputStream(socket.getOutputStream());
         } catch (UnknownHostException e) {

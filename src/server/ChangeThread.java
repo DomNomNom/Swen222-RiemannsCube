@@ -20,6 +20,7 @@ public class ChangeThread extends Thread {
     
     public ChangeThread(Server s){
         this.parentServer = s;
+        setDaemon(true); // terminate if no other normal threads are running
     }
     
     public void run(){

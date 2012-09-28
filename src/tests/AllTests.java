@@ -5,7 +5,14 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ CubeTests.class, WorldTests.class, XMLParsingTests.class, ActionTests.class })
+@SuiteClasses({ 
+	CubeTests.class, 
+	WorldTests.class, 
+	XMLParsingTests.class, 
+	ActionTests.class, 
+	CubeTests.class,
+})
+
 public class AllTests {
 
 }

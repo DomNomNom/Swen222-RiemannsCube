@@ -39,7 +39,6 @@ public class Player extends GameObject {
     
     @Override
     public boolean equals(Object obj) {
-        System.out.println("MYEQULAS");
         if (!super.equals(obj)) return false;
         
         Player p = (Player) obj; // safe as it is checked above

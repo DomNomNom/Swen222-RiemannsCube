@@ -73,7 +73,7 @@ public abstract class Cube {
     
     /** Helper for equals(). Checks that we have a element in b for all elements in a.*/
     private static boolean containsEquivalentContent(Cube a, Cube b) {
-     // equivalent contents?
+    	// equivalent contents?
         for (GameObject g : a.objects) {
             boolean foundEquals = false;
             for (GameObject g2 : b.objects) 
@@ -96,8 +96,6 @@ public abstract class Cube {
         // equivalent contents
         if (!containsEquivalentContent(this, other)) return false;
         if (!containsEquivalentContent(other, this)) return false;
-        
-        if (objects.size() != 0) System.out.println(objects +"  "+ other.objects);
         
         return true;
     }

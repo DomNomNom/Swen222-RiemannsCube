@@ -13,6 +13,7 @@ import world.events.ChatMessage;
 public class StartCubeServer {
 
     public static void main(String[] args) {
+    	// TODO: move this to test code and only run the server here
         Server server = new Server(new RiemannCube(new Int3(1, 1, 1)));
         server.start();
         

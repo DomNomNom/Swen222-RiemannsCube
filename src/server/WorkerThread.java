@@ -24,6 +24,7 @@ public class WorkerThread extends Thread {
         this.server = server;
         this.playerId = playId;
         this.socket = sock;
+        setDaemon(true); // terminate if no other normal threads are running 
     }
 
     public void run() {
