@@ -46,6 +46,14 @@ public class GameFrame extends JFrame {
         return chat.getInputField();
     }
     
+    /**
+     * Get the ID of the player who is using this Frame.
+     */
+    public int getID(){
+        //TODO Return player ID here
+        return 0;
+    }
+    
     //CONSTUCTOR
     /**Constructs a new game frame
      @param ip the IP address of server*/

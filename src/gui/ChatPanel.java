@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import world.events.ChatMessage;
+
 import com.jogamp.opengl.util.Animator;
 
 /**This is the chat panel that the player can use to communicate with the other players
@@ -29,12 +31,17 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     //FIELDS
     private static final long serialVersionUID = 1L;
     
-    private JFrame frame; //the JFrame containing this panel
+    private GameFrame frame; //the JFrame containing this panel
     private int width; //the current width of the window
     private double panelScale = 0.22; //the scale of the panel to the whole level
     
     private JTextArea chatArea; //Area which the text gets printed to
     private JTextField inputField; //Field where the user can enter text
+    
+    private ChatMessage message;
+    
+    public ChatMessage getChat() { return message;}
+    public void addMessage(ChatMessage message){ chatArea.append(message.message);}
     
     public static Animator animator; // the animator makes sure the chat is always being updated
     
@@ -43,7 +50,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
      * @param width the width of the overall JFrame
      * @param height the height of the overall JFrame
      */
-    public ChatPanel(JFrame frame) {
+    public ChatPanel(GameFrame frame) {
         addGLEventListener(this);
         this.frame = frame;
         width = frame.getSize().width;
@@ -85,6 +92,8 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
             
             @Override
             public void actionPerformed(ActionEvent e) {
+                message = new ChatMessage(inputField.getText(), frame.getID());
+                
                 chatArea.append(inputField.getText() + "\n");
                 inputField.setText("");
             }
