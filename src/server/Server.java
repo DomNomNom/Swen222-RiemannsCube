@@ -1,5 +1,7 @@
 package server;
 
+import gui.GameFrame;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -65,5 +67,12 @@ public class Server extends Thread {
         Client c = new Client("127.0.0.1", null);
         PlayerMove pm = new PlayerMove(0, new Int3());
         c.push(pm);
+        
+        GameFrame.high = false;
+        GameFrame.free = true;
+        GameFrame.noFloor = true;
+        GameFrame window = new GameFrame("localhost");
+        window.init();
+        window.execute();
     }
 }
