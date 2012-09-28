@@ -65,6 +65,7 @@ public class Client {
             // object is a chat message
             else if (obj instanceof ChatMessage) {
                 ChatMessage message = (ChatMessage) obj;
+                chat.addMessage(message);
             }
             
         } catch (IOException e) {
