@@ -1,5 +1,7 @@
 package client;
 
+import gui.ChatPanel;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -20,9 +22,12 @@ public class Client {
     private ObjectOutputStream output;
     private ObjectInputStream input;
     private int port;
+    
+    private final ChatPanel chat;
 
-    public Client(String ip) {
+    public Client(String ip, ChatPanel chat) {
         this.port = 55554;  //Random port number
+        this.chat = chat;
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
             this.socket = new Socket(ipAddress, port);
