@@ -10,8 +10,8 @@ import world.events.Event;
 import world.events.PlayerMove;
 
 /**
- * A thread that handles a client / player and deals 
- * with their events.
+ * A thread that handles a client / player and deals with their events.
+ * 
  * @author feshersiva
  */
 public class WorkerThread extends Thread {
@@ -24,7 +24,7 @@ public class WorkerThread extends Thread {
         this.server = server;
         this.playerId = playId;
         this.socket = sock;
-        setDaemon(true); // terminate if no other normal threads are running 
+        setDaemon(true); // terminate if no other normal threads are running
     }
 
     public void run() {
@@ -35,40 +35,38 @@ public class WorkerThread extends Thread {
             input = new ObjectInputStream(socket.getInputStream());
             boolean exit = false;
             while (!exit) {
-                // ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+                // ObjectOutputStream output = new
+                // ObjectOutputStream(socket.getOutputStream());
                 // read object from socket input
                 try {
-                    obj =  input.readObject();
+                    obj = input.readObject();
                     System.out.println(myName() + " got my object");
                     /*
-                    if(input.available() > 0){
-                        System.out.println("No object yet");
-                        obj = input.readObject();
-                        System.out.println("I got a message");                        
-                    }
-                    */
+                     * obj = null;
+                     * 
+                     * System.out.println("about to check availble");
+                     * if(input.available() > 0){
+                     * System.out.println("No object yet"); obj =
+                     * input.readObject();
+                     * System.out.println("I got a message"); }
+                     */
 
                 } catch (ClassNotFoundException e) {
                     System.out.println("Problem reading from input.");
                     e.printStackTrace();
                 }
-                
-                Event e = (Event)obj;
+
+                Event e = (Event) obj;
                 /*
-                // object is an action
-                if (obj instanceof Action) {
-                    Action act = (Action) obj;
-                }
-                // object is a player move
-                else if (obj instanceof PlayerMove) {
-                    PlayerMove move = (PlayerMove) obj;
-                }
-                // object is a chat message
-                else if (obj instanceof ChatMessage) {
-                    ChatMessage message = (ChatMessage) obj;
-                    
-                }*/
-                
+                 * // object is an action if (obj instanceof Action) { Action
+                 * act = (Action) obj; } // object is a player move else if (obj
+                 * instanceof PlayerMove) { PlayerMove move = (PlayerMove) obj;
+                 * } // object is a chat message else if (obj instanceof
+                 * ChatMessage) { ChatMessage message = (ChatMessage) obj;
+                 * 
+                 * }
+                 */
+
                 Change c = new Change(this.playerId, e);
                 this.server.changes.add(c);
 
@@ -77,7 +75,9 @@ public class WorkerThread extends Thread {
             e.printStackTrace();
         }
     }
-    
+
     /** just for more readable console debug output */
-    private String myName() { return "[serverWorker #" +playerId+ "]"; }
+    private String myName() {
+        return "[serverWorker #" + playerId + "]";
+    }
 }
