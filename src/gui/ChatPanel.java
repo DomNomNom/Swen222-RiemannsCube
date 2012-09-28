@@ -39,7 +39,6 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     private JTextField inputField; //Field where the user can enter text
     
     private ChatMessage message;
-    
     public ChatMessage getChat() { return message;}
     public void addMessage(ChatMessage message){ chatArea.append(message.message);}
     
@@ -93,8 +92,8 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 message = new ChatMessage(inputField.getText(), frame.getID());
+                frame.getClient().push(message);
                 
-                chatArea.append(inputField.getText() + "\n");
                 inputField.setText("");
             }
         });
