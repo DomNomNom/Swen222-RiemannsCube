@@ -49,6 +49,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
     public static boolean high = true; //is true if the game is running in high graphics
     public static boolean free = false; //is true when free camera is enabled
     public static boolean noFloor = false; //is true when the floor should not show
+    public static boolean showFps = false; //is true to display fps
+    
+    //fps management
+    private long currentTime = System.currentTimeMillis(); //get the current time
+    private int accumTime = 0; //the amount of time accumulated since the last frame
+    private final int frameLength = 17; //the time of a frame
     
     private RiemannCube level; //the level
     private Resources resources; //the resources
@@ -98,12 +104,15 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         addGLEventListener(this);
         this.frame = frame;
         windowDim = new Int2(width, height);
+        
+        
         try {
 			this.level = XMLParser.readXML(new File("Levels/Test.xml"));
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+        
+        
         mouse = new Float2((float) MouseInfo.getPointerInfo().getLocation().getX(),
         				   (float) MouseInfo.getPointerInfo().getLocation().getY());
         addKeyListener(this);
@@ -144,19 +153,38 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         resources = new Resources(drawable);
         
         gl.glEnable(GL.GL_TEXTURE_2D); //enable 2d textures
+        
+        currentTime = System.currentTimeMillis(); //update the time before starting
     }
 
     @Override
     public void display(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
-        
+
         if (exit) frame.exit(); //quit the game
         
-        //Process movement and rotation
-        processMovement();
-        processRotation();
         
-        robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
+        //check if a frame has passed and if so update the events
+        
+        
+        long newTime = System.currentTimeMillis(); //get the time at this point
+        int frameTime = (int) (newTime-currentTime); //find the length of this frame
+        
+        if (showFps) printFps(frameTime);
+        
+        if (frameTime > 25) frameTime = 30; //limit the max frame time
+        currentTime = newTime; //update the current time
+        accumTime += frameTime; //Accumulate the frame time
+        
+        if (accumTime >= frameLength) { //a frame has passed
+			//Process movement and rotation
+		    processMovement();
+		    processRotation();
+		    
+		    robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
+		    
+		    accumTime -= frameLength;
+        }
         
         //START DRAWING
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); //clear the screen
@@ -455,6 +483,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f( 100.0f, 100.0f,  100.0f);
         gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(-100.0f, 100.0f,  100.0f);
         gl.glEnd();
+    }
+    
+    /**Prints the current fps to the screen*/
+    public void printFps(int frameTime) {
+    	double currentFps = 60;
+    	if (frameTime > 0) currentFps = 1000/frameTime;
+    	if (currentFps >= 60) currentFps = 60;
+    	System.out.println(currentFps);
     }
     
 	@Override

@@ -22,9 +22,7 @@ public class Float3 {
     
     public Float3 copy() { return new Float3(x,y,z); }
     
-    
-    
-    @Override
+     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

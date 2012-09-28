@@ -36,10 +36,11 @@ public class GameFrame extends JFrame {
     
     public static boolean high = true; //is true when high graphics is enable
     public static boolean free = false; //is true when free camera is enabled
-    public static boolean noFloor = false;
+    public static boolean noFloor = false; //is true to not render floor
+    public static boolean showFps = false; //is true to display fps
     
     /**
-     * Gets the TextField so that the viewport can request focus on it.
+     * Gets the TextField so that the view port can request focus on it.
      * @return
      */
     public JTextField getInputField(){
@@ -79,6 +80,7 @@ public class GameFrame extends JFrame {
         ViewPort.high = high;
         ViewPort.free = free;
         ViewPort.noFloor = noFloor;
+        ViewPort.showFps = showFps;
         view = new ViewPort(this, 700, 600);
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
