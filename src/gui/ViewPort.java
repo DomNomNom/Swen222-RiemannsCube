@@ -204,7 +204,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         else drawOuterGlassLow(gl);
         
         //pulling !
-        frame.getClient().pull();
+        //frame.getClient().pull();
     }
 
     /**Process the movement*/
