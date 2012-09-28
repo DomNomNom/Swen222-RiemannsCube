@@ -26,5 +26,5 @@ public class PlayerMove extends Action implements Serializable{
         else                  this.movement = movement;
     }
     
-   
+    
 }

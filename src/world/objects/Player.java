@@ -36,4 +36,16 @@ public class Player extends GameObject {
     }
 
     public String toString(){return "Player "+id;}
+    
+    @Override
+    public boolean equals(Object obj) {
+        System.out.println("MYEQULAS");
+        if (!super.equals(obj)) return false;
+        
+        Player p = (Player) obj; // safe as it is checked above
+        if (id != p.id) return false;
+        if ((item==null)? p.item!=null : !item.equals(p.item())) return false;
+        
+        return true;
+    }
 }

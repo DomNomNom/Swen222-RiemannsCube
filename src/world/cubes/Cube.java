@@ -97,6 +97,8 @@ public abstract class Cube {
         if (!containsEquivalentContent(this, other)) return false;
         if (!containsEquivalentContent(other, this)) return false;
         
+        if (objects.size() != 0) System.out.println(objects +"  "+ other.objects);
+        
         return true;
     }
 }

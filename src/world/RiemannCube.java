@@ -119,6 +119,7 @@ public class RiemannCube {
         if (!isInBounds(pos)) return false;
         
         Player p = new Player(getCube(pos), id);
+        getCube(pos).addObject(p);
         players.put(p.id, p);
         
         return true;

@@ -14,10 +14,10 @@ import world.objects.Player;
 
 public class WorldTests {
 
-    /** returns a new World with a player(id=0) */
+    /** returns a new World (6x6x6) with a player(id=0, position=(0 0 0)) */
     public static RiemannCube generateWorld() {
         RiemannCube world = new RiemannCube(new Int3(6, 6, 6));
-        Player p = new Player(world.getCube(new Int3()), 0);
+        Player p = new Player(world.getCube(new Int3(0,0,0)), 0);
         world.players.put(p.id, p);
         world.getCube(new Int3()).addObject(p);
         return world;
