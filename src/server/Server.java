@@ -67,8 +67,13 @@ public class Server extends Thread {
         GameFrame.high = false;
         GameFrame.free = true;
         GameFrame.noFloor = true;
-        GameFrame window = new GameFrame("localhost");
+        GameFrame window = new GameFrame(null);
         window.init();
         window.execute();
+        
+        Client c = new Client("127.0.0.1", null);
+        PlayerMove pm = new PlayerMove(0, new Int3());
+        c.push(pm);
+        
     }
 }
