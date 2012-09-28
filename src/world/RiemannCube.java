@@ -10,6 +10,7 @@ import utils.Int3;
 import world.cubes.*;
 import world.events.Action;
 import world.events.PlayerMove;
+import world.events.PlayerSpawning;
 import world.objects.GameObject;
 import world.objects.Player;
 import world.objects.Trigger;
@@ -40,9 +41,9 @@ public class RiemannCube {
     public void setCube(int x, int y, int z, Cube c) {   cubes[x][y][z] = c;  }
 
     
-    public final Map<Integer, Player > players  = new HashMap<Integer, Player >();
-    public final Map<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
     public final Map<Integer, Cube> spawnCubes = new HashMap<Integer, Cube>();
+    public final Map<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
+    public final Map<Integer, Player > players  = new HashMap<Integer, Player >();
     
     public final Int3 size;
 
@@ -79,13 +80,14 @@ public class RiemannCube {
     }
     
     public boolean isInBounds(Int3 pos) {
+        if (pos == null) return false;
         if (pos.x < 0 || pos.x >= size.x) return false;
         if (pos.y < 0 || pos.y >= size.y) return false;
         if (pos.z < 0 || pos.z >= size.z) return false;
         return true;
     }
     
-    // ====== Action ======
+    // ====== Actions ======
     
     /**
      * Tries to apply the given action.
@@ -95,8 +97,8 @@ public class RiemannCube {
      * @return Whether the action is valid and has been applied.
      */
     public boolean applyAction(Action a) {
-        if (a instanceof PlayerMove)
-            return movePlayer((PlayerMove) a);
+        if (a instanceof PlayerMove    )  return movePlayer((PlayerMove) a);
+        if (a instanceof PlayerSpawning)  return spawnPlayer((PlayerSpawning) a);
         else return false;
     }
     
@@ -110,7 +112,17 @@ public class RiemannCube {
         return player.move(to);
     }
     
-    
+    private boolean spawnPlayer(PlayerSpawning action) {
+        int id = action.playerID;
+        Int3 pos = action.pos;
+        if (isValidPlayer(id)) return false; // the player may not exist yet
+        if (!isInBounds(pos)) return false;
+        
+        Player p = new Player(getCube(pos), id);
+        players.put(p.id, p);
+        
+        return true;
+    }
 
     // ====== equals (used for testing) ======
     

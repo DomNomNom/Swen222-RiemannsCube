@@ -15,7 +15,7 @@ import world.objects.Player;
 public class WorldTests {
 
     /** returns a new World with a player(id=0) */
-    public RiemannCube generateWorld() {
+    public static RiemannCube generateWorld() {
         RiemannCube world = new RiemannCube(new Int3(6, 6, 6));
         Player p = new Player(world.getCube(new Int3()), 0);
         world.players.put(p.id, p);
@@ -38,13 +38,5 @@ public class WorldTests {
         RiemannCube world2 = generateWorld();
         assertTrue(world2.applyAction(new PlayerMove(0, new Int3())));
         assertTrue(world.equals(world2));
-    }
-    
-    @Test
-    public void testMoveAction() {        
-        RiemannCube world  = generateWorld();
-        RiemannCube world2 = generateWorld();
-        assertTrue(world2.applyAction(new PlayerMove(0, new Int3(1, 0, 0))));
-        //assertFalse(world.equals(world2)); FIXME
     }
 }
