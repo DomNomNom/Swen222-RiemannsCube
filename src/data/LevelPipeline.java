@@ -1,13 +1,21 @@
 package data;
 
 import java.awt.Color;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collections;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 import world.objects.Door;
 import world.objects.Player;
@@ -21,6 +29,7 @@ import world.objects.GameObject;
 import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -38,7 +47,7 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class LevelPipeline {
 
-    public void save(RiemannCube level, Writer writer) {
+    public void save(RiemannCube level, FileWriter writer) {
         try {
             // Document we're writing XML to.
             int width = level.size.x, height = level.size.y, depth = level.size.z;
@@ -47,11 +56,19 @@ public class LevelPipeline {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
 
+            doc.normalize();
+
             // Transforms into proper XML format.
             TransformerFactory transformerFactory = TransformerFactory
                     .newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(
+              "{http://xml.apache.org/xslt}indent-amount", "4");
+            
             DOMSource source = new DOMSource(doc);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             StreamResult result = new StreamResult(writer);
 
             // root elements
@@ -110,12 +127,12 @@ public class LevelPipeline {
                                         .getClassName());
                             }
                             
-//                            if (curItem != null) {
-//                                item.setAttribute(curItem.getClassName(), item
-//                                        .getClass().getName());
-//
-//                                player.appendChild(item);
-//                            }
+                            //if (curItem != null) {
+                            //item.setAttribute(curItem.getClassName(), item
+                            //  .getClass().getName());
+                            //
+                            //player.appendChild(item);
+                            //}
 
                             // Players dont have light sources anymore
                             // // add lightsource
@@ -138,13 +155,43 @@ public class LevelPipeline {
                 }
             }
 
+            System.out.println(writer.toString());
             source = new DOMSource(doc);
             transformer.transform(source, result);
 
-            System.out.println("File saved!");
+            //System.out.println("File saved!");
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+    public String format(String unformattedXml) {
+        try {
+            final Document document = parseXmlFile(unformattedXml);
+
+            OutputFormat format = new OutputFormat(document);
+            format.setLineWidth(65);
+            format.setIndenting(true);
+            format.setIndent(2);
+            Writer out = new StringWriter();
+            XMLSerializer serializer = new XMLSerializer(out, format);
+            serializer.serialize(document);
+
+            return out.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private Document parseXmlFile(String in) {
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            InputSource is = new InputSource(new StringReader(in));
+            return db.parse(is);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

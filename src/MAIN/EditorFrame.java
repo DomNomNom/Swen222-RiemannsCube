@@ -90,9 +90,9 @@ public class EditorFrame extends JFrame {
                     return;
                 }
                 
-                Writer filewriter;
+                FileWriter filewriter;
                 try {
-                    filewriter = new FileWriter(new File(fname + ".xml"));
+                    filewriter = new FileWriter(new File("Levels/"+fname + ".xml"));
                     pipe.save(canvas.level(), filewriter);
                     filewriter.close();
                 } catch (IOException e1) {
