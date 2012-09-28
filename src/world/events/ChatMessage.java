@@ -1,6 +1,6 @@
 package world.events;
 
-public class ChatMessage extends Event {
+public class ChatMessage extends ChatEvent {
     public final String message;
     public final int speakerID;
     
