@@ -37,13 +37,15 @@ public class WorkerThread extends Thread {
                 // ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
                 // read object from socket input
                 try {
-                    obj = null;
-
+                    obj =  input.readObject();
+                    System.out.println(myName() + " got my object");
+                    /*
                     if(input.available() > 0){
                         System.out.println("No object yet");
                         obj = input.readObject();
                         System.out.println("I got a message");                        
                     }
+                    */
 
                 } catch (ClassNotFoundException e) {
                     System.out.println("Problem reading from input.");
@@ -51,6 +53,7 @@ public class WorkerThread extends Thread {
                 }
                 
                 Event e = (Event)obj;
+                /*
                 // object is an action
                 if (obj instanceof Action) {
                     Action act = (Action) obj;
@@ -63,7 +66,7 @@ public class WorkerThread extends Thread {
                 else if (obj instanceof ChatMessage) {
                     ChatMessage message = (ChatMessage) obj;
                     
-                }
+                }*/
                 
                 Change c = new Change(this.playerId, e);
                 this.server.changes.add(c);
@@ -73,4 +76,7 @@ public class WorkerThread extends Thread {
             e.printStackTrace();
         }
     }
+    
+    /** just for more readable console debug output */
+    private String myName() { return "[serverWorker #" +playerId+ "]"; }
 }

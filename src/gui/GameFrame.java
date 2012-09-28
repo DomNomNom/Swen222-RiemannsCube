@@ -59,7 +59,7 @@ public class GameFrame extends JFrame {
      @param ip the IP address of server*/
     public GameFrame(String ip) {
         super("Riemann's cube");
-        this.ip = ip;;
+        this.ip = ip;
     }
     
     //METHODS

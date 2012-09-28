@@ -54,21 +54,20 @@ public class Client {
         try {
             input = new ObjectInputStream(socket.getInputStream());
             obj = input.readObject();
-            System.err.println("I got an object !");
+            System.out.println(myName()+" I got an object !");
             //TODO what here !
             
             if (obj instanceof Action) {
                 Action act = (Action) obj;
-            }
-            // object is a player move
-            else if (obj instanceof PlayerMove) {
-                PlayerMove move = (PlayerMove) obj;
+                // TODO: apply this to the world, request a full state update if it fails
             }
             // object is a chat message
             else if (obj instanceof ChatMessage) {
                 ChatMessage message = (ChatMessage) obj;
                 chat.addMessage(message);
             }
+            else 
+                System.err.println("Server has sent a unhandeled event: " + obj);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,4 +80,6 @@ public class Client {
         }
         return null;
     }
+    
+    private String myName() { return "[Client]"; }
 }

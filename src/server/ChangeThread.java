@@ -5,6 +5,7 @@ import java.net.Socket;
 
 import world.RiemannCube;
 import world.events.Action;
+import world.events.ChatEvent;
 import world.events.ChatMessage;
 import world.events.Event;
 import world.events.PlayerMove;
@@ -31,7 +32,7 @@ public class ChangeThread extends Thread {
                 e.printStackTrace();
             }
             //test printout
-            System.out.printf("Got a change from client #%d\n", c.clientId);
+            System.out.printf(myName() + " Got a change from client #%d\n", c.clientId);
             
             // process the change and apply it to the world
             Event e = c.event;
@@ -41,8 +42,11 @@ public class ChangeThread extends Thread {
                 parentServer.world.applyAction(act);
             }
             // object is a chat message
-            else if (e instanceof ChatMessage) {
-                System.out.println("Chat message has happened.");
+            else if (e instanceof ChatEvent) {
+                System.out.println(myName() + " Chat message has happened.");
+            }
+            else {
+                System.err.println(myName() + " Unknown event has been sent by the player: " + e);
             }
             
             // send the changes to everyone else
@@ -51,8 +55,8 @@ public class ChangeThread extends Thread {
                 try {
                     rp.out.writeObject(e);
                 } catch (IOException e1) {
-                    System.err.println("Coluldn't send information to clients.");
-                    e1.printStackTrace();
+                    System.err.println(myName() + " Coluldn't send information to client " + rp.out);
+                    //e1.printStackTrace();
                 }
                 
                 //  rp.out is a object out stream that you can write the objects out too
@@ -60,4 +64,7 @@ public class ChangeThread extends Thread {
         }
     }
 
+
+    /** just for more readable console debug output */
+    private String myName() { return "[workerThread]"; }
 }
