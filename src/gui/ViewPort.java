@@ -16,6 +16,7 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
+import javax.swing.JOptionPane;
 
 import utils.Float2;
 import utils.Float3;
@@ -701,6 +702,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 		if (keyDown == 16) shift = true; //shift is down
 		if (keyDown == 32) space = true; //space is down
 		if (keyDown == 17) ctrl = true; //ctrl is down
+		
 	}
 
 	@Override
@@ -713,6 +715,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
 		if (keyUp == 16) shift = false; //shift is released
 		if (keyUp == 32) space = false; //space is released
 		if (keyUp == 17) ctrl = false; //ctrl is released
+		if (keyUp == 10) frame.getInputField().requestFocus(); //enter is released
 	}
 
 	public void keyTyped(KeyEvent e) {}
