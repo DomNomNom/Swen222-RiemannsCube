@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileWriter;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class XMLParsingTests {
     RiemannCube riemann = new RiemannCube(new Int3(3, 3, 3));
 
     LevelPipeline pipe = new LevelPipeline();
-    File file = new File("testCase.xml");
+    File file = new File("Levels/testCase.xml");
     FileWriter filewriter;
     
     RiemannCube load;
@@ -86,5 +87,11 @@ public class XMLParsingTests {
             assertTrue(door.triggers().contains(lock.getID()));
         else fail("Need to initialise door.triggers()");
     }
+    
+    @After
+    public void deleteFile(){
+        file.delete();
+    }
+    
 
 }

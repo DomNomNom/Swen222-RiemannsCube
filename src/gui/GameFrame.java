@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -9,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import world.RiemannCube;
 
@@ -35,6 +37,14 @@ public class GameFrame extends JFrame {
     public static boolean high = true; //is true when high graphics is enable
     public static boolean free = false; //is true when free camera is enabled
     public static boolean noFloor = false;
+    
+    /**
+     * Gets the TextField so that the viewport can request focus on it.
+     * @return
+     */
+    public JTextField getInputField(){
+        return chat.getInputField();
+    }
     
     //CONSTUCTOR
     /**Constructs a new game frame
