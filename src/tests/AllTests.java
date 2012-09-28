@@ -11,6 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	XMLParsingTests.class, 
 	ActionTests.class, 
 	CubeTests.class,
+	NetworkingTests.class,
 })
 
 public class AllTests {
