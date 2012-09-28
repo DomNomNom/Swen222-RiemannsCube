@@ -40,7 +40,9 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     
     private ChatMessage message;
     public ChatMessage getChat() { return message;}
-    public void addMessage(ChatMessage message){ chatArea.append(message.message);}
+    public void addMessage(ChatMessage message){ 
+        System.out.println("Tried to add a message.");
+        chatArea.append(message.message);}
     
     public static Animator animator; // the animator makes sure the chat is always being updated
     

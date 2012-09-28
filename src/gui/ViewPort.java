@@ -202,6 +202,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener{
         //draw the glass around the outside of the cube
         if (high) drawOuterGlassHigh(gl);
         else drawOuterGlassLow(gl);
+        
+        //pulling !
+        frame.getClient().pull();
     }
 
     /**Process the movement*/

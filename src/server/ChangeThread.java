@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.net.Socket;
 
 import world.RiemannCube;
@@ -41,14 +42,18 @@ public class ChangeThread extends Thread {
             }
             // object is a chat message
             else if (e instanceof ChatMessage) {
-                ChatMessage message = (ChatMessage)e;
-                
+                System.out.println("Chat message has happened.");
             }
             
             // send the changes to everyone else
             // TODO: Error checking - what if the client isn't in the list
             for(RemotePlayer rp : parentServer.clientsList.values()){
-                
+                try {
+                    rp.out.writeObject(e);
+                } catch (IOException e1) {
+                    System.err.println("Coluldn't send information to clients.");
+                    e1.printStackTrace();
+                }
                 
                 //  rp.out is a object out stream that you can write the objects out too
             }

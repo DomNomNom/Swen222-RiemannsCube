@@ -39,8 +39,11 @@ public class WorkerThread extends Thread {
                 try {
                     obj = null;
 
-                    obj = input.readObject();
-                    System.out.println("I got a message");
+                    if(input.available() > 0){
+                        System.out.println("No object yet");
+                        obj = input.readObject();
+                        System.out.println("I got a message");                        
+                    }
 
                 } catch (ClassNotFoundException e) {
                     System.out.println("Problem reading from input.");
@@ -59,6 +62,7 @@ public class WorkerThread extends Thread {
                 // object is a chat message
                 else if (obj instanceof ChatMessage) {
                     ChatMessage message = (ChatMessage) obj;
+                    
                 }
                 
                 Change c = new Change(this.playerId, e);

@@ -64,10 +64,6 @@ public class Server extends Thread {
     public static void main(String[] args) {
         Thread t = new Server(new RiemannCube(new Int3(1, 1, 1)));
         t.start();
-        Client c = new Client("127.0.0.1", null);
-        PlayerMove pm = new PlayerMove(0, new Int3());
-        c.push(pm);
-        
         GameFrame.high = false;
         GameFrame.free = true;
         GameFrame.noFloor = true;

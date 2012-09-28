@@ -9,8 +9,8 @@ import world.events.Event;
  */
 public class Change {
     
-    public int clientId;
-    public Event event;
+    protected int clientId;
+    protected Event event;
     
     public Change(int id, Event e){
         this.clientId = id;

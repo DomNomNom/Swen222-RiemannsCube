@@ -30,6 +30,7 @@ public class Client {
         this.chat = chat;
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
+//            System.out.println(ipAddress.toString());
             this.socket = new Socket(ipAddress, port);
             output = new ObjectOutputStream(socket.getOutputStream());
         } catch (UnknownHostException e) {
@@ -53,6 +54,7 @@ public class Client {
         try {
             input = new ObjectInputStream(socket.getInputStream());
             obj = input.readObject();
+            System.err.println("I got an object !");
             //TODO what here !
             
             if (obj instanceof Action) {
