@@ -109,14 +109,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         this.frame = frame;
         windowDim = new Int2(width, height);
         
-        
-        try {
-			this.level = XMLParser.readXML(new File("Levels/Test.xml"));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-        
-        
         mouse = new Float2((float) MouseInfo.getPointerInfo().getLocation().getX(),
         				   (float) MouseInfo.getPointerInfo().getLocation().getY());
         addKeyListener(this);
@@ -158,6 +150,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         gl.glEnable(GL.GL_TEXTURE_2D); //enable 2d textures
         
+        //get the level from the client
+        level = frame.getClient().getWorld();
+        
         currentTime = System.currentTimeMillis(); //update the time before starting
     }
 
@@ -169,8 +164,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         
         //check if a frame has passed and if so update the events
-        
-        
         long newTime = System.currentTimeMillis(); //get the time at this point
         int frameTime = (int) (newTime-currentTime); //find the length of this frame
         
@@ -181,6 +174,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         accumTime += frameTime; //Accumulate the frame time
         
         if (accumTime >= frameLength) { //a frame has passed
+        	//update the world
+        	level = frame.getClient().getWorld();
+        	
 			//Process movement and rotation
 		    processMovement();
 		    processTurning();
@@ -423,7 +419,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	
     	//draw the 4 walls
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[1]); //bind the wall tile texture
-		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z  ), false);
+		drawQuadTex(gl, v, new Float3(v.x-0.5f, v.y-1f, v.z  ), false);
 		drawQuadTex(gl, v, new Float3(v.x+1, v.y, v.z  ), false);
 		drawQuadTex(gl, v, new Float3(v.x,   v.y, v.z+1), false);
 		drawQuadTex(gl, v, new Float3(v.x,   v.y, v.z-1), false);

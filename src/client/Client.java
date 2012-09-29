@@ -7,12 +7,15 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import data.XMLParser;
+
 import utils.Int3;
 import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatMessage;
 import world.events.Event;
 import world.events.PlayerMove;
+import world.events.RequestPlayer;
 
 /**
  * A class that represents a client for every player.
@@ -33,10 +36,22 @@ public class Client {
         return 0;
     }
     
+    /**@return the current world*/
+    public RiemannCube getWorld() {
+    	return world;
+    }
+    
     public Client(String ip, ChatPanel chat) {
         this.port = 55554;  //Random port number
         this.chat = chat;
-        this.world = new RiemannCube(new Int3(1, 1, 1));
+        
+        //read the world from a file
+        try {
+			this.world = XMLParser.readXML(new File("Levels/Test.xml"));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+        
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
             System.out.println(ipAddress.toString());
@@ -47,6 +62,9 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        //request a player
+        push(new RequestPlayer());
     }
     
     public void push(Event event){

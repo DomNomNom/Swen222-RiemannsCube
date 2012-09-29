@@ -32,7 +32,6 @@ public class GameFrame extends JFrame {
     private ChatPanel chat; //the chat panel
     
     private String ip; //the IP address of the level
-    private RiemannCube level;
     
     public static boolean high = true; //is true when high graphics is enable
     public static boolean free = false; //is true when free camera is enabled

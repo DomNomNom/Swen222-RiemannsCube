@@ -17,7 +17,7 @@ public class GUITest {
 		//settings
 		GameFrame.high = true;
 		GameFrame.free = true;
-		GameFrame.noFloor = true;
+		GameFrame.noFloor = false;
 		GameFrame.showFps = false;
     	GameFrame window = new GameFrame(null);
         window.init();

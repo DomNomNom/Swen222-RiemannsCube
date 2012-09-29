@@ -9,6 +9,7 @@ import world.events.ChatEvent;
 import world.events.ChatMessage;
 import world.events.Event;
 import world.events.PlayerMove;
+import world.events.RequestPlayer;
 
 /**
  * 
@@ -47,8 +48,13 @@ public class ChangeThread extends Thread {
             else if (e instanceof ChatEvent) { // object is a chat events
                 System.out.println(myName() + " Chat message has happened.");
             }
-            else
+            //object is  a player request
+            else if (e instanceof RequestPlayer) {
+            	System.out.println("player has been requested");
+            }
+            else {
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);
+            }
             
             // send the changes to everyone else
             // TODO: Error checking - what if the client isn't in the list
