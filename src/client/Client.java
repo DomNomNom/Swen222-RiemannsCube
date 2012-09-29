@@ -14,6 +14,7 @@ import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatMessage;
 import world.events.Event;
+import world.events.PlayerAssign;
 import world.events.PlayerMove;
 import world.events.RequestPlayer;
 import world.objects.Player;
@@ -42,6 +43,7 @@ public class Client {
     
     public Client(String ip, ChatPanel chat) {
         networking = new ClientNetworking(ip);
+        networking.start();
         this.chat = chat;
         
         //read the world from a file
@@ -61,6 +63,7 @@ public class Client {
     
     public void update(int dt) {
         for (Event e : networking.poll()) {
+            System.out.println(myName() + "recieved a event");
             if (e instanceof Action) {
                 if (!world.applyAction((Action) e) ) {
                     System.err.println(myName() + " wasnt able to apply the servers action! D:");
@@ -69,6 +72,9 @@ public class Client {
             }
             else if (e instanceof ChatMessage)
                 chat.addMessage((ChatMessage) e);
+            else if (e instanceof PlayerAssign) {
+                int id = ((PlayerAssign)e).playerID;
+            }
             else 
                 System.err.println(myName() + " has recieved a unhandeled event: " + e);
         }

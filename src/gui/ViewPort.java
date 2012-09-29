@@ -183,6 +183,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         while (accumTime >= frameLength) { //a frame has passed
         	//update the world
+            frame.getClient().update(frameLength);
         	level = frame.getClient().getWorld();
         	
 			//Process movement and rotation

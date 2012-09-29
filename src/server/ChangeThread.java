@@ -54,7 +54,7 @@ public class ChangeThread extends Thread {
                 sendToEveryone(e);
             }
             else if (e instanceof RequestPlayer) { //object is  a player request
-            	System.out.println("player has been requested");
+            	System.out.println(myName() + "player has been requested");
             	int newPlayerID = c.clientId; // this should be expanded if we want re-loading of levels
                 sendToEveryone(new PlayerSpawning(newPlayerID, new Int3(1,1,1)));
                 sendToClient(new PlayerAssign(newPlayerID), parentServer.clientsList.get(c.clientId));

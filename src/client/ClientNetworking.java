@@ -29,9 +29,11 @@ public class ClientNetworking extends Thread {
         
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
-            System.out.println(ipAddress.toString());
+
+            System.out.println(myName() + ipAddress.toString());
             this.socket = new Socket(ipAddress, port);
             output = new ObjectOutputStream(socket.getOutputStream());
+            input = new ObjectInputStream(socket.getInputStream());            
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -58,7 +60,12 @@ public class ClientNetworking extends Thread {
     
     public void run() {
         while (running) {
-            
+            Event currentEvent = nextEvent();
+            if (currentEvent == null) {
+                System.err.println(myName() + "recieved null! D:");
+                continue;
+            }
+            events.offer(currentEvent);
         }
     }
     
@@ -66,7 +73,6 @@ public class ClientNetworking extends Thread {
         Object obj = null;
         
         try {
-            input = new ObjectInputStream(socket.getInputStream());
             obj = input.readObject();
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,8 +82,6 @@ public class ClientNetworking extends Thread {
             return null;
         }
         
-        System.out.println(myName()+" I got an object !");
-
         if (!(obj instanceof Event)){
             System.err.println(myName() + " Recieved an object that is not an event: " + obj);
             return null;
