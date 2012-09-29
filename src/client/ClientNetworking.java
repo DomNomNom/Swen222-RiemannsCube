@@ -64,26 +64,26 @@ public class ClientNetworking extends Thread {
     
     public Event nextEvent(){
         Object obj = null;
+        
         try {
             input = new ObjectInputStream(socket.getInputStream());
             obj = input.readObject();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        
-        if (!(obj instanceof Event)){
-            System.err.println("Recieved an event that is not ");
             return null;
         }
         
-        
-        
         System.out.println(myName()+" I got an object !");
+
+        if (!(obj instanceof Event)){
+            System.err.println(myName() + " Recieved an object that is not an event: " + obj);
+            return null;
+        }
         
-        
-        return null;
+        return (Event) obj;
     }
     
 
