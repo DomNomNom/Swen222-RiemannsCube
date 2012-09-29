@@ -31,9 +31,9 @@ public class HostGame {
 	    server.start();
 	    
 	    //create a game frame that will connect to the server
-		GameFrame.high = false;
-		GameFrame.free = false;
-		GameFrame.noFloor = false;
+		GameFrame.high = true;
+		GameFrame.free = true;
+		GameFrame.noFloor = true;
 		GameFrame.showFps = false;
     	GameFrame window = new GameFrame("localhost");
         window.init();

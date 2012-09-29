@@ -343,7 +343,16 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private void drawPlayer(GL2 gl, Float3 v, int playerId) {
     	if (high) {
 	    	if (playerId == 0) {
-	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[5]); //bind the player1 texture
+	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[4]); //bind the player1 texture
+	    	}
+	    	else if (playerId == 1) {
+	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[5]); //bind the player2 texture
+	    	}
+	    	else if (playerId == 2) {
+	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[6]); //bind the player3 texture
+	    	}
+	    	else if (playerId == 3) {
+	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[7]); //bind the player4 texture
 	    	}
     	}
     	else {
@@ -357,8 +366,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	
     	//find the angle to rotate by
     	Float2 vectorBetween = new Float2(-pos.x-v.x, -pos.z-v.z);
-    	float angle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
-    	gl.glRotatef(-(angle+90.0f), 0.0f, 1.0f, 0.0f); //apply the x rotation
+    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+    	
+    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
     	
     	//draw the player onto a quad
     	gl.glBegin(GL2.GL_QUADS);

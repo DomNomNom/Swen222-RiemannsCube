@@ -30,7 +30,7 @@ import javax.media.opengl.GLAutoDrawable;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[6]; //where the texture ids are stored
+	private int[] texID = new int[8]; //where the texture ids are stored
 	//The textures
 	private ByteBuffer floorTex;
 	private ByteBuffer wallTex;
@@ -38,6 +38,9 @@ public class Resources {
 	private ByteBuffer spaceTex;
 	private ByteBuffer player1Tex;
 	private ByteBuffer player2Tex;
+	private ByteBuffer player3Tex;
+	private ByteBuffer player4Tex;
+	
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
@@ -98,6 +101,18 @@ public class Resources {
 			player2Tex = convertImageData(player2Img); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
 		
+		BufferedImage player3Img = null;
+		try {
+			player3Img = ImageIO.read(new File("resources/gfx/player3.png")); //open the image
+			player3Tex = convertImageData(player3Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage player4Img = null;
+		try {
+			player4Img = ImageIO.read(new File("resources/gfx/player4.png")); //open the image
+			player4Tex = convertImageData(player4Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
 		//create the texture IDs
 		gl.glGenTextures(texID.length, texID, 0);
 		
@@ -145,6 +160,22 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 512,
             512, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, player2Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[6]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 512,
+            512, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, player3Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[7]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 512,
+            512, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, player4Tex);
 	}
 	
 	/**Converts a buffered image to an array of byte buffer
