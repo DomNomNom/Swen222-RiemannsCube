@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import utils.Int3;
+import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatMessage;
 import world.events.Event;
@@ -24,10 +26,12 @@ public class Client {
     private int port;
     
     private final ChatPanel chat;
+    private RiemannCube world;
 
     public Client(String ip, ChatPanel chat) {
         this.port = 55554;  //Random port number
         this.chat = chat;
+        this.world = new RiemannCube(new Int3(1, 1, 1));
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
             System.out.println(ipAddress.toString());
@@ -60,6 +64,7 @@ public class Client {
             if (obj instanceof Action) {
                 Action act = (Action) obj;
                 // TODO: apply this to the world, request a full state update if it fails
+                world.applyAction(act);
             }
             // object is a chat message
             else if (obj instanceof ChatMessage) {

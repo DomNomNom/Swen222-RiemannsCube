@@ -71,9 +71,9 @@ public class Server extends Thread {
         window.init();
         window.execute();
         
-        Client c = new Client("127.0.0.1", null);
-        PlayerMove pm = new PlayerMove(0, new Int3());
-        c.push(pm);
+//        Client c = new Client("127.0.0.1", null);
+//        PlayerMove pm = new PlayerMove(0, new Int3());
+//        c.push(pm);
         
     }
 }
