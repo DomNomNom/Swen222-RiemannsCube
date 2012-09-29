@@ -37,18 +37,18 @@ public class ChangeThread extends Thread {
             
             // process the change and apply it to the world
             Event e = c.event;
-            // object is an action
-            if (e instanceof Action) {
+            if (e instanceof Action) {    // object is an action
                 Action act = (Action)e;
-                parentServer.world.applyAction(act);
+                if (!parentServer.world.applyAction(act)) {
+                    System.err.println(myName() + " client["+c.clientId+"] sent a invalid action! " + act);
+                    continue; // don't broadcast
+                }
             }
-            // object is a chat message
-            else if (e instanceof ChatEvent) {
+            else if (e instanceof ChatEvent) { // object is a chat events
                 System.out.println(myName() + " Chat message has happened.");
             }
-            else {
+            else
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);
-            }
             
             // send the changes to everyone else
             // TODO: Error checking - what if the client isn't in the list

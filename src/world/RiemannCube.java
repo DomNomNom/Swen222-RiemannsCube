@@ -112,7 +112,7 @@ public class RiemannCube {
         return player.move(to);
     }
     
-    private boolean spawnPlayer(PlayerSpawning action) {
+    private synchronized boolean spawnPlayer(PlayerSpawning action) {
         int id = action.playerID;
         Int3 pos = action.pos;
         if (isValidPlayer(id)) return false; // the player may not exist yet
@@ -138,7 +138,7 @@ public class RiemannCube {
         
         if (size.z != other.size.z || size.y != other.size.y || size.x != other.size.x)    return false;
         
-        for (int x=size.x; x --> 0;)
+        for (int x=size.x; x --> 0;) // ohh, ben...
             for (int y=0; y<size.y; ++y)
                 if (!Arrays.equals(cubes[x][y], other.cubes[x][y]))
                     return false;
