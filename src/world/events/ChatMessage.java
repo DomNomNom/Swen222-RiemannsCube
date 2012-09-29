@@ -20,6 +20,7 @@ public class ChatMessage extends ChatEvent {
 
     @Override
     public boolean equals(Object obj) {
+        System.out.println("COMARING : " + obj);
         if (this == obj)                                return true;
         if (obj == null)                                return false;
         if (getClass() != obj.getClass())               return false;

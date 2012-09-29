@@ -15,6 +15,7 @@ import utils.Int3;
 import world.RiemannCube;
 import world.events.ChatMessage;
 import client.Client;
+import client.ClientNetworking;
 
 public class NetworkingTests {
 
@@ -23,8 +24,7 @@ public class NetworkingTests {
 		Server server = new Server(new RiemannCube(new Int3(1, 1, 1)));
         server.start();
         
-        MockChatPanel mockOutput = new MockChatPanel();
-        Client client = new Client("localhost", mockOutput);
+        ClientNetworking client = new ClientNetworking("localhost");
         System.out.println("started server and client");
 
         String content = "HI! :D  <>(){}' \";`~ DROP TABLE LEVELS"; // tests for SQL injection, because why not?
@@ -32,9 +32,12 @@ public class NetworkingTests {
         ChatMessage message = new ChatMessage(content, speaker);
         client.push(message);
         
-        client.pull();
-        assertTrue(mockOutput.log.size() == 1);
-        assertTrue(message.equals(mockOutput.log.get(0)));
+        ChatMessage response = (ChatMessage) client.nextEvent();
+        assertTrue(message.equals(response));
+        
+        //client.pull();
+        //assertTrue(mockOutput.log.size() == 1);
+        //assertTrue(message.equals(mockOutput.log.get(0)));
         
         //System.exit(0); // force exit of all threads
 
@@ -49,21 +52,6 @@ public class NetworkingTests {
         */
         System.out.println("finished");
         	
-    }
-	
-	private static class MockChatPanel extends ChatPanel {
-
-		public List<ChatMessage> log = new ArrayList<ChatMessage>();
-		public List<Integer> log_speaker = new ArrayList<Integer>();
-		
-        public MockChatPanel() {
-            super(new GameFrame(""));
-        }
-        
-        @Override
-        public void addMessage(ChatMessage message) {
-        	log.add(message);
-        }
     }
 
 }

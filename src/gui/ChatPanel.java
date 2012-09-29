@@ -105,7 +105,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                message = new ChatMessage(inputField.getText(), frame.getClient().getPlayerID());
+                message = new ChatMessage(inputField.getText(), frame.getClient().player().id());
                 frame.getClient().push(message);
 
                 inputField.setText("");

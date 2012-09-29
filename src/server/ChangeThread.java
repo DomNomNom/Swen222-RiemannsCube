@@ -3,12 +3,15 @@ package server;
 import java.io.IOException;
 import java.net.Socket;
 
+import utils.Int3;
 import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatEvent;
 import world.events.ChatMessage;
 import world.events.Event;
+import world.events.PlayerAssign;
 import world.events.PlayerMove;
+import world.events.PlayerSpawning;
 import world.events.RequestPlayer;
 
 /**
@@ -44,33 +47,43 @@ public class ChangeThread extends Thread {
                     System.err.println(myName() + " client["+c.clientId+"] sent a invalid action! " + act);
                     continue; // don't broadcast
                 }
+                sendToEveryone(e);
             }
             else if (e instanceof ChatEvent) { // object is a chat events
                 System.out.println(myName() + " Chat message has happened.");
+                sendToEveryone(e);
             }
-            //object is  a player request
-            else if (e instanceof RequestPlayer) {
+            else if (e instanceof RequestPlayer) { //object is  a player request
             	System.out.println("player has been requested");
+            	int newPlayerID = c.clientId; // this should be expanded if we want re-loading of levels
+                sendToEveryone(new PlayerSpawning(newPlayerID, new Int3(1,1,1)));
+                sendToClient(new PlayerAssign(newPlayerID), parentServer.clientsList.get(c.clientId));
             }
             else {
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);
-            }
-            
-            // send the changes to everyone else
-            // TODO: Error checking - what if the client isn't in the list
-            for(RemotePlayer rp : parentServer.clientsList.values()){
-                try {
-                    rp.out.writeObject(e);
-                } catch (IOException e1) {
-                    System.err.println(myName() + " Coluldn't send information to client " + rp.out);
-                    //e1.printStackTrace();
-                }
-                
-                //  rp.out is a object out stream that you can write the objects out too
+                sendToEveryone(e);
             }
         }
     }
 
+    
+    /** Sends a */
+    private void sendToClient(Event e, RemotePlayer rp) {
+        try {
+            rp.out.writeObject(e); // rp.out is a object out stream that you can write the objects out too
+        } catch (IOException e1) {
+            System.err.println(myName() + " Coluldn't send information to client " + rp.out);
+            //e1.printStackTrace();
+        }
+    }
+    
+    
+    /** send the changes to everyone */
+    private void sendToEveryone(Event e) {
+        // TODO: Error checking - what if the sending client isn't in the list
+        for(RemotePlayer rp : parentServer.clientsList.values())
+            sendToClient(e, rp);
+    }
 
     /** just for more readable console debug output */
     private String myName() { return "[workerThread]"; }
