@@ -30,13 +30,14 @@ import javax.media.opengl.GLAutoDrawable;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[5]; //where the texture ids are stored
+	private int[] texID = new int[6]; //where the texture ids are stored
 	//The textures
 	private ByteBuffer floorTex;
 	private ByteBuffer wallTex;
 	private ByteBuffer glassTex;
 	private ByteBuffer spaceTex;
 	private ByteBuffer player1Tex;
+	private ByteBuffer player2Tex;
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
@@ -91,6 +92,12 @@ public class Resources {
 			player1Tex = convertImageData(player1Img); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
 		
+		BufferedImage player2Img = null;
+		try {
+			player2Img = ImageIO.read(new File("resources/gfx/player2.png")); //open the image
+			player2Tex = convertImageData(player2Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
 		//create the texture IDs
 		gl.glGenTextures(texID.length, texID, 0);
 		
@@ -130,6 +137,14 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 512,
             512, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, player1Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[5]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 512,
+            512, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, player2Tex);
 	}
 	
 	/**Converts a buffered image to an array of byte buffer

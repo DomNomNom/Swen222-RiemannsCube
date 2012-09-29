@@ -340,8 +340,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     
     private void drawPlayer(GL2 gl, Float3 v, int playerId) {
-    	if (playerId == 0) {
-    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[4]); //bind the player1 texture
+    	if (high) {
+	    	if (playerId == 0) {
+	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[5]); //bind the player1 texture
+	    	}
+    	}
+    	else {
+    		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	}
     	
     	gl.glPushMatrix(); //push a new matrix
