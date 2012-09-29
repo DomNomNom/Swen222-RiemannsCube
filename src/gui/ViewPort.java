@@ -6,8 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +26,7 @@ import world.cubes.Cube;
 import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Wall;
+import world.objects.Player;
 
 import com.jogamp.opengl.util.Animator;
 
@@ -89,13 +88,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     //For stepping movement
     private float stepCycle = 0.0f; //where the camera is in the step
-    private float stepHeight = 0.015f;
+    private float stepHeight = 0.005f;
 
     static GLU glu = new GLU(); //for GLU methods
     private Robot robot; //a robot that insures the mouse is always in the centre of the screen
     public static Animator animator; // the animator makes sure the canvas is always being updated
     
-    public List<Pair<Float3, Float3>> glassRender; //a list that hold all the glass to render
+    private List<Pair<Float3, Float3>> glassRender; //a list that hold all the glass to render
+    private List<Pair<Float3, Integer>> playerRender; // a list of players to be rendered
 
     // CONSTRUCTOR
     /** Creates a new view port
@@ -153,7 +153,15 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //get the level from the client
         level = frame.getClient().getWorld();
         
+        level.getCube(1, 1, 2).addObject(new Player(level.getCube(1, 1, 2), 0));
+        
         currentTime = System.currentTimeMillis(); //update the time before starting
+        
+        //FIX FIX FIX FIX FIX FIX FIX FIX FIX FIX FIX !!!!!!!!!!!!!!!!!!!
+        pos.x -= 2.0f;
+        pos.y -= 2.0f;
+        pos.z -= 2.0f;
+        
     }
 
     @Override
@@ -173,7 +181,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         currentTime = newTime; //update the current time
         accumTime += frameTime; //Accumulate the frame time
         
-        if (accumTime >= frameLength) { //a frame has passed
+        while (accumTime >= frameLength) { //a frame has passed
         	//update the world
         	level = frame.getClient().getWorld();
         	
@@ -195,13 +203,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         gl.glRotatef(rotation.x, 1.0f, 0.0f, 0.0f); //apply the x rotation
         gl.glRotatef(rotation.y, 0.0f, 1.0f, 0.0f); //apply the y rotation
         
-        gl.glTranslatef(pos.x-2f, pos.y-2*floor, pos.z-2f); //apply the translations
+        gl.glTranslatef(pos.x, pos.y, pos.z); //apply the translations
         
         if (high) drawSpaceBoxHigh(gl); //draw the space box in high graphics
         
         gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
         
         glassRender = new ArrayList<Pair<Float3, Float3>>(); //create the glass render list
+        playerRender = new ArrayList<Pair<Float3, Integer>>(); //create the player render list
         
         //iterate through the level and draw all the tiles
         for (int x = 0; x < level.size.x; ++x) {
@@ -212,19 +221,31 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	        			Float3 v = new Float3(x*2, y*2, z*2); //find the position vector
 	        			Float3 n = new Float3(x*2+normal.x, y*2+normal.y, z*2+normal.z); //find the normal
 	        			
+	        			//draw the cubes
 	        			if (high) { //draw the high graphics cubes
 	        				if (c instanceof Wall) drawWallHigh(gl, v, n); //draw a wall
 	        				if (c instanceof Floor) drawFloorHigh(gl, v, n); //draw a floor
+	        				
 	        			}
 	        			else { //draw the low graphics alternatives
 	        				if (c instanceof Floor) drawFloorLow(gl, v, n); //draw a floor cube
 	        				else if (c instanceof Wall) drawWallLow(gl, v, n); //draw a wall cube
 	        			}
 	        			
+	        			//draw players
+	        			Player p = c.player(); //get the player in the cube
+	        			
+	        			if (p != null) playerRender.add(new Pair<Float3, Integer>(v, p.id));
+	        			
 	        			if (c instanceof Glass) glassRender.add(new Pair<Float3, Float3>(v, n));
 	        		}
         		}
         	}
+        }
+        
+        //draw the players
+        for (Pair<Float3, Integer> p : playerRender) {
+        	drawPlayer(gl, p.first(), p.second());
         }
         
         //draw the glass last
@@ -281,10 +302,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //Create the stepping motion
         if (!free) {
 	        if (move) {
-		        if (stepCycle < Math.PI) stepCycle += 0.14f;
+		        if (stepCycle < Math.PI) stepCycle += 0.12f;
 		        else stepCycle = 0.0f;
 		        
-		        pos.y = (float) (stepHeight*Math.cos(stepCycle+(Math.PI/2)));
+		        pos.y += (float) (stepHeight*Math.cos(stepCycle));
 	        }
         }
         else { //in free camera mode
@@ -315,6 +336,32 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     		
     		rightMouse = false;
     	}
+    }
+    
+    
+    private void drawPlayer(GL2 gl, Float3 v, int playerId) {
+    	if (playerId == 0) {
+    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[4]); //bind the player1 texture
+    	}
+    	
+    	gl.glPushMatrix(); //push a new matrix
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate to world position
+    	
+    	//find the angle to rotate by
+    	Float2 vectorBetween = new Float2(-pos.x-v.x, -pos.z-v.z);
+    	float angle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+    	gl.glRotatef(-(angle+90.0f), 0.0f, 1.0f, 0.0f); //apply the x rotation
+    	
+    	//draw the player onto a quad
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.5f,  0.5f, 0);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.5f,  0.5f, 0);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.5f, -0.5f, 0);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.5f, -0.5f, 0);
+    	gl.glEnd();
+    	
+    	gl.glPopMatrix(); //pop the matrix
     }
     
     /**Draws a openGL textured quad
@@ -419,7 +466,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	
     	//draw the 4 walls
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[1]); //bind the wall tile texture
-		drawQuadTex(gl, v, new Float3(v.x-0.5f, v.y-1f, v.z  ), false);
+		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z  ), false);
 		drawQuadTex(gl, v, new Float3(v.x+1, v.y, v.z  ), false);
 		drawQuadTex(gl, v, new Float3(v.x,   v.y, v.z+1), false);
 		drawQuadTex(gl, v, new Float3(v.x,   v.y, v.z-1), false);
@@ -470,7 +517,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
      * @param v the position vector of the cube
      * @param n the normal vector of the cube*/
     private void drawWallLow(GL2 gl, Float3 v, Float3 n) {
-    	
     	//draw the 4 walls
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
     	Float3 colour = new Float3(1.0f, 0.0f, 1.0f); //set the colour of the wall

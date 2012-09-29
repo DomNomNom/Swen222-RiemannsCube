@@ -27,4 +27,14 @@ public class Float2 {
     public void add(float X, float Y) { x+=  X;  y+=  Y; }
     
     public Float2 copy() { return new Float2(x, y); }
+    
+    /**
+     * Calculate the angle of rotation for this vector
+     * @return the angle of rotation
+     */
+    public float heading() {
+      float angle = (float) Math.atan2(y, x);
+      return 1*angle;
+    }
+
 }

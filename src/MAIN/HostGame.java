@@ -34,7 +34,7 @@ public class HostGame {
 		GameFrame.high = true;
 		GameFrame.free = false;
 		GameFrame.noFloor = false;
-		GameFrame.showFps = true;
+		GameFrame.showFps = false;
     	GameFrame window = new GameFrame("localhost");
         window.init();
         window.execute();
