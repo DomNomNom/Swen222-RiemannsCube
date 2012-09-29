@@ -177,7 +177,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         if (showFps) printFps(frameTime);
         
-        if (frameTime > 25) frameTime = 30; //limit the max frame time
+        if (frameTime > 55) frameTime = 55; //limit the max frame time
         currentTime = newTime; //update the current time
         accumTime += frameTime; //Accumulate the frame time
         
