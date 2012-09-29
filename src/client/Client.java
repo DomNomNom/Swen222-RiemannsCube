@@ -28,6 +28,11 @@ public class Client {
     private final ChatPanel chat;
     private RiemannCube world;
 
+    public int getPlayerID(){
+        //TODO Return the player's ID here
+        return 0;
+    }
+    
     public Client(String ip, ChatPanel chat) {
         this.port = 55554;  //Random port number
         this.chat = chat;
