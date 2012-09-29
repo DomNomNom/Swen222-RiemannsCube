@@ -70,10 +70,14 @@ public class Client {
                     // TODO: request a full state update and apply it
                 }
             }
-            else if (e instanceof ChatMessage)
+            else if (e instanceof ChatMessage) {
+                System.out.println(myName() + "recieved chat");
                 chat.addMessage((ChatMessage) e);
+            }
             else if (e instanceof PlayerAssign) {
                 int id = ((PlayerAssign)e).playerID;
+                player = world.players.get(id);
+                System.out.println(myName() + "recieved assign");
             }
             else 
                 System.err.println(myName() + " has recieved a unhandeled event: " + e);

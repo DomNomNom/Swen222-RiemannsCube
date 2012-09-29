@@ -97,9 +97,13 @@ public class RiemannCube {
      * @return Whether the action is valid and has been applied.
      */
     public boolean applyAction(Action a) {
+        if (a == null) return false;
         if (a instanceof PlayerMove    )  return movePlayer((PlayerMove) a);
         if (a instanceof PlayerSpawning)  return spawnPlayer((PlayerSpawning) a);
-        else return false;
+        else { 
+            System.err.println("[RC] OMG I haven't coded stuff for this: " + a);
+            return false;
+        }
     }
     
     private boolean movePlayer(PlayerMove action) {
@@ -172,5 +176,4 @@ public class RiemannCube {
     }
 
 
-    
 }
