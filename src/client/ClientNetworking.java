@@ -14,6 +14,11 @@ import world.events.Action;
 import world.events.ChatMessage;
 import world.events.Event;
 
+/**
+ * A class that represents a thread that controls 
+ * the network interaction for the client.
+ * @author feshersiva
+ */
 public class ClientNetworking extends Thread {
     private Socket socket;
     private ObjectOutputStream output;
@@ -41,7 +46,11 @@ public class ClientNetworking extends Thread {
         }
     }
     
-    
+    /**
+     * A method that return a list of events which 
+     *  were added science the the last frame.
+     * @return the List of events.
+     */
     public List<Event> poll() {
         int items = events.size();
         List<Event> ret = new ArrayList<Event>(items);
@@ -49,6 +58,10 @@ public class ClientNetworking extends Thread {
         return ret;
     }
     
+    /**
+     * A method that outputs an event.
+     * @param event
+     */
     public void push(Event event){
         try {
             output.writeObject(event);
@@ -69,6 +82,11 @@ public class ClientNetworking extends Thread {
         }
     }
     
+    /**
+     * A method that receives the next event from 
+     * the input stream.
+     * @return
+     */
     public Event nextEvent(){
         Object obj = null;
         

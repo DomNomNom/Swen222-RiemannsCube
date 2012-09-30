@@ -15,7 +15,8 @@ import world.events.PlayerSpawning;
 import world.events.RequestPlayer;
 
 /**
- * 
+ * A thread that is responsible of handling the changes made to the 
+ * world instance. It handles Actions, Chat events and player requests.   
  * @author feshersiva
  */
 public class ChangeThread extends Thread {

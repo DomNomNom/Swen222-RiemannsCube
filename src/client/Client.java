@@ -53,14 +53,15 @@ public class Client {
 			e1.printStackTrace();
 		}
         
-        
-        
         //request a player
         networking.push(new RequestPlayer());
     }
     
-    
-    
+    /**
+     * A method that updates the state of the world with
+     * the events that exists in the Client Networking.
+     * @param dt
+     */
     public void update(int dt) {
         for (Event e : networking.poll()) {
             System.out.println(myName() + "recieved a event");
@@ -84,6 +85,10 @@ public class Client {
         }
     }
     
+    /**
+     * A method that adds an event to the client networking.
+     * @param e
+     */
     public void push(Event e) {
         networking.push(e);
     }
