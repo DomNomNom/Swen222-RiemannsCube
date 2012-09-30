@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import utils.Configurations;
 import world.events.Action;
 import world.events.ChatMessage;
 import world.events.Event;
@@ -34,8 +35,8 @@ public class ClientNetworking extends Thread {
         
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
-
-            System.out.println(myName() + ipAddress.toString());
+            //test printout
+            if(Configurations.debugPrint)   System.out.println(myName() + ipAddress.toString());
             this.socket = new Socket(ipAddress, port);
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());            

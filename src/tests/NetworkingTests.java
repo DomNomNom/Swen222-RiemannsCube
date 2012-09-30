@@ -11,6 +11,7 @@ import gui.GameFrame;
 import org.junit.Test;
 
 import server.Server;
+import utils.Configurations;
 import utils.Int3;
 import world.RiemannCube;
 import world.events.ChatMessage;
@@ -21,6 +22,7 @@ public class NetworkingTests {
 
 	@Test
 	public void testChatMEssage() {
+	    Configurations.debugPrint = false;
 		Server server = new Server(new RiemannCube(new Int3(1, 1, 1)));
         server.start();
         

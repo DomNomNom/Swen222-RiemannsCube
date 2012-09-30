@@ -3,6 +3,7 @@ package server;
 import java.io.*;
 import java.net.*;
 
+import utils.Configurations;
 import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatMessage;
@@ -41,7 +42,8 @@ public class WorkerThread extends Thread {
                 // read object from socket input
                 try {
                     obj = input.readObject();
-                    System.out.println(myName() + " got my object");
+                  //test printout
+                    if(Configurations.debugPrint)  System.out.println(myName() + " got my object");
                     /*
                      * obj = null;
                      * 

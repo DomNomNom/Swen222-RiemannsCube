@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 
 import data.XMLParser;
 
+import utils.Configurations;
 import utils.Int3;
 import world.RiemannCube;
 import world.events.Action;
@@ -64,7 +65,9 @@ public class Client {
      */
     public void update(int dt) {
         for (Event e : networking.poll()) {
-            System.out.println(myName() + "recieved a event");
+          //test printout
+            if (Configurations.debugPrint)  System.out.println(myName() + "recieved a event");   
+            
             if (e instanceof Action) {
                 if (!world.applyAction((Action) e) ) {
                     System.err.println(myName() + " wasnt able to apply the servers action! D:");
@@ -72,13 +75,15 @@ public class Client {
                 }
             }
             else if (e instanceof ChatMessage) {
-                System.out.println(myName() + "recieved chat");
+              //test printout
+                if(Configurations.debugPrint)  System.out.println(myName() + "recieved chat"); 
                 chat.addMessage((ChatMessage) e);
             }
             else if (e instanceof PlayerAssign) {
                 int id = ((PlayerAssign)e).playerID;
                 player = world.players.get(id);
-                System.out.println(myName() + "recieved assign");
+              //test printout
+                if(Configurations.debugPrint)  System.out.println(myName() + "recieved assign");
             }
             else 
                 System.err.println(myName() + " has recieved a unhandeled event: " + e);

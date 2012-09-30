@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.Socket;
 
+import utils.Configurations;
 import utils.Int3;
 import world.RiemannCube;
 import world.events.Action;
@@ -38,7 +39,7 @@ public class ChangeThread extends Thread {
                 e.printStackTrace();
             }
             //test printout
-            System.out.printf(myName() + " Got a change from client #%d\n", c.clientId);
+            if(Configurations.debugPrint)  System.out.printf(myName() + " Got a change from client #%d\n", c.clientId);
             
             // process the change and apply it to the world
             Event e = c.event;
@@ -51,11 +52,13 @@ public class ChangeThread extends Thread {
                 sendToEveryone(e);
             }
             else if (e instanceof ChatEvent) { // object is a chat events
-                System.out.println(myName() + " Chat message has happened.");
+              //test printout
+                if(Configurations.debugPrint)  System.out.println(myName() + " Chat message has happened.");
                 sendToEveryone(e);
             }
             else if (e instanceof RequestPlayer) { //object is  a player request
-            	System.out.println(myName() + "player has been requested");
+              //test printout
+                if(Configurations.debugPrint)  System.out.println(myName() + "player has been requested");
             	int newPlayerID = c.clientId; // this should be expanded if we want re-loading of levels
                 sendToEveryone(new PlayerSpawning(newPlayerID, new Int3(1,1,1)));
                 sendToClient(new PlayerAssign(newPlayerID), parentServer.clientsList.get(c.clientId));
@@ -68,7 +71,7 @@ public class ChangeThread extends Thread {
     }
 
     
-    /** Sends a */
+    /* Sends a an event to the client that made it */
     private void sendToClient(Event e, RemotePlayer rp) {
         try {
             rp.out.writeObject(e); // rp.out is a object out stream that you can write the objects out too
