@@ -30,5 +30,8 @@ public class PlayerMove extends Action implements Serializable{
         else                  this.movement = movement;
     }
     
+    public String toString() {
+    	return playerID+" moves "+movement;
+    }
     
 }

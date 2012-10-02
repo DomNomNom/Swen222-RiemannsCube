@@ -114,6 +114,7 @@ public class RiemannCube {
             return false;
         return true;
     }
+    
     private boolean isValidSpawnPlayer(PlayerSpawning a) {
         if (isValidPlayer(a.playerID)) return false; // the player may not exist yet
         if (!isInBounds(a.pos)) return false;

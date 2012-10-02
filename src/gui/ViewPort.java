@@ -20,12 +20,14 @@ import javax.media.opengl.glu.GLU;
 import utils.Float2;
 import utils.Float3;
 import utils.Int2;
+import utils.Int3;
 import utils.Pair;
 import world.RiemannCube;
 import world.cubes.Cube;
 import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Wall;
+import world.events.PlayerMove;
 import world.objects.Player;
 
 import com.jogamp.opengl.util.Animator;
@@ -238,7 +240,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	        			Player p = c.player(); //get the player in the cube
 	        			
 	        			if (p != null) {
-	        				if (p.id == player.id) //only render the other players
+	        				if (p.id != player.id) //only render the other players
 	        					playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
 	        			}
 	        			
@@ -335,25 +337,26 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         //now check movement is valid if not in free camera mode
         if (!free) {
-        	if (player.relPos.x+newPos.x >= 1.0f) {
-        		//level.is
+        	boolean canMove = true; //is true if the player can move
+        	Int3 cubeMove = new Int3(0, 0, 0);
+        	
+        	if (player.relPos.x+newPos.x >= 1.0f) cubeMove = new Int3(1, 0, 0);
+        	else if (player.relPos.x+newPos.x <= -1.0f) cubeMove = new Int3(-1, 0, 0);
+        	else if (player.relPos.y+newPos.y >= 1.0f) cubeMove = new Int3(0, 1, 0);
+        	else if (player.relPos.y-newPos.y <= -1.0f) cubeMove = new Int3(0, -1, 0);
+        	else if (player.relPos.z+newPos.z >= 1.0f) cubeMove = new Int3(0, 0, 1);
+        	else if (player.relPos.z+newPos.z <= -1.0f) cubeMove = new Int3(0, 0, -1);
+        	
+        	Int3 zeroInt = new Int3(0, 0, 0);
+        	
+        	if (!cubeMove.equals(zeroInt)) {
+	        	if (cubeMove.equals(cubeMove) && level.isValidAction(new PlayerMove(player.id, cubeMove))) {
+	        		frame.getClient().push(new PlayerMove(player.id, cubeMove));
+	        	}
+	        	else canMove = false;
         	}
-        	else if (player.relPos.x+newPos.x <= -1.0f) {
-        		
-        	}
-        	else if (player.relPos.y+newPos.y >= 1.0f) {
-        		
-        	}
-        	else if (player.relPos.y-newPos.y <= -1.0f) {
-        		
-        	}
-        	else if (player.relPos.z+newPos.z >= 1.0f) {
-        		
-        	}
-        	else if (player.relPos.z+newPos.z <= -1.0f) {
-        		
-        	}
-        	else { //not changing tile so just change relative position
+    		
+        	if (canMove) {
         		player.relPos.x += newPos.x;
         		player.relPos.y += newPos.y;
         		player.relPos.z += newPos.z;
