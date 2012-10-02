@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 
 import data.XMLParser;
 import server.Server;
+import utils.Configurations;
 import utils.Int3;
 import world.RiemannCube;
 
@@ -17,6 +18,8 @@ import world.RiemannCube;
 public class HostGame {
 	
 	public static void main(String[] args) {
+	    Configurations.debugPrint = true;
+	    
 		//load the level for the server
 		RiemannCube world = null;
 		//read the world from a file

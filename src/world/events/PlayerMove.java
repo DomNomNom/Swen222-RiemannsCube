@@ -8,6 +8,7 @@ import utils.Int3;
  * A action that says "Player 2 is moving UP"
  * 
  * ensures movement != null
+ * when successfully applied, player.pos()+player.relPos is the same value before and after
  *
  * @author schmiddomi
  */

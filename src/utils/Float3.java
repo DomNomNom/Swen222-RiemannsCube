@@ -27,6 +27,11 @@ public class Float3 {
     	return this;
 	}
     
+    public Float3 sub(Int3 o) {
+        x+=o.x; y+=o.y; z+=o.z;
+        return this;
+    }
+    
     public Float3 copy() { return new Float3(x,y,z); }
     
      @Override

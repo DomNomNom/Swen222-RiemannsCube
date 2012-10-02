@@ -1,5 +1,6 @@
 package world.objects;
 
+import utils.Configurations;
 import utils.Int3;
 import utils.Int3;
 import world.cubes.Cube;
@@ -27,12 +28,9 @@ public abstract class GameObject {
      * @return Whether it was possible to do so
      */
     public boolean move(Cube to) {
-        if (!cube.removeObject(this)) 
-            throw new IllegalStateException("I can't remove this object from this cube! D:");
-        
-        if (!cube.addObject(this))
-            return false;
-        
+        if (Configurations.debugPrint)  System.out.println(myName() +" moving " + cube.pos() + " ==> " + to.pos());
+        if (!cube.removeObject(this)) throw new IllegalStateException("I can't remove this object from this cube! D:");
+        if (!to.addObject(this))      throw new IllegalStateException("I add myself to the other object from this cube! D:");
         cube = to;
         return true;
     }
@@ -50,6 +48,7 @@ public abstract class GameObject {
     }
 
     public abstract String getClassName();
+    public String myName() { return "[" + getClassName() + "]"; }
     
     /** 
      * returns whether a player is allowed to move to the same cube as this object
