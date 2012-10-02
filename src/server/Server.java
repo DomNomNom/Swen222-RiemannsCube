@@ -43,7 +43,7 @@ public class Server extends Thread {
 
     public void run() {
         try {
-            int id = 1;
+            int id = 0;
             ChangeThread changeT = new ChangeThread(this);
             changeT.start();
             
