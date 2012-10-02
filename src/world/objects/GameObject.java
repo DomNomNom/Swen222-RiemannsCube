@@ -53,9 +53,9 @@ public abstract class GameObject {
     
     /** 
      * returns whether a player is allowed to move to the same cube as this object
-     * returns true by default. 
+     * returns false by default. 
      */
     public boolean blocks(Player p) {
-        return true;
+        return false;
     }
 }
