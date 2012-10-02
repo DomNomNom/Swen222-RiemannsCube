@@ -178,11 +178,12 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         g.setColor(new Color(202, 225, 255));
                     }
 
+                    //Highlight selected diamond
                     if (this.x == i && this.z == j && y == floor) {
-                        int red = g.getColor().getRed();
-                        int green = g.getColor().getGreen();
-                        int blue = g.getColor().getBlue();
-                        g.setColor(new Color(red, blue, green, 100));
+                        int red = (int)(g.getColor().getRed()*0.5);
+                        int green = (int)(g.getColor().getGreen()*0.9);
+                        int blue = (int)(g.getColor().getBlue()*0.5);
+                        g.setColor(new Color(red, green, blue));
                     }
                     drawDiamond(g, top, (int) left, squareLength);
                     if (slice[i][j].object() != null)
@@ -343,15 +344,14 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             i = (int) (i - 3 * squareLength / (2 * Math.sqrt(2)));
             x = (int) ((i) * Math.sqrt(2) / 3 + j) / squareLength;
             z = (int) ((-i * Math.sqrt(2) / 3 + j) / squareLength);
-            int floorHeight = (level.size.y + level.size.x + 1) * squareLength
-                    / 2;
+            int floorHeight = (level.size.y + level.size.x + 1) * squareLength / 2;
             y = (e.getY() - top) / floorHeight;
             x -= y * level.size.x;
-            z -= y * level.size.x;
-            y = level.size.y - y - 1;
+            z -= y * level.size.z;
+            y = level.size.y - y - 3;
             this.i = x;
             this.j = z;
-            System.out.println(x + " " + y + " " + z);
+            System.out.println(x + " " + y + " " + z + " floorheight: "+ floorHeight);
         }
         repaint();
     }
@@ -376,22 +376,23 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         char key = e.getKeyChar();
         Int3 currentPos = new Int3(x, y, z);
         Cube currentCube = level.getCube(currentPos);
-        if (key == 'f') {
+        if (key == 'f') { //Floor
             level.setCube(x, y, z, new Floor(currentPos));
-        } else if (key == 'w') {
+        } else if (key == 'w') { //Wall
             level.setCube(x, y, z, new Wall(currentPos));
-        } else if (key == 's') {
+        } else if (key == 's') { //Spawn point
             Cube spawnPoint = new Floor(new Int3(x, y, z));
             spawnPoint.setSpawnPoint(true);
             level.setCube(x, y, z, spawnPoint);
-        } else if (key == 'g') {
+        } else if (key == 'g') { //Glass
             level.setCube(x, y, z, new Glass(new Int3(x, y, z)));
-        } else if (key == ' ') {
+        } else if (key == ' ') { //Empty space
             level.setCube(x, y, z, new Space(new Int3(x, y, z)));
-        } else if (key == '1') {
-            level.cubes[x][y][z].addObject(new Player(level.cubes[x][y][z], 1));
+        /*} else if (key == '1') {
+            level.cubes[x][y][z].addObject(new Player(level.cubes[x][y][z], 1));*/
         } else if (level.getCube(x, y, z).object() == null) {
-            if (key == 'd') {
+            //Need empty square to add object
+            if (key == 'd') { //Door
                 if (curDoor == null || curDoor.allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
@@ -421,7 +422,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     System.out
                             .println("Finish placing the locks for the last door!");
                 }
-            } else if (key == 'l') {
+            } else if (key == 'l') { //Lock
                 if (curDoor != null && !curDoor.allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
@@ -433,7 +434,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     level.getCube(x, y, z).addObject(curLock);
                     curDoor.addTrigger(curLock.getID());
                 }
-            } else if (key == 'k') {
+            } else if (key == 'k') { //Key
                 if (curLock != null) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
