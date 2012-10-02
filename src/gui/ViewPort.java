@@ -338,7 +338,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //now check movement is valid if not in free camera mode
         if (!free) {
         	boolean canMove = true; //is true if the player can move
-        	Int3 cubeMove = new Int3(0, 0, 0);
+        	Int3 cubeMove = new Int3();
         	
         	if (player.relPos.x+newPos.x >= 1.0f) cubeMove = new Int3(1, 0, 0);
         	else if (player.relPos.x+newPos.x <= -1.0f) cubeMove = new Int3(-1, 0, 0);
@@ -350,8 +350,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	Int3 zeroInt = new Int3(0, 0, 0);
         	
         	if (!cubeMove.equals(zeroInt)) {
-	        	if (cubeMove.equals(cubeMove) && level.isValidAction(new PlayerMove(player.id, cubeMove))) {
-	        		frame.getClient().push(new PlayerMove(player.id, cubeMove));
+        		Int3 newCube = player.pos().add(cubeMove);
+	        	if (level.isValidAction(new PlayerMove(player.id, newCube))) {
+	        		frame.getClient().push(new PlayerMove(player.id, newCube));
 	        	}
 	        	else canMove = false;
         	}

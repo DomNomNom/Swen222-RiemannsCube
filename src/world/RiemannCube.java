@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import utils.Float3;
 import utils.Int3;
 import utils.Int2;
 import utils.Int3;
@@ -108,9 +109,9 @@ public class RiemannCube {
     private boolean isValidMovePlayer(PlayerMove a) {
         if (!isValidPlayer(a.playerID)) return false;
         Player p = players.get(a.playerID);
-        Cube to = getCube(p.pos().add(a.movement));
+        Cube to = getCube(a.movement);
         if (!isInBounds(to.pos())) return false;
-        if (getCube(p.pos().add(a.movement)).blocks(p)) // if the cube we are moving to blocks the player  
+        if (to.blocks(p)) // if the cube we are moving to blocks the player  
             return false;
         return true;
     }
@@ -143,9 +144,14 @@ public class RiemannCube {
     
     private void movePlayer(PlayerMove action) {
         Player player = players.get(action.playerID); 
-        Cube to = getCube(player.pos().add(action.movement));
-        player.move(to);
-        player.relPos.sub(action.movement);
+        Cube to = getCube(action.movement);
+        if (!to.pos().equals(player.pos())) {
+	        player.relPos.x -= 2*-(player.pos().x-to.pos().x);
+	        player.relPos.y -= 2*-(player.pos().y-to.pos().y);
+	        player.relPos.z -= 2*-(player.pos().z-to.pos().z);
+        }
+        player.move(to); 
+
     }
     
     private void spawnPlayer(PlayerSpawning action) {
