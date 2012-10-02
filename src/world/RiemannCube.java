@@ -143,7 +143,7 @@ public class RiemannCube {
         Cube to = getCube(player.pos().add(action.movement));
         if (!isInBounds(to.pos()))        
         player.move(to);
-        //player.relPos.sub(action.movement); // TODO
+        player.relPos.sub(action.movement);
     }
     
     private void spawnPlayer(PlayerSpawning action) {
