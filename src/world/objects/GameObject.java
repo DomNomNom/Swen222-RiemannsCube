@@ -12,8 +12,8 @@ import world.cubes.Cube;
 public abstract class GameObject {
     
     protected Cube cube;
-    public Cube getCube() { return cube; }
-    public Int3 getPos() { return cube.pos(); }
+    public Cube cube() { return cube; }
+    public Int3 pos() { return cube.pos(); }
     
     public GameObject(Cube c) {
         if (c==null) throw new IllegalArgumentException();
@@ -44,10 +44,18 @@ public abstract class GameObject {
         if (!(obj instanceof GameObject))  return false;  
         GameObject other = (GameObject) obj;
         if (!getClassName().equals(other.getClassName())) return false;
-        if (!getPos().equals(other.getPos())) return false;
+        if (!pos().equals(other.pos())) return false;
         
         return true;
     }
 
     public abstract String getClassName();
+    
+    /** 
+     * returns whether a player is allowed to move to the same cube as this object
+     * returns true by default. 
+     */
+    public boolean blocks(Player p) {
+        return true;
+    }
 }

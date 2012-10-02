@@ -17,7 +17,8 @@ import world.objects.Trigger;
 
 
 /**
- * The RiemannCube holds all world state
+ * The RiemannCube holds all world state.
+ * It should not change unless a Action is applied.
  * 
  * @author schmiddomi
  *
@@ -48,6 +49,8 @@ public class RiemannCube {
     public final Int3 size;
 
     
+    // ====== Constructor======
+
     
     /**
      * Creates the RiemannCube with the given dimensions.
@@ -75,8 +78,6 @@ public class RiemannCube {
 
     // ====== validating ======
     // none of these will change the state
-    
-    
     
     public boolean isValidPlayer(int playerID) {
         return players.containsKey(playerID);
@@ -106,6 +107,9 @@ public class RiemannCube {
     
     private boolean isValidMovePlayer(PlayerMove a) {
         if (!isValidPlayer(a.playerID)) return false;
+        Player p = players.get(a.playerID);
+        if (getCube(p.pos().add(a.movement)).blocks(p)) // if the cube we are moving to blocks the player  
+            return false;
         return true;
     }
     private boolean isValidSpawnPlayer(PlayerSpawning a) {
@@ -124,32 +128,31 @@ public class RiemannCube {
      */
     public boolean applyAction(Action a) {
         if (!isValidAction(a)) return false; // after this we assume nothing can go wrong
-        
-        else if (a instanceof PlayerMove    )  return movePlayer((PlayerMove) a);
-        else if (a instanceof PlayerSpawning)  return spawnPlayer((PlayerSpawning) a);
+        else if (a instanceof PlayerMove    )  movePlayer((PlayerMove) a);
+        else if (a instanceof PlayerSpawning)  spawnPlayer((PlayerSpawning) a);
         else {
             System.err.println("[RC] OMG I haven't coded stuff for this: " + a);
             return false;
         }
+        
+        return true;
     }
     
     private boolean movePlayer(PlayerMove action) {
         Player player = players.get(action.playerID); 
-        Cube to = getCube(player.getPos().add(action.movement));
+        Cube to = getCube(player.pos().add(action.movement));
         if (!isInBounds(to.pos())) return false;
         
         return player.move(to);
     }
     
-    private synchronized boolean spawnPlayer(PlayerSpawning action) {
+    private synchronized void spawnPlayer(PlayerSpawning action) {
         int id = action.playerID;
         Int3 pos = action.pos;
         
         Player p = new Player(getCube(pos), id);
         getCube(pos).addObject(p);
         players.put(p.id, p);
-        
-        return true;
     }
 
     // ====== equals (used for testing) ======
@@ -165,7 +168,7 @@ public class RiemannCube {
         
         if (size.z != other.size.z || size.y != other.size.y || size.x != other.size.x)    return false;
         
-        for (int x=size.x; x --> 0;) // ohh, ben...
+        for (int x=size.x; x --> 0;) // oh, ben...
             for (int y=0; y<size.y; ++y)
                 if (!Arrays.equals(cubes[x][y], other.cubes[x][y]))
                     return false;
@@ -176,7 +179,6 @@ public class RiemannCube {
     
     // ====== Slicing (used in editor) ======
     
-
 
     public Cube[][] verticalSlice(int x) {
         return cubes[x];

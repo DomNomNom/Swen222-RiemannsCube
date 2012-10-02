@@ -268,9 +268,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 
     /**update the camera's position from the player's position*/
     private void updateCamera() {
-    	camPos.x = (player.getPos().x*2)+player.relPos.x;
-    	camPos.y = (player.getPos().y*2)+player.relPos.y;
-    	camPos.z = (player.getPos().z*2)+player.relPos.z;
+    	camPos.x = (player.pos().x*2)+player.relPos.x;
+    	camPos.y = (player.pos().y*2)+player.relPos.y;
+    	camPos.z = (player.pos().z*2)+player.relPos.z;
     }
     
     /**Process the movement*/

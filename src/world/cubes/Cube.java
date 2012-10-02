@@ -61,7 +61,7 @@ public abstract class Cube {
         return objects.remove(o);
     }
 
-    
+    /** @return A player on this cube. null if there is none   */
     public Player player() {
         for (GameObject go : objects)
             if (go instanceof Player)
@@ -98,5 +98,16 @@ public abstract class Cube {
         if (!containsEquivalentContent(other, this)) return false;
         
         return true;
+    }
+    
+    /** 
+     * Checks against cube constraints and all contained objects whether anything blocks the movement
+     * By default returns false iff all objects do not block the player 
+     */
+    public boolean blocks(Player p) {
+        for (GameObject o : objects)
+            if (o.blocks(p))
+                return true;
+        return false;
     }
 }
