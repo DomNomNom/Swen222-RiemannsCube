@@ -28,7 +28,7 @@ public class Float3 {
 	}
     
     public Float3 sub(Int3 o) {
-        x+=o.x; y+=o.y; z+=o.z;
+        x-=o.x; y-=o.y; z-=o.z;
         return this;
     }
     
