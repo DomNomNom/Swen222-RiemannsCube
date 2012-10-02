@@ -18,7 +18,10 @@ public class PlayerMove extends Action implements Serializable{
     public final int playerID;
     public final Int3 movement;  // change in position
     
-    
+    /**
+     * @param playerID The ID of the player
+     * @param movement The change in position
+     */
     public PlayerMove(int playerID, Int3 movement){
         this.playerID = playerID;
         
