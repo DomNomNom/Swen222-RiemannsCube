@@ -74,6 +74,9 @@ public class RiemannCube {
 
 
     // ====== validating ======
+    // none of these will change the state
+    
+    
     
     public boolean isValidPlayer(int playerID) {
         return players.containsKey(playerID);
@@ -87,28 +90,50 @@ public class RiemannCube {
         return true;
     }
     
+    // ====== Action Validating ======
+    
+    
+    public synchronized boolean isValidAction(Action a) {
+        if (a == null) return false;
+        else if (a instanceof PlayerMove    )  return isValidMovePlayer((PlayerMove) a);
+        else if (a instanceof PlayerSpawning)  return isValidSpawnPlayer((PlayerSpawning) a);
+
+        else {
+            System.err.println("[RC] OMG I haven't coded stuff for this: " + a);
+            return false;
+        }
+    }
+    
+    private boolean isValidMovePlayer(PlayerMove a) {
+        if (!isValidPlayer(a.playerID)) return false;
+        return true;
+    }
+    private boolean isValidSpawnPlayer(PlayerSpawning a) {
+        if (isValidPlayer(a.playerID)) return false; // the player may not exist yet
+        if (!isInBounds(a.pos)) return false;
+        return true;
+    }
     // ====== Actions ======
     
     /**
      * Tries to apply the given action.
-     * This uses isValidAction() for action validation.
+     * This uses isValidAction() for action validation internally.
      * 
      * @param a The action that should be applied
      * @return Whether the action is valid and has been applied.
      */
     public boolean applyAction(Action a) {
-        if (a == null) return false;
-        if (a instanceof PlayerMove    )  return movePlayer((PlayerMove) a);
-        if (a instanceof PlayerSpawning)  return spawnPlayer((PlayerSpawning) a);
-        else { 
+        if (!isValidAction(a)) return false; // after this we assume nothing can go wrong
+        
+        else if (a instanceof PlayerMove    )  return movePlayer((PlayerMove) a);
+        else if (a instanceof PlayerSpawning)  return spawnPlayer((PlayerSpawning) a);
+        else {
             System.err.println("[RC] OMG I haven't coded stuff for this: " + a);
             return false;
         }
     }
     
     private boolean movePlayer(PlayerMove action) {
-        if (!isValidPlayer(action.playerID)) return false;
-        
         Player player = players.get(action.playerID); 
         Cube to = getCube(player.getPos().add(action.movement));
         if (!isInBounds(to.pos())) return false;
@@ -119,8 +144,6 @@ public class RiemannCube {
     private synchronized boolean spawnPlayer(PlayerSpawning action) {
         int id = action.playerID;
         Int3 pos = action.pos;
-        if (isValidPlayer(id)) return false; // the player may not exist yet
-        if (!isInBounds(pos)) return false;
         
         Player p = new Player(getCube(pos), id);
         getCube(pos).addObject(p);
@@ -175,5 +198,7 @@ public class RiemannCube {
         return slice;
     }
 
+    // ===== other stuff =====
 
+    private String myName() { return "[RiemanCube]"; }
 }
