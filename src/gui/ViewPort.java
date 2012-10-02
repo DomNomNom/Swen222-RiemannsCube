@@ -238,7 +238,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	        			Player p = c.player(); //get the player in the cube
 	        			
 	        			if (p != null) {
-	        				if (p.id != player.id) //only render the other players
+	        				if (p.id == player.id) //only render the other players
 	        					playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
 	        			}
 	        			
@@ -276,42 +276,44 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     /**Process the movement*/
     private void processMovement() {
 		boolean move = false; //is true when the player is moving
+		Float3 newPos = new Float3(); //the new position to move to
 		float straff = 1.0f; //straffing multiple
+		
 		if (forBack != 0 && leftRight != 0) straff = 0.5f;
 		
 		if (forBack == 1) { //move forward
 			if (!free) {
-		       	player.relPos.x += moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
-		       	player.relPos.z -= moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
+		       	newPos.x += moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
+		       	newPos.z -= moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
 		   	}
 		   	if (free) {
-		   		player.relPos.y -= moveSpeed*Math.sin(rotation.x*(Math.PI/180.0));
-		   		player.relPos.x += moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.sin(rotation.y*(Math.PI/180.0))*straff;
-		   		player.relPos.z -= moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.cos(rotation.y*(Math.PI/180.0))*straff;
+		   		newPos.y -= moveSpeed*Math.sin(rotation.x*(Math.PI/180.0));
+		   		newPos.x += moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.sin(rotation.y*(Math.PI/180.0))*straff;
+		   		newPos.z -= moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.cos(rotation.y*(Math.PI/180.0))*straff;
 		   	}
 		   	move = true;
 		}
 		else if (forBack == 2) { //move backwards
 			if (!free) {
-				player.relPos.x -= moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
-				player.relPos.z += moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
+				newPos.x -= moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
+				newPos.z += moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
 			}
 			if (free) {
-				player.relPos.y += moveSpeed*Math.sin(rotation.x*(Math.PI/180.0));
-				player.relPos.x -= moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.sin(rotation.y*(Math.PI/180.0))*straff;
-				player.relPos.z += moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.cos(rotation.y*(Math.PI/180.0))*straff;
+				newPos.y += moveSpeed*Math.sin(rotation.x*(Math.PI/180.0));
+				newPos.x -= moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.sin(rotation.y*(Math.PI/180.0))*straff;
+				newPos.z += moveSpeed*Math.cos(rotation.x*(Math.PI/180.0))*Math.cos(rotation.y*(Math.PI/180.0))*straff;
 			}
 			move = true;
 		}
 		
 		if (leftRight == 1) { //move left
-			player.relPos.x -= moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
-			player.relPos.z -= moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
+			newPos.x -= moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
+			newPos.z -= moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
 		   	move = true;
 		}
 		else if (leftRight == 2) { //move right
-			player.relPos.x += moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
-			player.relPos.z += moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
+			newPos.x += moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
+			newPos.z += moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
 		   	move = true;
 		}
 		
@@ -321,7 +323,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		        if (stepCycle < Math.PI) stepCycle += 0.12f;
 		        else stepCycle = 0.0f;
 		        
-		        player.relPos.y -= (float) (stepHeight*Math.cos(stepCycle));
+		        newPos.y -= (float) (stepHeight*Math.cos(stepCycle));
 	        }
         }
         else { //in free camera mode
@@ -330,6 +332,33 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	if (space) player.relPos.y += moveSpeed; //move straight up
         	else if (ctrl) player.relPos.y -= moveSpeed; //move straight down
         }
+        
+        //now check movement is valid if not in free camera mode
+        if (!free) {
+        	if (player.relPos.x+newPos.x >= 1.0f) {
+        		//level.is
+        	}
+        	else if (player.relPos.x+newPos.x <= -1.0f) {
+        		
+        	}
+        	else if (player.relPos.y+newPos.y >= 1.0f) {
+        		
+        	}
+        	else if (player.relPos.y-newPos.y <= -1.0f) {
+        		
+        	}
+        	else if (player.relPos.z+newPos.z >= 1.0f) {
+        		
+        	}
+        	else if (player.relPos.z+newPos.z <= -1.0f) {
+        		
+        	}
+        	else { //not changing tile so just change relative position
+        		player.relPos.x += newPos.x;
+        		player.relPos.y += newPos.y;
+        		player.relPos.z += newPos.z;
+        	}
+        }  
     }
     
     /**Process the turning*/
