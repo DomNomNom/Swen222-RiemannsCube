@@ -10,6 +10,6 @@ package utils;
  */
 public class Configurations {
     
-    public static boolean debugPrint = true; 
+    public static boolean debugPrint = false; 
     public static boolean highRes = false; 
 }

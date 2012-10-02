@@ -108,6 +108,8 @@ public class RiemannCube {
     private boolean isValidMovePlayer(PlayerMove a) {
         if (!isValidPlayer(a.playerID)) return false;
         Player p = players.get(a.playerID);
+        Cube to = getCube(p.pos().add(a.movement));
+        if (!isInBounds(to.pos())) return false;
         if (getCube(p.pos().add(a.movement)).blocks(p)) // if the cube we are moving to blocks the player  
             return false;
         return true;
@@ -141,7 +143,6 @@ public class RiemannCube {
     private void movePlayer(PlayerMove action) {
         Player player = players.get(action.playerID); 
         Cube to = getCube(player.pos().add(action.movement));
-        if (!isInBounds(to.pos()))        
         player.move(to);
         player.relPos.sub(action.movement);
     }
