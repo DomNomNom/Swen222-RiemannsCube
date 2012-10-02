@@ -33,6 +33,7 @@ public abstract class Cube {
     
     public abstract CubeType type();
     
+    /** @return A object that on this tile but not a player.    */
     public GameObject object() {
         for (GameObject gObj : objects)
             if (!(gObj instanceof Player))
@@ -41,6 +42,16 @@ public abstract class Cube {
         return null;
     }
 
+    /**
+     * Checks whether a Object can be added to this cube
+     * returns true by default
+     * @param o The object to add
+     * @return Whether a Object can be added to this cube
+     */
+    public boolean canAddObject(GameObject o) {
+        return true;
+    }
+    
     /**
      * Adds a GameObject to this cube or returns false
      * @param o The object to add

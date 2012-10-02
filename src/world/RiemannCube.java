@@ -126,7 +126,7 @@ public class RiemannCube {
      * @param a The action that should be applied
      * @return Whether the action is valid and has been applied.
      */
-    public boolean applyAction(Action a) {
+    public synchronized boolean applyAction(Action a) {
         if (!isValidAction(a)) return false; // after this we assume nothing can go wrong
         else if (a instanceof PlayerMove    )  movePlayer((PlayerMove) a);
         else if (a instanceof PlayerSpawning)  spawnPlayer((PlayerSpawning) a);
@@ -138,15 +138,15 @@ public class RiemannCube {
         return true;
     }
     
-    private boolean movePlayer(PlayerMove action) {
+    private void movePlayer(PlayerMove action) {
         Player player = players.get(action.playerID); 
         Cube to = getCube(player.pos().add(action.movement));
-        if (!isInBounds(to.pos())) return false;
-        
-        return player.move(to);
+        if (!isInBounds(to.pos()))        
+        player.move(to);
+        //player.relPos.sub(action.movement); // TODO
     }
     
-    private synchronized void spawnPlayer(PlayerSpawning action) {
+    private void spawnPlayer(PlayerSpawning action) {
         int id = action.playerID;
         Int3 pos = action.pos;
         
