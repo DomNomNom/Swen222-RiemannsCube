@@ -7,7 +7,9 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -33,13 +35,14 @@ public class GameFrame extends JFrame {
     
     private String ip; //the IP address of the level
     
+    //FLAGS
     public static boolean high = true; //is true when high graphics is enable
     public static boolean free = false; //is true when free camera is enabled
     public static boolean noFloor = false; //is true to not render floor
     public static boolean showFps = false; //is true to display fps
     
-    /**
-     * Gets the TextField so that the view port can request focus on it.
+    
+    /**Gets the TextField so that the view port can request focus on it.
      * @return
      */
     public JTextField getInputField(){
@@ -82,10 +85,7 @@ public class GameFrame extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        //hide the cursor by giving it a blank image
-        BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
-        getContentPane().setCursor(blankCursor);
+        showMouse(false); //hide the mouse
     }
 
 	/**Runs the game*/
@@ -106,6 +106,20 @@ public class GameFrame extends JFrame {
     public void exit() {
     	WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+    }
+    
+    /**Shows or hides the mouse in the game window
+     * @param show true to show mouse, false to hide it*/
+    public void showMouse(boolean show) {
+    	if (show) {
+            Cursor cursor = Cursor.getDefaultCursor();
+            getContentPane().setCursor(cursor);
+    	}
+    	else { //hide the cursor by giving it a blank image
+            BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+            Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+            getContentPane().setCursor(blankCursor);
+    	}
     }
     
     /**Returns the client

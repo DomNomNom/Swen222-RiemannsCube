@@ -74,6 +74,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean ctrl = false; //is true if crtl is pressed
     private boolean rightMouse = false; //is true if right mouse has been releasedvv
     private boolean exit = false; //is true when to exit
+    private boolean pause = false; //is true when the game is paused
     
     private Float3 pos = new Float3(0.0f, 0.0f, 0.0f); //the position of the camera
     
@@ -186,12 +187,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             frame.getClient().update(frameLength);
         	level = frame.getClient().getWorld();
         	
-			//Process movement and rotation
-		    processMovement();
-		    processTurning();
-		    processRotation();
-		    
-		    robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
+        	if (!pause) {
+				//Process movement and rotation
+			    processMovement();
+			    processTurning();
+			    processRotation();
+			    
+			    robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
+        	}
 		    
 		    accumTime -= frameLength;
         }
@@ -257,6 +260,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         //draw the glass around the outside of the cube
         if (high) drawOuterGlassHigh(gl);
+        
+        //draw the pause box over the screen
+        if(pause) drawPause(gl);
     }
 
     /**Process the movement*/
@@ -655,6 +661,21 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         gl.glEnd();
     }
     
+    public void drawPause(GL2 gl) {
+    	gl.glDisable(GL.GL_DEPTH_TEST);
+    	gl.glLoadIdentity(); //load the identity matrix
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	gl.glColor4f(0.0f, 0.0f, 0.0f, 0.85f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+    	gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+    	gl.glVertex3f( 1.0f, -1.0f, -1.0f);
+    	gl.glVertex3f( 1.0f, 1.0f, -1.0f);
+        gl.glEnd();
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	gl.glEnable(GL.GL_DEPTH_TEST);
+    }
+    
     /**Prints the current fps to the screen*/
     public void printFps(int frameTime) {
     	double currentFps = 60;
@@ -666,7 +687,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyDown = e.getKeyCode(); //get the key code
-		if (keyDown == 27) exit = true; //esc is down
+		if (keyDown == 118) exit = true; //f7 is down
 		if (keyDown == 87 && forBack == 0) forBack = 1; //w is down
 		if (keyDown == 83 && forBack == 0) forBack = 2; //s is down
 		if (keyDown == 65 && leftRight == 0) leftRight = 1; //a is down
@@ -674,7 +695,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyDown == 16) shift = true; //shift is down
 		if (keyDown == 32) space = true; //space is down
 		if (keyDown == 17) ctrl = true; //ctrl is down
-		if (keyDown == 38); //up key is down
+		if (keyDown == 27) {
+			pause = !pause; //pause or unpause the game
+			frame.showMouse(pause);
+			robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
+		}
 	}
 
 	@Override

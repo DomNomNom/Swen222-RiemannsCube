@@ -36,5 +36,29 @@ public class Float2 {
       float angle = (float) Math.atan2(y, x);
       return 1*angle;
     }
+    
+    @Override
+   public int hashCode() {
+       final int prime = 31;
+       int result = 1;
+       result = prime * result + Float.floatToIntBits(y);
+       result = prime * result + Float.floatToIntBits(x);
+       return result;
+   }
+   @Override
+   public boolean equals(Object obj) {
+       if (this == obj)                return true;
+       if (obj == null)                return false;
+       if (!(obj instanceof Float2))   return false;
+       
+       Float2 other = (Float2) obj;
+       if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x))         return false;
+       if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y))         return false;
+       return true;
+   }
+    
+    public String toString() {
+    	return String.format("(%3.2f, %3.2f)", x, y);
+    }
 
 }
