@@ -27,7 +27,6 @@ public class NetworkingTests {
         server.start();
         
         ClientNetworking client = new ClientNetworking("localhost");
-        System.out.println("started server and client");
 
         String content = "HI! :D  <>(){}' \";`~ DROP TABLE LEVELS"; // tests for SQL injection, because why not?
         int speaker = 3;
@@ -37,23 +36,5 @@ public class NetworkingTests {
         ChatMessage response = (ChatMessage) client.nextEvent();
         assertTrue(message.equals(response));
         
-        //client.pull();
-        //assertTrue(mockOutput.log.size() == 1);
-        //assertTrue(message.equals(mockOutput.log.get(0)));
-        
-        //System.exit(0); // force exit of all threads
-
-        /*
-        System.out.println("nearly finished");
-        try {
-            server.interrupt();
-            server.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        */
-        System.out.println("finished");
-        	
     }
-
 }
