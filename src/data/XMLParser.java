@@ -100,16 +100,16 @@ public class XMLParser {
         // Floors are the birds eye view of each horizontal slice of the cube.
         NodeList slices = root.getChildNodes();
 
-        for (int z = 1; z < slices.getLength(); z += 2) {        // Iterate through the slice nodes
-            NodeList floors = slices.item(z).getChildNodes();    // Get the floor nodes from each slice
+        for (int z = 0; z < depth; ++z) {        // Iterate through the slice nodes
+            NodeList floors = slices.item(z*2+1).getChildNodes();    // Get the floor nodes from each slice
             h = 0; 
             
-            for (int y = 1; y < floors.getLength(); y += 2) {    // Iterate through the floor nodes
-                NodeList cubes = floors.item(y).getChildNodes(); // Get the cubes on each Slice of the floor
+            for (int y = 0; y < height; ++y) {    // Iterate through the floor nodes
+                NodeList cubes = floors.item(y*2+1).getChildNodes(); // Get the cubes on each Slice of the floor
                 w = 0;
 
-                for (int x = 1; x < cubes.getLength(); x += 2) { // Iterate through all the cubes on each slice/floor
-                    Element c = (Element) cubes.item(x);
+                for (int x = 0; x < width; ++x) { // Iterate through all the cubes on each slice/floor
+                    Element c = (Element) cubes.item(x*2+1);
                     String type = c.getAttribute("type");
                     String spawn = c.getAttribute("spawn");
                     

@@ -71,7 +71,6 @@ public class GameFrame extends JFrame {
     		if (ip == null || ip.equals("")) ip = "localhost";
     	}
     	
-    	
     	setSize(900, 600);
         chat = new ChatPanel(this);
         client = new Client(ip, chat); //create a new client with the ip

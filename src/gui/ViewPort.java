@@ -58,6 +58,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private final int frameLength = 17; //the time of a frame
     
     private RiemannCube level; //the level
+    private Player player; //the player associated with this level
     private Resources resources; //the resources
     
     private Int2 windowDim; //the window dimension
@@ -150,10 +151,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         gl.glEnable(GL.GL_TEXTURE_2D); //enable 2d textures
         
-        //get the level from the client
+        //get the level and the player from the client from the client
+        frame.getClient().update(17); //update the client for the first time
         level = frame.getClient().getWorld();
-        
-        level.getCube(1, 1, 2).addObject(new Player(level.getCube(1, 1, 2), 0));
+        player = frame.getClient().player();
         
         currentTime = System.currentTimeMillis(); //update the time before starting
         
@@ -169,7 +170,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         final GL2 gl = drawable.getGL().getGL2();
 
         if (exit) frame.exit(); //quit the game
-        
         
         //check if a frame has passed and if so update the events
         long newTime = System.currentTimeMillis(); //get the time at this point
