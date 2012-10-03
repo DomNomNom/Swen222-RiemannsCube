@@ -30,7 +30,7 @@ import javax.media.opengl.GLAutoDrawable;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[8]; //where the texture ids are stored
+	private int[] texID = new int[11]; //where the texture ids are stored
 	//The textures
 	private ByteBuffer floorTex;
 	private ByteBuffer wallTex;
@@ -40,6 +40,9 @@ public class Resources {
 	private ByteBuffer player2Tex;
 	private ByteBuffer player3Tex;
 	private ByteBuffer player4Tex;
+	private ByteBuffer pausedTitleTex;
+	private ByteBuffer pausedResumeTex;
+	private ByteBuffer pausedExitTex;
 	
 	
 	//CONSTRUCTOR
@@ -113,6 +116,24 @@ public class Resources {
 			player4Tex = convertImageData(player4Img); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
 		
+		BufferedImage pausedTitleImg = null;
+		try {
+			pausedTitleImg = ImageIO.read(new File("resources/gfx/pausedTitle.png")); //open the image
+			pausedTitleTex = convertImageData(pausedTitleImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage pausedResumeImg = null;
+		try {
+			pausedResumeImg = ImageIO.read(new File("resources/gfx/resume.png")); //open the image
+			pausedResumeTex = convertImageData(pausedResumeImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage pausedExitImg = null;
+		try {
+			pausedExitImg = ImageIO.read(new File("resources/gfx/exit.png")); //open the image
+			pausedExitTex = convertImageData(pausedExitImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
 		//create the texture IDs
 		gl.glGenTextures(texID.length, texID, 0);
 		
@@ -164,6 +185,24 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 512,
             512, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, player4Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[8]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1022,
+            171, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedTitleTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[9]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1096,
+            114, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedResumeTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[10]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1004,
+            112, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedExitTex);
 	}
 	
 	/**Converts a buffered image to an array of byte buffer

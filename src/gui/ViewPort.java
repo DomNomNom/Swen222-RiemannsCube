@@ -92,7 +92,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     //For stepping movement
     private float stepCycle = 0.0f; //where the camera is in the step
-    private float stepHeight = 0.005f;
+    private float stepHeight = 0.003f;
 
     static GLU glu = new GLU(); //for GLU methods
     private Robot robot; //a robot that insures the mouse is always in the centre of the screen
@@ -171,6 +171,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 
         if (exit) frame.exit(); //quit the game
         
+        if(pause && space) frame.exit(); //quit the game
+        
         //check if a frame has passed and if so update the events
         long newTime = System.currentTimeMillis(); //get the time at this point
         int frameTime = (int) (newTime-currentTime); //find the length of this frame
@@ -192,6 +194,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 			    updateCamera(); //update the camera position
 			    processTurning();
 			    processRotation();
+			    //System.out.println("x: "+rotation.x+" y: "+rotation.y);
 			    
 			    robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
         	}
@@ -322,14 +325,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //Create the stepping motion
         if (!free) {
 	        if (move) {
-		        if (stepCycle < Math.PI) stepCycle += 0.12f;
+		        if (stepCycle < Math.PI) stepCycle += 0.08f;
 		        else stepCycle = 0.0f;
 		        
 		        newPos.y -= (float) (stepHeight*Math.cos(stepCycle));
 	        }
         }
         else { //in free camera mode
-        	if (shift) moveSpeed = 0.08f; //move at double speed if shift
+        	if (shift) moveSpeed = 0.16f; //move at double speed if shift
         	else moveSpeed = 0.04f;
         	if (space) player.relPos.y += moveSpeed; //move straight up
         	else if (ctrl) player.relPos.y -= moveSpeed; //move straight down
@@ -362,7 +365,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         		player.relPos.y += newPos.y;
         		player.relPos.z += newPos.z;
         	}
-        }  
+        }
+        else { //just change the players relative position in free camera mode
+        	player.relPos.x += newPos.x;
+    		player.relPos.y += newPos.y;
+    		player.relPos.z += newPos.z;
+        }
     }
     
     /**Process the turning*/
@@ -381,7 +389,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     /**Process any rotations*/
     private void processRotation() {
     	if (rightMouse) {
-    		//TODO: change normal here
+    		//System.out.pri
+    		if (rotation.y > 45 && rotation.y > 135) System.out.println("turn");
     		
     		rightMouse = false;
     	}
@@ -706,6 +715,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     public void drawPause(GL2 gl) {
     	gl.glDisable(GL.GL_DEPTH_TEST);
     	gl.glLoadIdentity(); //load the identity matrix
+    	//draw the paused background
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
     	gl.glColor4f(0.0f, 0.0f, 0.0f, 0.85f);
     	gl.glBegin(GL2.GL_QUADS);
@@ -714,8 +724,33 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glVertex3f( 1.0f, -1.0f, -1.0f);
     	gl.glVertex3f( 1.0f, 1.0f, -1.0f);
         gl.glEnd();
-    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        //draw the paused title
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[8]);
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,  0.37f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  0.25f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  0.25f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,  0.37f, -1.0f);
+        gl.glEnd();
+        //draw the pause resume text
+        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[9]);
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,  0.15f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  0.07f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  0.07f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,  0.15f, -1.0f);
+        gl.glEnd();
+        //draw the exit text
+        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[10]);
+    	gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,   0.00f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  -0.08f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  -0.08f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,   0.00f, -1.0f);
+        gl.glEnd();
     	gl.glEnable(GL.GL_DEPTH_TEST);
+    	
     }
     
     /**Prints the current fps to the screen*/
@@ -759,8 +794,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		int button = e.getID();
-		if (button == 502) rightMouse = true; //right mouse has been released
+		int button = e.getButton();
+		if (button == 3) rightMouse = true; //right mouse has been released
 	}
 
 	public void keyTyped(KeyEvent e) {}
