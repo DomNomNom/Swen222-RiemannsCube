@@ -71,13 +71,14 @@ public class GameFrame extends JFrame {
     	
     	setSize(900, 600);
         
-        client = new Client(ip, chat); //create a new client with the ip
         ViewPort.high = high;
         ViewPort.free = free;
         ViewPort.noFloor = noFloor;
         ViewPort.showFps = showFps;
-        view = new ViewPort(this, 700, 600);
+        client = new Client(ip); //create a new client with the ip
         chat = new ChatPanel(this);
+        view = new ViewPort(this, 700, 600);
+        client.setChat(chat);
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         

@@ -27,7 +27,7 @@ import world.objects.Player;
 public class Client {
 
     
-    private final ChatPanel chat;
+    private ChatPanel chat;
     private RiemannCube world;
 
     private Player player;
@@ -42,10 +42,9 @@ public class Client {
     	return world;
     }
     
-    public Client(String ip, ChatPanel chat) {
+    public Client(String ip) {
         networking = new ClientNetworking(ip);
         networking.start();
-        this.chat = chat;
         
         //read the world from a file
         try {
@@ -56,6 +55,11 @@ public class Client {
         
         //request a player
         networking.push(new RequestPlayer());
+    }
+    
+    /** used to initialize chat. this is not in the constructor to resolve a cicular dependency */
+    public void setChat(ChatPanel chat) {
+        this.chat = chat;
     }
     
     /**
