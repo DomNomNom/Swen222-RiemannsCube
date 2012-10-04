@@ -72,6 +72,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean shift = false; //is true if shift is pressed
     private boolean space = false; //is true if space is pressed
     private boolean ctrl = false; //is true if crtl is pressed
+    private boolean leftMouse = false; //is true if the left mouse has been released
     private boolean rightMouse = false; //is true if right mouse has been released
     private boolean exit = false; //is true when to exit
     private boolean pause = false; //is true when the game is paused
@@ -124,7 +125,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     // METHODS
     @Override
     public void init(GLAutoDrawable drawable) {
-        final GL2 gl = drawable.getGL().getGL2();;
+        final GL2 gl = drawable.getGL().getGL2();
 
         gl.glEnable(GL.GL_DEPTH_TEST); // enable depth testing
         gl.glEnable(GL.GL_BLEND); // enable transparency
@@ -136,7 +137,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set the clear colour
-        gl.glClearAccum(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glClearDepth(1000.0f); // set the clear depth
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); // clear the screen for the first time
 
@@ -186,6 +186,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	//update the world
             frame.getClient().update(frameLength);
         	level = frame.getClient().getWorld();
+        	player = frame.getClient().player();
         	
         	if (!pause) {
 				//Process movement and rotation
@@ -208,7 +209,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glRotatef(rotation.x, 1.0f, 0.0f, 0.0f); //apply the x rotation
     	gl.glRotatef(rotation.y, 0.0f, 1.0f, 0.0f); //apply the y rotation
     	
-    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f); //apply the world x rotation
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f); //apply the world z rotation
         
         gl.glTranslatef(-camPos.x, -camPos.y, -camPos.z); //apply the translations
         
@@ -329,7 +331,20 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	        }
 	        
 	        //if the player is rotated shift their direction based on rotation
-	        if (player.rotation.x == 90) {
+	        if (player.rotation.z == 90) {
+	        	float temp = -newPos.y;
+	        	newPos.y = -newPos.x;
+	        	newPos.x = temp;
+	        }
+	        else if (player.rotation.z == 180) {
+	        	newPos.x = -newPos.x;
+	        }
+	        else if (player.rotation.z == 270) {
+	        	float temp = newPos.y;
+	        	newPos.y = newPos.x;
+	        	newPos.x = temp;
+	        }
+	        else if (player.rotation.x == 90) {
 	        	float temp = newPos.y;
 	        	newPos.y = newPos.z;
 	        	newPos.z = temp; 
@@ -394,33 +409,53 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         if (mouse.y != mouseCentre.y) { //turn up or down
         	rotation.x += (float) (((mouse.y-mouseCentre.y)/turnSpeed));
         }
+        
+        //keep within 0 to 360
+        if (rotation.y > 360) rotation.y -= 360;
+        else if (rotation.y < 0) rotation.y += 360;
     }
     
     /**Process any rotations*/
     private void processRotation() {
-    	if (rightMouse) { //if the right mouse is down rotate towards correct angle
+    	if (leftMouse || rightMouse) { //if the right mouse is down rotate towards correct angle
     		if (!rotationAni) { //don't rotate while rotating
+
+    			rotateTo = new Float3();
     			
     			//find the direction to rotate
-    			if (rotation.y > 90 && rotation.y < 275) {
-    				if (rotation.x >= 0) rotateTo.x = player.rotation.x-90; //decrease the x rotation
-    				else rotateTo.x = player.rotation.x+90; //increase the x rotation
+    			if (rotation.y > 45 && rotation.y <= 135) {
+    				if (leftMouse) rotateTo.x = player.rotation.x-90;
+    				else rotateTo.x = player.rotation.x+90;
+    			}
+    			else if (rotation.y > 225 && rotation.y <= 315) {
+    				if (leftMouse) rotateTo.x = player.rotation.x+90;
+    				else rotateTo.x = player.rotation.x-90;
+    			}
+    			else if(rotation.y > 135 && rotation.y <= 225) {
+    				if (leftMouse) rotateTo.z = player.rotation.z-90;
+    				else rotateTo.z = player.rotation.z+90;
     			}
     			else {
-    				if (rotation.x >= 0) rotateTo.x = player.rotation.x+90; //increase the x rotation
-    				else rotateTo.x = player.rotation.x-90; //decrease the x rotation
+    				if (leftMouse) rotateTo.z = player.rotation.z+90;
+    				else rotateTo.z = player.rotation.z-90;
     			}
 	    		
 	    		//reset the relative position
 	    		player.relPos.x = player.relPos.y = player.relPos.z = 0;
 	    		
+	    		//start the rotation animtation
 	    		rotationAni = true;
     		}
     		rightMouse = false;
+    		leftMouse = false;
+    		
+    		System.out.println(rotateTo);
     	}
     	if (rotationAni) { //animate the rotation
     		if (rotateTo.x > player.rotation.x) player.rotation.x += rotationSpeed; //increase the rotation
     		else if (rotateTo.x < player.rotation.x) player.rotation.x -= rotationSpeed; //decrease the rotation)
+    		if (rotateTo.z > player.rotation.z) player.rotation.z += rotationSpeed; //increase the rotation
+    		else if (rotateTo.z < player.rotation.z) player.rotation.z -= rotationSpeed; //decrease the rotation)
     		
     		if (rotateTo.equals(player.rotation)) {
     			rotationAni = false; //the animation is finished
@@ -428,6 +463,13 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     			//make sure x rotations are within 0 to 360
     			if (player.rotation.x >= 360) player.rotation.x = 0;
     			else if (player.rotation.x < 0) player.rotation.x = 360+player.rotation.x;
+    			if (player.rotation.z >= 360) player.rotation.z = 0;
+    			else if (player.rotation.z < 0) player.rotation.z = 360+player.rotation.z;
+    			
+    			//Now change rotations if they are equivalent to others
+    			
+    			System.out.println(player.rotation);
+    			
     		}
 
     		
@@ -495,6 +537,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	
     	//apply the world orientation rotation
     	gl.glRotatef(-player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(-player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
     	//apply the rotations
     	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
@@ -504,15 +547,15 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	if (!inside) gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f); //flip if outside
     	
     	//translate to the edge of the cube
-    	if (inside) gl.glTranslatef(0, -1, 0);
-    	else gl.glTranslatef(0, 1, 0);
+    	if (inside) gl.glTranslatef(0, -0.99f, 0);
+    	else gl.glTranslatef(0, 0.99f, 0);
     	
     	//now draw the quad
     	gl.glBegin(GL2.GL_QUADS);
-    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1, 0, -1);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1, 0,  1);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 1, 0,  1);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 1, 0, -1);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1.0f, 0, -1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1.0f, 0,  1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 1.0f, 0,  1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 1.0f, 0, -1.0f);
         gl.glEnd();
         
         gl.glPopMatrix(); //pop the matrix
@@ -536,6 +579,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glPushMatrix(); //push new matrix
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(-player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(-player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
     	//apply the rotations
     	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
@@ -667,40 +714,40 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private void drawOuterGlassHigh(GL2 gl) {
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass texture
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f       ); gl.glVertex3f(-1.0f, level.size.y*2-1, -1.0f         );
-        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(-1.0f, level.size.y*2-1, level.size.z*2-1);
-        gl.glTexCoord2f(level.size.y, level.size.z); gl.glVertex3f(-1.0f, -1.0f,            level.size.z*2-1);
-        gl.glTexCoord2f(level.size.y, 0.0f       ); gl.glVertex3f(-1.0f, -1.0f,            -1.0f         );
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(-1.01f,  level.size.y*2-1, -1.0f            );
+        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(-1.01f,  level.size.y*2-1,  level.size.z*2-1);
+        gl.glTexCoord2f(level.size.y, level.size.z); gl.glVertex3f(-1.01f, -1.0f,              level.size.z*2-1);
+        gl.glTexCoord2f(level.size.y, 0.0f        ); gl.glVertex3f(-1.01f, -1.0f,             -1.0f            );
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f       ); gl.glVertex3f(level.size.x*2-1, level.size.y*2-1, -1.0f          );
-        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(level.size.x*2-1, -1.0f,            -1.0f          );
-        gl.glTexCoord2f(level.size.y, level.size.z); gl.glVertex3f(level.size.x*2-1, -1.0f,            level.size.z*2-1);
-        gl.glTexCoord2f(level.size.y, 0.0f       ); gl.glVertex3f(level.size.x*2-1, level.size.y*2-1, level.size.z*2-1);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(level.size.x*2-0.99f,  level.size.y*2-1, -1.0f            );
+        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(level.size.x*2-0.99f, -1.0f,             -1.0f            );
+        gl.glTexCoord2f(level.size.y, level.size.z); gl.glVertex3f(level.size.x*2-0.99f, -1.0f,              level.size.z*2-1);
+        gl.glTexCoord2f(level.size.y, 0.0f        ); gl.glVertex3f(level.size.x*2-0.99f,  level.size.y*2-1,  level.size.z*2-1);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,        0.0f        ); gl.glVertex3f(-1.0f,           level.size.y*2-1, level.size.z*2-1);
-        gl.glTexCoord2f(0.0f,        level.size.y); gl.glVertex3f(level.size.x*2-1, level.size.y*2-1, level.size.z*2-1);
-        gl.glTexCoord2f(level.size.x, level.size.y); gl.glVertex3f(level.size.x*2-1, -1.0f,            level.size.z*2-1);
-        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(-1.0f,           -1.0f,            level.size.z*2-1);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(-1.0f,              level.size.y*2-1, level.size.z*2-0.99f);
+        gl.glTexCoord2f(0.0f,         level.size.y); gl.glVertex3f( level.size.x*2-1,  level.size.y*2-1, level.size.z*2-0.99f);
+        gl.glTexCoord2f(level.size.x, level.size.y); gl.glVertex3f( level.size.x*2-1, -1.0f,             level.size.z*2-0.99f);
+        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(-1.0f,             -1.0f,             level.size.z*2-0.99f);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,        0.0f        ); gl.glVertex3f(-1.0f,           level.size.y*2-1, -1.0f);
-        gl.glTexCoord2f(0.0f,        level.size.y); gl.glVertex3f(-1.0f,           -1.0f,            -1.0f);
-        gl.glTexCoord2f(level.size.x, level.size.y); gl.glVertex3f(level.size.x*2-1, -1.0f,            -1.0f);
-        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(level.size.x*2-1, level.size.y*2-1, -1.0f);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(-1.0f,             level.size.y*2-1, -1.01f);
+        gl.glTexCoord2f(0.0f,         level.size.y); gl.glVertex3f(-1.0f,            -1.0f,             -1.01f);
+        gl.glTexCoord2f(level.size.x, level.size.y); gl.glVertex3f(level.size.x*2-1, -1.0f,             -1.01f);
+        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(level.size.x*2-1,  level.size.y*2-1, -1.01f);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,        0.0f       ); gl.glVertex3f(-1.0f,           level.size.y*2-1, level.size.z*2-1);
-        gl.glTexCoord2f(0.0f,        level.size.z); gl.glVertex3f(-1.0f,           level.size.y*2-1, -1.0f          );
-        gl.glTexCoord2f(level.size.x, level.size.z); gl.glVertex3f(level.size.x*2-1, level.size.y*2-1, -1.0f          );
-        gl.glTexCoord2f(level.size.x, 0.0f       ); gl.glVertex3f(level.size.x*2-1, level.size.y*2-1, level.size.z*2-1);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(-1.0f,            level.size.y*2-0.99f,  level.size.z*2-1);
+        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(-1.0f,            level.size.y*2-0.99f, -1.0f            );
+        gl.glTexCoord2f(level.size.x, level.size.z); gl.glVertex3f(level.size.x*2-1, level.size.y*2-0.99f, -1.0f            );
+        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(level.size.x*2-1, level.size.y*2-0.99f,  level.size.z*2-1);
         gl.glEnd();
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,        0.0f       ); gl.glVertex3f(level.size.x*2-1, -1.0f, -1.0f          );
-        gl.glTexCoord2f(0.0f,        level.size.z); gl.glVertex3f(-1.0f,           -1.0f, -1.0f          );
-        gl.glTexCoord2f(level.size.x, level.size.z); gl.glVertex3f(-1.0f,           -1.0f, level.size.z*2-1);
-        gl.glTexCoord2f(level.size.x, 0.0f       ); gl.glVertex3f(level.size.x*2-1, -1.0f, level.size.z*2-1);
+        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f( level.size.x*2-1, -1.01f, -1.0f            );
+        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(-1.0f,             -1.01f, -1.0f            );
+        gl.glTexCoord2f(level.size.x, level.size.z); gl.glVertex3f(-1.0f,             -1.01f,  level.size.z*2-1);
+        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f( level.size.x*2-1, -1.01f,  level.size.z*2-1);
         gl.glEnd();
     }
     
@@ -829,7 +876,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int button = e.getButton();
-		if (button == 3) rightMouse = true; //right mouse has been released
+		if (button == 1) leftMouse = true; //left mouse has been be released
+		else if (button == 3) rightMouse = true; //right mouse has been released
 	}
 
 	public void keyTyped(KeyEvent e) {}
@@ -839,8 +887,4 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	public void mouseClicked(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
-
-
-
-
 }

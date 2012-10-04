@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +40,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
 
     private JTextArea chatArea; // Area which the text gets printed to
     private JTextField inputField; // Field where the user can enter text
+    private Minimap minimapPanel; //the panel where the minimap is displayed
 
     private ChatMessage message;
 
@@ -73,8 +75,15 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         this.setBackground(Color.gray.darker());
 
         createCenterPanel();
+        
+        //add the minimap panel
+        minimapPanel = new Minimap(frame, 200, 200);
+        minimapPanel.setPreferredSize(new Dimension(200, 200));
+        add(minimapPanel, BorderLayout.SOUTH);
+        minimapPanel.addGLEventListener(this);
     }
 
+    //METHODS
     /**
      * Creates the Panel that goes on the chat panel, has a text area, text
      * field and a label.
@@ -126,19 +135,20 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     public JTextField getInputField() {
         return inputField;
     }
-
-    // METHODS
+    
+    /**Gets the panel that the minimap is stored in
+     * @return*/
+    public GLJPanel getMinimapPanel() {
+    	return minimapPanel;
+    }
+    
     /** Initialises the chat panel */
     public void init(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
-        gl.glClearColor(0.90f, 0.90f, 0.90f, 1.0f); // set the transparency
-                                                    // colour
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); // clear
-                                                                     // the
-                                                                     // screen
-                                                                     // for the
-                                                                     // first
-                                                                     // time
+        gl.glClearColor(0.90f, 0.90f, 0.90f, 1.0f); // set the clear colour
+
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); // clear the screen for the first time
+        minimapPanel.init(drawable); //initialise the minimap panel
     }
 
     @Override
@@ -149,6 +159,8 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
             setPreferredSize(new java.awt.Dimension((int) (width * panelScale),
                     frame.getSize().height));
         }
+        
+        minimapPanel.display(drawable); //display the minimap panel
     }
 
     @Override

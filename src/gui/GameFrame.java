@@ -1,20 +1,15 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
-import world.RiemannCube;
 
 import client.Client;
 
@@ -32,6 +27,7 @@ public class GameFrame extends JFrame {
     private Client client; //the game client
     private ViewPort view; //the view panel
     private ChatPanel chat; //the chat panel
+    private Minimap minimap; //the mini map
     
     private String ip; //the IP address of the level
     
@@ -40,7 +36,6 @@ public class GameFrame extends JFrame {
     public static boolean free = false; //is true when free camera is enabled
     public static boolean noFloor = false; //is true to not render floor
     public static boolean showFps = false; //is true to display fps
-    
     
     /**Gets the TextField so that the view port can request focus on it.
      * @return
@@ -75,13 +70,14 @@ public class GameFrame extends JFrame {
     	}
     	
     	setSize(900, 600);
-        chat = new ChatPanel(this);
+        
         client = new Client(ip, chat); //create a new client with the ip
         ViewPort.high = high;
         ViewPort.free = free;
         ViewPort.noFloor = noFloor;
         ViewPort.showFps = showFps;
         view = new ViewPort(this, 700, 600);
+        chat = new ChatPanel(this);
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
