@@ -15,8 +15,8 @@ public class GUITest {
     	//create a level for testing the game
     
 		//settings
-		GameFrame.high = false;
-		GameFrame.free = true;
+		GameFrame.high = true;
+		GameFrame.free = false;
 		GameFrame.noFloor = false;
 		GameFrame.showFps = false;
     	GameFrame window = new GameFrame(null);

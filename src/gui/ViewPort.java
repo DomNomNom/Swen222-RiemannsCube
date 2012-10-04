@@ -32,8 +32,6 @@ import world.objects.Player;
 
 import com.jogamp.opengl.util.Animator;
 
-import data.XMLParser;
-
 /**
  * This is the pane that displays all player's view of the game
  * The view port is essentially the player's camera
@@ -74,31 +72,32 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean shift = false; //is true if shift is pressed
     private boolean space = false; //is true if space is pressed
     private boolean ctrl = false; //is true if crtl is pressed
-    private boolean rightMouse = false; //is true if right mouse has been releasedvv
+    private boolean rightMouse = false; //is true if right mouse has been released
     private boolean exit = false; //is true when to exit
     private boolean pause = false; //is true when the game is paused
     
-    private Float3 camPos = new Float3(0.0f, 0.0f, 0.0f); //the position of the camera
+    private Float3 camPos = new Float3(); //the position of the camera
     
-    private Float2 rotation = new Float2(0.0f, 0.0f); //the x rotation of the camera
+    private Float2 rotation = new Float2(); //the x rotation of the camera
     
-    private Float3 normal = new Float3(0.0f, 1.0f, 0.0f); //the normal of the player
+    private Float3 rotateTo = new Float3(); //the rotation the player needs to rotate to
     
     private float moveSpeed = 0.04f; //the move speed of the camera
     private float turnSpeed = 10.0f; //the turn speed of the camera
-    
-    //TODO: a better way that incorporates slicing
-    private int floor = 1; //the floor the player is on
+    private int rotationSpeed = 2; //the speed that the rotation animation happens
     
     //For stepping movement
     private float stepCycle = 0.0f; //where the camera is in the step
     private float stepHeight = 0.003f;
+    
+    //animation flags;
+    private boolean rotationAni = false; //is true when the game is rotating
 
     static GLU glu = new GLU(); //for GLU methods
     private Robot robot; //a robot that insures the mouse is always in the centre of the screen
     public static Animator animator; // the animator makes sure the canvas is always being updated
     
-    private List<Pair<Float3, Float3>> glassRender; //a list that hold all the glass to render
+    private List<Float3> glassRender; //a list that hold all the glass to render
     private List<Pair<Float3, Integer>> playerRender; // a list of players to be rendered
 
     // CONSTRUCTOR
@@ -190,11 +189,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	
         	if (!pause) {
 				//Process movement and rotation
-			    processMovement();
+        		processRotation();
+			    if (!rotationAni) processMovement();//if rotating you can't move
 			    updateCamera(); //update the camera position
 			    processTurning();
-			    processRotation();
-			    //System.out.println("x: "+rotation.x+" y: "+rotation.y);
 			    
 			    robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
         	}
@@ -207,8 +205,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         gl.glLoadIdentity(); //load the identity matrix
         
-        gl.glRotatef(rotation.x, 1.0f, 0.0f, 0.0f); //apply the x rotation
-        gl.glRotatef(rotation.y, 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	gl.glRotatef(rotation.x, 1.0f, 0.0f, 0.0f); //apply the x rotation
+    	gl.glRotatef(rotation.y, 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
         
         gl.glTranslatef(-camPos.x, -camPos.y, -camPos.z); //apply the translations
         
@@ -216,39 +216,36 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
         
-        glassRender = new ArrayList<Pair<Float3, Float3>>(); //create the glass render list
+        glassRender = new ArrayList<Float3>(); //create the glass render list
         playerRender = new ArrayList<Pair<Float3, Integer>>(); //create the player render list
         
         //iterate through the level and draw all the tiles
         for (int x = 0; x < level.size.x; ++x) {
         	for (int y = 0; y < level.size.y; ++y) {
-        		if (free || y == floor || (y == floor-1) || y == floor+1) { //only draw if this is the current floor
-	        		for (int z = 0; z < level.size.z; ++z) {
-	        			Cube c = level.getCube(x, y, z); //get the current cube
-	        			Float3 v = new Float3(x*2, y*2, z*2); //find the position vector
-	        			Float3 n = new Float3(x*2+normal.x, y*2+normal.y, z*2+normal.z); //find the normal
-	        			
-	        			//draw the cubes
-	        			if (high) { //draw the high graphics cubes
-	        				if (c instanceof Wall) drawWallHigh(gl, v, n); //draw a wall
-	        				if (c instanceof Floor) drawFloorHigh(gl, v, n); //draw a floor
-	        				
-	        			}
-	        			else { //draw the low graphics alternatives
-	        				if (c instanceof Floor) drawFloorLow(gl, v, n); //draw a floor cube
-	        				else if (c instanceof Wall) drawWallLow(gl, v, n); //draw a wall cube
-	        			}
-	        			
-	        			//draw players
-	        			Player p = c.player(); //get the player in the cube
-	        			
-	        			if (p != null) {
-	        				if (p.id != player.id) //only render the other players
-	        					playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
-	        			}
-	        			
-	        			if (c instanceof Glass) glassRender.add(new Pair<Float3, Float3>(v, n));
-	        		}
+        		for (int z = 0; z < level.size.z; ++z) {
+        			Cube c = level.getCube(x, y, z); //get the current cube
+        			Float3 v = new Float3(x*2, y*2, z*2); //find the position vector
+        			
+        			//draw the cubes
+        			if (high) { //draw the high graphics cubes
+        				if (c instanceof Wall) drawWallHigh(gl, v); //draw a wall
+        				if (c instanceof Floor) drawFloorHigh(gl, v); //draw a floor
+        				
+        			}
+        			else { //draw the low graphics alternatives
+        				if (c instanceof Floor) drawFloorLow(gl, v); //draw a floor cube
+        				else if (c instanceof Wall) drawWallLow(gl, v); //draw a wall cube
+        			}
+        			
+        			//draw players
+        			Player p = c.player(); //get the player in the cube
+        			
+        			if (p != null) {
+        				if (p.id != player.id) //only render the other players
+        					playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
+        			}
+        			
+        			if (c instanceof Glass) glassRender.add(v);
         		}
         	}
         }
@@ -259,9 +256,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         }
         
         //draw the glass last
-        for (Pair<Float3, Float3> p: glassRender) {
-        	if (high) drawGlassHigh(gl, p.first(), p.second());
-        	else drawGlassLow(gl, p.first(), p.second());
+        for (Float3 p: glassRender) {
+        	if (high) drawGlassHigh(gl, p);
+        	else drawGlassLow(gl, p);
         }
         
         //draw the glass around the outside of the cube
@@ -330,17 +327,25 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		        
 		        newPos.y -= (float) (stepHeight*Math.cos(stepCycle));
 	        }
-        }
-        else { //in free camera mode
-        	if (shift) moveSpeed = 0.16f; //move at double speed if shift
-        	else moveSpeed = 0.04f;
-        	if (space) player.relPos.y += moveSpeed; //move straight up
-        	else if (ctrl) player.relPos.y -= moveSpeed; //move straight down
-        }
-        
-        //now check movement is valid if not in free camera mode
-        if (!free) {
-        	boolean canMove = true; //is true if the player can move
+	        
+	        //if the player is rotated shift their direction based on rotation
+	        if (player.rotation.x == 90) {
+	        	float temp = newPos.y;
+	        	newPos.y = newPos.z;
+	        	newPos.z = temp; 
+	        }
+	        else if (player.rotation.x == 180) {
+	        	newPos.z = -newPos.z;
+	        	newPos.y = -newPos.y;
+	        }
+	        else if (player.rotation.x == 270) {
+	        	float temp = newPos.y;
+	        	newPos.y = -newPos.z;
+	        	newPos.z = temp; 
+	        }
+	        
+	        //find whether the player is being blocked or not, if not send to server
+	        boolean canMove = true; //is true if the player can move
         	Int3 cubeMove = new Int3();
         	
         	if (player.relPos.x+newPos.x >= 1.0f) cubeMove = new Int3(1, 0, 0);
@@ -366,7 +371,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         		player.relPos.z += newPos.z;
         	}
         }
-        else { //just change the players relative position in free camera mode
+        else { //in free camera mode
+        	if (shift) moveSpeed = 0.16f; //move at double speed if shift
+        	else moveSpeed = 0.04f;
+        	if (space) player.relPos.y += moveSpeed; //move straight up
+        	else if (ctrl) player.relPos.y -= moveSpeed; //move straight down
+        	
         	player.relPos.x += newPos.x;
     		player.relPos.y += newPos.y;
     		player.relPos.z += newPos.z;
@@ -388,11 +398,39 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     /**Process any rotations*/
     private void processRotation() {
-    	if (rightMouse) {
-    		//System.out.pri
-    		if (rotation.y > 45 && rotation.y > 135) System.out.println("turn");
-    		
+    	if (rightMouse) { //if the right mouse is down rotate towards correct angle
+    		if (!rotationAni) { //don't rotate while rotating
+    			
+    			//find the direction to rotate
+    			if (rotation.y > 90 && rotation.y < 275) {
+    				if (rotation.x >= 0) rotateTo.x = player.rotation.x-90; //decrease the x rotation
+    				else rotateTo.x = player.rotation.x+90; //increase the x rotation
+    			}
+    			else {
+    				if (rotation.x >= 0) rotateTo.x = player.rotation.x+90; //increase the x rotation
+    				else rotateTo.x = player.rotation.x-90; //decrease the x rotation
+    			}
+	    		
+	    		//reset the relative position
+	    		player.relPos.x = player.relPos.y = player.relPos.z = 0;
+	    		
+	    		rotationAni = true;
+    		}
     		rightMouse = false;
+    	}
+    	if (rotationAni) { //animate the rotation
+    		if (rotateTo.x > player.rotation.x) player.rotation.x += rotationSpeed; //increase the rotation
+    		else if (rotateTo.x < player.rotation.x) player.rotation.x -= rotationSpeed; //decrease the rotation)
+    		
+    		if (rotateTo.equals(player.rotation)) {
+    			rotationAni = false; //the animation is finished
+    			
+    			//make sure x rotations are within 0 to 360
+    			if (player.rotation.x >= 360) player.rotation.x = 0;
+    			else if (player.rotation.x < 0) player.rotation.x = 360+player.rotation.x;
+    		}
+
+    		
     	}
     }
     
@@ -454,6 +492,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glPushMatrix(); //push new matrix
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(-player.rotation.x, 1.0f, 0.0f, 0.0f);
     	
     	//apply the rotations
     	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
@@ -522,9 +563,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     /**Draw a floor cube in high graphics
      * @param gl
-     * @param v the position vector of the cube
-     * @param n the normal vector of the cube*/
-    private void drawFloorHigh(GL2 gl, Float3 v, Float3 n) {
+     * @param v the position vector of the cube*/
+    private void drawFloorHigh(GL2 gl, Float3 v) {
     	if (!noFloor) {
 	    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
 	    	drawQuadTex(gl, v, new Float3(v.x, v.y-1, v.z), true);
@@ -534,10 +574,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     /**Draw a wall cube in high graphics
      * @param gl
-     * @param v the position vector of the cube
-     * @param n the normal vector of the cube*/
-    private void drawWallHigh(GL2 gl, Float3 v, Float3 n) {
-    	
+     * @param v the position vector of the cube*/
+    private void drawWallHigh(GL2 gl, Float3 v) {
     	//draw the 4 walls
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[1]); //bind the wall tile texture
 		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z  ), false);
@@ -552,9 +590,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     /**Draw a glass cube in high graphics
      * @param gl
-     * @param v the position vector of the cube
-     * @param n the normal vector of the cube*/
-    private void drawGlassHigh(GL2 gl, Float3 v, Float3 n) {
+     * @param v the position vector of the cube*/
+    private void drawGlassHigh(GL2 gl, Float3 v) {
     	//draw the floor
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
 		drawQuadTex(gl, v, new Float3(v.x, v.y-1, v.z), true);
@@ -575,9 +612,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     /**Draw a floor cube in low graphics
      * @param gl
-     * @param v the position vector of the cube
-     * @param n the normal vector of the cube*/
-    private void drawFloorLow(GL2 gl, Float3 v, Float3 n) {
+     * @param v the position vector of the cube*/
+    private void drawFloorLow(GL2 gl, Float3 v) {
     	if (!noFloor) {
     		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
     		Float3 colour = new Float3(0.0f, 1.0f, 1.0f); //set the colour of the floor
@@ -588,9 +624,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     /**Draw a wall cube in low graphics
      * @param gl
-     * @param v the position vector of the cube
-     * @param n the normal vector of the cube*/
-    private void drawWallLow(GL2 gl, Float3 v, Float3 n) {
+     * @param v the position vector of the cube*/
+    private void drawWallLow(GL2 gl, Float3 v) {
     	//draw the 4 walls
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
     	Float3 colour = new Float3(1.0f, 0.0f, 1.0f); //set the colour of the wall
@@ -606,9 +641,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     /**Draw a glass cube in low graphics
      * @param gl
-     * @param v the position vector of the cube
-     * @param n the normal vector of the cube*/
-    private void drawGlassLow(GL2 gl, Float3 v, Float3 n) {
+     * @param v the position vector of the cube*/
+    private void drawGlassLow(GL2 gl, Float3 v) {
     	//draw the floor
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
 		Float3 colour = new Float3(0.0f, 1.0f, 1.0f); //set the colour of the floor

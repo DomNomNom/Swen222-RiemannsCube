@@ -9,7 +9,7 @@ import world.items.*;
 public class Player extends GameObject {
 
     public final Float3 relPos = new Float3(); // relative position to the centre of the tile (only used by the UI... maybe)
-    public final Float3 normal = new Float3(0.0f, 1.0f, 0.0f); //the player's normal (which rotation
+    public final Float3 rotation = new Float3(0, 0, 0); //the rotation of the player in degrees
     
     private GameItem item;
     public GameItem item() {  return item; }
