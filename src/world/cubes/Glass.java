@@ -23,6 +23,6 @@ public class Glass extends Cube {
     
     @Override
     public boolean blocks(Player p) {
-        return false;
+        return true;
     }
 }

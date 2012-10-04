@@ -29,8 +29,8 @@ public abstract class GameObject {
      */
     public boolean move(Cube to) {
         if (Configurations.debugPrint)  System.out.println(myName() +" moving " + cube.pos() + " ==> " + to.pos());
-        if (!cube.removeObject(this)) throw new IllegalStateException("I can't remove this object from this cube! D:");
-        if (!to.addObject(this))      throw new IllegalStateException("I add myself to the other object from this cube! D:");
+        if (!cube.removeObject(this)) throw new IllegalStateException("I can't remove myself from this cube! D:");
+        if (!to.addObject(this))      throw new IllegalStateException("I add myself to the other cube! D:");
         cube = to;
         return true;
     }
