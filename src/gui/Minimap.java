@@ -169,10 +169,20 @@ public class Minimap extends GLJPanel implements GLEventListener {
 						else if (p.id == 2) gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 						else if (p.id == 3) gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
 						
+						//draw player square
+						gl.glBegin(GL2.GL_QUADS);
+						gl.glVertex3f(x+0.015f, dy+cubeSize, dz+cubeSize);
+						gl.glVertex3f(x+0.015f, dy+cubeSize, dz+half);
+						gl.glVertex3f(x+0.015f, dy+half, 	dz+half);
+						gl.glVertex3f(x+0.015f, dy+half,     dz+cubeSize);
+						gl.glEnd();
+						
+						//draw shadow
+						gl.glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
 						gl.glBegin(GL2.GL_QUADS);
 						gl.glVertex3f(x+0.01f, dy+cubeSize, dz+cubeSize);
 						gl.glVertex3f(x+0.01f, dy+cubeSize, dz+half);
-						gl.glVertex3f(x+0.01f, dy+half, 	   dz+half);
+						gl.glVertex3f(x+0.01f, dy+half, 	dz+half);
 						gl.glVertex3f(x+0.01f, dy+half,     dz+cubeSize);
 						gl.glEnd();
 					}
@@ -212,11 +222,21 @@ public class Minimap extends GLJPanel implements GLEventListener {
 						else if (p.id == 2) gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 						else if (p.id == 3) gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
 						
+						//draw player square
+						gl.glBegin(GL2.GL_QUADS);
+						gl.glVertex3f(dx+cubeSize, y+0.015f, dz+cubeSize);
+						gl.glVertex3f(dx+cubeSize, y+0.015f, dz+half);
+						gl.glVertex3f(dx+half,     y+0.015f, dz+half);
+						gl.glVertex3f(dx+half,     y+0.015f, dz+cubeSize);
+						gl.glEnd();
+						
+						//draw shadow
+						gl.glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
 						gl.glBegin(GL2.GL_QUADS);
 						gl.glVertex3f(dx+cubeSize, y+0.01f, dz+cubeSize);
 						gl.glVertex3f(dx+cubeSize, y+0.01f, dz+half);
-						gl.glVertex3f(dx+half,          y+0.01f, dz+half);
-						gl.glVertex3f(dx+half,          y+0.01f, dz+cubeSize);
+						gl.glVertex3f(dx+half,     y+0.01f, dz+half);
+						gl.glVertex3f(dx+half,     y+0.01f, dz+cubeSize);
 						gl.glEnd();
 					}
 				}
@@ -256,12 +276,23 @@ public class Minimap extends GLJPanel implements GLEventListener {
 						else if (p.id == 2) gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 						else if (p.id == 3) gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
 						
+						//draw player square
 						gl.glBegin(GL2.GL_QUADS);
-						gl.glVertex3f(dx+cubeSize, dy+cubeSize, z+0.01f);
-						gl.glVertex3f(dx+cubeSize, dy+half,     z+0.01f);
-						gl.glVertex3f(dx+half,     dy+half,     z+0.01f);
-						gl.glVertex3f(dx+half,     dy+cubeSize, z+0.01f);
+						gl.glVertex3f(dx+cubeSize, dy+cubeSize, z+0.015f);
+						gl.glVertex3f(dx+cubeSize, dy+half,     z+0.015f);
+						gl.glVertex3f(dx+half,     dy+half,     z+0.015f);
+						gl.glVertex3f(dx+half,     dy+cubeSize, z+0.015f);
 						gl.glEnd();
+						
+						//draw shadow
+						gl.glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
+						gl.glBegin(GL2.GL_QUADS);
+						gl.glVertex3f(dx+cubeSize, dy+cubeSize, z+0.001f);
+						gl.glVertex3f(dx+cubeSize, dy+half,     z+0.001f);
+						gl.glVertex3f(dx+half,     dy+half,     z+0.001f);
+						gl.glVertex3f(dx+half,     dy+cubeSize, z+0.001f);
+						gl.glEnd();
+						
 					}
 				}
 			}

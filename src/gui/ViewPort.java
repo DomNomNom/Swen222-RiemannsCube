@@ -76,6 +76,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean rightMouse = false; //is true if right mouse has been released
     private boolean exit = false; //is true when to exit
     private boolean pause = false; //is true when the game is paused
+    private boolean firstFocus = false; //waits for the first focus
     
     private Float3 camPos = new Float3(); //the position of the camera
     
@@ -162,15 +163,22 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         updateCamera(); //update the camera position
         
+        requestFocus();   
+        
     }
 
     @Override
     public void display(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
 
-        if (exit) frame.exit(); //quit the game
+        if (exit) frame.exit(); 
         
         if(pause && space) frame.exit(); //quit the game
+        
+        if (!frame.isActive()) {
+        	if(firstFocus) pause = true;
+        }
+        if (!firstFocus && frame.isActive()) firstFocus = true;
         
         //check if a frame has passed and if so update the events
         long newTime = System.currentTimeMillis(); //get the time at this point
@@ -200,6 +208,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		    
 		    accumTime -= frameLength;
         }
+        
+		rightMouse = false;
+		leftMouse = false;
         
         //START DRAWING
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); //clear the screen
@@ -446,8 +457,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	    		//start the rotation animtation
 	    		rotationAni = true;
     		}
-    		rightMouse = false;
-    		leftMouse = false;
     		
     		System.out.println(rotateTo);
     	}
@@ -547,8 +556,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	if (!inside) gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f); //flip if outside
     	
     	//translate to the edge of the cube
-    	if (inside) gl.glTranslatef(0, -0.99f, 0);
-    	else gl.glTranslatef(0, 0.99f, 0);
+    	if (inside) gl.glTranslatef(0, -0.995f, 0);
+    	else gl.glTranslatef(0, 0.995f, 0);
     	
     	//now draw the quad
     	gl.glBegin(GL2.GL_QUADS);
