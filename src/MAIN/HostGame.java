@@ -3,6 +3,7 @@ package MAIN;
 import gui.GameFrame;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import data.XMLParser;
@@ -22,9 +23,8 @@ public class HostGame {
 	    
 		//load the level for the server
 		RiemannCube world = null;
-		//read the world from a file
-        try {
-			world = XMLParser.readXML(new File("Levels/Test.xml"));
+        try {   //read the world from a file
+			world = XMLParser.readXML(new FileInputStream(new File("Levels/Test.xml")));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}

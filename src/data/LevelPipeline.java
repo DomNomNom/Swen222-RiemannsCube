@@ -3,7 +3,9 @@ package data;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -47,7 +49,7 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class LevelPipeline {
 
-    public void save(RiemannCube level, FileWriter writer) {
+    public void save(RiemannCube level, Writer writer) {
         try {
             // Document we're writing XML to.
             int width = level.size.x, height = level.size.y, depth = level.size.z;
@@ -209,7 +211,7 @@ public class LevelPipeline {
         RiemannCube cube = null;
         if (f.exists()) {
             try {
-                cube = XMLParser.readXML(f);
+                cube = XMLParser.readXML(new FileInputStream(f));
             } catch (FileNotFoundException e) {
                 return null;
             }

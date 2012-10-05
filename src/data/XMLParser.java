@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,14 +50,11 @@ public class XMLParser {
      * 
      * @param file
      * @return
-     * @throws FileNotFoundException
      */
-    public static RiemannCube readXML(File file) throws FileNotFoundException {
+    public static RiemannCube readXML(InputStream file) {
         // Ignore this, it just sets up the DOM parser. Truth is, I don't even
         // understand it. /Shrug
         // ==========================================================
-        if (!file.exists())
-            throw new FileNotFoundException();
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;

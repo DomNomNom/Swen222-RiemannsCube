@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 
 import org.junit.After;
@@ -59,7 +60,7 @@ public class XMLParsingTests {
         try {
             filewriter = new FileWriter(file);
             pipe.save(riemann, filewriter);
-            load = XMLParser.readXML(file);
+            load = XMLParser.readXML(new FileInputStream(file));
             
          } catch (Exception e) {
              e.printStackTrace();

@@ -48,7 +48,7 @@ public class Client {
         
         //read the world from a file
         try {
-			this.world = XMLParser.readXML(new File("Levels/Test.xml"));
+			this.world = XMLParser.readXML(new FileInputStream(new File("Levels/Test.xml")));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
