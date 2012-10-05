@@ -3,7 +3,7 @@ package world.objects;
 import java.awt.Color;
 
 import world.cubes.Cube;
-import world.items.Key;
+import world.objects.items.Key;
 
 public class Lock extends Trigger {
 

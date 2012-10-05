@@ -9,7 +9,7 @@ import org.junit.Test;
 import utils.Int3;
 import world.cubes.Floor;
 import world.cubes.Wall;
-import world.items.Key;
+import world.objects.items.Key;
 
 public class CubeTests {
 

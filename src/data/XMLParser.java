@@ -28,12 +28,13 @@ import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Space;
 import world.cubes.Wall;
-import world.items.Key;
-import world.items.LightSource;
-import world.objects.Door;
+import world.objects.items.Key;
+import world.objects.items.LightSource;
 import world.objects.GameObject;
 import world.objects.Lock;
 import world.objects.Player;
+import world.objects.doors.Door;
+import world.objects.doors.LevelDoor;
 
 /**
  * Class to parse an XMLFile into a 3D Array which can be loaded by the game.
@@ -207,7 +208,7 @@ public class XMLParser {
             while (scan.hasNext())
                 triggerIDs.add(Integer.parseInt(scan.next()));
 
-            ret = new Door(cube, triggerIDs, riemannCube.triggers, newCol);
+            ret = new LevelDoor(cube, triggerIDs, riemannCube.triggers, newCol);
 
         } else if (n.getNodeName().equals("lightsource")) {
             ret = new LightSource(cube);

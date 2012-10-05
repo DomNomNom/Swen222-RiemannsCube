@@ -11,11 +11,11 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import utils.Configurations;
-import world.items.Key;
-import world.objects.Door;
+import world.objects.items.Key;
 import world.objects.Lock;
 import world.objects.Player;
 import world.objects.Trigger;
+import world.objects.doors.Door;
 import data.XMLParser;
 
 

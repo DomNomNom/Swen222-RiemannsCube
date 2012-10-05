@@ -1,4 +1,4 @@
-package world.objects;
+package world.objects.doors;
 
 import java.awt.Color;
 import java.util.HashSet;
@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import world.cubes.Cube;
+import world.objects.GameObject;
+import world.objects.Trigger;
 
 /**
  * A Door conditionally impedes movement to a tile
@@ -13,7 +15,7 @@ import world.cubes.Cube;
  *
  * @author schmiddomi
  */
-public class Door extends GameObject {
+public abstract class Door extends GameObject {
 
     private Set<Integer> triggerIDs;
     private Map<Integer, Trigger> triggersMap;

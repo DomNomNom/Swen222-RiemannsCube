@@ -2,21 +2,25 @@ package editor;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import utils.Int3;
 import world.*;
 import world.cubes.*;
 import world.objects.*;
-import world.items.*;
+import world.objects.doors.*;
+import world.objects.items.*;
 
 /**
  * 
@@ -119,14 +123,22 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
      *            Co-ordinate
      */
     private void drawObject(Graphics g, GameObject obj, int x, int y) {
-        if (obj instanceof Door) {
+        if (obj instanceof LevelDoor) {
             g.setColor(((Door) obj).color());
             g.fillRect(x, y, squareLength, squareLength);
             g.setColor(Color.BLACK);
             g.drawRect(x, y, squareLength, squareLength);
             return;
+        }else if(obj instanceof ExitDoor){
+            g.setColor(Color.WHITE);
+            g.fillRect(x + 1, y + 1, squareLength - 2, squareLength - 2);
+            g.setColor(Color.YELLOW);
+            g.drawRect(x + 1, y + 1, squareLength - 2, squareLength - 2);
+            
+            g.setFont(new Font("Serif", Font.BOLD, 30));
+            g.drawString("E", x + x/4, y + y/4);
         }
-        if (obj instanceof Key) {
+        else if (obj instanceof Key) {
             g.setColor(Color.YELLOW);
             g.fillOval(x, y, squareLength, squareLength);
             g.setColor(((Key) obj).colour());
@@ -399,11 +411,19 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                                 "You can only add objects to a floor cube.");
                         return;
                     }
-
-                    Color col = JColorChooser.showDialog(null,
-                            "Choose a Color for the Door", Color.WHITE);
-                    if (col == null) {
-                        return;
+                    
+                    String[] choices = {"Level Door", "Entrance Door", "Exit Door"};
+                    int choice = JOptionPane.showOptionDialog(null, "What type of door do you want to place?", "Door Type", JOptionPane.YES_NO_OPTION  
+                            , JOptionPane.PLAIN_MESSAGE, null, choices, null);
+                    
+                    
+                    Color col = null;
+                    if (choice != 2) {
+                        col = JColorChooser.showDialog(null,
+                                "Choose a Color for the Door", Color.WHITE);
+                        if (col == null) {
+                            return;
+                        }
                     }
 
                     int num = 0;
@@ -416,7 +436,29 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         return;
                     }
                     
-                    curDoor = new Door(currentCube, num, col);
+                    switch (choice) {
+                    case 0:
+                        curDoor = new LevelDoor(currentCube, num, col);
+                        break;
+                    case 1:
+                        JFileChooser fc = new JFileChooser("Levels");
+                        File f = null;
+
+                        int value = fc.showDialog(null, "Select File");
+                        if (value == JFileChooser.APPROVE_OPTION) {
+                            f = fc.getSelectedFile();
+                        }
+                        
+                        if(f == null)
+                            return;
+                        
+                        curDoor = new EntranceDoor(currentCube, num, col, f.getName());
+                        System.out.println(f.getName());
+                        break;
+                    case 2: 
+                        curDoor = new ExitDoor(currentCube, num);
+                        break;
+                    }
                     level.getCube(x, y, z).addObject(curDoor);
                 } else {
                     System.out

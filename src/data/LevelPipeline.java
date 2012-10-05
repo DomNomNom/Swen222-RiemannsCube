@@ -17,14 +17,14 @@ import org.xml.sax.InputSource;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
-import world.objects.Door;
 import world.objects.Player;
 import world.objects.Trigger;
 import world.RiemannCube;
 import world.cubes.Cube;
-import world.items.GameItem;
-import world.items.Key;
+import world.objects.items.GameItem;
+import world.objects.items.Key;
 import world.objects.GameObject;
+import world.objects.doors.Door;
 
 import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
@@ -195,20 +195,23 @@ public class LevelPipeline {
     }
 
     public RiemannCube load() {
-        JFileChooser fc = new JFileChooser(".");
+        JFileChooser fc = new JFileChooser("Levels");
         File f = null;
 
         int value = fc.showDialog(null, "Select File");
         if (value == JFileChooser.APPROVE_OPTION) {
             f = fc.getSelectedFile();
         }
+        
+        if(f == null)
+            return null;
 
         RiemannCube cube = null;
         if (f.exists()) {
             try {
                 cube = XMLParser.readXML(f);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                return null;
             }
         }
 

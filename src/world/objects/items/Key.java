@@ -1,4 +1,4 @@
-package world.items;
+package world.objects.items;
 
 import java.awt.Color;
 

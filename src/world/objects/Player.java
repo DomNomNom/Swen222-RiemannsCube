@@ -4,7 +4,7 @@ import java.awt.Color;
 import utils.Int3;
 import utils.Float3;
 import world.cubes.Cube;
-import world.items.*;
+import world.objects.items.*;
 
 public class Player extends GameObject {
 

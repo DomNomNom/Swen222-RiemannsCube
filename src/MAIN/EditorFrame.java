@@ -3,6 +3,7 @@ package MAIN;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,7 +17,7 @@ import javax.swing.*;
 
 import utils.Int3;
 import world.RiemannCube;
-import world.items.Key;
+import world.objects.items.Key;
 import world.objects.Lock;
 import world.objects.Trigger;
 
@@ -45,6 +46,15 @@ public class EditorFrame extends JFrame {
         pack();
         setVisible(true);
         setFocusable(true);
+
+        
+        // Sets the frame to be full screen
+        // ----------------
+        Toolkit tk = Toolkit.getDefaultToolkit();  
+        int xSize = ((int) tk.getScreenSize().getWidth());  
+        int ySize = ((int) tk.getScreenSize().getHeight());  
+        setSize(xSize,ySize);  
+        // ----------------
 
         pipe = new LevelPipeline();
 

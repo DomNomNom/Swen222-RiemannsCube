@@ -15,11 +15,12 @@ import data.XMLParser;
 
 import utils.Int3;
 import world.RiemannCube;
-import world.items.Key;
-import world.objects.Door;
+import world.objects.items.Key;
 import world.objects.Lock;
 import world.objects.Player;
 import world.objects.Trigger;
+import world.objects.doors.Door;
+import world.objects.doors.LevelDoor;
 
 public class XMLParsingTests {
 
@@ -36,7 +37,7 @@ public class XMLParsingTests {
     public void initMap(){
 
         Color col = Color.PINK;
-        Door door = new Door(riemann.getCube(0,1,2), 2, col);
+        Door door = new LevelDoor(riemann.getCube(0,1,2), 2, col);
         
         Trigger trig = new Lock(riemann.getCube(0,1,1), 1, col);
         door.addTrigger(1);
