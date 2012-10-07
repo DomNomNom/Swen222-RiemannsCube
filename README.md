@@ -38,8 +38,17 @@ Traps
   - Reversed Keys
   - Cube Rotates
   - No Mini-map
+  - Alcohol
 Music
 Marker
 Pings
-
+Interactions
+  - '/wave' to adjacent player, etc.
+  - "Use item on player" to give?
+Extra items
+  - Food (carry, eat for stamina)
+  - Magic items
+    - Speed-mod
+    - Teleport
+    - All cubes as glass
 
