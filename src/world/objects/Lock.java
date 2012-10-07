@@ -10,6 +10,12 @@ public class Lock extends Trigger {
     private Color color;
     private int ID;
     
+    // Tells whether this lock opens an exit door
+    // Necessary as exit doors don't have colors.
+    private boolean isExit = false;
+    public boolean isExit(){ return isExit;}
+    public void setExit(boolean b){ isExit = b;}
+    
     public Lock(Cube pos, int ID, Color color){
         super(pos);
         this.ID = ID;
@@ -23,6 +29,7 @@ public class Lock extends Trigger {
     public int getID(){
         return ID;
     }
+    
 
     @Override
     public String getClassName() {

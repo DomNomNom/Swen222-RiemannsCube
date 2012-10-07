@@ -15,6 +15,12 @@ public class Key extends GameItem {
     Color colour;
     public Color colour() {return colour;  }
     
+    // Tells whether this key opens an exit door
+    // Necessary as exit doors don't have colors.
+    private boolean isExit = false;
+    public boolean isExit(){ return isExit;}
+    public void setExit(boolean b){ isExit = b;}
+    
     public Key(Cube pos, Color colour){
         super(pos);
         this.colour = colour;

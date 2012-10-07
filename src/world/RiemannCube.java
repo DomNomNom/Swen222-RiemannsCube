@@ -1,5 +1,6 @@
     package world;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import world.events.Action;
 import world.events.PlayerMove;
 import world.events.PlayerSpawning;
 import world.objects.GameObject;
+import world.objects.GlobalHolder;
 import world.objects.Player;
 import world.objects.Trigger;
 
@@ -46,6 +48,7 @@ public class RiemannCube {
     public final Map<Integer, Cube> spawnCubes = new HashMap<Integer, Cube>();
     public final Map<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
     public final Map<Integer, Player > players  = new HashMap<Integer, Player >();
+    public final Map<Color, GlobalHolder> containers = new HashMap<Color, GlobalHolder>();
     
     public final Int3 size;
 

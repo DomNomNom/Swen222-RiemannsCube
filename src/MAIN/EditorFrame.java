@@ -76,10 +76,17 @@ public class EditorFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int width = Integer.parseInt(JOptionPane.showInputDialog(null,
                         "Width?", "3"));
+                if(width == JOptionPane.CANCEL_OPTION) return;
+                
                 int height = Integer.parseInt(JOptionPane.showInputDialog(null,
                         "Height?", "3"));
+                if(height == JOptionPane.CANCEL_OPTION) return;
+                
                 int depth = Integer.parseInt(JOptionPane.showInputDialog(null,
                         "Depth?", "3"));
+                if(depth == JOptionPane.CANCEL_OPTION) return;
+                
+                
                 canvas.setLevel(new RiemannCube(new Int3(width, height, depth)));
                 contentPane.add(canvas, BorderLayout.CENTER);
                 setContentPane(contentPane);

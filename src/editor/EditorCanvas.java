@@ -132,25 +132,76 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         }else if(obj instanceof ExitDoor){
             g.setColor(Color.WHITE);
             g.fillRect(x + 1, y + 1, squareLength - 2, squareLength - 2);
-            g.setColor(Color.YELLOW);
-            g.drawRect(x + 1, y + 1, squareLength - 2, squareLength - 2);
+            g.setColor(Color.RED);
+            
+            for(int i = 0; i < 4; i++)
+                g.drawRect(x + i, y + i, squareLength - (i*2), squareLength - (i*2));
             
             g.setFont(new Font("Serif", Font.BOLD, 30));
-            g.drawString("E", x + x/4, y + y/4);
-        }
-        else if (obj instanceof Key) {
-            g.setColor(Color.YELLOW);
-            g.fillOval(x, y, squareLength, squareLength);
-            g.setColor(((Key) obj).colour());
-            g.fillOval(x + squareLength / 4, y + squareLength / 4,
-                    squareLength / 2, squareLength / 2);
+            
             g.setColor(Color.BLACK);
-            g.drawOval(x, y, squareLength, squareLength);
+            g.drawString("X", x + squareLength/4 + 5, y + 3*squareLength/4);
+            g.drawRect(x, y, squareLength, squareLength);
+            
+        } else if (obj instanceof EntranceDoor) {
+            g.setColor(Color.WHITE);
+            g.fillRect(x + 1, y + 1, squareLength - 2, squareLength - 2);
+            g.setColor(((EntranceDoor) obj).color());
+            
+            for(int i = 0; i < 4; i++)
+                g.drawRect(x + i, y + i, squareLength - (i*2), squareLength - (i*2));
+
+            g.setFont(new Font("Serif", Font.BOLD, 30));
+
+            g.setColor(Color.BLACK);
+            g.drawString("E", x + squareLength/4 + 5, y + 3*squareLength/4);
+            g.drawRect(x, y, squareLength, squareLength);
+        } else if (obj instanceof Key) {
+            if(((Key)obj).isExit()){
+                g.setColor(Color.YELLOW);
+                g.fillOval(x, y, squareLength, squareLength);
+
+                g.setColor(Color.RED);
+                for(int i = 0; i < 4; i++)
+                    g.drawOval(x + i, y + i, squareLength - (i*2), squareLength - (i*2));
+
+                g.setColor(Color.BLACK);
+                g.setFont(new Font("Serif", Font.BOLD, 30));
+                g.drawString("X", x + squareLength/4 + 5, y + 3*squareLength/4);
+                g.drawOval(x, y, squareLength, squareLength);
+            } else {
+                g.setColor(Color.YELLOW);
+                g.fillOval(x, y, squareLength, squareLength);
+                g.setColor(((Key) obj).colour());
+                g.fillOval(x + squareLength / 4, y + squareLength / 4,
+                        squareLength / 2, squareLength / 2);
+                g.setColor(Color.BLACK);
+                g.drawOval(x + squareLength / 4, y + squareLength / 4,
+                        squareLength / 2, squareLength / 2);
+                g.drawOval(x, y, squareLength, squareLength);
+            }
         } else if (obj instanceof Trigger) {
-            g.setColor(((Lock) obj).color());
-            g.fillOval(x, y, squareLength, squareLength);
-            g.setColor(Color.BLACK);
-            g.drawOval(x, y, squareLength, squareLength);
+            if(obj instanceof Lock){
+                if(((Lock)obj).isExit()){
+                    g.setColor(Color.RED);
+                    
+                    for(int i = 0; i < 4; i++)
+                        g.drawOval(x + i, y + i, squareLength - (i*2), squareLength - (i*2));
+                    
+                    g.setColor(Color.BLACK);
+                    g.drawOval(x, y, squareLength, squareLength);
+
+                        g.setFont(new Font("Serif", Font.BOLD, 30));
+                        g.drawString("X", x + squareLength/4 + 5, y + 3*squareLength/4);
+                } else {
+                    g.setColor(((Lock) obj).color());
+                    g.fillOval(x, y, squareLength, squareLength);
+                    g.setColor(Color.BLACK);
+                    g.drawOval(x, y, squareLength, squareLength);
+
+                }
+            } 
+            
         }
     }
 
@@ -385,26 +436,26 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
     }
 
     public void keyTyped(KeyEvent e) {
-        char key = e.getKeyChar();
+        char typed = e.getKeyChar();
         Int3 currentPos = new Int3(x, y, z);
         Cube currentCube = level.getCube(currentPos);
-        if (key == 'f') { //Floor
+        if (typed == 'f') { //Floor
             level.setCube(x, y, z, new Floor(currentPos));
-        } else if (key == 'w') { //Wall
+        } else if (typed == 'w') { //Wall
             level.setCube(x, y, z, new Wall(currentPos));
-        } else if (key == 's') { //Spawn point
+        } else if (typed == 's') { //Spawn point
             Cube spawnPoint = new Floor(new Int3(x, y, z));
             spawnPoint.setSpawnPoint(true);
             level.setCube(x, y, z, spawnPoint);
-        } else if (key == 'g') { //Glass
+        } else if (typed == 'g') { //Glass
             level.setCube(x, y, z, new Glass(new Int3(x, y, z)));
-        } else if (key == ' ') { //Empty space
+        } else if (typed == ' ') { //Empty space
             level.setCube(x, y, z, new Space(new Int3(x, y, z)));
         /*} else if (key == '1') {
             level.cubes[x][y][z].addObject(new Player(level.cubes[x][y][z], 1));*/
         } else if (level.getCube(x, y, z).object() == null) {
             //Need empty square to add object
-            if (key == 'd') { //Door
+            if (typed == 'd') { //Door
                 if (curDoor == null || curDoor.allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
@@ -464,7 +515,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     System.out
                             .println("Finish placing the locks for the last door!");
                 }
-            } else if (key == 'l') { //Lock
+            } else if (typed == 'l') { //Lock
                 if (curDoor != null && !curDoor.allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
@@ -473,21 +524,32 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     }
 
                     curLock = new Lock(currentCube, lockID++, curDoor.color());
+
+                    if(curDoor instanceof ExitDoor){
+                        curLock.setExit(true);
+                    }
+
                     level.getCube(x, y, z).addObject(curLock);
                     curDoor.addTrigger(curLock.getID());
                 }
-            } else if (key == 'k') { //Key
+            } else if (typed == 'k') { //Key
                 if (curLock != null) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
                                 "You can only add objects to a floor cube.");
                         return;
                     }
-
+                    
                     Key newKey = new Key(currentCube, curLock.color());
+                    if(curLock.isExit()){
+                        newKey.setExit(true);
+                    }
+
                     level.getCube(x, y, z).addObject(newKey);
                     curLock = null;
                 }
+            } else if(typed == 'c') {   //Container
+                
             }
         }
         if (!isometric)

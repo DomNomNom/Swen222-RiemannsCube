@@ -16,6 +16,20 @@ Lighting
 Planets
 Optimising Rotation (Caching)
 
+Alex:
+
+Update Parser -- >
+
+Changes:
+
+Doors:
+	Exit Doors
+	Entrance Doors
+	Booleans inside objects - isExit
+	
+Containers:
+	Color
+
 
 Priority Task Queue:
 
