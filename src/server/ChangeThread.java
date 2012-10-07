@@ -10,6 +10,7 @@ import world.events.Action;
 import world.events.ChatEvent;
 import world.events.ChatMessage;
 import world.events.Event;
+import world.events.FullStateUpdate;
 import world.events.PlayerAssign;
 import world.events.PlayerMove;
 import world.events.PlayerSpawning;
@@ -67,6 +68,9 @@ public class ChangeThread extends Thread {
                 }
                 sendToEveryone(spawnEvent);
                 sendToClient(new PlayerAssign(newPlayerID), parentServer.clientsList.get(c.clientId));
+            }
+            else if(e instanceof FullStateUpdate){
+            	sendToEveryone(e);
             }
             else {
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);

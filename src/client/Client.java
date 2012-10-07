@@ -15,6 +15,7 @@ import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatMessage;
 import world.events.Event;
+import world.events.FullStateUpdate;
 import world.events.PlayerAssign;
 import world.events.PlayerMove;
 import world.events.RequestPlayer;
@@ -88,6 +89,9 @@ public class Client {
                 player = world.players.get(id);
               //test printout
                 if(Configurations.debugPrint)  System.out.println(myName() + "recieved assign");
+            }
+            else if(e instanceof FullStateUpdate){
+            	this.world = XMLParser.readXML(new ByteArrayInputStream(((FullStateUpdate)e).level.getBytes()));
             }
             else 
                 System.err.println(myName() + " has recieved a unhandeled event: " + e);
