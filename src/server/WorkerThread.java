@@ -11,7 +11,7 @@ import world.events.Event;
 import world.events.PlayerMove;
 
 /**
- * A thread that handles a client / player and deals with their events.
+ * A thread that handles a single client / player and deals with their events.
  * The thread receives changes from the player / client and adds them 
  * to the blocking queue in the world.
  * @author feshersiva

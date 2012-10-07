@@ -7,6 +7,7 @@ import java.util.Set;
 import utils.Int3;
 import world.objects.Player;
 import world.objects.GameObject;
+import world.objects.items.GameItem;
 
 /**
  * The base class for all "tile" cubes 
@@ -53,7 +54,7 @@ public abstract class Cube {
     }
     
     /**
-     * Adds a GameObject to this cube or returns false
+     * Adds a GameObject to this cube or returns false. assumes canAddObject()
      * @param o The object to add
      * @return Whether it was possible to add this object
      */
@@ -63,15 +64,52 @@ public abstract class Cube {
     }
     
     /**
-     * Adds a GameObject to this cube or returns false
-     * @param o The object to add
-     * @return Whether it was possible to add this object
+     * Removes a GameObject to this cube or returns false
+     * @param o The object to remove
+     * @return Whether it was possible to remove this object
      */
     public boolean removeObject(GameObject o) {
         //System.err.println("removing at " + pos);
         return objects.remove(o);
     }
 
+    /** returns whether there is a item in this cube that can be picked up */
+    public boolean hasItem() {
+        for (GameObject o : objects)
+            if (o instanceof GameItem)
+                return true;
+        return false;
+    }
+        
+    /**
+     * Removes a GameItem to this cube or returns null
+     * @return Whether it was possible to remove the item
+     */
+    public GameItem pickupItem() {
+        GameItem i = null;
+        for (GameObject o : objects)
+            if (o instanceof GameItem)
+                return i = (GameItem) o;
+        objects.remove(i);
+        return i; 
+    }
+    
+    public boolean canUseItem(GameItem i) {
+        for (GameObject o : objects)
+            if (o.canUse(i))
+                return true;
+        return false;
+    }
+    
+    /** returns a GameItem that is produced by this action (eg. ) */
+    public GameItem useItem(GameItem i) {
+        for (GameObject o : objects)
+            if (o.canUse(i))
+                return o.use(i);
+        return null;
+    }
+    
+    
     /** @return A player on this cube. null if there is none   */
     public Player player() {
         for (GameObject go : objects)

@@ -4,6 +4,7 @@ import utils.Configurations;
 import utils.Int3;
 import utils.Int3;
 import world.cubes.Cube;
+import world.objects.items.GameItem;
 
 /**
  * A GameObject is anything that a Cube could contain.  
@@ -57,4 +58,16 @@ public abstract class GameObject {
     public boolean blocks(Player p) {
         return false;
     }
+    
+    /** 
+     * returns whether it makes sense to apply the game item to this object
+     * returns false by default.
+     */
+    public boolean canUse(GameItem i) {
+        return false;
+    }
+    
+    /**
+     * @return null by default  */
+    public GameItem use(GameItem i) { return null; }
 }

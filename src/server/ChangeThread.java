@@ -70,7 +70,7 @@ public class ChangeThread extends Thread {
                 sendToClient(new PlayerAssign(newPlayerID), parentServer.clientsList.get(c.clientId));
             }
             else if(e instanceof FullStateUpdate){
-            	sendToEveryone(e);
+            	sendToEveryone(e); // FIXME! do this properly
             }
             else {
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);
