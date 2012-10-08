@@ -11,6 +11,10 @@ public class Player extends GameObject {
     public final Float3 relPos = new Float3(); // relative position to the centre of the tile (only used by the UI... maybe)
     public Float3 rotation = new Float3(0, 0, 0); //the rotation of the player in degrees
     
+    private int score = 0;
+    public void incrementScore(int i){score+=i;}
+    public int score(){return score;}
+    
     private GameItem item;
     public GameItem item() {  return item; }
     public void setItem(GameItem item) { this.item = item; }
