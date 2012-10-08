@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<riemann depth="3" height="3" width="3">
+    <slice z="0">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0">
+                <player id="1"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0">
+                <key color="#ffafaf"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0">
+                <key color="#ffafaf"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+    </slice>
+    <slice z="1">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0">
+                <lock color="#ffafaf" id="1"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0">
+                <lock color="#ffafaf" id="2"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+    </slice>
+    <slice z="2">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0">
+                <door color="#ffafaf" triggerIDs="1 " type="level"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+        </floor>
+    </slice>
+</riemann>

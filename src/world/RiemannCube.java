@@ -61,7 +61,7 @@ public class RiemannCube {
      * It will be filled with FloorTiles
      * size must be at least 1x1x1
      * 
-     * @param size The dimentions of the cube
+     * @param size The dimensions of the cube
      */
     public RiemannCube(Int3 size) {
         if (size == null) throw new IllegalArgumentException();

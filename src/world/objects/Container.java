@@ -22,21 +22,26 @@ public class Container extends GameObject{
     public Container(Cube cube, Color col, RiemannCube rCube){
         super(cube);
         this.rCube = rCube;
+        this.color = col;
     }
     
     @Override
     public boolean canUse(GameItem i){
-        if(rCube.containers.get(color).getItem() == null){
-            return true;
-        } else {
-            return false;
-        }
+    	if(i == null){
+    		return rCube.containers.get(color).getItem() != null;
+    	} else {
+    		return rCube.containers.get(color).getItem() == null;
+    	}
     }
 
     @Override
     public GameItem use(GameItem i){
-        rCube.containers.get(color).setItem(i);
-        return null;
+    	if(i == null){
+    		return rCube.containers.get(color).popItem();
+    	} else {
+    		rCube.containers.get(color).setItem(i);
+    		return null;
+    	}
     }
     
     @Override

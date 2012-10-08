@@ -9,6 +9,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
@@ -16,11 +18,23 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import utils.Int3;
-import world.*;
-import world.cubes.*;
-import world.objects.*;
-import world.objects.doors.*;
-import world.objects.items.*;
+import world.RiemannCube;
+import world.cubes.Cube;
+import world.cubes.CubeType;
+import world.cubes.Floor;
+import world.cubes.Glass;
+import world.cubes.Space;
+import world.cubes.Wall;
+import world.objects.Container;
+import world.objects.GameObject;
+import world.objects.Lock;
+import world.objects.Trigger;
+import world.objects.doors.Door;
+import world.objects.doors.EntranceDoor;
+import world.objects.doors.ExitDoor;
+import world.objects.doors.LevelDoor;
+import world.objects.items.Key;
+import world.objects.items.Token;
 
 /**
  * 
@@ -40,7 +54,9 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
     Door curDoor = null;
     Lock curLock = null;
     int lockID = 0;
-
+    
+    private List<Color> containerColors = new ArrayList<Color>();
+    
     public EditorCanvas() {
         super();
         setPreferredSize(new Dimension(1000, 1000));
@@ -188,6 +204,33 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             g.setColor(Color.BLACK);
             g.drawRect(x + squareLength/4, y + squareLength/4, squareLength/2, squareLength/2);
             
+        } else if(obj instanceof Container){	// Containers
+        	Color col = ((Container) obj).color();
+        	int red = col.getRed();
+        	int blue = col.getBlue();
+        	int green = col.getGreen();
+
+        	// Fills an oval of the color of the container, getting darker towards the middle
+			for (int i = 0; i < squareLength/2; i++) {
+				if(red - (i + i/4) < 0){
+					red = 0;
+				} else {
+					red -= (i + i/4);
+				}
+				if(green - (i + i/4) < 0) {
+					green = 0;
+				} else {
+					green -= (i + i/4);
+				}
+				if(blue - (i + i/4) < 0){
+					blue = 0;
+				} else {
+					blue -= (i + i/4);
+				}
+				g.setColor(new Color(red, green, blue));
+				g.fillOval(x + i, y + i, squareLength - (i * 2), squareLength - (i * 2));
+			}
+                
         } else if (obj instanceof Trigger) {    //Trigger
             if(obj instanceof Lock){        //Lock
                 if(((Lock)obj).isExit()){
@@ -451,32 +494,39 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         if (typed == 'f') { //Floor
             level.setCube(x, y, z, new Floor(currentPos));
             
-        } else
-            if (typed == 'w') { //Wall
+        } else if (typed == 'w') { //Wall
             level.setCube(x, y, z, new Wall(currentPos));
             
-        } else
-            if (typed == 's') { //Spawn point
+        } else if (typed == 's') { //Spawn point
             Cube spawnPoint = new Floor(new Int3(x, y, z));
             spawnPoint.setSpawnPoint(true);
             level.setCube(x, y, z, spawnPoint);
             
-        } else
-            if (typed == 'g') { //Glass
+        } else if (typed == 'g') { //Glass
             level.setCube(x, y, z, new Glass(new Int3(x, y, z)));
             
-        } else
-            if (typed == ' ') { //Empty space
+        } else if (typed == ' ') { //Empty space
             level.setCube(x, y, z, new Space(new Int3(x, y, z)));
             
-        } else
-            if (level.getCube(x, y, z).object() == null) {
+        } else if (level.getCube(x, y, z).object() == null) {
                 //Need empty square to add object
                 
             if (typed == 't'){ //Token
                 level.getCube(x,y,z).addObject((new Token(level.getCube(x, y, z))));
-            } else
-            if (typed == 'd') { //Door
+			} else if (typed == 'c') { // Container
+				Color col = JColorChooser.showDialog(null, "Chooser a color", Color.WHITE);
+				
+				if(!containerColors.contains(col) && col != null){
+					containerColors.add(col);
+				}
+				
+				if (col == null) {
+					return;
+				}
+				
+				containerColors.add(col);
+				level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), col, null));
+            } else if (typed == 'd') { //Door
                 if (curDoor == null || curDoor.allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,

@@ -39,7 +39,7 @@ public class GlobalHolder{
      * @param item
      */
     public void setItem(GameItem item) {
-        if (item == null) {
+        if (this.item == null) {
             this.item = item;
         } else {
             throw new Error("Should be checked by container");

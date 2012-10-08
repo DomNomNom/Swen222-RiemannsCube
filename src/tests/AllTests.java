@@ -28,6 +28,7 @@ import data.XMLParser;
 	CubeTests.class,
 	NetworkingTests.class,
 	EventTests.class,
+	ContainerTests.class
 })
 
 public class AllTests { }
