@@ -128,7 +128,8 @@ public class Minimap extends GLJPanel implements GLEventListener {
 	
 	/**Draws the player's floor as a map*/
 	public void drawFloor(GL2 gl) {
-		Float3 rot = frame.getClient().player().rotation; //get the player's rotation
+		Player player = frame.getClient().player();
+		Float3 rot = player.rotation; //get the player's rotation
 		Float3 pos = new Float3();
 		pos.x = frame.getClient().player().pos().x;
 		pos.y = frame.getClient().player().pos().y;
@@ -136,7 +137,7 @@ public class Minimap extends GLJPanel implements GLEventListener {
 		float cubeSize = (float) (0.76f/level.size.x);
 		
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-		if (rot.z == 90 || rot.z == 270) { //draw wall type 2
+		if (player.orientation() == 2 || player.orientation() == 3) { //draw wall type 2
 			float x = -0.38f+(0.76f/(level.size.x/pos.x));
 			
 			for (float z = 0.0f; z < level.size.z; ++z) {
@@ -189,7 +190,7 @@ public class Minimap extends GLJPanel implements GLEventListener {
 				}
 			}
 		}
-		else if (rot.x == 0 || rot.x == 180 || rot.z == 180) { //draw a floor layer
+		else if (player.orientation() == 0 || player.orientation() == 1) { //draw a floor layer
 			float y = -0.38f+(0.76f/(level.size.y/pos.y));
 			
 			for (float z = 0.0f; z < level.size.z; ++z) {
@@ -242,7 +243,7 @@ public class Minimap extends GLJPanel implements GLEventListener {
 				}
 			}
 		}
-		else if (rot.x == 90 || rot.x == 270) { //draw wall type one layer
+		else if (player.orientation() == 4 || player.orientation() == 5) { //draw wall type one layer
 			float z = -1.76f+(0.76f/(level.size.z/pos.z));
 			
 			for (float y = 0.0f; y < level.size.y; ++y) {

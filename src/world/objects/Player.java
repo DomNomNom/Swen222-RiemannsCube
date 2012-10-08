@@ -7,9 +7,12 @@ import world.cubes.Cube;
 import world.objects.items.*;
 
 public class Player extends GameObject {
-
     public final Float3 relPos = new Float3(); // relative position to the centre of the tile (only used by the UI... maybe)
     public Float3 rotation = new Float3(0, 0, 0); //the rotation of the player in degrees
+    private int orientation = 0; //the orientation of the player 0: ground, 1: roof, 2: left wall 3: right wall
+    //4: front wall, 5: back wall. I'm not using an enum because java enums are stupid :S
+    public int orientation() {return orientation;}
+    public void orientation(int o) {orientation = o;}
     
     private int score = 0;
     public void incrementScore(int i){score+=i;}
@@ -32,8 +35,6 @@ public class Player extends GameObject {
         super(pos);
         this.id = id;
     }
-    
-    
     
     @Override
     public String getClassName() {

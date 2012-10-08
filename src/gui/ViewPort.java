@@ -42,7 +42,6 @@ import com.jogamp.opengl.util.Animator;
  * @author David Saxon 300199370
  */
 public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, MouseListener {
-    
     // FIELDS
     private static final long serialVersionUID = 1L;
     
@@ -81,8 +80,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private Float3 camPos = new Float3(); //the position of the camera
     
     private Float2 rotation = new Float2(); //the x rotation of the camera
+    private Float3 viewRot = new Float3(); //the rotation of the view camera
     
     private Float3 rotateTo = new Float3(); //the rotation the player needs to rotate to
+    private Float3 rotateView = new Float3();
     
     private float moveSpeed = 0.04f; //the move speed of the camera
     private float turnSpeed = 10.0f; //the turn speed of the camera
@@ -208,9 +209,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		    
 		    accumTime -= frameLength;
         }
-        
-		rightMouse = false;
-		leftMouse = false;
+        if (pause) { //clear mouse presses when paused
+			rightMouse = false;
+			leftMouse = false;
+        }
         
         //START DRAWING
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); //clear the screen
@@ -220,9 +222,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glRotatef(rotation.x, 1.0f, 0.0f, 0.0f); //apply the x rotation
     	gl.glRotatef(rotation.y, 0.0f, 1.0f, 0.0f); //apply the y rotation
     	
-    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f); //apply the world x rotation
-    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f); //apply the world z rotation
-        
+    	
+    	
+    	gl.glRotatef(-viewRot.x, 1.0f, 0.0f, 0.0f); //apply the world x rotation
+    	gl.glRotatef(-viewRot.z, 0.0f, 0.0f, 1.0f); //apply the world z rotation
+    	gl.glRotatef(-viewRot.y, 0.0f, 1.0f, 0.0f); //apply the world y rotation
+    	
+    	
+    	
         gl.glTranslatef(-camPos.x, -camPos.y, -camPos.z); //apply the translations
         
         if (high) drawSpaceBoxHigh(gl); //draw the space box in high graphics
@@ -342,32 +349,28 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	        }
 	        
 	        //if the player is rotated shift their direction based on rotation
-	        if (player.rotation.z == 90) {
-	        	float temp = -newPos.y;
-	        	newPos.y = -newPos.x;
-	        	newPos.x = temp;
-	        }
-	        else if (player.rotation.z == 180) {
+	        if (player.orientation() == 1) {
 	        	newPos.x = -newPos.x;
 	        }
-	        else if (player.rotation.z == 270) {
+	        else if (player.orientation() == 2) {
 	        	float temp = newPos.y;
 	        	newPos.y = newPos.x;
 	        	newPos.x = temp;
 	        }
-	        else if (player.rotation.x == 90) {
+	        else if (player.orientation() == 3) {
+	        	float temp = -newPos.y;
+	        	newPos.y = -newPos.x;
+	        	newPos.x = temp;
+	        }
+	        else if (player.orientation() == 4) {
 	        	float temp = newPos.y;
 	        	newPos.y = newPos.z;
-	        	newPos.z = temp; 
+	        	newPos.z = temp;
 	        }
-	        else if (player.rotation.x == 180) {
-	        	newPos.z = -newPos.z;
-	        	newPos.y = -newPos.y;
-	        }
-	        else if (player.rotation.x == 270) {
-	        	float temp = newPos.y;
+	        else if (player.orientation() == 5) {
+	        	float temp = -newPos.y;
 	        	newPos.y = -newPos.z;
-	        	newPos.z = temp; 
+	        	newPos.z = temp;
 	        }
 	        
 	        //find whether the player is being blocked or not, if not send to server
@@ -430,41 +433,148 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private void processRotation() {
     	if (leftMouse || rightMouse) { //if the right mouse is down rotate towards correct angle
     		if (!rotationAni) { //don't rotate while rotating
-
-    			rotateTo = new Float3();
+    			rotateTo = player.rotation.copy(); //the angle the player is to rotate to
+    			rotateView = viewRot.copy(); //what to rotate the view to
+    			Float2 rot = rotation; //short hand
     			
-    			//find the direction to rotate
-    			if (rotation.y > 45 && rotation.y <= 135) {
-    				if (leftMouse) rotateTo.x = player.rotation.x-90;
-    				else rotateTo.x = player.rotation.x+90;
+    			//HERE LIES THE BEAST THAT IS ROTATION. DO NOT LOOK FOR FEAR OF YOUR EYES BURNING OUT.
+    			//search for the correct rotation based on the players current rotation
+    			if (player.orientation() == 0) { //player is on the ground
+	    			if (rot.y > 45 && rot.y <= 135) {
+						if (leftMouse) {rotateTo.x -= 90; rotateView.x += 90; player.orientation(4);}
+						else {rotateTo.x += 90; rotateView.x -= 90; player.orientation(5);}
+	    			}
+	    			else if (rot.y > 225 && rot.y <= 315) {
+	    				if (leftMouse) {rotateTo.x += 90; rotateView.x -= 90; player.orientation(5);}
+	    				else {rotateTo.x -= 90; rotateView.x += 90; player.orientation(4);}
+	    			}
+	    			else if(rot.y > 135 && rot.y <= 225) {
+	    				if (leftMouse) {rotateTo.z -= 90; rotateView.z += 90; player.orientation(3);}
+	    				else {rotateTo.z += 90; rotateView.z -= 90; player.orientation(2);}
+	    			}
+	    			else {
+	    				if (leftMouse) {rotateTo.z += 90; rotateView.z -= 90; player.orientation(2);}
+	    				else {rotateTo.z -= 90; rotateView.z += 90; player.orientation(3);}
+	    			}
     			}
-    			else if (rotation.y > 225 && rotation.y <= 315) {
-    				if (leftMouse) rotateTo.x = player.rotation.x+90;
-    				else rotateTo.x = player.rotation.x-90;
+    			else if (player.orientation() == 1) { //player is on the right wall
+	    			if (rot.y > 45 && rot.y <= 135) {
+						if (leftMouse) {rotateTo.x += 90; rotateView.x += 90; player.orientation(4);}
+						else {rotateTo.x -= 90; rotateView.x -= 90; player.orientation(5);}
+	    			}
+	    			else if (rot.y > 225 && rot.y <= 315) {
+	    				if (leftMouse) {rotateTo.x -= 90; rotateView.x -= 90;  player.orientation(5);}
+	    				else {rotateTo.x += 90; rotateView.x += 90; player.orientation(4);}
+	    			}
+	    			else if(rot.y > 135 && rot.y <= 225) {
+	    				if (leftMouse) {rotateTo.z -= 90; rotateView.z += 90; player.orientation(2);}
+	    				else {rotateTo.z += 90; rotateView.z -= 90; player.orientation(3);}
+	    			}
+	    			else {
+	    				if (leftMouse) {rotateTo.z += 90; rotateView.z -= 90; player.orientation(3);}
+	    				else {rotateTo.z -= 90; rotateView.z += 90; player.orientation(2);}
+	    			}
     			}
-    			else if(rotation.y > 135 && rotation.y <= 225) {
-    				if (leftMouse) rotateTo.z = player.rotation.z-90;
-    				else rotateTo.z = player.rotation.z+90;
+    			else if (player.orientation() == 2) { //player is on the wall
+	    			if (rot.y > 45 && rot.y <= 135) {
+						if (leftMouse) {rotateTo.y -= 90; rotateView.y += 90; player.orientation(4);}
+						else {rotateTo.y += 90; rotateView.y -= 90; player.orientation(5);}
+	    			}
+	    			else if (rot.y > 225 && rot.y <= 315) {
+	    				if (leftMouse) {rotateTo.y += 90; rotateView.y -= 90; player.orientation(5);}
+	    				else {rotateTo.y -= 90; rotateView.y += 90; player.orientation(4);}
+	    			}
+	    			else if(rot.y > 135 && rot.y <= 225) {
+	    				if (leftMouse) {rotateTo.z -= 90; rotateView.z += 90;  player.orientation(0);}
+	    				else {rotateTo.z += 90; rotateView.z -= 90; player.orientation(1);}
+	    			}
+	    			else {
+	    				if (leftMouse) {rotateTo.z += 90; rotateView.z -= 90; player.orientation(1);}
+	    				else {rotateTo.z -= 90; rotateView.z += 90; player.orientation(0);}
+	    			}
     			}
-    			else {
-    				if (leftMouse) rotateTo.z = player.rotation.z+90;
-    				else rotateTo.z = player.rotation.z-90;
+    			else if (player.orientation() == 3) { //player is on the right wall
+	    			if (rot.y > 45 && rot.y <= 135) {
+						if (leftMouse) {rotateTo.y += 90; rotateView.y -= 90; player.orientation(4);}
+						else {rotateTo.y -= 90; rotateView.y += 90; player.orientation(5);}
+	    			}
+	    			else if (rot.y > 225 && rot.y <= 315) {
+	    				if (leftMouse) {rotateTo.y -= 90; rotateView.y += 90; player.orientation(5);}
+	    				else {rotateTo.y += 90; rotateView.y -= 90; player.orientation(4);}
+	    			}
+	    			else if(rot.y > 135 && rot.y <= 225) {
+	    				if (leftMouse) {rotateTo.z -= 90; rotateView.z += 90; player.orientation(1);}
+	    				else {rotateTo.z += 90; rotateView.z -= 90; player.orientation(0);}
+	    			}
+	    			else {
+	    				if (leftMouse) {rotateTo.z += 90; rotateView.z -= 90; player.orientation(0);}
+	    				else {rotateTo.z -= 90; rotateView.z += 90; player.orientation(1);}
+	    			}
     			}
-	    		
+    			else if (player.orientation() == 4) { //player is on the front wall
+	    			if (rot.y > 45 && rot.y <= 135) {
+						if (leftMouse) {rotateTo.x -= 90; rotateView.x += 90; player.orientation(1);}
+						else {rotateTo.x += 90; rotateView.x -= 90; player.orientation(0);}
+	    			}
+	    			else if (rot.y > 225 && rot.y <= 315) {
+	    				if (leftMouse) {rotateTo.x += 90; rotateView.x -= 90; player.orientation(0);}
+	    				else {rotateTo.x -= 90; rotateView.x += 90; player.orientation(1);}
+	    			}
+	    			else if(rot.y > 135 && rot.y <= 225) {
+	    				if (leftMouse) {rotateTo.y -= 90; rotateView.y += 90; player.orientation(3);}
+	    				else {rotateTo.y += 90; rotateView.y -= 90; player.orientation(2);}
+	    			}
+	    			else {
+	    				if (leftMouse) {rotateTo.z += 90; rotateView.y += 90; player.orientation(2);}
+	    				else {rotateTo.z -= 90; rotateView.y -= 90; player.orientation(3);}
+	    			}
+    			}
+    			else if (player.orientation() == 5) { //player is on the back wall
+	    			if (rot.y > 45 && rot.y <= 135) {
+						if (leftMouse) {rotateTo.x -= 90; rotateView.x += 90; player.orientation(0);}
+						else {rotateTo.x += 90; rotateView.x -= 90; player.orientation(1);}
+	    			}
+	    			else if (rot.y > 225 && rot.y <= 315) {
+	    				if (leftMouse) {rotateTo.x += 90; rotateView.x -= 90; player.orientation(1);}
+	    				else {rotateTo.x -= 90; rotateView.x += 90; player.orientation(0);}
+	    			}
+	    			else if(rot.y > 135 && rot.y <= 225) {
+	    				if (leftMouse) {rotateTo.y += 90; rotateView.y -= 90; player.orientation(3);}
+	    				else {rotateTo.y -= 90; rotateView.y += 90; player.orientation(2);}
+	    			}
+	    			else {
+	    				if (leftMouse) {rotateTo.y -= 90; rotateView.y += 90; player.orientation(2);}
+	    				else {rotateTo.y += 90; rotateView.y -= 90; player.orientation(3);}
+	    			}
+    			}
+    			//THE BEAST HAS ENDED	
+    			
 	    		//reset the relative position
 	    		player.relPos.x = player.relPos.y = player.relPos.z = 0;
 	    		
-	    		//start the rotation animtation
+	    		//start the rotation animation
 	    		rotationAni = true;
     		}
-    		
-    		System.out.println(rotateTo);
+
+    		rightMouse = false;
+    		leftMouse = false;
     	}
     	if (rotationAni) { //animate the rotation
+    		//increase the world rotations
     		if (rotateTo.x > player.rotation.x) player.rotation.x += rotationSpeed; //increase the rotation
-    		else if (rotateTo.x < player.rotation.x) player.rotation.x -= rotationSpeed; //decrease the rotation)
+    		else if (rotateTo.x < player.rotation.x) player.rotation.x -= rotationSpeed; //decrease the rotation
+    		if (rotateTo.y > player.rotation.y) player.rotation.y += rotationSpeed; //increase the rotation
+    		else if (rotateTo.y < player.rotation.y) player.rotation.y -= rotationSpeed; //decrease the rotation
     		if (rotateTo.z > player.rotation.z) player.rotation.z += rotationSpeed; //increase the rotation
-    		else if (rotateTo.z < player.rotation.z) player.rotation.z -= rotationSpeed; //decrease the rotation)
+    		else if (rotateTo.z < player.rotation.z) player.rotation.z -= rotationSpeed; //decrease the rotation
+    		
+    		//increase the view rotations
+    		if (viewRot.x > rotateView.x) viewRot.x += rotationSpeed;
+    		else if (viewRot.x < rotateView.x) viewRot.x -= rotationSpeed;
+    		if (viewRot.y > rotateView.y) viewRot.y += rotationSpeed;
+    		else if (viewRot.y < rotateView.y) viewRot.y -= rotationSpeed;
+    		if (viewRot.z > rotateView.z) viewRot.z += rotationSpeed;
+    		else if (viewRot.z < rotateView.z) viewRot.z -= rotationSpeed;
     		
     		if (rotateTo.equals(player.rotation)) {
     			rotationAni = false; //the animation is finished
@@ -472,16 +582,62 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     			//make sure x rotations are within 0 to 360
     			if (player.rotation.x >= 360) player.rotation.x = 0;
     			else if (player.rotation.x < 0) player.rotation.x = 360+player.rotation.x;
+    			else if (player.rotation.x < 0) player.rotation.x = 360+player.rotation.x;
+    			if (player.rotation.y >= 360) player.rotation.y = 0;
+    			else if (player.rotation.y < 0) player.rotation.y = 360+player.rotation.y;
     			if (player.rotation.z >= 360) player.rotation.z = 0;
     			else if (player.rotation.z < 0) player.rotation.z = 360+player.rotation.z;
     			
-    			//Now change rotations if they are equivalent to others
-    			
-    			System.out.println(player.rotation);
-    			
+    			//switch the player's rotation for an equivalent rotation
+    			if (player.orientation() == 0) {
+    				player.rotation.x = 0;
+    				player.rotation.y = 0;
+    				player.rotation.z = 0;
+    				viewRot = new Float3(0, 0, 0);
+    			}
+    			else if (player.orientation() == 1) {
+    				//rotation.y -= player.rotation.x-90.0f;
+    				player.rotation.x = 0;
+    				player.rotation.y = 0;
+    				player.rotation.z = 180;
+    				viewRot = new Float3(0, 0, 180);
+    				if (rotateTo.x == 180) rotation.y += 180;
+    			}
+    			else if (player.orientation() == 2) {
+    				player.rotation.x = 0;
+    				player.rotation.y = 0;
+    				player.rotation.z = 90;
+    				viewRot = new Float3(0, 0, 90);
+    				if (rotateTo.x == 90) rotation.y += 90;
+    				if (rotateTo.x == 270) rotation.y -= 90;
+    			}
+    			else if (player.orientation() == 3) {
+    				player.rotation.x = 0;
+    				player.rotation.y = 0;
+    				player.rotation.z = 270;
+    				viewRot = new Float3(0, 0, 270);
+    				if (rotateTo.x == 90) rotation.y -= 90;
+    				if (rotateTo.x == 270) rotation.y += 90;
+    			}
+    			else if (player.orientation() == 4) {
+    				player.rotation.x = 270;
+    				player.rotation.y = 0;
+    				player.rotation.z = 0;
+    				viewRot = new Float3(270, 0, 0);
+    				if (rotateTo.z == 90) rotation.y += 90;
+    				if (rotateTo.z == 180) rotation.y += 180;
+    				if (rotateTo.z == 270) rotation.y -= 90;
+    			}
+    			else if (player.orientation() == 5) {
+    				player.rotation.x = 90;
+    				player.rotation.y = 0;
+    				player.rotation.z = 0;
+    				viewRot = new Float3(90, 0, 0);
+    				if (rotateTo.z == 90) rotation.y -= 90;
+    				if (rotateTo.z == 180) rotation.y += 180;
+    				if (rotateTo.z == 270) rotation.y += 90;
+    			}
     		}
-
-    		
     	}
     }
     
@@ -545,8 +701,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
     	
     	//apply the world orientation rotation
-    	gl.glRotatef(-player.rotation.x, 1.0f, 0.0f, 0.0f);
-    	gl.glRotatef(-player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	
+    	
+    	
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
     	//apply the rotations
     	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
