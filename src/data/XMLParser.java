@@ -35,6 +35,8 @@ import world.objects.GameObject;
 import world.objects.Lock;
 import world.objects.Player;
 import world.objects.doors.Door;
+import world.objects.doors.EntranceDoor;
+import world.objects.doors.ExitDoor;
 import world.objects.doors.LevelDoor;
 
 /**
@@ -175,26 +177,45 @@ public class XMLParser {
             // Get the color for the Key
             Element e = (Element) n;
             String col = e.getAttribute("color");
-            Color newCol = Color.decode(col);
 
+            Color newCol = null;
+            boolean exit = true;
+            if(col.length() != 0){
+                newCol = Color.decode(col);
+                exit = false;
+            }
+            
             ret = new Key(cube, newCol);
+            ((Key)ret).setExit(exit);
 
         } else if (n.getNodeName().equals("lock")) {
             // Get the color for the lock
             Element e = (Element) n;
             String col = e.getAttribute("color");
-            Color newCol = Color.decode(col);
+            
+            Color newCol = null;
+            boolean exit = true;
+            if(col.length() != 0){
+                newCol = Color.decode(col);
+                exit = false;
+            }
 
             // Get the ID for the Lock
             int id = Integer.parseInt(e.getAttribute("id"));
 
             ret = new Lock(cube, id, newCol);
+            ((Lock)ret).setExit(exit);
 
         } else if (n.getNodeName().equals("door")) {
             // Get the color for the door
             Element e = (Element) n;
-            String col = e.getAttribute("color");
-            Color newCol = Color.decode(col);
+            String type = e.getAttribute("type");
+            
+            Color newCol = null;
+            if (!type.equals("exit")) {
+                String col = e.getAttribute("color");
+                newCol = Color.decode(col);
+            }
 
             // Get the set of IDs for the triggers of this door
             String ids = e.getAttribute("triggerIDs");
@@ -206,7 +227,15 @@ public class XMLParser {
             while (scan.hasNext())
                 triggerIDs.add(Integer.parseInt(scan.next()));
 
-            ret = new LevelDoor(cube, triggerIDs, riemannCube.triggers, newCol);
+            if(type.equals("level")){
+                ret = new LevelDoor(cube, triggerIDs, riemannCube.triggers, newCol);
+            } else if(type.equals("entrance")){
+                String levelName = e.getAttribute("levelname");
+                ret = new EntranceDoor(cube, triggerIDs, riemannCube.triggers, newCol, levelName);
+                
+            } else if(type.equals("exit")){
+                ret = new ExitDoor(cube, triggerIDs, riemannCube.triggers);
+            }
 
         } else if (n.getNodeName().equals("lightsource")) {
             ret = new LightSource(cube);

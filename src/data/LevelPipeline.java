@@ -27,6 +27,9 @@ import world.objects.items.GameItem;
 import world.objects.items.Key;
 import world.objects.GameObject;
 import world.objects.doors.Door;
+import world.objects.doors.EntranceDoor;
+import world.objects.doors.ExitDoor;
+import world.objects.doors.LevelDoor;
 
 import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
@@ -129,24 +132,6 @@ public class LevelPipeline {
                                         .getClassName());
                             }
                             
-                            //if (curItem != null) {
-                            //item.setAttribute(curItem.getClassName(), item
-                            //  .getClass().getName());
-                            //
-                            //player.appendChild(item);
-                            //}
-
-                            // Players dont have light sources anymore
-                            // // add lightsource
-                            // GameItem curLight = curPlayer.torch();
-                            // Element light = doc.createElement("lightsource");
-                            // if (curLight != null) {
-                            // light.setAttribute("type", item.getClass()
-                            // .getName());
-                            //
-                            // player.appendChild(light);
-                            // }
-
                             cube.appendChild(player);
                         }
 
@@ -221,15 +206,29 @@ public class LevelPipeline {
     }
 
     private Element getObjectElement(GameObject obj, Document doc) {
-        Element element;
+        Element element = null;
         if (obj instanceof Door) {
-            Door door = (Door) obj;
+            Door door = null;
             element = doc.createElement("door");
+            if (obj instanceof LevelDoor) {
+                door = (LevelDoor) obj;
+                element.setAttribute("type", "level");
+                element.setAttribute("color", hexCode(door.color()));
+            } else if(obj instanceof EntranceDoor){
+                door = (EntranceDoor) obj;
+                element.setAttribute("type", "entrance");
+                element.setAttribute("levelname", ((EntranceDoor)door).levelName());
+                element.setAttribute("color", hexCode(door.color()));
+            } else if(obj instanceof ExitDoor){
+                door = (ExitDoor) obj;
+                element.setAttribute("type", "exit");
+            }
+            
             String triggerIDs = "";
             for (Integer i : door.triggers())
                 triggerIDs += i.toString() + " ";
             element.setAttribute("triggerIDs", triggerIDs);
-            element.setAttribute("color", hexCode(door.color()));
+
         } else if (obj instanceof Trigger) {
             element = doc.createElement(obj.getClassName().toLowerCase());
             element.setAttribute("id", String.valueOf(((Trigger) obj).getID()));
@@ -245,6 +244,9 @@ public class LevelPipeline {
     }
 
     private String hexCode(Color c) {
+        if(c == null)
+            return null;
+        
         String s = Integer.toHexString(c.getRGB() & 0xffffff);
         if (s.length() < 6)
             s = "000000".substring(0, 6 - s.length()) + s;

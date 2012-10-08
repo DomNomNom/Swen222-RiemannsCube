@@ -6,6 +6,7 @@ Swen222-RiemannsCube
 "test" ~ Sivan
 
 
+======================
 David:
 
 Door Textures
@@ -15,21 +16,22 @@ Chat Panel
 Lighting
 Planets
 Optimising Rotation (Caching)
+======================
 
+======================
 Alex:
 
 Update Parser -- >
 
 Changes:
 
-Doors:
-	Exit Doors
-	Entrance Doors
-	Booleans inside objects - isExit
-	
 Containers:
 	Color
+	
+Deal with New Map for containers
 
+Chat Panel
+=======================
 
 Priority Task Queue:
 
@@ -56,6 +58,8 @@ Traps
 Music
 Marker
 Pings
+Golden Token, adds points at the end of the level
+
 Interactions
   - '/wave' to adjacent player, etc.
   - "Use item on player" to give?
@@ -65,4 +69,5 @@ Extra items
     - Speed-mod
     - Teleport
     - All cubes as glass
+
 

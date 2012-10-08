@@ -19,7 +19,7 @@ import world.objects.Player;
 import world.objects.Trigger;
 
 
-/**
+/**Color 
  * The RiemannCube holds all world state.
  * It should not change unless a Action is applied.
  * 
