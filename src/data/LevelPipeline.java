@@ -25,6 +25,7 @@ import world.RiemannCube;
 import world.cubes.Cube;
 import world.objects.items.GameItem;
 import world.objects.items.Key;
+import world.objects.items.Token;
 import world.objects.GameObject;
 import world.objects.doors.Door;
 import world.objects.doors.EntranceDoor;
@@ -51,7 +52,10 @@ import javax.xml.transform.stream.StreamResult;
  * 
  */
 public class LevelPipeline {
-
+    
+    private String lastFileName;
+    public String getLastFileName() {return lastFileName;}
+    
     public void save(RiemannCube level, Writer writer) {
         try {
             // Document we're writing XML to.
@@ -201,7 +205,7 @@ public class LevelPipeline {
                 return null;
             }
         }
-
+        lastFileName = f.getName();
         return cube;
     }
 
@@ -236,6 +240,8 @@ public class LevelPipeline {
         } else if (obj instanceof Key) {
             element = doc.createElement(obj.getClassName().toLowerCase());
             element.setAttribute("color", hexCode(((Key) obj).colour()));
+        } else if (obj instanceof Token) {
+            element = doc.createElement(obj.getClassName().toLowerCase());
         } else {
             element = doc.createElement(obj.getClassName());
         }
@@ -252,4 +258,5 @@ public class LevelPipeline {
             s = "000000".substring(0, 6 - s.length()) + s;
         return '#' + s;
     }
+
 }

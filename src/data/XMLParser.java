@@ -31,6 +31,7 @@ import world.cubes.Space;
 import world.cubes.Wall;
 import world.objects.items.Key;
 import world.objects.items.LightSource;
+import world.objects.items.Token;
 import world.objects.GameObject;
 import world.objects.Lock;
 import world.objects.Player;
@@ -237,6 +238,8 @@ public class XMLParser {
                 ret = new ExitDoor(cube, triggerIDs, riemannCube.triggers);
             }
 
+        } else if (n.getNodeName().equals("token")) {
+            ret = new Token(cube);
         } else if (n.getNodeName().equals("lightsource")) {
             ret = new LightSource(cube);
         }

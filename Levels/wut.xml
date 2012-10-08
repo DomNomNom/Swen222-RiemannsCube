@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<riemann depth="6" height="6" width="6">
+    <slice z="0">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2">
+                <key color=""/>
+            </cube>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="3">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="4">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="5">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+    </slice>
+    <slice z="1">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4">
+                <key color="#ff9999"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="3">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="4">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="5">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+    </slice>
+    <slice z="2">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4">
+                <lock color="" id="2"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="3">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="4">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="5">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+    </slice>
+    <slice z="3">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="3">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="4">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="5">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+    </slice>
+    <slice z="4">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1">
+                <door color="#ff9999" levelname="Test.xml" triggerIDs="1 " type="entrance"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3">
+                <lock color="#ff9999" id="1"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2">
+                <door triggerIDs="2 " type="exit"/>
+            </cube>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="3">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="4">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="5">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+    </slice>
+    <slice z="5">
+        <floor y="0">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="1">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="2">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="3">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="4">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+        <floor y="5">
+            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="5"/>
+        </floor>
+    </slice>
+</riemann>

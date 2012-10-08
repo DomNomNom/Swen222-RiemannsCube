@@ -36,6 +36,7 @@ public class EditorFrame extends JFrame {
     JPanel contentPane = new JPanel(new BorderLayout());
     EditorCanvas canvas = new EditorCanvas();
     LevelPipeline pipe;
+    String levelName = "New Level";
 
     public EditorFrame() {
         super("Level Editor");
@@ -74,18 +75,19 @@ public class EditorFrame extends JFrame {
         JMenuItem item = new JMenuItem("New");
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int width = Integer.parseInt(JOptionPane.showInputDialog(null,
+                int width, height, depth;
+                try{
+                width = Integer.parseInt(JOptionPane.showInputDialog(null,
                         "Width?", "3"));
-                if(width == JOptionPane.CANCEL_OPTION) return;
                 
-                int height = Integer.parseInt(JOptionPane.showInputDialog(null,
+                height = Integer.parseInt(JOptionPane.showInputDialog(null,
                         "Height?", "3"));
-                if(height == JOptionPane.CANCEL_OPTION) return;
                 
-                int depth = Integer.parseInt(JOptionPane.showInputDialog(null,
+                depth = Integer.parseInt(JOptionPane.showInputDialog(null,
                         "Depth?", "3"));
-                if(depth == JOptionPane.CANCEL_OPTION) return;
-                
+                }catch(NumberFormatException nfe){
+                    return;
+                }
                 
                 canvas.setLevel(new RiemannCube(new Int3(width, height, depth)));
                 contentPane.add(canvas, BorderLayout.CENTER);
@@ -100,7 +102,7 @@ public class EditorFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 pipe = new LevelPipeline();
                 String fname = JOptionPane.showInputDialog(null, "What name?",
-                        "New level");
+                        levelName);
 
                 if(fname == null){
                     JOptionPane.showMessageDialog(null, "Enter a valid name for the level (no extension).");
@@ -123,6 +125,7 @@ public class EditorFrame extends JFrame {
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RiemannCube cube = pipe.load();
+                levelName = pipe.getLastFileName();
                 if (cube == null) {
                     JOptionPane.showMessageDialog(null, "File was not vaild.");
                 } else {

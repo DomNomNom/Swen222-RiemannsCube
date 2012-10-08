@@ -129,7 +129,8 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             g.setColor(Color.BLACK);
             g.drawRect(x, y, squareLength, squareLength);
             return;
-        }else if(obj instanceof ExitDoor){
+            
+        }else if(obj instanceof ExitDoor){ //Exit Door
             g.setColor(Color.WHITE);
             g.fillRect(x + 1, y + 1, squareLength - 2, squareLength - 2);
             g.setColor(Color.RED);
@@ -143,7 +144,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             g.drawString("X", x + squareLength/4 + 5, y + 3*squareLength/4);
             g.drawRect(x, y, squareLength, squareLength);
             
-        } else if (obj instanceof EntranceDoor) {
+        } else if (obj instanceof EntranceDoor) { //Entrance Door
             g.setColor(Color.WHITE);
             g.fillRect(x + 1, y + 1, squareLength - 2, squareLength - 2);
             g.setColor(((EntranceDoor) obj).color());
@@ -156,7 +157,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             g.setColor(Color.BLACK);
             g.drawString("E", x + squareLength/4 + 5, y + 3*squareLength/4);
             g.drawRect(x, y, squareLength, squareLength);
-        } else if (obj instanceof Key) {
+        } else if (obj instanceof Key) {           //Key
             if(((Key)obj).isExit()){
                 g.setColor(Color.YELLOW);
                 g.fillOval(x, y, squareLength, squareLength);
@@ -180,8 +181,15 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         squareLength / 2, squareLength / 2);
                 g.drawOval(x, y, squareLength, squareLength);
             }
-        } else if (obj instanceof Trigger) {
-            if(obj instanceof Lock){
+            
+        }else if(obj instanceof Token){         //Token
+            g.setColor(Color.YELLOW);
+            g.fillRect(x + squareLength/4, y + squareLength/4, squareLength/2, squareLength/2);
+            g.setColor(Color.BLACK);
+            g.drawRect(x + squareLength/4, y + squareLength/4, squareLength/2, squareLength/2);
+            
+        } else if (obj instanceof Trigger) {    //Trigger
+            if(obj instanceof Lock){        //Lock
                 if(((Lock)obj).isExit()){
                     g.setColor(Color.RED);
                     
@@ -439,22 +447,35 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         char typed = e.getKeyChar();
         Int3 currentPos = new Int3(x, y, z);
         Cube currentCube = level.getCube(currentPos);
+        
         if (typed == 'f') { //Floor
             level.setCube(x, y, z, new Floor(currentPos));
-        } else if (typed == 'w') { //Wall
+            
+        } else
+            if (typed == 'w') { //Wall
             level.setCube(x, y, z, new Wall(currentPos));
-        } else if (typed == 's') { //Spawn point
+            
+        } else
+            if (typed == 's') { //Spawn point
             Cube spawnPoint = new Floor(new Int3(x, y, z));
             spawnPoint.setSpawnPoint(true);
             level.setCube(x, y, z, spawnPoint);
-        } else if (typed == 'g') { //Glass
+            
+        } else
+            if (typed == 'g') { //Glass
             level.setCube(x, y, z, new Glass(new Int3(x, y, z)));
-        } else if (typed == ' ') { //Empty space
+            
+        } else
+            if (typed == ' ') { //Empty space
             level.setCube(x, y, z, new Space(new Int3(x, y, z)));
-        /*} else if (key == '1') {
-            level.cubes[x][y][z].addObject(new Player(level.cubes[x][y][z], 1));*/
-        } else if (level.getCube(x, y, z).object() == null) {
-            //Need empty square to add object
+            
+        } else
+            if (level.getCube(x, y, z).object() == null) {
+                //Need empty square to add object
+                
+            if (typed == 't'){ //Token
+                level.getCube(x,y,z).addObject((new Token(level.getCube(x, y, z))));
+            } else
             if (typed == 'd') { //Door
                 if (curDoor == null || curDoor.allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
