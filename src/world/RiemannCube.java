@@ -11,6 +11,10 @@ import utils.Int2;
 import utils.Int3;
 import world.cubes.*;
 import world.events.Action;
+import world.events.ItemAction;
+import world.events.ItemDrop;
+import world.events.ItemPickup;
+import world.events.ItemUse;
 import world.events.PlayerMove;
 import world.events.PlayerSpawning;
 import world.objects.GameObject;
@@ -19,7 +23,7 @@ import world.objects.Player;
 import world.objects.Trigger;
 
 
-/**Color 
+/** 
  * The RiemannCube holds all world state.
  * It should not change unless a Action is applied.
  * 
@@ -100,13 +104,23 @@ public class RiemannCube {
     
     public synchronized boolean isValidAction(Action a) {
         if (a == null) return false;
-        else if (a instanceof PlayerMove    )  return isValidMovePlayer((PlayerMove) a);
-        else if (a instanceof PlayerSpawning)  return isValidSpawnPlayer((PlayerSpawning) a);
-
-        else {
-            System.err.println("[RC] OMG I haven't coded stuff for this: " + a);
-            return false;
-        }
+        if (a instanceof PlayerMove    )  return isValidMovePlayer ((PlayerMove)     a);
+        if (a instanceof PlayerSpawning)  return isValidSpawnPlayer((PlayerSpawning) a);
+        if (a instanceof ItemAction    )  return isValidItemAction ((ItemAction)     a);
+        
+        System.err.println(myName()+"OMG I haven't coded stuff for this action: " + a);
+        return false;
+    }
+    
+    private boolean isValidItemAction(ItemAction a) {
+        if (!isValidPlayer(a.playerID)) return false;
+        Player p = players.get(a.playerID);
+        Cube pos = p.cube();
+        if (a instanceof ItemPickup) return pos.hasItem() && !p.isHoldingItem(); 
+        if (a instanceof ItemDrop  ) return p.isHoldingItem() && pos.canAddObject(p.item());
+        if (a instanceof ItemUse   ) return pos.canUseItem(p.item());
+        
+        return false;
     }
     
     private boolean isValidMovePlayer(PlayerMove a) {
@@ -137,12 +151,25 @@ public class RiemannCube {
         if (!isValidAction(a)) return false; // after this we assume nothing can go wrong
         else if (a instanceof PlayerMove    )  movePlayer((PlayerMove) a);
         else if (a instanceof PlayerSpawning)  spawnPlayer((PlayerSpawning) a);
+        else if (a instanceof ItemAction    )  applyItemAction((ItemAction) a);
         else {
-            System.err.println("[RC] OMG I haven't coded stuff for this: " + a);
+            System.err.println(myName()+"OMG I haven't coded stuff for this: " + a);
             return false;
         }
         
         return true;
+    }
+    
+    private void applyItemAction(ItemAction a) {
+        Player p = players.get(a.playerID);
+        Cube cube = p.cube();
+        if (a instanceof ItemPickup)   p.setItem(cube.popItem());
+        else if (a instanceof ItemDrop) {
+            cube.addObject(p.item());
+            p.setItem(null);
+        }
+        else if (a instanceof ItemUse)  p.setItem(cube.useItem(p.item()));
+        else  throw new Error("unhandeled ItemAction!");
     }
     
     private void movePlayer(PlayerMove action) {
@@ -213,5 +240,5 @@ public class RiemannCube {
 
     // ===== other stuff =====
 
-    private String myName() { return "[RiemanCube]"; }
+    private String myName() { return "[RiemanCube] "; }
 }

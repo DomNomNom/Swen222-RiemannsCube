@@ -26,11 +26,11 @@ public class ActionTests {
     public void testMoveAction() {        
         RiemannCube world  = WorldTests.generateWorld();
         RiemannCube world2 = WorldTests.generateWorld();
-        assertTrue(world2.applyAction(new PlayerMove(0, new Int3(0, 0, 0))));
+        assertTrue(world2.applyAction(new PlayerMove(0, new Int3(0, 0, 0)))); // move to current square
         assertTrue(world.equals(world2));
-        assertTrue(world2.applyAction(new PlayerMove(0, new Int3(1, 0, 0))));
+        assertTrue(world2.applyAction(new PlayerMove(0, new Int3(1, 0, 0)))); // move to adjacent square
         assertFalse(world.equals(world2));
-        assertTrue(world2.applyAction(new PlayerMove(0, new Int3(-1, 0, 0))));
+        assertTrue(world2.applyAction(new PlayerMove(0, new Int3(0, 0, 0)))); // move back
         assertTrue(world.equals(world2));
     }
     

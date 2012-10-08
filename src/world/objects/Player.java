@@ -20,6 +20,7 @@ public class Player extends GameObject {
     
     private GameItem item;
     public GameItem item() {  return item; }
+    public boolean isHoldingItem() { return item != null;  }
     public void setItem(GameItem item) { this.item = item; }
 
     private LightSource torch;

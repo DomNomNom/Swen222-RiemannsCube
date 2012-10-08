@@ -59,7 +59,6 @@ public abstract class Cube {
      * @return Whether it was possible to add this object
      */
     public boolean addObject(GameObject o) {
-        //System.err.println("adding at " + pos);
         return objects.add(o);
     }
     
@@ -69,7 +68,6 @@ public abstract class Cube {
      * @return Whether it was possible to remove this object
      */
     public boolean removeObject(GameObject o) {
-        //System.err.println("removing at " + pos);
         return objects.remove(o);
     }
 
@@ -85,7 +83,7 @@ public abstract class Cube {
      * Removes a GameItem to this cube or returns null
      * @return Whether it was possible to remove the item
      */
-    public GameItem pickupItem() {
+    public GameItem popItem() {
         GameItem i = null;
         for (GameObject o : objects)
             if (o instanceof GameItem)
