@@ -9,8 +9,10 @@ import world.objects.items.GameItem;
  * every blue container points to one GlobalHolder, and can all access the
  * item it holds.
  * Can only hold one item at a time.
- * @author sandilalex
+ * This technically isn't a object but is closely related to them so it sits in this package.
+ * These get created by Container constructors.
  *
+ * @author sandilalex
  */
 public class GlobalHolder{
 
@@ -39,10 +41,9 @@ public class GlobalHolder{
      * @param item
      */
     public void setItem(GameItem item) {
-        if (this.item == null) {
+        if (this.item == null)
             this.item = item;
-        } else {
-            throw new Error("Should be checked by container");
-        }
+        else
+            throw new IllegalStateException("Should be checked by container");
     }
 }
