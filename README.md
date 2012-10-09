@@ -15,20 +15,11 @@ Containers
 Chat Panel
 Lighting
 Planets
-Optimising Rotation (Caching)
+Optimizing Rotation (Caching)
 ======================
 
 ======================
 Alex:
-
-Update Parser -- >
-
-Changes:
-
-Containers:
-	Color
-	
-Deal with New Map for containers
 
 Chat Panel
 =======================

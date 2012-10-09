@@ -1039,7 +1039,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyUp == 16) shift = false; //shift is released
 		if (keyUp == 32) space = false; //space is released
 		if (keyUp == 17) ctrl = false; //ctrl is released
-		if (keyUp == 10) frame.getInputField().requestFocus(); //enter is released
+		if (keyUp == 10) frame.getInputField().requestFocus(); // enter is released
 	}
 	
 	@Override

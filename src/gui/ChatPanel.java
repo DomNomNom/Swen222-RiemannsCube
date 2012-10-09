@@ -4,9 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -35,6 +40,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
 
     private GameFrame frame; // the JFrame containing this panel
     private int width; // the current width of the window
+    private int height; // the current height of the window
     private double panelScale = 0.22; // the scale of the panel to the whole
                                       // level
 
@@ -42,6 +48,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     private JTextField inputField; // Field where the user can enter text
     private Minimap minimapPanel; //the panel where the minimap is displayed
 
+    private BufferedImage background;
     private ChatMessage message;
 
     public ChatMessage getChat() {
@@ -49,7 +56,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     }
 
     public void addMessage(ChatMessage message) {
-        chatArea.append(message.message + "\n");
+        chatArea.append("    " + message.message + "\n");
     }
 
     public static Animator animator; // the animator makes sure the chat is
@@ -68,8 +75,9 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         addGLEventListener(this);
         this.frame = frame;
         width = frame.getSize().width;
+        height = frame.getSize().height;
         setPreferredSize(new java.awt.Dimension((int) (width * panelScale),
-                frame.getSize().height));
+                height));
         setLayout(new BorderLayout());
 
         this.setBackground(Color.gray.darker());
@@ -89,8 +97,18 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
      * field and a label.
      */
     private void createCenterPanel() {
-        JPanel center = new JPanel(new BorderLayout());
-        center.setBackground(Color.GRAY.darker());
+        try{
+            background = ImageIO.read(new File("resources/gfx/chatPanel.png"));
+        }catch(IOException e){
+            throw new Error("Image file was not found.");
+        }
+        
+        JPanel center = new JPanel(new BorderLayout()){
+            public void paintComponent(Graphics g){
+                //TODO Check dimensions are correct
+                g.drawImage(background, 0, 0, (int)(width*panelScale), height - 220, null);
+            }
+        };
 
         // Create and add the label
         JLabel chatLabel = new JLabel("Chat");
@@ -102,7 +120,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
 
         // Create and add the Text area.
         chatArea = new JTextArea();
-        chatArea.setBackground(Color.GRAY.darker());
+        chatArea.setBackground(new Color(0, 0, 0, 0));
         chatArea.setForeground(Color.green.brighter());
         chatArea.setEditable(false);
 
@@ -118,6 +136,8 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
                 frame.getClient().push(message);
 
                 inputField.setText("");
+                
+                frame.getViewPort().requestFocus();
             }
         });
 

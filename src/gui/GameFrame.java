@@ -37,6 +37,10 @@ public class GameFrame extends JFrame {
     public static boolean noFloor = false; //is true to not render floor
     public static boolean showFps = false; //is true to display fps
     
+    public ViewPort getViewPort(){
+        return view;
+    }
+    
     /**Gets the TextField so that the view port can request focus on it.
      * @return
      */

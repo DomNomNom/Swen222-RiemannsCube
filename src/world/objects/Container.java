@@ -10,8 +10,6 @@ import world.objects.items.GameItem;
 /**
  * Containers are linked by colors, ie every blue container has the same item inside.
  * There can only be one item in each set of containers.
- * @author sandilalex, schmiddomi
- *
  */
 public class Container extends GameObject{
 
@@ -53,5 +51,4 @@ public class Container extends GameObject{
     public String getClassName() {
         return "Container";
     }
-    
 }
