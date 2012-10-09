@@ -97,7 +97,7 @@ public class ActionTests {
         assertTrue (world.isValidAction(use   ));
         assertFalse(world.isValidAction(drop  ));
         
-        assertTrue(world.applyAction(use)); // get the key out of the container (picks it up)
+        assertTrue(world.applyAction(use)); // get the key out of the container (does also pick it up)
         
         assertFalse(world.isValidAction(pickup));
         assertTrue (world.isValidAction(use   ));
