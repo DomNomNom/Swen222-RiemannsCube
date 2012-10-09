@@ -13,11 +13,8 @@ import world.objects.Trigger;
  */
 public class LevelDoor extends Door{
 
-    public LevelDoor(Cube cube, Set<Integer> triggerIDs, Map<Integer, Trigger> triggers, Color col) {
-        super(cube, triggerIDs, triggers, col);
+    public LevelDoor(Cube cube, Map<Integer, Trigger> triggers, Color col) {
+        super(cube, triggers, col);
     }
     
-    public LevelDoor(Cube cube, int numLocks, Color color) {
-        super(cube, numLocks, color);
-    }
 }

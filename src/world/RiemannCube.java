@@ -50,8 +50,8 @@ public class RiemannCube {
 
     
     public final Map<Integer, Cube> spawnCubes = new HashMap<Integer, Cube>();
-    public final Map<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
     public final Map<Integer, Player > players  = new HashMap<Integer, Player >();
+    public final Map<Integer, Trigger> triggers = new HashMap<Integer, Trigger>();
     public final Map<Color, GlobalHolder> containers = new HashMap<Color, GlobalHolder>();
     
     public final Int3 size;

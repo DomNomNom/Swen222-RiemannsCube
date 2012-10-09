@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.JColorChooser;
@@ -53,6 +54,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
     boolean isometric = false;
     Door curDoor = null;
     Lock curLock = null;
+    int triggersLeftToPlace;
     int lockID = 0;
     
     private List<Color> containerColors = new ArrayList<Color>();
@@ -63,6 +65,13 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         addMouseListener(this);
     }
 
+    /**
+     * checks that we have placed all current triggers
+     */
+    private boolean allTriggersPlaced() {
+        return triggersLeftToPlace == 0; // FIXME NUM
+    }
+    
     /**
      * Draws canvas according to the current view mode.
      */
@@ -530,7 +539,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
 				containerColors.add(col);
 				level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), col, null));
             } else if (typed == 'd') { //Door
-                if (curDoor == null || curDoor.allTriggersPlaced()) {
+                if (curDoor == null || allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
                                 "You can only add objects to a floor cube.");
@@ -551,9 +560,9 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         }
                     }
 
-                    int num = 0;
+                    triggersLeftToPlace = 0;
                     try {
-                        num = Integer.parseInt(JOptionPane.showInputDialog(
+                        triggersLeftToPlace = Integer.parseInt(JOptionPane.showInputDialog(
                                 null, "How many locks?", "4"));
                     } catch (NumberFormatException numE) {
                         JOptionPane.showMessageDialog(null,
@@ -563,7 +572,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     
                     switch (choice) {
                     case 0:
-                        curDoor = new LevelDoor(currentCube, num, col);
+                        curDoor = new LevelDoor(currentCube, level.triggers, col);
                         break;
                     case 1:
                         JFileChooser fc = new JFileChooser("Levels");
@@ -577,11 +586,11 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         if(f == null)
                             return;
                         
-                        curDoor = new EntranceDoor(currentCube, num, col, f.getName());
+                        curDoor = new EntranceDoor(currentCube, level.triggers, col, f.getName());
                         System.out.println(f.getName());
                         break;
                     case 2: 
-                        curDoor = new ExitDoor(currentCube, num);
+                        curDoor = new ExitDoor(currentCube, level.triggers);
                         break;
                     }
                     level.getCube(x, y, z).addObject(curDoor);
@@ -590,7 +599,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                             .println("Finish placing the locks for the last door!");
                 }
             } else if (typed == 'l') { //Lock
-                if (curDoor != null && !curDoor.allTriggersPlaced()) {
+                if (curDoor != null && !allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
                                 "You can only add objects to a floor cube.");
@@ -605,6 +614,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
 
                     level.getCube(x, y, z).addObject(curLock);
                     curDoor.addTrigger(curLock.getID());
+                    --triggersLeftToPlace;
                 }
             } else if (typed == 'k') { //Key
                 if (curLock != null) {

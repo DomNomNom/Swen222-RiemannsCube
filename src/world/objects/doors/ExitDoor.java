@@ -17,11 +17,8 @@ public class ExitDoor extends Door {
     public final String hubLevel = "";  //TODO Create HubLevel
     // No color for the exit door, maybe a specific texture
     
-    public ExitDoor(Cube cube, Set<Integer> triggerIDs, Map<Integer, Trigger> triggers) {
-        super(cube, triggerIDs, triggers, null);
+    public ExitDoor(Cube cube, Map<Integer, Trigger> triggers) {
+        super(cube, triggers, null);
     }
 
-    public ExitDoor(Cube cube, int numLocks) {
-        super(cube, numLocks, null);
-    }
 }

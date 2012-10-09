@@ -1,6 +1,8 @@
 package world.objects.doors;
 
 import java.awt.Color;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -12,48 +14,31 @@ import world.objects.Trigger;
 /**
  * A Door conditionally impedes movement to a tile
  * The colour on this is just decorative.
+ * It uses poll rather than push architecture.  (push would be more efficient)
  *
  * @author schmiddomi
  */
 public abstract class Door extends GameObject {
 
-    private Set<Integer> triggerIDs;
-    private Map<Integer, Trigger> triggersMap;
+    private final Set<Integer> triggerIDs = new HashSet<Integer>();
+    private final Map<Integer, Trigger> triggersMap;
 
-    private int index = 0, numLocks;
     private Color color;
 
-    // TODO: push, rather than poll architecture
     
-    public Door(Cube cube, Set<Integer> triggerIDs, Map<Integer, Trigger> triggers, Color col) {
+    public Door(Cube cube, Map<Integer, Trigger> triggers, Color col) {
         super(cube);
-        this.triggerIDs = triggerIDs;
         this.triggersMap = triggers;
         this.color = col;
     }
 
-    public Door(Cube cube, int numLocks, Color color) {
-        super(cube);
-        triggerIDs = new HashSet<Integer>(numLocks);
-        this.numLocks = numLocks;
-        this.color = color;
-    }
-
     public void addTrigger(int id) {
-        if (allTriggersPlaced())
-            System.out.println("All triggers placed!");
-        else {
-            triggerIDs.add(id);
-            index++;
-        }
+        triggerIDs.add(id);
     }
 
-    public Set<Integer> triggers() {
-        return triggerIDs;
-    }
-
-    public boolean allTriggersPlaced() {
-        return numLocks == triggerIDs.size();
+    /** returns a view of the trigger IDs */
+    public Set<Integer> triggersIDs() {
+        return Collections.unmodifiableSet(triggerIDs);
     }
 
     public Color color() {
@@ -65,7 +50,4 @@ public abstract class Door extends GameObject {
         return "Door";
     }
 
-    public int id() {
-        return 0; // FIXME
-    }
 }

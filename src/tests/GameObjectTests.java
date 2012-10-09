@@ -3,15 +3,23 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.util.HashSet;
 
 import org.junit.Test;
 
 import world.RiemannCube;
 import world.cubes.Cube;
 import world.objects.Container;
+import world.objects.doors.Door;
+import world.objects.doors.LevelDoor;
 import world.objects.items.GameItem;
 import world.objects.items.Key;
 
+/**
+ * Tests that test one game object at a time
+ *
+ * @author schmiddomi
+ */
 public class GameObjectTests {
 
     @Test
@@ -59,4 +67,12 @@ public class GameObjectTests {
         assertTrue(c.canUse(newItem2));
     }
 
+    
+    @Test
+    public void testDoors() {
+        RiemannCube world = WorldTests.generateWorld();
+        Cube cube = world.getCube(0, 0, 1);
+        Door door = new LevelDoor(cube, world.triggers, Color.RED);
+        
+    }
 }

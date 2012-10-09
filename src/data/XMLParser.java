@@ -217,25 +217,20 @@ public class XMLParser {
                 newCol = Color.decode(col);
             }
 
-            // Get the set of IDs for the triggers of this door
-            String ids = e.getAttribute("triggerIDs");
-            Scanner scan = new Scanner(ids);
-
-            Set<Integer> triggerIDs = new HashSet<Integer>();
-
-            // Adding the trigger IDs from the attribute of the door
-            while (scan.hasNext())
-                triggerIDs.add(Integer.parseInt(scan.next()));
-
             if(type.equals("level")){
-                ret = new LevelDoor(cube, triggerIDs, riemannCube.triggers, newCol);
+                ret = new LevelDoor(cube, riemannCube.triggers, newCol);
             } else if(type.equals("entrance")){
                 String levelName = e.getAttribute("levelname");
-                ret = new EntranceDoor(cube, triggerIDs, riemannCube.triggers, newCol, levelName);
+                ret = new EntranceDoor(cube, riemannCube.triggers, newCol, levelName);
                 
             } else if(type.equals("exit")){
-                ret = new ExitDoor(cube, triggerIDs, riemannCube.triggers);
+                ret = new ExitDoor(cube, riemannCube.triggers);
             }
+            // Get the set of IDs for the triggers of this door
+            Scanner idScan = new Scanner(e.getAttribute("triggerIDs"));
+            // Adding the trigger IDs from the attribute of the door
+            while (idScan.hasNext())
+                ((Door)ret).addTrigger(Integer.parseInt(idScan.next()));
 
         } else if (n.getNodeName().equals("token")) {
             ret = new Token(cube);

@@ -25,7 +25,6 @@ import data.XMLParser;
 	WorldTests.class, 
 	XMLParsingTests.class, 
 	ActionTests.class, 
-	CubeTests.class,
 	NetworkingTests.class,
 	EventTests.class,
 	GameObjectTests.class,

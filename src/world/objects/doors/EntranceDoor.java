@@ -17,14 +17,9 @@ public class EntranceDoor extends Door {
     private final String levelName;
     public String levelName(){ return levelName;}
     
-    public EntranceDoor(Cube cube, Set<Integer> triggerIDs, Map<Integer, Trigger> triggers, Color col, String levelName) {
-        super(cube, triggerIDs, triggers, col);
+    public EntranceDoor(Cube cube, Map<Integer, Trigger> triggers, Color col, String levelName) {
+        super(cube, triggers, col);
         this.levelName = levelName;
     }
 
-    public EntranceDoor(Cube cube, int numLocks, Color color, String levelName) {
-        super(cube, numLocks, color);
-        this.levelName = levelName;
-    }
-    
 }

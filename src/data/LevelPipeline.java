@@ -229,7 +229,7 @@ public class LevelPipeline {
             }
             
             String triggerIDs = "";
-            for (Integer i : door.triggers())
+            for (Integer i : door.triggersIDs())
                 triggerIDs += i.toString() + " ";
             element.setAttribute("triggerIDs", triggerIDs);
 
