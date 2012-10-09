@@ -28,7 +28,9 @@ import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Wall;
 import world.events.PlayerMove;
+import world.objects.GameObject;
 import world.objects.Player;
+import world.objects.items.Key;
 
 import com.jogamp.opengl.util.Animator;
 
@@ -71,6 +73,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean shift = false; //is true if shift is pressed
     private boolean space = false; //is true if space is pressed
     private boolean ctrl = false; //is true if crtl is pressed
+    private boolean eDown = false; //if the key is pressed
+    private boolean fDown = false; //if the f key is pressed
     private boolean leftMouse = false; //is true if the left mouse has been released
     private boolean rightMouse = false; //is true if right mouse has been released
     private boolean exit = false; //is true when to exit
@@ -89,12 +93,18 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private float turnSpeed = 10.0f; //the turn speed of the camera
     private int rotationSpeed = 2; //the speed that the rotation animation happens
     
+    private boolean check = true; //is true when to check valid events
+    
     //For stepping movement
     private float stepCycle = 0.0f; //where the camera is in the step
     private float stepHeight = 0.003f;
     
     //animation flags;
     private boolean rotationAni = false; //is true when the game is rotating
+    
+    
+    //TODO: REMOVE THIS! Just FOR TESTING
+    private float keyRot = 0.0f;
 
     static GLU glu = new GLU(); //for GLU methods
     private Robot robot; //a robot that insures the mouse is always in the centre of the screen
@@ -203,10 +213,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 			    if (!rotationAni) processMovement();//if rotating you can't move
 			    updateCamera(); //update the camera position
 			    processTurning();
-			    
+
 			    robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
         	}
-		    
+
 		    accumTime -= frameLength;
         }
         if (pause) { //clear mouse presses when paused
@@ -265,6 +275,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         					playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
         			}
         			
+        			GameObject obj = c.object(); //gets the object that the cube contains
+        			
+        			if (obj instanceof Key) drawKey(gl, v);
+        			
+        			
         			if (c instanceof Glass) glassRender.add(v);
         		}
         	}
@@ -300,9 +315,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		boolean move = false; //is true when the player is moving
 		Float3 newPos = new Float3(); //the new position to move to
 		float straff = 1.0f; //straffing multiple
-		
+
 		if (forBack != 0 && leftRight != 0) straff = 0.5f;
-		
+
 		if (forBack == 1) { //move forward
 			if (!free) {
 		       	newPos.x += moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
@@ -327,7 +342,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 			}
 			move = true;
 		}
-		
+
 		if (leftRight == 1) { //move left
 			newPos.x -= moveSpeed*Math.cos(rotation.y*(Math.PI/180.0))*straff;
 			newPos.z -= moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
@@ -338,16 +353,16 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 			newPos.z += moveSpeed*Math.sin(rotation.y*(Math.PI/180.0))*straff;
 		   	move = true;
 		}
-		
+
         //Create the stepping motion
         if (!free) {
 	        if (move) {
 		        if (stepCycle < Math.PI) stepCycle += 0.08f;
 		        else stepCycle = 0.0f;
-		        
+
 		        newPos.y -= (float) (stepHeight*Math.cos(stepCycle));
 	        }
-	        
+
 	        //if the player is rotated shift their direction based on rotation
 	        if (player.orientation() == 1) {
 	        	newPos.x = -newPos.x;
@@ -372,9 +387,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	        	newPos.y = -newPos.z;
 	        	newPos.z = temp;
 	        }
-	        
+
 	        //find whether the player is being blocked or not, if not send to server
 	        boolean canMove = true; //is true if the player can move
+
         	Int3 cubeMove = new Int3();
         	
         	if (player.relPos.x+newPos.x >= 1.0f) cubeMove = new Int3(1, 0, 0);
@@ -385,14 +401,24 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	else if (player.relPos.z+newPos.z <= -1.0f) cubeMove = new Int3(0, 0, -1);
         	
         	Int3 zeroInt = new Int3(0, 0, 0);
-        	
-        	if (!cubeMove.equals(zeroInt)) {
-        		Int3 newCube = player.pos().add(cubeMove);
-	        	if (level.isValidAction(new PlayerMove(player.id, newCube))) {
-	        		frame.getClient().push(new PlayerMove(player.id, newCube));
+	        	
+	        if (check) {
+	        	if (!cubeMove.equals(zeroInt)) {
+	        		Int3 newCube = player.pos().add(cubeMove);
+		        	if (level.isValidAction(new PlayerMove(player.id, newCube))) {
+		        		check = false;
+		        		frame.getClient().push(new PlayerMove(player.id, newCube));
+		        		
+		        	}
+		        	else canMove = false;
 	        	}
-	        	else canMove = false;
-        	}
+	        }
+	        else {
+	        	if (cubeMove.equals(zeroInt)) {
+	        		check = true;
+	        	}
+	        }
+        	
     		
         	if (canMove) {
         		player.relPos.x += newPos.x;
@@ -481,7 +507,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 						else {rotateTo.y += 90; rotateView.y -= 90; player.orientation(5);}
 	    			}
 	    			else if (rot.y > 225 && rot.y <= 315) {
-	    				if (leftMouse) {rotateTo.y += 90; rotateView.y -= 90; player.orientation(5);}
+	    				if (leftMouse) {rotateTo.y += 90; rotateView.y -= 90; player.orientation(5); }
 	    				else {rotateTo.y -= 90; rotateView.y += 90; player.orientation(4);}
 	    			}
 	    			else if(rot.y > 135 && rot.y <= 225) {
@@ -525,8 +551,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	    				else {rotateTo.y += 90; rotateView.y -= 90; player.orientation(2);}
 	    			}
 	    			else {
-	    				if (leftMouse) {rotateTo.z += 90; rotateView.y += 90; player.orientation(2);}
-	    				else {rotateTo.z -= 90; rotateView.y -= 90; player.orientation(3);}
+	    				if (leftMouse) {rotateTo.z += 90; rotateView.y -= 90; player.orientation(2); System.out.println("here");}
+	    				else {rotateTo.z -= 90; rotateView.y += 90; player.orientation(3);}
 	    			}
     			}
     			else if (player.orientation() == 5) { //player is on the back wall
@@ -551,7 +577,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     			
 	    		//reset the relative position
 	    		player.relPos.x = player.relPos.y = player.relPos.z = 0;
-	    		
+
 	    		//start the rotation animation
 	    		rotationAni = true;
     		}
@@ -672,6 +698,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	
     	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
     	
+    	//TODO: rotate player here
+    	
     	//draw the player onto a quad
     	gl.glBegin(GL2.GL_QUADS);
     	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.5f,  0.5f, 0);
@@ -703,9 +731,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	//apply the world orientation rotation
     	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
-    	
-    	
-    	
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
     	//apply the rotations
@@ -750,8 +775,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
     	
     	//apply the world orientation rotation
-    	gl.glRotatef(-player.rotation.x, 1.0f, 0.0f, 0.0f);
-    	gl.glRotatef(-player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
     	//apply the rotations
     	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
@@ -775,6 +801,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         gl.glEnd();
         
         gl.glPopMatrix(); //pop the matrix
+        
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     
     /**Draw a floor cube in high graphics
@@ -876,6 +904,81 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		drawQuadCol(gl, v, new Float3(v.x+1, v.y, v.z), false, colour, 0.4f);
 		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z+1), false, colour, 0.4f);
 		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z-1), false, colour, 0.4f);
+    }
+    
+    
+    /**TODO: FIX THIS*/
+    private void drawKey(GL2 gl, Float3 v) {
+    	
+    	gl.glPushMatrix(); //push new matrix
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	keyRot += 0.3f;
+    	gl.glRotatef(keyRot, 0.0f, 1.0f, 1.0f);
+    	
+    	gl.glTranslatef(0.0f, -0.5f, 0.0f);
+    	
+    	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f(-0.1f,  0.1f,  0.1f);
+    	gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glEnd();
+    	
+    	gl.glColor4f(1.0f, 0.3f, 0.0f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f(0.1f,  0.1f, -0.1f);
+    	gl.glVertex3f(0.1f,  0.1f,  0.1f);
+    	gl.glVertex3f(0.1f, -0.1f,  0.1f);
+    	gl.glVertex3f(0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	
+    	gl.glColor4f(1.0f, 0.0f, 0.3f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f( 0.1f, 0.1f,  0.1f);
+    	gl.glVertex3f( 0.1f, 0.1f, -0.1f);
+    	gl.glVertex3f(-0.1f, 0.1f, -0.1f);
+    	gl.glVertex3f(-0.1f, 0.1f,  0.1f);
+    	gl.glEnd();
+    	
+    	gl.glColor4f(0.75f, 0.0f, 0.0f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	
+    	gl.glColor4f(1.0f, 0.3f, 0.2f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f( 0.1f, -0.1f, 0.1f);
+    	gl.glVertex3f( 0.1f,  0.1f, 0.1f);
+    	gl.glVertex3f(-0.1f,  0.1f, 0.1f);
+    	gl.glVertex3f(-0.1f, -0.1f, 0.1f);
+    	gl.glEnd();
+    	
+    	gl.glColor4f(0.8f, 0.2f, 0.0f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	
+    	gl.glPopMatrix();
+    	
     }
     
     /**Draws an outer box of glass around the level in high graphics
@@ -1022,6 +1125,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyDown == 16) shift = true; //shift is down
 		if (keyDown == 32) space = true; //space is down
 		if (keyDown == 17) ctrl = true; //ctrl is down
+		if (keyDown == 69) eDown = true; //the e key is down
+		if (keyDown == 70) fDown = true; //the f key is down
 		if (keyDown == 27) {
 			pause = !pause; //pause or unpause the game
 			frame.showMouse(pause);
@@ -1041,7 +1146,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyUp == 17) ctrl = false; //ctrl is released
 		if (keyUp == 10) frame.getInputField().requestFocus(); // enter is released
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int button = e.getButton();
