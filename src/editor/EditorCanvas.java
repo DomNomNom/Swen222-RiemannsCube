@@ -348,6 +348,8 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
      */
     public void changeIsometric() {
         this.isometric = !isometric;
+        this.top = 350;
+        this.left = 350;
         repaint();
     }
 
@@ -454,8 +456,9 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                 y = j / squareLength;
             }
         } else {
+            return;
             // linear transform from isometric to grid-based.
-            i = (int) (i - 3 * squareLength / (2 * Math.sqrt(2)));
+            /*i = (int) (i - 3 * squareLength / (2 * Math.sqrt(2)));
             x = (int) ((i) * Math.sqrt(2) / 3 + j) / squareLength;
             z = (int) ((-i * Math.sqrt(2) / 3 + j) / squareLength);
             int floorHeight = (level.size.y + level.size.x + 1) * squareLength / 2;
@@ -465,7 +468,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             y = level.size.y - y - 3;
             this.i = x;
             this.j = z;
-            System.out.println(x + " " + y + " " + z + " floorheight: "+ floorHeight);
+            System.out.println(x + " " + y + " " + z + " floorheight: "+ floorHeight);*/
         }
         repaint();
     }
