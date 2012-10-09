@@ -50,12 +50,12 @@ public abstract class Cube {
      * @return Whether a Object can be added to this cube
      */
     public boolean canAddObject(GameObject o) {
-        return true;
+        return o != null;
     }
     
     /**
      * Adds a GameObject to this cube or returns false. assumes canAddObject()
-     * @param o The object to add
+     * @param o The object to add. May not be null
      * @return Whether it was possible to add this object
      */
     public boolean addObject(GameObject o) {
