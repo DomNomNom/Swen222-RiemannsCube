@@ -6,15 +6,7 @@ import java.net.Socket;
 import utils.Configurations;
 import utils.Int3;
 import world.RiemannCube;
-import world.events.Action;
-import world.events.ChatEvent;
-import world.events.ChatMessage;
-import world.events.Event;
-import world.events.FullStateUpdate;
-import world.events.PlayerAssign;
-import world.events.PlayerMove;
-import world.events.PlayerSpawning;
-import world.events.RequestPlayer;
+import world.events.*;
 
 /**
  * A thread that is responsible of handling the changes made to the 
@@ -71,6 +63,9 @@ public class ChangeThread extends Thread {
             }
             else if(e instanceof FullStateUpdate){
             	sendToEveryone(e); // FIXME! do this properly
+            }
+            else if(e instanceof ActivateTrap){
+                sendToEveryone(new ChatMessage("Activated a Trap!", ((ActivateTrap)e).playerID));
             }
             else {
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);

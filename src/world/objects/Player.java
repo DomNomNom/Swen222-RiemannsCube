@@ -11,6 +11,7 @@ public class Player extends GameObject {
     public Float3 rotation = new Float3(0, 0, 0); //the rotation of the player in degrees
     private int orientation = 0; //the orientation of the player 0: ground, 1: roof, 2: left wall 3: right wall
     //4: front wall, 5: back wall. I'm not using an enum because java enums are stupid :S
+    //They are stupid, aren't they! Thank you.
     public int orientation() {return orientation;}
     public void orientation(int o) {orientation = o;}
     
