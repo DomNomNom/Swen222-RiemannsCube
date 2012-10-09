@@ -139,7 +139,6 @@ public class XMLParser {
 
                     NodeList obs = c.getChildNodes();
                     for (int o = 1; o < obs.getLength(); o += 2) {
-//                        System.out.println("OBJECT: ---------> " + obs.item(o).getNodeName());
                         cube.addObject(createInternalObject(obs.item(o),
                                 riemannCube, cube));
                     }
