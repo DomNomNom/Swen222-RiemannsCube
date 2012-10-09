@@ -32,6 +32,7 @@ import world.cubes.Wall;
 import world.objects.items.Key;
 import world.objects.items.LightSource;
 import world.objects.items.Token;
+import world.objects.Container;
 import world.objects.GameObject;
 import world.objects.Lock;
 import world.objects.Player;
@@ -179,10 +180,10 @@ public class XMLParser {
             String col = e.getAttribute("color");
 
             Color newCol = null;
-            boolean exit = true;
+            boolean exit = true;    // Defines whether or not this key opens an exit door
             if(col.length() != 0){
                 newCol = Color.decode(col);
-                exit = false;
+                exit = false;   // If the key has a color then it isn't an exit key
             }
             
             ret = new Key(cube, newCol);
@@ -194,10 +195,10 @@ public class XMLParser {
             String col = e.getAttribute("color");
             
             Color newCol = null;
-            boolean exit = true;
+            boolean exit = true;    // Defines whether or not this lock opens an exit door
             if(col.length() != 0){
                 newCol = Color.decode(col);
-                exit = false;
+                exit = false;   // If the lock has a color then it isn't an exit lock
             }
 
             // Get the ID for the Lock
@@ -236,6 +237,13 @@ public class XMLParser {
             ret = new Token(cube);
         } else if (n.getNodeName().equals("lightsource")) {
             ret = new LightSource(cube);
+        } else if(n.getNodeName().equals("container")){
+            Element e = (Element) n;
+            String col = e.getAttribute("color");
+            
+            Color newCol = Color.decode(col);
+            
+            ret = new Container(cube, newCol, riemannCube.containers);
         }
 
         return ret;

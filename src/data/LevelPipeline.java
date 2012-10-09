@@ -19,6 +19,7 @@ import org.xml.sax.InputSource;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
+import world.objects.Container;
 import world.objects.Player;
 import world.objects.Trigger;
 import world.RiemannCube;
@@ -239,9 +240,12 @@ public class LevelPipeline {
             element.setAttribute("color", hexCode(((Trigger) obj).color()));
         } else if (obj instanceof Key) {
             element = doc.createElement(obj.getClassName().toLowerCase());
-            element.setAttribute("color", hexCode(((Key) obj).colour()));
+            element.setAttribute("color", hexCode(((Key) obj).color()));
         } else if (obj instanceof Token) {
             element = doc.createElement(obj.getClassName().toLowerCase());
+        } else if(obj instanceof Container){
+            element = doc.createElement(obj.getClassName().toLowerCase());
+            element.setAttribute("color", hexCode(((Container) obj).color()));
         } else {
             element = doc.createElement(obj.getClassName());
         }

@@ -12,8 +12,8 @@ import world.cubes.Cube;
 public class Key extends GameItem {
 
     // The colour identifies what locks it belongs to
-    Color colour;
-    public Color colour() {return colour;  }
+    Color color;
+    public Color color() {return color;  }
     
     // Tells whether this key opens an exit door
     // Necessary as exit doors don't have colors.
@@ -21,9 +21,9 @@ public class Key extends GameItem {
     public boolean isExit(){ return isExit;}
     public void setExit(boolean b){ isExit = b;}
     
-    public Key(Cube pos, Color colour){
+    public Key(Cube pos, Color color){
         super(pos);
-        this.colour = colour;
+        this.color = color;
     }
     
 

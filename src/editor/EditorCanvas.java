@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
@@ -56,8 +57,11 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
     Lock curLock = null;
     int triggersLeftToPlace;
     int lockID = 0;
+    private Set<Color> usedColors = new HashSet<Color>();
     
-    private List<Color> containerColors = new ArrayList<Color>();
+    private int numContainersPlaced;
+    private Color curContainerColor;
+    
     
     public EditorCanvas() {
         super();
@@ -198,7 +202,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             } else {
                 g.setColor(Color.YELLOW);
                 g.fillOval(x, y, squareLength, squareLength);
-                g.setColor(((Key) obj).colour());
+                g.setColor(((Key) obj).color());
                 g.fillOval(x + squareLength / 4, y + squareLength / 4,
                         squareLength / 2, squareLength / 2);
                 g.setColor(Color.BLACK);
@@ -501,7 +505,14 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
     public void keyTyped(KeyEvent e) {
         char typed = e.getKeyChar();
         Int3 currentPos = new Int3(x, y, z);
-        Cube currentCube = level.getCube(currentPos);
+        
+        Cube currentCube = null;
+        try{
+            currentCube = level.getCube(currentPos);
+        } catch(ArrayIndexOutOfBoundsException exc){
+            JOptionPane.showMessageDialog(null, "You can only place things on the cube.");
+            return;
+        }
         
         if (typed == 'f') { //Floor
             level.setCube(x, y, z, new Floor(currentPos));
@@ -526,18 +537,41 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             if (typed == 't'){ //Token
                 level.getCube(x,y,z).addObject((new Token(level.getCube(x, y, z))));
 			} else if (typed == 'c') { // Container
-				Color col = JColorChooser.showDialog(null, "Chooser a color", Color.WHITE);
+			    if(numContainersPlaced > 0){
+			        level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), curContainerColor, null));
+			        numContainersPlaced--;
+			        return;
+			    }
+			        
+			    
+			    numContainersPlaced = 0;
+                try {
+                    numContainersPlaced = Integer.parseInt(JOptionPane.showInputDialog(
+                            null, "How many containers?", "2"));
+                } catch (NumberFormatException numE) {
+                    JOptionPane.showMessageDialog(null,
+                            "Make sure you enter a number.");
+                    return;
+                }
+			    
+				curContainerColor = JColorChooser.showDialog(null, "Chooser a color", Color.WHITE);
 				
-				if(!containerColors.contains(col) && col != null){
-					containerColors.add(col);
-				}
-				
-				if (col == null) {
+				if (curContainerColor == null) {
+				    numContainersPlaced = 0;
 					return;
 				}
 				
-				containerColors.add(col);
-				level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), col, null));
+				if(usedColors.contains(curContainerColor)){
+				    JOptionPane.showMessageDialog(null,
+                            "That Color has already been used.");
+				    numContainersPlaced = 0;
+                    return;
+				}
+				
+				Color temp = curContainerColor;
+				usedColors.add(temp);
+				level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), curContainerColor, null));
+				numContainersPlaced--;
             } else if (typed == 'd') { //Door
                 if (curDoor == null || allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
@@ -558,6 +592,13 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         if (col == null) {
                             return;
                         }
+                        if(usedColors.contains(col)){
+                            JOptionPane.showMessageDialog(null,
+                                    "That Color has already been used.");
+                            return;
+                        }
+                            
+                        usedColors.add(col);
                     }
 
                     triggersLeftToPlace = 0;
@@ -587,7 +628,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                             return;
                         
                         curDoor = new EntranceDoor(currentCube, level.triggers, col, f.getName());
-                        System.out.println(f.getName());
                         break;
                     case 2: 
                         curDoor = new ExitDoor(currentCube, level.triggers);

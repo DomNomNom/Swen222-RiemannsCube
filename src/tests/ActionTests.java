@@ -55,7 +55,7 @@ public class ActionTests {
         RiemannCube world  = WorldTests.generateWorld();
         Cube pos = world.getCube(0,0,0);
         
-        GameObject containter = new Container(pos, Color.GREEN, world);
+        GameObject containter = new Container(pos, Color.GREEN, world.containers);
         GameItem key  = new Key(pos, Color.BLUE);
         GameItem key2 = new Key(pos, Color.RED);
         assertTrue(pos.addObject(key       ));
