@@ -10,7 +10,13 @@ import org.junit.Test;
 import utils.Int3;
 import world.RiemannCube;
 import world.cubes.Cube;
+import world.events.Action;
+import world.events.ItemPickup;
+import world.events.ItemUse;
+import world.events.PlayerMove;
 import world.objects.Container;
+import world.objects.Lock;
+import world.objects.Trigger;
 import world.objects.doors.Door;
 import world.objects.doors.LevelDoor;
 import world.objects.GlobalHolder;
@@ -129,9 +135,32 @@ public class GameObjectTests {
     
     @Test
     public void testDoors() {
-        RiemannCube world = WorldTests.generateWorld();
-        Cube cube = world.getCube(0, 0, 1);
-        Door door = new LevelDoor(cube, world.triggers, Color.RED);
+        RiemannCube world = WorldTests.generateWorld(); // player is at (0,0,0)
+        Cube spwnCube = world.getCube(0, 0, 0);
+        Cube doorCube = world.getCube(0, 0, 1);
+        Cube lockCube = world.getCube(0, 1, 0);
+        
+        int lockID = 1;
+        Trigger lock = new Lock(lockCube, lockID, Color.RED);
+        world.triggers.put(1, lock);
+        lockCube.addObject(lock);
+        
+        Door door = new LevelDoor(doorCube, world.triggers, Color.RED);
+        doorCube.addObject(door);
+        door.addTrigger(lock.getID());
+        
+        Key key = new Key(spwnCube, Color.RED);
+        spwnCube.addObject(key);
+        
+        Action moveToDoorCube = new PlayerMove(0, doorCube.pos());
+
+        assertFalse(world.isValidAction(moveToDoorCube)); // we shouldn't be able into the cube with a locked door
+
+        assertTrue(world.applyAction(new ItemPickup(0                )));
+        assertTrue(world.applyAction(new PlayerMove(0, lockCube.pos())));
+        assertTrue(world.applyAction(new ItemUse   (0                ))); // put the key in the lock (should unlock door)
+        assertTrue(world.applyAction(new PlayerMove(0, spwnCube.pos()))); // move back
+        assertTrue(world.applyAction(new PlayerMove(0, doorCube.pos()))); // and now we're in the door cube :D
         
     }
 }

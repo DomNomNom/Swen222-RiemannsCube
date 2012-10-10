@@ -9,6 +9,7 @@ import java.util.Set;
 
 import world.cubes.Cube;
 import world.objects.GameObject;
+import world.objects.Player;
 import world.objects.Trigger;
 
 /**
@@ -50,4 +51,14 @@ public abstract class Door extends GameObject {
         return "Door";
     }
 
+    
+    @Override
+    /** will block the player (return true) iff any of our triggers are off  */
+    public boolean blocks(Player p) {
+        for (Integer i : triggerIDs) {
+            if (!triggersMap.containsKey(i)) throw new Error("Someone didn't add a trigger to the triggerMap!");
+            if (!triggersMap.get(i).state()) return true;
+        }
+        return false;
+    }
 }
