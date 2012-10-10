@@ -10,7 +10,11 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-
+/**
+ * 
+ * @author mudgejayd
+ *
+ */
 public class Music {
 
     private final int BUFFER_SIZE = 128000;
@@ -18,6 +22,9 @@ public class Music {
     private AudioInputStream audioStream;
     private AudioFormat audioFormat;
     private  SourceDataLine sourceLine;
+
+	long skip30s = 0;
+	public boolean stop = false;
 
     /**
      * Plays a given sound file. Accepts .wav format.
@@ -36,6 +43,15 @@ public class Music {
             e.printStackTrace();
             System.exit(1);
         }
+        
+        while(true){
+        	if(!play()){
+        		if(stop)	break;//loop until no longer playing.
+        	}
+        }
+    }
+    
+    private boolean play(){
 
         try {
             audioStream = AudioSystem.getAudioInputStream(soundFile);
@@ -46,22 +62,30 @@ public class Music {
 
         audioFormat = audioStream.getFormat();
 
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-        try {
-            sourceLine = (SourceDataLine) AudioSystem.getLine(info);
-            sourceLine.open(audioFormat);
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-            System.exit(1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        sourceLine.start();
+	    DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+	    
+	    try {
+	        sourceLine = (SourceDataLine) AudioSystem.getLine(info);
+	        sourceLine.open(audioFormat);
+	    } catch (LineUnavailableException e) {
+	        e.printStackTrace();
+	        System.exit(1);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.exit(1);
+	    }
+	    
+		sourceLine.start();
+		
+		try {
+			audioStream.skip(skip30s);
+		} catch (IOException e1) {e1.printStackTrace();}
 
         int nBytesRead = 0;
         byte[] abData = new byte[BUFFER_SIZE];
+        long skip = 0;
+        
+        long startTime = System.currentTimeMillis();
         while (nBytesRead != -1) {
             try {
                 nBytesRead = audioStream.read(abData, 0, abData.length);
@@ -72,9 +96,14 @@ public class Music {
                 @SuppressWarnings("unused")
                 int nBytesWritten = sourceLine.write(abData, 0, nBytesRead);
             }
+            skip+=nBytesRead;
+            if(System.currentTimeMillis() > startTime + 30000 && skip30s==0)
+            	skip30s = skip;
         }
 
         sourceLine.drain();
         sourceLine.close();
+        
+        return false;
     }
 }
