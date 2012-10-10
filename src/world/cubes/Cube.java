@@ -87,7 +87,7 @@ public abstract class Cube {
         GameItem i = null;
         for (GameObject o : objects)
             if (o instanceof GameItem)
-                return i = (GameItem) o;
+                i = (GameItem) o;
         objects.remove(i);
         return i; 
     }

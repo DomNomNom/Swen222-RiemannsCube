@@ -27,6 +27,8 @@ import world.cubes.Cube;
 import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Wall;
+import world.events.ItemDrop;
+import world.events.ItemPickup;
 import world.events.PlayerMove;
 import world.objects.GameObject;
 import world.objects.Player;
@@ -209,6 +211,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	
         	if (!pause) {
 				//Process movement and rotation
+        		processAction();
         		processRotation();
 			    if (!rotationAni) processMovement();//if rotating you can't move
 			    updateCamera(); //update the camera position
@@ -232,13 +235,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glRotatef(rotation.x, 1.0f, 0.0f, 0.0f); //apply the x rotation
     	gl.glRotatef(rotation.y, 0.0f, 1.0f, 0.0f); //apply the y rotation
     	
-    	
-    	
     	gl.glRotatef(-viewRot.x, 1.0f, 0.0f, 0.0f); //apply the world x rotation
     	gl.glRotatef(-viewRot.z, 0.0f, 0.0f, 1.0f); //apply the world z rotation
     	gl.glRotatef(-viewRot.y, 0.0f, 1.0f, 0.0f); //apply the world y rotation
-    	
-    	
     	
         gl.glTranslatef(-camPos.x, -camPos.y, -camPos.z); //apply the translations
         
@@ -308,6 +307,25 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	camPos.x = (player.pos().x*2)+player.relPos.x;
     	camPos.y = (player.pos().y*2)+player.relPos.y;
     	camPos.z = (player.pos().z*2)+player.relPos.z;
+    }
+    
+    /**processes the player's actions like picking up and dropping items*/
+    private void processAction() {
+    	if (eDown) {
+    		GameObject obj = level.getCube(player.pos()).object(); //get the object in the square
+    		if (obj instanceof Key) { //if the cube contains a key pick it up
+	        	if (level.isValidAction(new ItemPickup(player.id))) {
+	        		frame.getClient().push(new ItemPickup(player.id));
+	        	}
+    		}
+    	}
+    	if (fDown) { //drop an object into a square
+    		if (level.isValidAction(new ItemDrop(player.id))) { //check if drop is valid
+    			frame.getClient().push(new ItemDrop(player.id));
+    		}
+    	}
+    	eDown = false;
+    	fDown = false;
     }
     
     /**Process the movement*/
@@ -402,7 +420,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	
         	Int3 zeroInt = new Int3(0, 0, 0);
 	        	
-	        if (check) {
+	        //if (check) {
 	        	if (!cubeMove.equals(zeroInt)) {
 	        		Int3 newCube = player.pos().add(cubeMove);
 		        	if (level.isValidAction(new PlayerMove(player.id, newCube))) {
@@ -412,12 +430,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		        	}
 		        	else canMove = false;
 	        	}
-	        }
-	        else {
+	        //}
+	        //else {
 	        	if (cubeMove.equals(zeroInt)) {
 	        		check = true;
 	        	}
-	        }
+	        //}
         	
     		
         	if (canMove) {
@@ -916,14 +934,13 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
     	
-    	
     	//apply the world orientation rotation
     	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
     	keyRot += 0.3f;
-    	gl.glRotatef(keyRot, 0.0f, 1.0f, 1.0f);
+    	gl.glRotatef(keyRot, 0.0f, 1.0f, 0.0f);
     	
     	gl.glTranslatef(0.0f, -0.5f, 0.0f);
     	
