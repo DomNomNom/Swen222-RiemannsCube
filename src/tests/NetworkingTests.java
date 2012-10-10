@@ -15,6 +15,8 @@ import utils.Configurations;
 import utils.Int3;
 import world.RiemannCube;
 import world.events.ChatMessage;
+import world.events.Event;
+import world.events.FullStateUpdate;
 import client.Client;
 import client.ClientNetworking;
 
@@ -33,7 +35,9 @@ public class NetworkingTests {
         ChatMessage message = new ChatMessage(content, speaker);
         client.push(message);
         
-        ChatMessage response = (ChatMessage) client.nextEvent();
+        Event response = client.nextEvent();
+        assertTrue(response instanceof FullStateUpdate); // since this is always the first thing that gets sent
+        response = client.nextEvent();
         assertTrue(message.equals(response));
         
     }
