@@ -273,6 +273,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         			Player p = c.player(); //get the player in the cube
         			
         			if (p != null) {
+        				if (p.item() instanceof Key) drawPlayerKey(gl, v); //draw the key the player is holding
         				if (p.id != player.id) //only render the other players
         					playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
         			}
@@ -932,7 +933,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z-1), false, colour, 0.4f);
     }
     
-    
     /**TODO: FIX THIS*/
     private void drawKey(GL2 gl, Float3 v) {
     	
@@ -1003,7 +1003,25 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	
     	gl.glPopMatrix();
+    }
+    
+    private void drawPlayerKey(GL2 gl, Float3 v) {
+    	gl.glPushMatrix(); //push new matrix
     	
+       	gl.glLoadIdentity(); //load the identity matrix
+       	
+    	//draw the paused background
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f(-0.08f, -0.04f, -0.5f);
+    	gl.glVertex3f(-0.08f, -0.2f, -0.5f);
+    	gl.glVertex3f( 0.08f, -0.2f, -0.5f);
+    	gl.glVertex3f( 0.08f, -0.04f, -0.5f);
+        gl.glEnd();
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	
+    	gl.glPopMatrix();
     }
     
     /**Draws an outer box of glass around the level in high graphics
