@@ -646,7 +646,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         return;
                     }
 
-                    curLock = new Lock(currentCube, lockID++, curDoor.color());
+                    curLock = new Lock(currentCube, lockID++, level.triggers, curDoor.color());
 
                     if(curDoor instanceof ExitDoor){
                         curLock.setExit(true);

@@ -42,7 +42,7 @@ public class XMLParsingTests {
         Color col = Color.PINK;
         Door door = new LevelDoor(riemann.getCube(0,1,2), riemann.triggers, col);
         
-        Trigger trig = new Lock(riemann.getCube(0,1,1), 1, col);
+        Trigger trig = new Lock(riemann.getCube(0,1,1), 1, riemann.triggers, col);
         door.addTrigger(1);
         Key key = new Key(riemann.getCube(0,1,0), col);
 
@@ -50,7 +50,7 @@ public class XMLParsingTests {
         riemann.getCube(0,1,1).addObject(trig);
         riemann.getCube(0,1,0).addObject(key);
         
-        trig = new Lock(riemann.getCube(0,2,1), 2, col);
+        trig = new Lock(riemann.getCube(0,2,1), 2, riemann.triggers, col);
         
         riemann.getCube(0,2,1).addObject(trig);
         riemann.getCube(0,2,0).addObject(key);

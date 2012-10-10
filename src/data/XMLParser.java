@@ -204,7 +204,7 @@ public class XMLParser {
             // Get the ID for the Lock
             int id = Integer.parseInt(e.getAttribute("id"));
 
-            ret = new Lock(cube, id, newCol);
+            ret = new Lock(cube, id, riemannCube.triggers, newCol);
             ((Lock)ret).setExit(exit);
 
         } else if (n.getNodeName().equals("door")) {

@@ -141,7 +141,7 @@ public class GameObjectTests {
         Cube lockCube = world.getCube(0, 1, 0);
         
         int lockID = 1;
-        Trigger lock = new Lock(lockCube, lockID, Color.RED);
+        Trigger lock = new Lock(lockCube, lockID, world.triggers, Color.RED);
         world.triggers.put(1, lock);
         lockCube.addObject(lock);
         
@@ -156,11 +156,11 @@ public class GameObjectTests {
 
         assertFalse(world.isValidAction(moveToDoorCube)); // we shouldn't be able into the cube with a locked door
 
-        assertTrue(world.applyAction(new ItemPickup(0                )));
-        assertTrue(world.applyAction(new PlayerMove(0, lockCube.pos())));
-        assertTrue(world.applyAction(new ItemUse   (0                ))); // put the key in the lock (should unlock door)
-        assertTrue(world.applyAction(new PlayerMove(0, spwnCube.pos()))); // move back
-        assertTrue(world.applyAction(new PlayerMove(0, doorCube.pos()))); // and now we're in the door cube :D
+        assertTrue(world.applyAction(new ItemPickup(0                 )));
+        assertTrue(world.applyAction(new PlayerMove(0, lockCube.pos() )));
+        assertTrue(world.applyAction(new ItemUse   (0                 ))); // put the key in the lock (should unlock door)
+        assertTrue(world.applyAction(new PlayerMove(0, spwnCube.pos() ))); // move back
+        assertTrue(world.applyAction(new PlayerMove(0, doorCube.pos() ))); // and now we're in the door cube :D
         
     }
 }

@@ -1,6 +1,7 @@
 package world.objects;
 
 import java.awt.Color;
+import java.util.Map;
 
 import world.cubes.Cube;
 
@@ -12,18 +13,24 @@ import world.cubes.Cube;
  */
 public abstract class Trigger extends GameObject {
 
+    /** whether the trigger is active (ie. the lock is open)    */
     protected boolean currentState = false;
-    
-    public Trigger(Cube c) {
-        super(c);
-    }
-
-    /**
-     * @return whether the trigger is active (ie. the lock is open) 
-     */
     public boolean state() { return currentState; }
     
-    public abstract Color color();
     
-    public abstract int getID();
+    private final int ID;
+    public int getID() { return ID; }
+
+    
+    /**  
+     * @param gobalIDs doing the adding to the trigger map here ensures consistency
+     */
+    public Trigger(Cube c, int ID, Map<Integer, Trigger> globalIDs) {
+        super(c);
+        this.ID = ID;
+        globalIDs.put(ID, this);
+    }
+
+    
+    public abstract Color color();
 }

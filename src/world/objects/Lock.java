@@ -1,6 +1,7 @@
 package world.objects;
 
 import java.awt.Color;
+import java.util.Map;
 
 import world.cubes.Cube;
 import world.objects.items.GameItem;
@@ -10,10 +11,7 @@ public class Lock extends Trigger {
 
     private Color color;
     public Color color(){ return color; }
-    
-    private int ID;
-    public int getID(){ return ID; }
-    
+     
     // Tells whether this lock opens an exit door
     // Necessary as exit doors don't have colours.
     private boolean isExit = false;
@@ -21,9 +19,8 @@ public class Lock extends Trigger {
     public void setExit(boolean b){ isExit = b;}
     
     
-    public Lock(Cube pos, int ID, Color color){
-        super(pos);
-        this.ID = ID;
+    public Lock(Cube pos, int ID, Map<Integer, Trigger> gobalIDs, Color color){
+        super(pos, ID, gobalIDs);
         this.color = color;
     }
     

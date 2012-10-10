@@ -1,6 +1,7 @@
 package world.objects;
 
 import java.awt.Color;
+import java.util.Map;
 
 import world.cubes.Cube;
 
@@ -9,14 +10,10 @@ public class Button extends Trigger {
     Color color;
     public Color color() { return color; }
 
-    public final int id;
-    public int getID() { return id; }
-    
 
-    public Button(Cube pos, int id, Color color){
-        super(pos);
+    public Button(Cube pos, int ID, Map<Integer, Trigger> gobalIDs, Color color){
+        super(pos, ID, gobalIDs);
         this.color = color;
-        this.id = id;
     }
     
     
