@@ -227,6 +227,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 			leftMouse = false;
         }
         
+        if (player == null) return; // TODO revisit
+        
         //START DRAWING
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); //clear the screen
         
@@ -304,6 +306,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 
     /**update the camera's position from the player's position*/
     private void updateCamera() {
+        if (player == null) return; // TODO revisit
     	camPos.x = (player.pos().x*2)+player.relPos.x;
     	camPos.y = (player.pos().y*2)+player.relPos.y;
     	camPos.z = (player.pos().z*2)+player.relPos.z;

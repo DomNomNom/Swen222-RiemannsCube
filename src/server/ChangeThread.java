@@ -1,8 +1,16 @@
 package server;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.Socket;
 
+import data.LevelPipeline;
+import data.XMLParser;
+
+import tests.WorldTests;
 import utils.Configurations;
 import utils.Int3;
 import world.RiemannCube;
@@ -61,12 +69,10 @@ public class ChangeThread extends Thread {
                 sendToEveryone(spawnEvent);
                 sendToClient(new PlayerAssign(newPlayerID), parentServer.clientsList.get(c.clientId));
             }
-            else if(e instanceof FullStateUpdate){
-            	sendToEveryone(e); // FIXME! do this properly
-            }
-            else if(e instanceof ActivateTrap){
+            else if(e instanceof FullStateUpdate)
+            	System.err.println(myName() + "players are not supposed to send FullStateUpdates!");
+            else if(e instanceof ActivateTrap)
                 sendToEveryone(new ChatMessage("Activated a Trap!", ((ActivateTrap)e).playerID));
-            }
             else {
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);
                 sendToEveryone(e);
@@ -74,9 +80,16 @@ public class ChangeThread extends Thread {
         }
     }
 
+    /** returns a FullStateUpdate of the current state of the world */
+    public FullStateUpdate generateFullStateUpdate() {
+        LevelPipeline saveLoader = new LevelPipeline();
+        StringWriter out = new StringWriter();
+        saveLoader.save(parentServer.world, out);
+        return new FullStateUpdate(out.toString());
+    }
     
     /* Sends a an event to the client that made it */
-    private void sendToClient(Event e, RemotePlayer rp) {
+    public void sendToClient(Event e, RemotePlayer rp) {
         try {
             rp.out.writeObject(e); // rp.out is a object out stream that you can write the objects out too
         } catch (IOException e1) {
@@ -87,7 +100,7 @@ public class ChangeThread extends Thread {
     
     
     /** send the changes to everyone */
-    private void sendToEveryone(Event e) {
+    public void sendToEveryone(Event e) {
         // TODO: Error checking - what if the sending client isn't in the list
         for(RemotePlayer rp : parentServer.clientsList.values())
             sendToClient(e, rp);

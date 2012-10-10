@@ -9,18 +9,20 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import client.Client;
+import data.LevelPipeline;
 
 import utils.Int3;
 import world.RiemannCube;
 import world.events.Action;
 import world.events.ChatMessage;
+import world.events.FullStateUpdate;
 import world.events.PlayerMove;
 
 /**
  * A server for the game that holds all of the clients 
- * and there allocated sockets. 
- * @author feshersiva
+ * and only handles initial contact with them. (sets up WorkerThreads) 
  *
+ * @author feshersiva, schmiddomi
  */
 public class Server extends Thread {
 
@@ -46,14 +48,16 @@ public class Server extends Thread {
             int id = 0;
             ChangeThread changeT = new ChangeThread(this);
             changeT.start();
-            
             boolean exit = false;
+            
             while (!exit) {
+                // create a new WorkerThread for each client
                 Socket clientSocket = socket.accept();
                 clientsList.put(id, new RemotePlayer(clientSocket, new ObjectOutputStream(clientSocket.getOutputStream())));
                 WorkerThread wThread = new WorkerThread(this, id, clientSocket);
                 wThread.start();
-                id++;
+                changeT.sendToClient(changeT.generateFullStateUpdate(), clientsList.get(id));  // send the current world state
+                ++id;
             }
             socket.close(); // release socket ... v.important!
         } catch (IOException e) {

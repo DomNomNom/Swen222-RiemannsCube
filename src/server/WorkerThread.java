@@ -37,38 +37,20 @@ public class WorkerThread extends Thread {
             input = new ObjectInputStream(socket.getInputStream());
             boolean exit = false;
             while (!exit) {
-                // ObjectOutputStream output = new
-                // ObjectOutputStream(socket.getOutputStream());
                 // read object from socket input
                 try {
                     obj = input.readObject();
-                  //test printout
-                    if(Configurations.debugPrint)  System.out.println(myName() + " got my object");
-                    /*
-                     * obj = null;
-                     * 
-                     * System.out.println("about to check availble");
-                     * if(input.available() > 0){
-                     * System.out.println("No object yet"); obj =
-                     * input.readObject();
-                     * System.out.println("I got a message"); }
-                     */
-
+                    if(Configurations.debugPrint)  System.out.println(myName() + " got my object: " + obj);
                 } catch (ClassNotFoundException e) {
                     System.out.println("Problem reading from input.");
                     e.printStackTrace();
                 }
 
+                if (!(obj instanceof Event)) {
+                    System.err.println("recieved non-event object!");
+                    continue;
+                }
                 Event e = (Event) obj;
-                /*
-                 * // object is an action if (obj instanceof Action) { Action
-                 * act = (Action) obj; } // object is a player move else if (obj
-                 * instanceof PlayerMove) { PlayerMove move = (PlayerMove) obj;
-                 * } // object is a chat message else if (obj instanceof
-                 * ChatMessage) { ChatMessage message = (ChatMessage) obj;
-                 * 
-                 * }
-                 */
 
                 Change c = new Change(this.playerId, e);
                 this.server.changes.add(c);

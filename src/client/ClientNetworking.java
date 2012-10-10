@@ -84,8 +84,7 @@ public class ClientNetworking extends Thread {
     }
     
     /**
-     * A method that receives the next event from 
-     * the input stream.
+     * A method that receives the next event from the input stream.
      * @return
      */
     public Event nextEvent(){

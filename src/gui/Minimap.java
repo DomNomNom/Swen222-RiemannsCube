@@ -129,6 +129,8 @@ public class Minimap extends GLJPanel implements GLEventListener {
 	/**Draws the player's floor as a map*/
 	public void drawFloor(GL2 gl) {
 		Player player = frame.getClient().player();
+		if (player == null) return; // TODO re-visit to check that full state updates work
+		
 		Float3 rot = player.rotation; //get the player's rotation
 		Float3 pos = new Float3();
 		pos.x = frame.getClient().player().pos().x;
