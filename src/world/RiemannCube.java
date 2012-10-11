@@ -17,6 +17,7 @@ import world.events.ItemPickup;
 import world.events.ItemUse;
 import world.events.PlayerMove;
 import world.events.PlayerSpawning;
+import world.events.PlayerRelPos;
 import world.objects.GameObject;
 import world.objects.GlobalHolder;
 import world.objects.Player;
@@ -107,6 +108,7 @@ public class RiemannCube {
         if (a instanceof PlayerMove    )  return isValidMovePlayer ((PlayerMove)     a);
         if (a instanceof PlayerSpawning)  return isValidSpawnPlayer((PlayerSpawning) a);
         if (a instanceof ItemAction    )  return isValidItemAction ((ItemAction)     a);
+        if (a instanceof PlayerRelPos  )  return isValidPlayer(((PlayerRelPos)a).playerID);
         
         System.err.println(myName()+"OMG I haven't coded stuff for this action: " + a);
         return false;
@@ -153,6 +155,7 @@ public class RiemannCube {
         else if (a instanceof PlayerMove    )  movePlayer((PlayerMove) a);
         else if (a instanceof PlayerSpawning)  spawnPlayer((PlayerSpawning) a);
         else if (a instanceof ItemAction    )  applyItemAction((ItemAction) a);
+        else if (a instanceof PlayerRelPos  )  applyPlayerRelPos((PlayerRelPos)a);
         else {
             System.err.println(myName()+"OMG I haven't coded stuff for this: " + a);
             return false;
@@ -161,6 +164,9 @@ public class RiemannCube {
         return true;
     }
     
+    private void applyPlayerRelPos(PlayerRelPos a) {
+        players.get(a.playerID).relPos.set(a.relpos);  
+    }
     private void applyItemAction(ItemAction a) {
         Player p = players.get(a.playerID);
         Cube cube = p.cube();
