@@ -43,7 +43,7 @@ public class Player extends GameObject {
         return "Player";
     }
 
-    public String toString(){return "Player "+id;}
+    public String myName(){return "[Player "+id+ "]";}
     
     @Override
     public boolean equals(Object obj) {

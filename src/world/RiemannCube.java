@@ -124,6 +124,7 @@ public class RiemannCube {
     }
     
     private boolean isValidMovePlayer(PlayerMove a) {
+        //System.out.println("valid player: " + a.playerID + " in " + players);
         if (!isValidPlayer(a.playerID)) return false;
         Player p = players.get(a.playerID);
         if (!isInBounds(a.movement)) return false;
@@ -180,8 +181,8 @@ public class RiemannCube {
 	        player.relPos.y -= 2*-(player.pos().y-to.pos().y);
 	        player.relPos.z -= 2*-(player.pos().z-to.pos().z);
         }
-        player.move(to); 
 
+        player.move(to); 
     }
     
     private void spawnPlayer(PlayerSpawning action) {
@@ -196,6 +197,8 @@ public class RiemannCube {
     // ====== equals (used for testing) ======
     
     
+    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)        return true;
@@ -204,13 +207,18 @@ public class RiemannCube {
         
         RiemannCube other = (RiemannCube) obj;
         
-        if (size.z != other.size.z || size.y != other.size.y || size.x != other.size.x)    return false;
+        if (!size.equals(other.size)) return false; // size
         
         for (int x=size.x; x --> 0;) // oh, ben...
             for (int y=0; y<size.y; ++y)
                 if (!Arrays.equals(cubes[x][y], other.cubes[x][y]))
                     return false;
- 
+
+        // our maps
+        if (!players.equals(other.players))        return false;
+        if (!spawnCubes.equals(other.spawnCubes))  return false;
+        if (!triggers.equals(other.triggers))      return false;
+        
         return true;
     }
     

@@ -209,7 +209,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	level = frame.getClient().getWorld();
         	player = frame.getClient().player();
         	
-        	if (!pause) {
+        	if (!pause && player!=null) {
 				//Process movement and rotation
         		processAction();
         		processRotation();
