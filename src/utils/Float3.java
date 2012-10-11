@@ -1,8 +1,9 @@
 package utils;
 
-public class Float3 {
+import java.io.Serializable;
+
+public class Float3 implements Serializable {
     public float x, y, z;
-    
     
     /** Default constructor. Initialises values to (0 0 0) */
     public Float3()                          { set(0, 0, 0); }
@@ -33,6 +34,14 @@ public class Float3 {
     }
     
     public Float3 copy() { return new Float3(x,y,z); }
+    
+    public boolean isZero() {
+        return (
+            x == 0  &&
+            y == 0  &&
+            z == 0
+            );
+    }
     
      @Override
     public int hashCode() {

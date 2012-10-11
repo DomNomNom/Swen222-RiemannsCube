@@ -30,6 +30,7 @@ import world.cubes.Wall;
 import world.events.ItemDrop;
 import world.events.ItemPickup;
 import world.events.PlayerMove;
+import world.events.PlayerRelPos;
 import world.objects.GameObject;
 import world.objects.Player;
 import world.objects.items.Key;
@@ -441,10 +442,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	        //}
         	
     		
-        	if (canMove) {
+        	if (canMove && !newPos.isZero()) {
         		player.relPos.x += newPos.x;
         		player.relPos.y += newPos.y;
         		player.relPos.z += newPos.z;
+        		
+        		// send a small update to everyone
+                frame.getClient().push(new PlayerRelPos(player.id, player.relPos));
+                // note: we (kindof) applied this event straight away to reduce felt lag
         	}
         }
         else { //in free camera mode
