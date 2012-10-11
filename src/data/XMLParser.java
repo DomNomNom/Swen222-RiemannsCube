@@ -185,6 +185,7 @@ public class XMLParser {
             	GameObject playerHolding = createInternalObject(child, riemannCube, cube);
             	((Player)ret).setItem((GameItem)playerHolding);		// Set the player which is about to be returned to have the item
             }
+            riemannCube.players.put(id, (Player)ret);
 
         } else if (n.getNodeName().equals("key")) {
             // Get the color for the Key
