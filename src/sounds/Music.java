@@ -22,11 +22,21 @@ public class Music {
     private AudioInputStream audioStream;
     private AudioFormat audioFormat;
     private  SourceDataLine sourceLine;
+    private long loopTime;
 
 	long skip30s = 0;
 	public boolean loop = true;
 	
-	Player musicPlayer;
+	MusicPlayer musicPlayer;
+    
+    public Music(boolean loop){
+        this.loop = loop;
+    }
+    
+    public Music(boolean loop, long time){
+        this.loop = loop;
+        this.loopTime = time;
+    }
 
     /**
      * Plays a given sound file. Accepts .wav format.
@@ -46,17 +56,17 @@ public class Music {
             System.exit(1);
         }
         
-        musicPlayer = new Player();
+        musicPlayer = new MusicPlayer();
         musicPlayer.start();
     }
     
     
-    private class Player extends Thread{
+    private class MusicPlayer extends Thread{
         
-        public Player(){ 
+        public MusicPlayer(){ 
         }
         
-        public void start(){
+        public void run(){
             System.out.println("Starting");
             while(true){
                 if(!play()){
@@ -64,6 +74,7 @@ public class Music {
                     System.out.println("Looping");
                 }
             }
+            System.out.println("And we're done.");
         }
         
         private boolean play(){
@@ -114,7 +125,7 @@ public class Music {
                     int nBytesWritten = sourceLine.write(abData, 0, nBytesRead);
                 }
                 skip+=nBytesRead;
-                if(System.currentTimeMillis() > startTime + 30000 && skip30s==0)
+                if(System.currentTimeMillis() > startTime + loopTime && skip30s==0)
                     skip30s = skip;
             }
 
