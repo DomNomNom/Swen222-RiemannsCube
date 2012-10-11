@@ -49,7 +49,7 @@ import javax.xml.transform.stream.StreamResult;
  * <lightsource> - type</> <object> - type, id</> </> </> </> </> </> If player
  * is null, set number value to -1 Null items have type "null".
  * 
- * @author mudgejayd 300221669
+ * @author mudgejayd
  * 
  */
 public class LevelPipeline {

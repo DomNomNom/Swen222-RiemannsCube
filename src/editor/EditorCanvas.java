@@ -40,7 +40,7 @@ import world.objects.items.Token;
 
 /**
  * 
- * @author mudgejayd 300221669 Allows user to design/edit their own levels.
+ * @author mudgejayd Allows user to design/edit their own levels.
  * 
  */
 public class EditorCanvas extends JComponent implements MouseListener,  KeyListener {

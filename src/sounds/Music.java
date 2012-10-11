@@ -29,12 +29,19 @@ public class Music {
 	
 	MusicPlayer musicPlayer;
     
-    public Music(boolean loop){
-        this.loop = loop;
+	/**
+	 * 
+	 */
+    public Music(){
+        this.loop = false;
     }
     
-    public Music(boolean loop, long time){
-        this.loop = loop;
+    /**
+     * 
+     * @param time Time in milliseconds, at which the song will loop from.
+     */
+    public Music(long time){
+        this.loop = true;
         this.loopTime = time;
     }
 
@@ -60,7 +67,13 @@ public class Music {
         musicPlayer.start();
     }
     
-    
+    /**
+     * Creates a new thread for playing music on.
+     * Now you can play the game at the same time!
+     * 
+     * @author mudgejayd
+     *
+     */
     private class MusicPlayer extends Thread{
         
         public MusicPlayer(){ 

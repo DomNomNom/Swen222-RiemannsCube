@@ -27,8 +27,7 @@ import data.LevelPipeline;
 
 /**
  * 
- * @author mudgejayd 300221669 Creates a new frame, for running the Level Editor
- *         in.
+ * @author mudgejayd Creates a new frame, for running the Level Editor in.
  * 
  */
 public class EditorFrame extends JFrame {

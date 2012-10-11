@@ -191,7 +191,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         updateCamera(); //update the camera position
         
-        Music music = new Music(true, 64000L);
+        Music music = new Music(64000L);
         //music.playSound("resources/audio/music/Cubism.wav");
         
         requestFocus();
