@@ -7,6 +7,6 @@ public class MusicPlayer {
 	
 	public static void main(String[] args){
 		Music music = new Music();
-		music.playSound("src/sounds/sound.wav");
+		music.playSound("resources/audio/music/Cubism.wav");
 	}
 }
