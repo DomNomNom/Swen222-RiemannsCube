@@ -174,7 +174,10 @@ public class XMLParser {
         	// Get the ID for the player
             int id = Integer.parseInt(e.getAttribute("id"));
             
-            ret = new Player(cube, id);
+            // Get the name of the player
+            String name = e.getAttribute("name");
+            
+            ret = new Player(cube, id, name);
             
             Node child = n.getFirstChild();
             
@@ -219,7 +222,7 @@ public class XMLParser {
 
             ret = new Lock(cube, id, riemannCube.triggers, newCol);
             ((Lock)ret).setExit(exit);
-
+            
         } else if (n.getNodeName().equals("door")) {
             // Get the color for the door
             Element e = (Element) n;
@@ -245,6 +248,8 @@ public class XMLParser {
             // Adding the trigger IDs from the attribute of the door
             while (idScan.hasNext())
                 ((Door)ret).addTrigger(Integer.parseInt(idScan.next()));
+            
+            
 
         } else if (n.getNodeName().equals("token")) {
             ret = new Token(cube);

@@ -5,9 +5,14 @@ package world.events;
  * @author David Saxon 300199370
  */
 public class RequestPlayer extends Event {
-
+    
+    private String playerName;
+    public String playerName(){ return playerName;}
+    
 	//CONSTRUCTOR
 	/**Creates a new player request*/
-	public RequestPlayer() {}
+	public RequestPlayer(String playerName) {
+	    this.playerName = playerName;
+	}
 	
 }

@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.JOptionPane;
+
 import data.XMLParser;
 
 import utils.Configurations;
@@ -33,6 +35,7 @@ public class Client {
 
     private Player player;
     public  Player player(){ return player; }
+    private String playerName;
     
     private ClientNetworking networking;
     //public ClientNetworking networking() { return networking; }
@@ -44,7 +47,8 @@ public class Client {
     	return world;
     }
     
-    public Client(String ip) {
+    public Client(String ip, String playerName) {
+        this.playerName = playerName;
         networking = new ClientNetworking(ip);
         networking.start();
         
@@ -89,8 +93,9 @@ public class Client {
             }
             else if(e instanceof FullStateUpdate){
             	this.world = XMLParser.readXML(new ByteArrayInputStream(((FullStateUpdate)e).level.getBytes()));
-            	if (myFirstFullStateUpdate)
-            	    networking.push(new RequestPlayer()); // request a player
+            	if (myFirstFullStateUpdate){
+            	    networking.push(new RequestPlayer(playerName)); // request a player
+            	}
             }
             else 
                 System.err.println(myName() + " has recieved a unhandeled event: " + e);

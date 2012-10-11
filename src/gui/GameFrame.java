@@ -38,6 +38,7 @@ public class GameFrame extends JFrame {
     private Minimap minimap; //the mini map
     
     private String ip; //the IP address of the level
+    private String playerName; //Name of the player who ran this frame
     
     //FLAGS
     public static boolean high = true; //is true when high graphics is enable
@@ -72,13 +73,26 @@ public class GameFrame extends JFrame {
         this.ip = ip;
     }
     
+    //Alternate contructor for the host
+    /**Constructs a new game frame
+     @param ip the IP address of server*/
+    public GameFrame(String ip, String name) {
+        super("Riemann's cube");
+        this.ip = ip;
+    }
+
     //METHODS
     /**Initialises the game frame by creating the panels of the game*/
     public void init() {
     	if (ip == null) { //if an IP address has not been defined get one
     		ip = (String)JOptionPane.showInputDialog(this, "Enter the Host IP", "Select Server",
     		                    JOptionPane.PLAIN_MESSAGE, null, null, null);
+    		
     		if (ip == null || ip.equals("")) ip = "localhost";
+    	}
+
+    	if(playerName == null){
+    	    playerName = JOptionPane.showInputDialog("Enter your name:");
     	}
     	
     	//fist create and draw the splash screen
@@ -104,7 +118,7 @@ public class GameFrame extends JFrame {
         ViewPort.showFps = showFps;
         view = new ViewPort(this, 700, 600);
         
-        client = new Client(ip); //create a new client with the ip
+        client = new Client(ip, playerName); //create a new client with the ip
         chat = new ChatPanel(this);
         
         client.setChat(chat);

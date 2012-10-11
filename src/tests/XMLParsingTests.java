@@ -55,7 +55,7 @@ public class XMLParsingTests {
         riemann.getCube(0,2,1).addObject(trig);
         riemann.getCube(0,2,0).addObject(key);
         
-        Player p = new Player(riemann.getCube(0,0,0), 1);
+        Player p = new Player(riemann.getCube(0,0,0), 1, "placeHolder");
         riemann.getCube(0,0,0).addObject(p);
         
 

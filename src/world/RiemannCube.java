@@ -193,9 +193,10 @@ public class RiemannCube {
     
     private void spawnPlayer(PlayerSpawning action) {
         int id = action.playerID;
+        String playerName = action.playerName;
         Int3 pos = action.pos;
         
-        Player p = new Player(getCube(pos), id);
+        Player p = new Player(getCube(pos), id, playerName);
         getCube(pos).addObject(p);
         players.put(p.id, p);
     }
@@ -217,9 +218,10 @@ public class RiemannCube {
         
         for (int x=size.x; x --> 0;) // oh, ben...
             for (int y=0; y<size.y; ++y)
-                if (!Arrays.equals(cubes[x][y], other.cubes[x][y]))
+                if (!Arrays.equals(cubes[x][y], other.cubes[x][y])){
                     return false;
-
+                }
+        
         // our maps
         if (!players.equals(other.players))        return false;
         if (!spawnCubes.equals(other.spawnCubes))  return false;

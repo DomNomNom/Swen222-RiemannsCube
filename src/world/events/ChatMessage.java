@@ -1,5 +1,7 @@
 package world.events;
 
+import java.awt.Color;
+
 public class ChatMessage extends ChatEvent {
     public final String message;
     public final int speakerID;

@@ -30,12 +30,14 @@ public class Player extends GameObject {
     
     public final int id;
     public int id() { return id; }
+    public final String name;
+    public String name(){ return name;}
     
     
-    
-    public Player(Cube pos, int id){
+    public Player(Cube pos, int id, String name){
         super(pos);
         this.id = id;
+        this.name = name;
     }
     
     @Override
@@ -51,6 +53,7 @@ public class Player extends GameObject {
         
         Player p = (Player) obj; // safe as it is checked above
         if (id != p.id) return false;
+        if ((name==null)? p.name!=null : !name.equals(p.name())) return false;
         if ((item==null)? p.item!=null : !item.equals(p.item())) return false;
         
         return true;

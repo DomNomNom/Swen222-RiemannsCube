@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
@@ -50,13 +53,20 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
 
     private BufferedImage background;
     private ChatMessage message;
-
+    private Map<Integer, Color> playerColors = new HashMap<Integer, Color>();
+    
     public ChatMessage getChat() {
         return message;
     }
 
     public void addMessage(ChatMessage message) {
-        chatArea.append("    " + message.message + "\n");
+        Color col = playerColors.get(message.speakerID);
+        chatArea.setForeground(col);
+        
+        
+        String name = frame.getClient().getWorld().players.get(message.speakerID).name();
+        
+        chatArea.append("     [" + name + "]: " + message.message + "\n");
     }
 
     public static Animator animator; // the animator makes sure the chat is
@@ -123,6 +133,12 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         chatArea.setBackground(new Color(0, 0, 0, 0));
         chatArea.setForeground(Color.green.brighter());
         chatArea.setEditable(false);
+        
+        // Initialise Colors in map
+        playerColors.put(0, Color.RED.brighter());
+        playerColors.put(1, new Color(148, 0, 211));
+        playerColors.put(2, Color.GREEN.brighter());
+        playerColors.put(3, Color.CYAN.brighter());
 
         center.add(chatArea, BorderLayout.CENTER);
 

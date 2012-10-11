@@ -19,8 +19,8 @@ public class Lock extends Trigger {
     public void setExit(boolean b){ isExit = b;}
     
     
-    public Lock(Cube pos, int ID, Map<Integer, Trigger> gobalIDs, Color color){
-        super(pos, ID, gobalIDs);
+    public Lock(Cube pos, int ID, Map<Integer, Trigger> globalIDs, Color color){
+        super(pos, ID, globalIDs);
         this.color = color;
     }
     

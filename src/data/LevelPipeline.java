@@ -129,6 +129,8 @@ public class LevelPipeline {
                         	
                             player.setAttribute("id",
                                     String.valueOf(curPlayer.id()));
+                            
+                            player.setAttribute("name", curPlayer.name());
 
                             // Add item player is holding
                             GameItem curItem = curPlayer.item();
