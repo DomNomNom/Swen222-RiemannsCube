@@ -29,6 +29,7 @@ import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Space;
 import world.cubes.Wall;
+import world.objects.items.GameItem;
 import world.objects.items.Key;
 import world.objects.items.LightSource;
 import world.objects.items.Token;
@@ -143,7 +144,7 @@ public class XMLParser {
                         cube.addObject(createInternalObject(obs.item(o),
                                 riemannCube, cube));
                     }
-
+                    
                     riemannCube.setCube(w, h, d, cube);
                     w++;
                 }
@@ -167,12 +168,23 @@ public class XMLParser {
         GameObject ret = null;
 
         //TODO Let parser also add the items the player is holding to the player.
-        if (n.getNodeName().equals("player")) {
-            //Get the ID for the player
-            Element e = (Element) n;
+        if (n.getNodeName().equals("player")){
+        	Element e = (Element) n;
+        	
+        	// Get the ID for the player
             int id = Integer.parseInt(e.getAttribute("id"));
             
             ret = new Player(cube, id);
+            
+            Node child = n.getFirstChild();
+            
+            // If the player has a child node, it is guaranteed to be a GameItem.
+            if(child != null){
+            	child = child.getNextSibling();	// Silly parser thing again, node we are looking for is the second child
+            	
+            	GameObject playerHolding = createInternalObject(child, riemannCube, cube);
+            	((Player)ret).setItem((GameItem)playerHolding);		// Set the player which is about to be returned to have the item
+            }
 
         } else if (n.getNodeName().equals("key")) {
             // Get the color for the Key
@@ -244,8 +256,8 @@ public class XMLParser {
             Color newCol = Color.decode(col);
             
             ret = new Container(cube, newCol, riemannCube.containers);
-        }
-
+        } 
+        
         return ret;
     }
 }

@@ -126,15 +126,16 @@ public class LevelPipeline {
                         Player curPlayer = curCube.player();
                         Element player = doc.createElement("player");
                         if (curPlayer != null) {
+                        	
                             player.setAttribute("id",
                                     String.valueOf(curPlayer.id()));
 
-                            // Add non-lightsource items
+                            // Add item player is holding
                             GameItem curItem = curPlayer.item();
                             Element item;
                             if (curItem != null) {
-                                item = doc.createElement(curItem
-                                        .getClassName());
+                                item = getObjectElement(curItem, doc);
+                                player.appendChild(item);
                             }
                             
                             cube.appendChild(player);
@@ -149,8 +150,6 @@ public class LevelPipeline {
 
             source = new DOMSource(doc);
             transformer.transform(source, result);
-
-            //System.out.println("File saved!");
 
         } catch (Exception e) {
             e.printStackTrace();

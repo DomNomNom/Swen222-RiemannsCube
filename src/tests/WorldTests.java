@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
+
 import org.junit.Test;
 
 import utils.Int3;
@@ -10,6 +12,8 @@ import world.cubes.Cube;
 import world.cubes.Floor;
 import world.events.PlayerMove;
 import world.objects.Player;
+import world.objects.items.Key;
+import world.objects.items.Token;
 
 
 public class WorldTests {
@@ -19,7 +23,7 @@ public class WorldTests {
         RiemannCube world = new RiemannCube(new Int3(6, 6, 6));
         Player p = new Player(world.getCube(new Int3(0,0,0)), 0);
         world.players.put(p.id, p);
-        world.getCube(new Int3()).addObject(p);
+        world.getCube(new Int3(0, 0, 0)).addObject(p);
         return world;
     }
     
