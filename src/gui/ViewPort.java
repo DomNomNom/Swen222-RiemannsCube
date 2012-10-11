@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
+import sounds.Music;
 import utils.Float2;
 import utils.Float3;
 import utils.Int2;
@@ -31,8 +33,11 @@ import world.events.ItemDrop;
 import world.events.ItemPickup;
 import world.events.PlayerMove;
 import world.events.PlayerRelPos;
+import world.objects.Button;
 import world.objects.GameObject;
+import world.objects.Lock;
 import world.objects.Player;
+import world.objects.doors.Door;
 import world.objects.items.Key;
 
 import com.jogamp.opengl.util.Animator;
@@ -56,11 +61,20 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     public static boolean noFloor = false; //is true when the floor should not show
     public static boolean showFps = false; //is true to display fps
     
+    //openGL
+    private GL2 ogl;
+    static GLU glu = new GLU(); //for GLU methods
+    
+    //tools
+    private Robot robot; //a robot that insures the mouse is always in the centre of the screen
+    public static Animator animator; // the animator makes sure the canvas is always being updated
+    
     //fps management
     private long currentTime = System.currentTimeMillis(); //get the current time
     private int accumTime = 0; //the amount of time accumulated since the last frame
     private final int frameLength = 17; //the time of a frame
     
+    //references
     private RiemannCube level; //the level
     private Player player; //the player associated with this level
     private Resources resources; //the resources
@@ -83,6 +97,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean exit = false; //is true when to exit
     private boolean pause = false; //is true when the game is paused
     private boolean firstFocus = false; //waits for the first focus
+    private boolean regain = false; //is true when focus has just been regained
     
     private Float3 camPos = new Float3(); //the position of the camera
     
@@ -96,8 +111,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private float turnSpeed = 10.0f; //the turn speed of the camera
     private int rotationSpeed = 2; //the speed that the rotation animation happens
     
-    private boolean check = true; //is true when to check valid events
-    
     //For stepping movement
     private float stepCycle = 0.0f; //where the camera is in the step
     private float stepHeight = 0.003f;
@@ -105,18 +118,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     //animation flags;
     private boolean rotationAni = false; //is true when the game is rotating
     
-    
-    //TODO: REMOVE THIS! Just FOR TESTING
-    private float keyRot = 0.0f;
-
-    static GLU glu = new GLU(); //for GLU methods
-    private Robot robot; //a robot that insures the mouse is always in the centre of the screen
-    public static Animator animator; // the animator makes sure the canvas is always being updated
-    
+    //rendering lists
     private List<Float3> glassRender; //a list that hold all the glass to render
     private List<Pair<Float3, Integer>> playerRender; // a list of players to be rendered
+    private List<Pair<Float3, Color>> doorRender; //a list of doors to be rendered
+    private List<Pair<Float3, Color>> buttonRender; //a list of buttons to be rendered
+    private List<Pair<Float3, Color>> lockRender; //a list of locks to be rendered
 
-    // CONSTRUCTOR
+    //CONSTRUCTOR
     /** Creates a new view port
      * @param frame the window this is enclosed in
      * @param width the width of the view port
@@ -141,6 +150,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     @Override
     public void init(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
+        ogl = gl;
 
         gl.glEnable(GL.GL_DEPTH_TEST); // enable depth testing
         gl.glEnable(GL.GL_BLEND); // enable transparency
@@ -164,7 +174,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         gl.glLoadIdentity();
         
         //Create the resources
-        resources = new Resources(drawable);
+        resources = new Resources(gl);
         
         gl.glEnable(GL.GL_TEXTURE_2D); //enable 2d textures
         
@@ -173,19 +183,39 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         level = frame.getClient().getWorld();
         player = frame.getClient().player();
         
+        //set the graphics fields
+        Graphics.setResources(resources);
+        Graphics.setHigh(high);
+        
         currentTime = System.currentTimeMillis(); //update the time before starting
         
         updateCamera(); //update the camera position
         
-        requestFocus();   
+        Music music = new Music();
+        //music.playSound("resources/audio/music/Cubism.wav");
         
+        requestFocus();
+    }
+    
+    public boolean waitForData() {
+    	frame.getClient().update(17);
+    	level = frame.getClient().getWorld();
+    	player = frame.getClient().player();
+    	
+    	if (level != null) Graphics.setLevel(level);
+        if (player != null) Graphics.setPlayer(player);
+        
+        if (player == null) return false; //still waiting for data
+        
+        return true;
     }
 
     @Override
     public void display(GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
-
-        if (exit) frame.exit(); 
+        Graphics.setGL(gl); //pass the gl to the graphics
+        
+        if (exit) frame.exit(); //TODO: quick exit, remove this
         
         if(pause && space) frame.exit(); //quit the game
         
@@ -198,7 +228,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         long newTime = System.currentTimeMillis(); //get the time at this point
         int frameTime = (int) (newTime-currentTime); //find the length of this frame
         
-        if (showFps) printFps(frameTime);
+        if (showFps) Graphics.printFps(frameTime);
         
         if (frameTime > 55) frameTime = 55; //limit the max frame time
         currentTime = newTime; //update the current time
@@ -228,7 +258,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 			leftMouse = false;
         }
         
-        if (player == null) return; // TODO revisit
+        if (level != null) Graphics.setLevel(level);
+        if (player != null) Graphics.setPlayer(player);
+        
+        if (player == null) return; //if there is no player yet don't start drawing
         
         //START DRAWING
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); //clear the screen
@@ -244,12 +277,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	
         gl.glTranslatef(-camPos.x, -camPos.y, -camPos.z); //apply the translations
         
-        if (high) drawSpaceBoxHigh(gl); //draw the space box in high graphics
+        if (high) Graphics.drawSpaceBoxHigh(); //draw the space box in high graphics
         
-        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
-        
+        //initialise rendering lists
         glassRender = new ArrayList<Float3>(); //create the glass render list
         playerRender = new ArrayList<Pair<Float3, Integer>>(); //create the player render list
+        doorRender = new ArrayList<Pair<Float3, Color>>(); //create the the door render list
+        buttonRender = new ArrayList<Pair<Float3, Color>>(); //create the button render list)
+        lockRender = new ArrayList<Pair<Float3, Color>>(); //create the lock render list
         
         //iterate through the level and draw all the tiles
         for (int x = 0; x < level.size.x; ++x) {
@@ -260,50 +295,68 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         			
         			//draw the cubes
         			if (high) { //draw the high graphics cubes
-        				if (c instanceof Wall) drawWallHigh(gl, v); //draw a wall
-        				if (c instanceof Floor) drawFloorHigh(gl, v); //draw a floor
+        				if (c instanceof Wall) Graphics.drawWallHigh(v); //draw a wall
+        				if (c instanceof Floor && !noFloor) Graphics.drawFloorHigh(v); //draw a floor
         				
         			}
         			else { //draw the low graphics alternatives
-        				if (c instanceof Floor) drawFloorLow(gl, v); //draw a floor cube
-        				else if (c instanceof Wall) drawWallLow(gl, v); //draw a wall cube
+        				if (c instanceof Floor && !noFloor) Graphics.drawFloorLow(v); //draw a floor cube
+        				else if (c instanceof Wall) Graphics.drawWallLow(v); //draw a wall cube
         			}
+        			
+        			if (c instanceof Glass) glassRender.add(v);
         			
         			//draw players
         			Player p = c.player(); //get the player in the cube
         			
         			if (p != null) {
-        				if (p.item() instanceof Key) drawPlayerKey(gl, v); //draw the key the player is holding
+        				if (p.item() instanceof Key) Graphics.drawPlayerKey(v); //draw the key the player is holding
         				if (p.id != player.id) //only render the other players
         					playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
         			}
         			
+        			//draw the objects in the cubes
         			GameObject obj = c.object(); //gets the object that the cube contains
         			
-        			if (obj instanceof Key) drawKey(gl, v);
-        			
-        			
-        			if (c instanceof Glass) glassRender.add(v);
+        			if (obj instanceof Door) doorRender.add(new Pair<Float3, Color>(v, ((Door) obj).color()));
+        			else if (obj instanceof Key) Graphics.drawKey(v);
+        			else if (obj instanceof Button) buttonRender.add(new Pair<Float3, Color>(v, ((Button) obj).color()));
+        			else if(obj instanceof Lock) lockRender.add(new Pair<Float3, Color>(v, ((Lock) obj).color()));
         		}
         	}
         }
         
+        //draw the glass around the outside of the cube
+        if (high) Graphics.drawOuterGlassHigh();
+        
         //draw the players
         for (Pair<Float3, Integer> p : playerRender) {
-        	drawPlayer(gl, p.first(), p.second());
+        	Graphics.drawPlayer(p.first(), camPos, p.second()); //TODO: need a triple here to draw a player
         }
         
-        //draw the glass last
-        for (Float3 p: glassRender) {
-        	if (high) drawGlassHigh(gl, p);
-        	else drawGlassLow(gl, p);
+        //draw the doors
+        for (Pair<Float3, Color> p : doorRender) {
+        	Graphics.drawDoor(p.first(), p.second());
         }
         
-        //draw the glass around the outside of the cube
-        if (high) drawOuterGlassHigh(gl);
+        //draw buttons
+        for (Pair<Float3, Color> p : buttonRender) {
+         	Graphics.drawButton(p.first(), p.second());
+        }
+        
+        //draw locks
+        for (Pair<Float3, Color> p : lockRender) {
+        	Graphics.drawLock(p.first(), p.second());
+        }
+        
+        //draw the glass
+        for (Float3 p : glassRender) {
+        	if (high) Graphics.drawGlassHigh(p);
+        	else Graphics.drawGlassLow(p);
+        }
         
         //draw the pause box over the screen
-        if(pause) drawPause(gl);
+        if(pause && high) Graphics.drawPause();
     }
 
     /**update the camera's position from the player's position*/
@@ -425,23 +478,13 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	
         	Int3 zeroInt = new Int3(0, 0, 0);
 	        	
-	        //if (check) {
-	        	if (!cubeMove.equals(zeroInt)) {
-	        		Int3 newCube = player.pos().add(cubeMove);
-		        	if (level.isValidAction(new PlayerMove(player.id, newCube))) {
-		        		check = false;
-		        		frame.getClient().push(new PlayerMove(player.id, newCube));
-		        		
-		        	}
-		        	else canMove = false;
+        	if (!cubeMove.equals(zeroInt)) {
+        		Int3 newCube = player.pos().add(cubeMove);
+	        	if (level.isValidAction(new PlayerMove(player.id, newCube))) {
+	        		frame.getClient().push(new PlayerMove(player.id, newCube));
 	        	}
-	        //}
-	        //else {
-	        	if (cubeMove.equals(zeroInt)) {
-	        		check = true;
-	        	}
-	        //}
-        	
+	        	else canMove = false;
+        	}
     		
         	if (canMove && !newPos.isZero()) {
         		player.relPos.x += newPos.x;
@@ -694,469 +737,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	}
     }
     
-    
-    private void drawPlayer(GL2 gl, Float3 v, int playerId) {
-    	if (high) {
-	    	if (playerId == 0) {
-	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[4]); //bind the player1 texture
-	    	}
-	    	else if (playerId == 1) {
-	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[5]); //bind the player2 texture
-	    	}
-	    	else if (playerId == 2) {
-	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[6]); //bind the player3 texture
-	    	}
-	    	else if (playerId == 3) {
-	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[7]); //bind the player4 texture
-	    	}
-    	}
-    	else {
-    		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    	}
-    	
-    	gl.glPushMatrix(); //push a new matrix
-    	
-    	gl.glTranslatef(v.x, v.y, v.z); //translate to world position
-    	
-    	//find the angle to rotate by
-    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.z-v.z);
-    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
-    	
-    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
-    	
-    	//TODO: rotate player here
-    	
-    	//draw the player onto a quad
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.5f,  0.5f, 0);
-    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.5f,  0.5f, 0);
-    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.5f, -0.5f, 0);
-    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.5f, -0.5f, 0);
-    	gl.glEnd();
-    	
-    	gl.glPopMatrix(); //pop the matrix
-    }
-    
-    /**Draws a openGL textured quad
-     * @param gl
-     * @param v the position vector of the cube
-     * @param n the normal vector of the quad*/
-    private void drawQuadTex(GL2 gl, Float3 v, Float3 n, boolean inside) {
-    	//find the difference between the point and the normal
-    	Float3 dv = new Float3((n.x-v.x), (n.y-v.y), (n.z-v.z));
-    	
-    	//Find the rotation amounts
-    	float xRot = Math.abs(dv.y)*(90.0f+dv.y*90.0f);
-    	float yRot = Math.abs(dv.z)*(dv.z*90.0f);
-    	float zRot = Math.abs(dv.x)*(dv.x*90.0f);
-
-    	gl.glPushMatrix(); //push new matrix
-    	
-    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
-    	
-    	//apply the world orientation rotation
-    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
-    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
-    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
-    	
-    	//apply the rotations
-    	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
-    	gl.glRotatef(yRot, 1.0f, 0.0f, 0.0f);
-    	gl.glRotatef(xRot, 1.0f, 0.0f, 0.0f);
-    	
-    	if (!inside) gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f); //flip if outside
-    	
-    	//translate to the edge of the cube
-    	if (inside) gl.glTranslatef(0, -0.995f, 0);
-    	else gl.glTranslatef(0, 0.995f, 0);
-    	
-    	//now draw the quad
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1.0f, 0, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1.0f, 0,  1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 1.0f, 0,  1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 1.0f, 0, -1.0f);
-        gl.glEnd();
-        
-        gl.glPopMatrix(); //pop the matrix
-    }
-    
-    /**Draws a openGL coloured quad
-     * @param gl
-     * @param v the position vector of the cube
-     * @param n the normal vector of the quad
-     * @param col = the rgb colour of the quad
-     * @param a the alpha value of the colour of the quad*/
-    private void drawQuadCol(GL2 gl, Float3 v, Float3 n, boolean inside, Float3 col, float a) {
-    	//find the difference between the point and the normal
-    	Float3 dv = new Float3((n.x-v.x), (n.y-v.y), (n.z-v.z));
-    	
-    	//Find the rotation amounts
-    	float xRot = Math.abs(dv.y)*(90.0f+dv.y*90.0f);
-    	float yRot = Math.abs(dv.z)*(dv.z*90.0f);
-    	float zRot = Math.abs(dv.x)*(dv.x*90.0f);
-
-    	gl.glPushMatrix(); //push new matrix
-    	
-    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
-    	
-    	//apply the world orientation rotation
-    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
-    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
-    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
-    	
-    	//apply the rotations
-    	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
-    	gl.glRotatef(yRot, 1.0f, 0.0f, 0.0f);
-    	gl.glRotatef(xRot, 1.0f, 0.0f, 0.0f);
-    	
-    	if (!inside) gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f); //flip if outside
-    	
-    	//translate to the edge of the cube
-    	if (inside) gl.glTranslatef(0, -1, 0);
-    	else gl.glTranslatef(0, 1, 0);
-    	
-    	//now draw the quad
-    	gl.glColor4f(col.x, col.y, col.z, a);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1, 0, -1);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1, 0,  1);
-        gl.glColor4f(col.x*0.75f, col.y*0.75f, col.z*0.75f, a);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 1, 0,  1);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 1, 0, -1);
-        gl.glEnd();
-        
-        gl.glPopMatrix(); //pop the matrix
-        
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    }
-    
-    /**Draw a floor cube in high graphics
-     * @param gl
-     * @param v the position vector of the cube*/
-    private void drawFloorHigh(GL2 gl, Float3 v) {
-    	if (!noFloor) {
-	    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
-	    	drawQuadTex(gl, v, new Float3(v.x, v.y-1, v.z), true);
-			drawQuadTex(gl, v, new Float3(v.x, v.y+1, v.z), true);
-    	}
-    }
-    
-    /**Draw a wall cube in high graphics
-     * @param gl
-     * @param v the position vector of the cube*/
-    private void drawWallHigh(GL2 gl, Float3 v) {
-    	//draw the 4 walls
-		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[1]); //bind the wall tile texture
-		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z  ), false);
-		drawQuadTex(gl, v, new Float3(v.x+1, v.y, v.z  ), false);
-		drawQuadTex(gl, v, new Float3(v.x,   v.y, v.z+1), false);
-		drawQuadTex(gl, v, new Float3(v.x,   v.y, v.z-1), false);
-		//draw the floor
-		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
-		drawQuadTex(gl, v, new Float3(v.x, v.y-1, v.z), false);
-		drawQuadTex(gl, v, new Float3(v.x, v.y+1, v.z), false);
-    }
-    
-    /**Draw a glass cube in high graphics
-     * @param gl
-     * @param v the position vector of the cube*/
-    private void drawGlassHigh(GL2 gl, Float3 v) {
-    	//draw the floor
-		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
-		drawQuadTex(gl, v, new Float3(v.x, v.y-1, v.z), true);
-		drawQuadTex(gl, v, new Float3(v.x, v.y+1, v.z), true);
-		drawQuadTex(gl, v, new Float3(v.x, v.y-1, v.z), false);
-		drawQuadTex(gl, v, new Float3(v.x, v.y+1, v.z), false);
-    	//draw the 4 walls
-		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass texture
-		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z), true);
-		drawQuadTex(gl, v, new Float3(v.x+1, v.y, v.z), true);
-		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z+1), true);
-		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z-1), true);
-		drawQuadTex(gl, v, new Float3(v.x-1, v.y, v.z), false);
-		drawQuadTex(gl, v, new Float3(v.x+1, v.y, v.z), false);
-		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z+1), false);
-		drawQuadTex(gl, v, new Float3(v.x, v.y, v.z-1), false);
-    }
-    
-    /**Draw a floor cube in low graphics
-     * @param gl
-     * @param v the position vector of the cube*/
-    private void drawFloorLow(GL2 gl, Float3 v) {
-    	if (!noFloor) {
-    		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    		Float3 colour = new Float3(0.0f, 1.0f, 1.0f); //set the colour of the floor
-	    	drawQuadCol(gl, v, new Float3(v.x, v.y-1, v.z), true, colour, 1.0f);
-			drawQuadCol(gl, v, new Float3(v.x, v.y+1, v.z), true, colour, 1.0f);
-    	}
-    }
-    
-    /**Draw a wall cube in low graphics
-     * @param gl
-     * @param v the position vector of the cube*/
-    private void drawWallLow(GL2 gl, Float3 v) {
-    	//draw the 4 walls
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    	Float3 colour = new Float3(1.0f, 0.0f, 1.0f); //set the colour of the wall
-		drawQuadCol(gl, v, new Float3(v.x-1, v.y, v.z  ), false, colour, 1.0f);
-		drawQuadCol(gl, v, new Float3(v.x+1, v.y, v.z  ), false, colour, 1.0f);
-		drawQuadCol(gl, v, new Float3(v.x,   v.y, v.z+1), false, colour, 1.0f);
-		drawQuadCol(gl, v, new Float3(v.x,   v.y, v.z-1), false, colour, 1.0f);
-		//draw the floor
-		colour = new Float3(0.0f, 1.0f, 1.0f); //set the colour of the floor
-		drawQuadCol(gl, v, new Float3(v.x, v.y-1, v.z), false, colour, 1.0f);
-		drawQuadCol(gl, v, new Float3(v.x, v.y+1, v.z), false, colour, 1.0f);
-    }
-    
-    /**Draw a glass cube in low graphics
-     * @param gl
-     * @param v the position vector of the cube*/
-    private void drawGlassLow(GL2 gl, Float3 v) {
-    	//draw the floor
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-		Float3 colour = new Float3(0.0f, 1.0f, 1.0f); //set the colour of the floor
-		drawQuadCol(gl, v, new Float3(v.x, v.y-1, v.z), true,  colour, 1.0f);
-		drawQuadCol(gl, v, new Float3(v.x, v.y+1, v.z), true,  colour, 1.0f);
-		drawQuadCol(gl, v, new Float3(v.x, v.y-1, v.z), false, colour, 1.0f);
-		drawQuadCol(gl, v, new Float3(v.x, v.y+1, v.z), false, colour, 1.0f);
-    	//draw the 4 walls
-		colour = new Float3(1.0f, 1.0f, 1.0f);
-		drawQuadCol(gl, v, new Float3(v.x-1, v.y, v.z), true,  colour, 0.4f);
-		drawQuadCol(gl, v, new Float3(v.x+1, v.y, v.z), true,  colour, 0.4f);
-		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z+1), true,  colour, 0.4f);
-		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z-1), true,  colour, 0.4f);
-		drawQuadCol(gl, v, new Float3(v.x-1, v.y, v.z), false, colour, 0.4f);
-		drawQuadCol(gl, v, new Float3(v.x+1, v.y, v.z), false, colour, 0.4f);
-		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z+1), false, colour, 0.4f);
-		drawQuadCol(gl, v, new Float3(v.x, v.y, v.z-1), false, colour, 0.4f);
-    }
-    
-    /**TODO: FIX THIS*/
-    private void drawKey(GL2 gl, Float3 v) {
-    	
-    	gl.glPushMatrix(); //push new matrix
-    	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
-    	
-    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
-    	
-    	//apply the world orientation rotation
-    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
-    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
-    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
-    	
-    	keyRot += 0.3f;
-    	gl.glRotatef(keyRot, 0.0f, 1.0f, 0.0f);
-    	
-    	gl.glTranslatef(0.0f, -0.5f, 0.0f);
-    	
-    	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(-0.1f,  0.1f,  0.1f);
-    	gl.glVertex3f(-0.1f,  0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f,  0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(1.0f, 0.3f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(0.1f,  0.1f, -0.1f);
-    	gl.glVertex3f(0.1f,  0.1f,  0.1f);
-    	gl.glVertex3f(0.1f, -0.1f,  0.1f);
-    	gl.glVertex3f(0.1f, -0.1f, -0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(1.0f, 0.0f, 0.3f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f( 0.1f, 0.1f,  0.1f);
-    	gl.glVertex3f( 0.1f, 0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, 0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, 0.1f,  0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(0.75f, 0.0f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f( 0.1f, -0.1f, -0.1f);
-    	gl.glVertex3f( 0.1f, -0.1f,  0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f,  0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(1.0f, 0.3f, 0.2f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f( 0.1f, -0.1f, 0.1f);
-    	gl.glVertex3f( 0.1f,  0.1f, 0.1f);
-    	gl.glVertex3f(-0.1f,  0.1f, 0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f, 0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(0.8f, 0.2f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f( 0.1f,  0.1f, -0.1f);
-    	gl.glVertex3f( 0.1f, -0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f,  0.1f, -0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    	
-    	gl.glPopMatrix();
-    }
-    
-    private void drawPlayerKey(GL2 gl, Float3 v) {
-    	gl.glPushMatrix(); //push new matrix
-    	
-       	gl.glLoadIdentity(); //load the identity matrix
-       	
-    	//draw the paused background
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(-0.08f, -0.04f, -0.5f);
-    	gl.glVertex3f(-0.08f, -0.2f, -0.5f);
-    	gl.glVertex3f( 0.08f, -0.2f, -0.5f);
-    	gl.glVertex3f( 0.08f, -0.04f, -0.5f);
-        gl.glEnd();
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    	
-    	gl.glPopMatrix();
-    }
-    
-    /**Draws an outer box of glass around the level in high graphics
-     * @param gl*/
-    private void drawOuterGlassHigh(GL2 gl) {
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass texture
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(-1.01f,  level.size.y*2-1, -1.0f            );
-        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(-1.01f,  level.size.y*2-1,  level.size.z*2-1);
-        gl.glTexCoord2f(level.size.y, level.size.z); gl.glVertex3f(-1.01f, -1.0f,              level.size.z*2-1);
-        gl.glTexCoord2f(level.size.y, 0.0f        ); gl.glVertex3f(-1.01f, -1.0f,             -1.0f            );
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(level.size.x*2-0.99f,  level.size.y*2-1, -1.0f            );
-        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(level.size.x*2-0.99f, -1.0f,             -1.0f            );
-        gl.glTexCoord2f(level.size.y, level.size.z); gl.glVertex3f(level.size.x*2-0.99f, -1.0f,              level.size.z*2-1);
-        gl.glTexCoord2f(level.size.y, 0.0f        ); gl.glVertex3f(level.size.x*2-0.99f,  level.size.y*2-1,  level.size.z*2-1);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(-1.0f,              level.size.y*2-1, level.size.z*2-0.99f);
-        gl.glTexCoord2f(0.0f,         level.size.y); gl.glVertex3f( level.size.x*2-1,  level.size.y*2-1, level.size.z*2-0.99f);
-        gl.glTexCoord2f(level.size.x, level.size.y); gl.glVertex3f( level.size.x*2-1, -1.0f,             level.size.z*2-0.99f);
-        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(-1.0f,             -1.0f,             level.size.z*2-0.99f);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(-1.0f,             level.size.y*2-1, -1.01f);
-        gl.glTexCoord2f(0.0f,         level.size.y); gl.glVertex3f(-1.0f,            -1.0f,             -1.01f);
-        gl.glTexCoord2f(level.size.x, level.size.y); gl.glVertex3f(level.size.x*2-1, -1.0f,             -1.01f);
-        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(level.size.x*2-1,  level.size.y*2-1, -1.01f);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f(-1.0f,            level.size.y*2-0.99f,  level.size.z*2-1);
-        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(-1.0f,            level.size.y*2-0.99f, -1.0f            );
-        gl.glTexCoord2f(level.size.x, level.size.z); gl.glVertex3f(level.size.x*2-1, level.size.y*2-0.99f, -1.0f            );
-        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f(level.size.x*2-1, level.size.y*2-0.99f,  level.size.z*2-1);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f,         0.0f        ); gl.glVertex3f( level.size.x*2-1, -1.01f, -1.0f            );
-        gl.glTexCoord2f(0.0f,         level.size.z); gl.glVertex3f(-1.0f,             -1.01f, -1.0f            );
-        gl.glTexCoord2f(level.size.x, level.size.z); gl.glVertex3f(-1.0f,             -1.01f,  level.size.z*2-1);
-        gl.glTexCoord2f(level.size.x, 0.0f        ); gl.glVertex3f( level.size.x*2-1, -1.01f,  level.size.z*2-1);
-        gl.glEnd();
-    }
-    
-	/**Draws the space box in high graphics
-	 * @gl*/
-    private void drawSpaceBoxHigh(GL2 gl) {
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[3]); //bind the space texture
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(0.0f, 7.0f); gl.glVertex3f(-100.0f,  100.0f, -100.0f);
-        gl.glTexCoord2f(7.0f, 7.0f); gl.glVertex3f(-100.0f,  100.0f,  100.0f);
-        gl.glTexCoord2f(7.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f,  100.0f);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(100.0f, -100.0f,  100.0f);
-        gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f(100.0f,  100.0f,  100.0f);
-        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(100.0f,  100.0f, -100.0f);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f( 100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f( 100.0f,  100.0f, -100.0f);
-        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(-100.0f,  100.0f, -100.0f);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, 100.0f);
-        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(-100.0f,  100.0f, 100.0f);
-        gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f( 100.0f,  100.0f, 100.0f);
-        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f( 100.0f, -100.0f, 100.0f);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, -100.0f, -100.0f);
-        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f(-100.0f, -100.0f,  100.0f);
-        gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f( 100.0f, -100.0f,  100.0f);
-        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f( 100.0f, -100.0f, -100.0f);
-        gl.glEnd();
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-100.0f, 100.0f, -100.0f);
-        gl.glTexCoord2f(0.0f, 5.0f); gl.glVertex3f( 100.0f, 100.0f, -100.0f);
-        gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f( 100.0f, 100.0f,  100.0f);
-        gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(-100.0f, 100.0f,  100.0f);
-        gl.glEnd();
-    }
-    
-    public void drawPause(GL2 gl) {
-    	gl.glDisable(GL.GL_DEPTH_TEST);
-    	gl.glLoadIdentity(); //load the identity matrix
-    	//draw the paused background
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    	gl.glColor4f(0.0f, 0.0f, 0.0f, 0.85f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-    	gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-    	gl.glVertex3f( 1.0f, -1.0f, -1.0f);
-    	gl.glVertex3f( 1.0f, 1.0f, -1.0f);
-        gl.glEnd();
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        //draw the paused title
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[8]);
-    	gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,  0.37f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  0.25f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  0.25f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,  0.37f, -1.0f);
-        gl.glEnd();
-        //draw the pause resume text
-        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[9]);
-    	gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,  0.15f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  0.07f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  0.07f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,  0.15f, -1.0f);
-        gl.glEnd();
-        //draw the exit text
-        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[10]);
-    	gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,   0.00f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  -0.08f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  -0.08f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,   0.00f, -1.0f);
-        gl.glEnd();
-    	gl.glEnable(GL.GL_DEPTH_TEST);
-    	
-    }
-    
-    /**Prints the current fps to the screen*/
-    public void printFps(int frameTime) {
-    	double currentFps = 60;
-    	if (frameTime > 0) currentFps = 1000/frameTime;
-    	if (currentFps >= 60) currentFps = 60;
-    	System.out.println(currentFps);
-    }
-    
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyDown = e.getKeyCode(); //get the key code
@@ -1187,7 +767,13 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyUp == 16) shift = false; //shift is released
 		if (keyUp == 32) space = false; //space is released
 		if (keyUp == 17) ctrl = false; //ctrl is released
-		if (keyUp == 10) frame.getInputField().requestFocus(); // enter is released
+		if (keyUp == 10) {
+			if (regain) regain = false; //can now lose focus again
+			else {
+				regain = true; //has lost focus and will regain on return
+				frame.getInputField().requestFocus(); // enter is released
+			}
+		}
 	}
 
 	@Override
@@ -1195,6 +781,18 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		int button = e.getButton();
 		if (button == 1) leftMouse = true; //left mouse has been be released
 		else if (button == 3) rightMouse = true; //right mouse has been released
+	}
+	
+	/**Return the player
+	 * @return*/
+	public Player player() {
+		return player;
+	}
+	
+	/**Return the gl
+	 * @return*/
+	public GL2 gl() {
+		return ogl;
 	}
 
 	public void keyTyped(KeyEvent e) {}

@@ -30,7 +30,7 @@ import javax.media.opengl.GLAutoDrawable;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[11]; //where the texture ids are stored
+	private int[] texID = new int[15]; //where the texture ids are stored
 	//The textures
 	private ByteBuffer floorTex;
 	private ByteBuffer wallTex;
@@ -43,13 +43,18 @@ public class Resources {
 	private ByteBuffer pausedTitleTex;
 	private ByteBuffer pausedResumeTex;
 	private ByteBuffer pausedExitTex;
+	private ByteBuffer doorTex;
+	private ByteBuffer doorLightsTex;
+	//TODO: remove these only for testing
+	private ByteBuffer buttonTex;
+	private ByteBuffer lockTex;
 	
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
 	 * @param drawable*/
-	public Resources(GLAutoDrawable drawable) {
-		loadTextures(drawable);
+	public Resources(GL2 gl) {
+		loadTextures(gl);
 	}
 	
 	//METHODS
@@ -62,9 +67,7 @@ public class Resources {
 	
 	/**Loads all the textures that are needed
 	 * @param drawable*/
-	private void loadTextures(GLAutoDrawable drawable) {
-		final GL2 gl = drawable.getGL().getGL2();
-		
+	private void loadTextures(GL2 gl) {
 		gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 1);
         
 		//load the images into the textures
@@ -133,6 +136,35 @@ public class Resources {
 			pausedExitImg = ImageIO.read(new File("resources/gfx/exit.png")); //open the image
 			pausedExitTex = convertImageData(pausedExitImg); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage doorImg = null;
+		try {
+			doorImg = ImageIO.read(new File("resources/gfx/door.png")); //open the image
+			doorTex = convertImageData(doorImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage doorLightsImg = null;
+		try {
+			doorLightsImg = ImageIO.read(new File("resources/gfx/doorLights.png")); //open the image
+			doorLightsTex = convertImageData(doorLightsImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		
+		//TODO: remove these
+		BufferedImage buttonImg = null;
+		try {
+			buttonImg = ImageIO.read(new File("resources/gfx/button.png")); //open the image
+			buttonTex = convertImageData(buttonImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage lockImg = null;
+		try {
+			lockImg = ImageIO.read(new File("resources/gfx/lock.png")); //open the image
+			lockTex = convertImageData(lockImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		
+		
 		
 		//create the texture IDs
 		gl.glGenTextures(texID.length, texID, 0);
@@ -203,6 +235,30 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1004,
             112, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedExitTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[11]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
+            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, doorTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[12]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
+            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, doorLightsTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[13]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
+            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, buttonTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[14]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
+            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, lockTex);
 	}
 	
 	/**Converts a buffered image to an array of byte buffer

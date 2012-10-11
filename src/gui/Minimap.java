@@ -16,7 +16,9 @@ import world.RiemannCube;
 import world.cubes.Cube;
 import world.cubes.Glass;
 import world.cubes.Wall;
+import world.objects.GameObject;
 import world.objects.Player;
+import world.objects.doors.Door;
 
 import client.Client;
 
@@ -149,9 +151,12 @@ public class Minimap extends GLJPanel implements GLEventListener {
 					
 					//set the colour based on the type of cube that is in the tile
 					Cube c = level.getCube(new Int3((int) pos.x, (int) y, (int) z));
+					GameObject obj = c.object();
 					
 					if (c instanceof Wall) gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
 					else if (c instanceof Glass) gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+					else if (obj instanceof Door) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
+								((Door) obj).color().getGreen()/255.0f, ((Door) obj).color().getBlue()/255.0f, 1.0f);
 					else gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 					
 					gl.glBegin(GL2.GL_QUADS);
@@ -202,9 +207,12 @@ public class Minimap extends GLJPanel implements GLEventListener {
 					
 					//set the colour based on the type of cube that is in the tile
 					Cube c = level.getCube(new Int3((int) x, (int) pos.y, (int) z));
+					GameObject obj = c.object();
 					
 					if (c instanceof Wall) gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
 					else if (c instanceof Glass) gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+					else if (obj instanceof Door) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
+								((Door) obj).color().getGreen()/255.0f, ((Door) obj).color().getBlue()/255.0f, 1.0f);
 					else gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 					
 					gl.glBegin(GL2.GL_QUADS);
@@ -255,9 +263,12 @@ public class Minimap extends GLJPanel implements GLEventListener {
 					
 					//set the colour based on the type of cube that is in the tile
 					Cube c = level.getCube(new Int3((int) x, (int) y, (int) pos.z));
+					GameObject obj = c.object();
 					
 					if (c instanceof Wall) gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
 					else if (c instanceof Glass) gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+					else if (obj instanceof Door) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
+								((Door) obj).color().getGreen()/255.0f, ((Door) obj).color().getBlue()/255.0f, 1.0f);
 					else gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 					
 					gl.glBegin(GL2.GL_QUADS);

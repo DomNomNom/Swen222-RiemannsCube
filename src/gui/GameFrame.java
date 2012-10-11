@@ -2,14 +2,20 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.JWindow;
 
 import client.Client;
 
@@ -25,6 +31,8 @@ public class GameFrame extends JFrame {
     private static final long serialVersionUID = 1L;
     
     private Client client; //the game client
+    private JWindow splash; //the splash screen
+    private Resources resources; //the game resources
     private ViewPort view; //the view panel
     private ChatPanel chat; //the chat panel
     private Minimap minimap; //the mini map
@@ -52,8 +60,8 @@ public class GameFrame extends JFrame {
      * Get the ID of the player who is using this Frame.
      */
     public int getID(){
-        //TODO Return player ID here
-        return 0;
+    	if (view == null || view.player() == null) return -1;
+        return view.player().id;
     }
     
     //CONSTUCTOR
@@ -73,15 +81,32 @@ public class GameFrame extends JFrame {
     		if (ip == null || ip.equals("")) ip = "localhost";
     	}
     	
+    	//fist create and draw the splash screen
+    	splash = new JWindow();
+    	JLabel splashImage = new JLabel(new ImageIcon("resources/gfx/splash.png"));
+    	splash.getContentPane().add(splashImage, BorderLayout.CENTER);
+    	//get screen and image size
+    	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    	Dimension labelSize = splashImage.getPreferredSize();
+    	//set the splash to the middle of the screen
+    	splash.setLocation(screenSize.width/2 - (labelSize.width/2),
+    	                    screenSize.height/2 - (labelSize.height/2));
+    	splash.pack();
+    	splash.setVisible(true);    	
+    	
+    	//set window properties
     	setSize(900, 600);
         
+    	//create the viewport
         ViewPort.high = high;
         ViewPort.free = free;
         ViewPort.noFloor = noFloor;
         ViewPort.showFps = showFps;
+        view = new ViewPort(this, 700, 600);
+        
         client = new Client(ip); //create a new client with the ip
         chat = new ChatPanel(this);
-        view = new ViewPort(this, 700, 600);
+        
         client.setChat(chat);
         getContentPane().setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,8 +124,20 @@ public class GameFrame extends JFrame {
         ViewPort.animator.start();
         ChatPanel.animator = new Animator(chat);
         ChatPanel.animator.start();
+        
+        while(!view.waitForData())
+        
         //set the window to be visible
-        setVisible(true);        
+        setVisible(true);
+        
+        //remove the splash screen
+        splash.setVisible(false);
+        splash = null;
+    }
+    
+    /**Removes the splash screen and makes the game window visible*/
+    public void begin() {
+        
     }
     
     /**Quits the game*/
