@@ -30,6 +30,7 @@ import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Wall;
 import world.events.ItemDrop;
+import world.events.ItemEndUse;
 import world.events.ItemPickup;
 import world.events.ItemStartUse;
 import world.events.PlayerMove;
