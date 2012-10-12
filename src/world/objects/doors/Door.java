@@ -15,7 +15,8 @@ import world.objects.Trigger;
 /**
  * A Door conditionally impedes movement to a tile
  * The colour on this is just decorative.
- * It uses poll rather than push architecture.  (push would be more efficient)
+ * It uses poll rather than push architecture.  (push would be preferred but more complex)
+ * A door will stay open once isClosed() has been called while all the triggers where active (locks unlocked) 
  *
  * @author schmiddomi
  */
@@ -24,6 +25,8 @@ public abstract class Door extends GameObject {
     private final Set<Integer> triggerIDs = new HashSet<Integer>();
     private final Map<Integer, Trigger> triggersMap;
 
+    private boolean open = false;
+    
     private Color color;
 
     
@@ -51,16 +54,21 @@ public abstract class Door extends GameObject {
         return "Door";
     }
 
+    /** A door will stay open once isClosed() has been called while all the triggers where active (locks unlocked) */
     public boolean isClosed() {
+        if (open) return false;
     	for (Integer i : triggerIDs) {
     		if (!triggersMap.containsKey(i)) throw new Error("Someone didn't add a trigger to the triggerMap!");
     		if (!triggersMap.get(i).state()) return true;
     	}
+    	open = true;
     	return false;
     	
     }
     @Override
-    /** will block the player (return true) iff any of our triggers are off  */
+    /** will block the player (return true) iff any of our triggers are off
+     * calls isClosed()
+     */
     public boolean blocks(Player p) {
     	return isClosed();
     }

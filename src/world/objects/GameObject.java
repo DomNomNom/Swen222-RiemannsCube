@@ -63,11 +63,11 @@ public abstract class GameObject {
      * returns whether it makes sense to apply the game item to this object
      * returns false by default.
      */
-    public boolean canUse(GameItem i) {
-        return false;
-    }
+    public boolean canUseStart(GameItem item) {  return false;  }
+    public boolean canUseStop( GameItem item) {  return false;  }
     
-    /**
-     * @return null by default  */
-    public GameItem use(GameItem i) { return null; }
+    /** @return null by default  */
+    public GameItem useStart(GameItem item) { return null; }
+    public GameItem useStop (GameItem item) { return null; }
+    
 }

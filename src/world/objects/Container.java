@@ -29,7 +29,7 @@ public class Container extends GameObject{
     }
     
     @Override
-    public boolean canUse(GameItem i){
+    public boolean canUseStart(GameItem i){
         if(i == null)
             return containers.get(color).getItem() != null;
          else 
@@ -38,7 +38,7 @@ public class Container extends GameObject{
     }
 
     @Override
-    public GameItem use(GameItem i){
+    public GameItem useStart(GameItem i){
         if(i == null){
             return containers.get(color).popItem();
         } else {

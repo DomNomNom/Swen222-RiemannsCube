@@ -92,19 +92,32 @@ public abstract class Cube {
         return i; 
     }
     
-    public boolean canUseItem(GameItem i) {
+    public boolean canUseItemStart(GameItem item) {
         for (GameObject o : objects)
-            if (o.canUse(i))
+            if (o.canUseStart(item))
+                return true;
+        return false;
+    }
+    public boolean canUseItemStop(GameItem item) {
+        for (GameObject o : objects)
+            if (o.canUseStop(item))
                 return true;
         return false;
     }
     
-    /** returns a GameItem that is produced by this action (eg. ) */
-    public GameItem useItem(GameItem i) {
+    /** returns a GameItem that is produced by this action */
+    public GameItem useItemStart(GameItem item) {
         for (GameObject o : objects)
-            if (o.canUse(i))
-                return o.use(i);
-        return null;
+            if (o.canUseStart(item))
+                return o.useStart(item);
+        throw new Error("Someone promised me i could use this item ;_;");
+    }
+    /** returns a GameItem that is produced by this action (eg. the lock giving the key back) */
+    public GameItem useItemStop(GameItem item) {
+        for (GameObject o : objects)
+            if (o.canUseStop(item))
+                return o.useStop(item);
+        throw new Error("Someone promised me i could use this item ;_;");
     }
     
     

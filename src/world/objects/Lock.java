@@ -11,7 +11,9 @@ public class Lock extends Trigger {
 
     private Color color;
     public Color color(){ return color; }
-     
+    
+    private Key insertedKey = null;
+    
     // Tells whether this lock opens an exit door
     // Necessary as exit doors don't have colours.
     private boolean isExit = false;
@@ -26,15 +28,33 @@ public class Lock extends Trigger {
     
 
     @Override
-    public boolean canUse(GameItem i) {
+    public boolean canUseStart(GameItem item) {
+        if (!(item instanceof Key)) return false;
+        Key k = (Key) item;
+        if (!k.color().equals(color)) return false; // must have the same 
         if (currentState) return false; // we can't interact once we have used the key
-        if (i instanceof Key) return true;
-        return false;
+        return true;
     }
     @Override
-    public GameItem use(GameItem i) {
+    public boolean canUseStop(GameItem item) {
+        if (!currentState) return false; // we can't pull anything out if we don't have anything
+        if (item != null) return false; // they shouldn't try to insert anything
+        if (this.insertedKey == null) throw new Error("OMG!"); // sanity check
+        return true;
+    }
+    @Override
+    public GameItem useStart(GameItem item) {
+        insertedKey = (Key)item;
         currentState = true;
-        return null; // we consume the key
+        return null; // we don't give the key back yet
+    }
+    @Override
+    public GameItem useStop(GameItem item) {
+        insertedKey = (Key)item;
+        currentState = true;
+        Key ret = insertedKey;
+        insertedKey = null;
+        return ret; // we give the key back as we are nice locks :)
     }
     
     @Override

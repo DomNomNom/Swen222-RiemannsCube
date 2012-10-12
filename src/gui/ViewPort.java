@@ -30,9 +30,9 @@ import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Wall;
 import world.events.ItemDrop;
-import world.events.ItemEndUse;
+import world.events.ItemUseStop;
 import world.events.ItemPickup;
-import world.events.ItemStartUse;
+import world.events.ItemUseStart;
 import world.events.PlayerMove;
 import world.events.PlayerRelPos;
 import world.objects.Button;
@@ -377,13 +377,13 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     		}
     	}
     	if (space) {
-    		if (level.isValidAction(new ItemStartUse(player.id))) { //check if drop is valid
-    			frame.getClient().push(new ItemStartUse(player.id));
+    		if (level.isValidAction(new ItemUseStart(player.id))) { //check if drop is valid
+    			frame.getClient().push(new ItemUseStart(player.id));
     		}
     	}
     	if (spaceReleased) { //release space
-    		if (level.isValidAction(new ItemEndUse(player.id))) { //check if drop is valid
-    			frame.getClient().push(new ItemEndUse(player.id));
+    		if (level.isValidAction(new ItemUseStop(player.id))) { //check if drop is valid
+    			frame.getClient().push(new ItemUseStop(player.id));
     		}
     	}
     	eDown = false;
