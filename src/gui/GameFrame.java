@@ -3,19 +3,18 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JWindow;
 
 import client.Client;
 
@@ -31,11 +30,9 @@ public class GameFrame extends JFrame {
     private static final long serialVersionUID = 1L;
     
     private Client client; //the game client
-    private JWindow splash; //the splash screen
-    private Resources resources; //the game resources
+    private JFrame splash; //the splash screen
     private ViewPort view; //the view panel
     private ChatPanel chat; //the chat panel
-    private Minimap minimap; //the mini map
     
     private String ip; //the IP address of the level
     private String playerName; //Name of the player who ran this frame
@@ -45,6 +42,7 @@ public class GameFrame extends JFrame {
     public static boolean free = false; //is true when free camera is enabled
     public static boolean noFloor = false; //is true to not render floor
     public static boolean showFps = false; //is true to display fps
+    public static boolean waitAtSplash = true;
     
     public ViewPort getViewPort(){
         return view;
@@ -95,10 +93,21 @@ public class GameFrame extends JFrame {
     	    playerName = JOptionPane.showInputDialog("Enter your name:");
     	}
     	
-    	//fist create and draw the splash screen
-    	splash = new JWindow();
+    	//first create and draw the splash screen
+    	KeyListener splashListner = new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {GameFrame.waitAtSplash = false;}
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+    	};
+    	
+    	splash = new JFrame();
+    	splash.setUndecorated(true);
     	JLabel splashImage = new JLabel(new ImageIcon("resources/gfx/splash.png"));
-    	splash.getContentPane().add(splashImage, BorderLayout.CENTER);
+    	splash.addKeyListener(splashListner);
+    	splash.add(splashImage, BorderLayout.CENTER);
     	//get screen and image size
     	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     	Dimension labelSize = splashImage.getPreferredSize();
@@ -106,7 +115,8 @@ public class GameFrame extends JFrame {
     	splash.setLocation(screenSize.width/2 - (labelSize.width/2),
     	                    screenSize.height/2 - (labelSize.height/2));
     	splash.pack();
-    	splash.setVisible(true);    	
+    	splash.setVisible(true);
+    	splash.requestFocus();
     	
     	//set window properties
     	setSize(900, 600);
@@ -139,7 +149,7 @@ public class GameFrame extends JFrame {
         ChatPanel.animator = new Animator(chat);
         ChatPanel.animator.start();
         
-        while(!view.waitForData())
+        while(!view.waitForData() || waitAtSplash);
         
         //set the window to be visible
         setVisible(true);

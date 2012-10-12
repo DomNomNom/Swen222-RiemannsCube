@@ -299,7 +299,21 @@ public class Graphics {
     	gl.glTranslatef(0.0f, -0.5f, 0.0f);
     	
     	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+    	
     	gl.glBegin(GL2.GL_QUADS);
+    	gl.glVertex3f(-0.191898f,  0.216380f,  0.028668f);
+    	gl.glVertex3f(-0.191898f, -0.216380f, 0.028668f);
+    	gl.glVertex3f(-0.191898f, 0.216380f, -0.028668f);
+    	gl.glVertex3f(-0.191898f, -0.216380f, -0.028668f);
+    	gl.glEnd();
+    	
+    	
+    	//v -0.191898 0.027047 0.000000
+    	//v -0.191898 -0.027047 0.000000
+    	//v 0.593430 0.081142 -0.000001
+    	//v 0.593430 -0.081142 -0.000001
+    	
+    	/*gl.glBegin(GL2.GL_QUADS);
     	gl.glVertex3f(-0.1f,  0.1f,  0.1f);
     	gl.glVertex3f(-0.1f,  0.1f, -0.1f);
     	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
@@ -344,7 +358,7 @@ public class Graphics {
     	gl.glVertex3f( 0.1f, -0.1f, -0.1f);
     	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
     	gl.glVertex3f(-0.1f,  0.1f, -0.1f);
-    	gl.glEnd();
+    	gl.glEnd();*/
     	
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	

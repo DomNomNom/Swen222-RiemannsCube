@@ -102,6 +102,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean pause = false; //is true when the game is paused
     private boolean firstFocus = false; //waits for the first focus
     private boolean regain = false; //is true when focus has just been regained
+    private boolean waitAtSplash = true; //is true while the game should wait at the splash screen
     
     private Float3 camPos = new Float3(); //the position of the camera
     
@@ -247,7 +248,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 				//Process movement and rotation
         		processAction();
         		processRotation();
-			    if (!rotationAni) processMovement();//if rotating you can't move
+			    if (!rotationAni && !spaceHeld) processMovement();//if rotating you can't move
 			    updateCamera(); //update the camera position
 			    processTurning();
 
@@ -773,12 +774,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyUp == 83 && forBack == 2) forBack = 0; //s is released
 		if (keyUp == 65 && leftRight == 1) leftRight = 0; //a is released
 		if (keyUp == 68 && leftRight == 2) leftRight = 0; //d is released
-		if (keyUp == 16) {
-			shift = false; //shift is released
+		if (keyUp == 16) shift = false; //shift is released
+		if (keyUp == 32) { //space is released
+			space = false;
 			spaceHeld = false;
 			spaceReleased = false;
 		}
-		if (keyUp == 32) space = false; //space is released
 		if (keyUp == 17) ctrl = false; //ctrl is released
 		if (keyUp == 10) {
 			if (regain) regain = false; //can now lose focus again
