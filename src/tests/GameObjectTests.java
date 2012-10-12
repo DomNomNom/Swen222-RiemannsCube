@@ -12,7 +12,7 @@ import world.RiemannCube;
 import world.cubes.Cube;
 import world.events.Action;
 import world.events.ItemPickup;
-import world.events.ItemUse;
+import world.events.ItemStartUse;
 import world.events.PlayerMove;
 import world.objects.Container;
 import world.objects.Lock;
@@ -158,7 +158,11 @@ public class GameObjectTests {
 
         assertTrue(world.applyAction(new ItemPickup(0                 )));
         assertTrue(world.applyAction(new PlayerMove(0, lockCube.pos() )));
-        assertTrue(world.applyAction(new ItemUse   (0                 ))); // put the key in the lock (should unlock door)
+        assertTrue(world.applyAction(new ItemStartUse   (0                 ))); // put the key in the lock (should unlock door)
+        //lock unlocked
+        //door should open
+        //unUse
+        //lock locked again (door still open)
         assertTrue(world.applyAction(new PlayerMove(0, spwnCube.pos() ))); // move back
         assertTrue(world.applyAction(new PlayerMove(0, doorCube.pos() ))); // and now we're in the door cube :D
         

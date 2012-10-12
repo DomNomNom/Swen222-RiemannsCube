@@ -51,14 +51,17 @@ public abstract class Door extends GameObject {
         return "Door";
     }
 
-    
+    public boolean isClosed() {
+    	for (Integer i : triggerIDs) {
+    		if (!triggersMap.containsKey(i)) throw new Error("Someone didn't add a trigger to the triggerMap!");
+    		if (!triggersMap.get(i).state()) return true;
+    	}
+    	return false;
+    	
+    }
     @Override
     /** will block the player (return true) iff any of our triggers are off  */
     public boolean blocks(Player p) {
-        for (Integer i : triggerIDs) {
-            if (!triggersMap.containsKey(i)) throw new Error("Someone didn't add a trigger to the triggerMap!");
-            if (!triggersMap.get(i).state()) return true;
-        }
-        return false;
+    	return isClosed();
     }
 }

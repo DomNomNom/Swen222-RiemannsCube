@@ -31,6 +31,7 @@ import world.cubes.Glass;
 import world.cubes.Wall;
 import world.events.ItemDrop;
 import world.events.ItemPickup;
+import world.events.ItemStartUse;
 import world.events.PlayerMove;
 import world.events.PlayerRelPos;
 import world.objects.Button;
@@ -89,6 +90,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private int leftRight = 0; //0: none, 1: left, 2: right
     private boolean shift = false; //is true if shift is pressed
     private boolean space = false; //is true if space is pressed
+    private boolean spaceHeld = false;
+    private boolean spaceReleased = false;
     private boolean ctrl = false; //is true if crtl is pressed
     private boolean eDown = false; //if the key is pressed
     private boolean fDown = false; //if the f key is pressed
@@ -121,7 +124,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     //rendering lists
     private List<Float3> glassRender; //a list that hold all the glass to render
     private List<Pair<Float3, Integer>> playerRender; // a list of players to be rendered
-    private List<Pair<Float3, Color>> doorRender; //a list of doors to be rendered
     private List<Pair<Float3, Color>> buttonRender; //a list of buttons to be rendered
     private List<Pair<Float3, Color>> lockRender; //a list of locks to be rendered
 
@@ -192,7 +194,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         updateCamera(); //update the camera position
         
         Music music = new Music(64000L);
-        //music.playSound("resources/audio/music/Cubism.wav");
+        music.playSound("resources/audio/music/Cubism.wav");
         
         requestFocus();
     }
@@ -282,7 +284,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //initialise rendering lists
         glassRender = new ArrayList<Float3>(); //create the glass render list
         playerRender = new ArrayList<Pair<Float3, Integer>>(); //create the player render list
-        doorRender = new ArrayList<Pair<Float3, Color>>(); //create the the door render list
         buttonRender = new ArrayList<Pair<Float3, Color>>(); //create the button render list)
         lockRender = new ArrayList<Pair<Float3, Color>>(); //create the lock render list
         
@@ -318,7 +319,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         			//draw the objects in the cubes
         			GameObject obj = c.object(); //gets the object that the cube contains
         			
-        			if (obj instanceof Door) doorRender.add(new Pair<Float3, Color>(v, ((Door) obj).color()));
+        			if (obj instanceof Door && ((Door) obj).isClosed()) Graphics.drawDoor(v, ((Door) obj).color());
         			else if (obj instanceof Key) Graphics.drawKey(v);
         			else if (obj instanceof Button) buttonRender.add(new Pair<Float3, Color>(v, ((Button) obj).color()));
         			else if(obj instanceof Lock) lockRender.add(new Pair<Float3, Color>(v, ((Lock) obj).color()));
@@ -332,11 +333,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //draw the players
         for (Pair<Float3, Integer> p : playerRender) {
         	Graphics.drawPlayer(p.first(), camPos, p.second()); //TODO: need a triple here to draw a player
-        }
-        
-        //draw the doors
-        for (Pair<Float3, Color> p : doorRender) {
-        	Graphics.drawDoor(p.first(), p.second());
         }
         
         //draw buttons
@@ -369,21 +365,30 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     /**processes the player's actions like picking up and dropping items*/
     private void processAction() {
-    	if (eDown) {
-    		GameObject obj = level.getCube(player.pos()).object(); //get the object in the square
-    		if (obj instanceof Key) { //if the cube contains a key pick it up
-	        	if (level.isValidAction(new ItemPickup(player.id))) {
-	        		frame.getClient().push(new ItemPickup(player.id));
-	        	}
-    		}
+    	if (eDown) { //pick up and object
+        	if (level.isValidAction(new ItemPickup(player.id))) {
+        		frame.getClient().push(new ItemPickup(player.id));
+        	}
     	}
     	if (fDown) { //drop an object into a square
     		if (level.isValidAction(new ItemDrop(player.id))) { //check if drop is valid
     			frame.getClient().push(new ItemDrop(player.id));
     		}
     	}
+    	if (space) {
+    		if (level.isValidAction(new ItemStartUse(player.id))) { //check if drop is valid
+    			frame.getClient().push(new ItemStartUse(player.id));
+    		}
+    	}
+    	if (spaceReleased) { //release space
+    		if (level.isValidAction(new ItemEndUse(player.id))) { //check if drop is valid
+    			frame.getClient().push(new ItemEndUse(player.id));
+    		}
+    	}
     	eDown = false;
     	fDown = false;
+    	space = false;
+    	spaceReleased = false;
     }
     
     /**Process the movement*/
@@ -746,7 +751,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyDown == 65 && leftRight == 0) leftRight = 1; //a is down
 		if (keyDown == 68 && leftRight == 0) leftRight = 2; //d is down
 		if (keyDown == 16) shift = true; //shift is down
-		if (keyDown == 32) space = true; //space is down
+		if (keyDown == 32) {
+			space = true; //space is down
+			spaceHeld = true;
+		}
 		if (keyDown == 17) ctrl = true; //ctrl is down
 		if (keyDown == 69) eDown = true; //the e key is down
 		if (keyDown == 70) fDown = true; //the f key is down
@@ -764,7 +772,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyUp == 83 && forBack == 2) forBack = 0; //s is released
 		if (keyUp == 65 && leftRight == 1) leftRight = 0; //a is released
 		if (keyUp == 68 && leftRight == 2) leftRight = 0; //d is released
-		if (keyUp == 16) shift = false; //shift is released
+		if (keyUp == 16) {
+			shift = false; //shift is released
+			spaceHeld = false;
+			spaceReleased = false;
+		}
 		if (keyUp == 32) space = false; //space is released
 		if (keyUp == 17) ctrl = false; //ctrl is released
 		if (keyUp == 10) {

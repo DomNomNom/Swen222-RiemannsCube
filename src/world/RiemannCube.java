@@ -14,7 +14,7 @@ import world.events.Action;
 import world.events.ItemAction;
 import world.events.ItemDrop;
 import world.events.ItemPickup;
-import world.events.ItemUse;
+import world.events.ItemStartUse;
 import world.events.PlayerMove;
 import world.events.PlayerSpawning;
 import world.events.PlayerRelPos;
@@ -120,7 +120,7 @@ public class RiemannCube {
         Cube pos = p.cube();
         if (a instanceof ItemPickup) return pos.hasItem() && !p.isHoldingItem(); 
         if (a instanceof ItemDrop  ) return p.isHoldingItem() && pos.canAddObject(p.item());
-        if (a instanceof ItemUse   ) return pos.canUseItem(p.item());
+        if (a instanceof ItemStartUse   ) return pos.canUseItem(p.item());
         
         return false;
     }
@@ -175,7 +175,7 @@ public class RiemannCube {
             cube.addObject(p.item());
             p.setItem(null);
         }
-        else if (a instanceof ItemUse)  p.setItem(cube.useItem(p.item()));
+        else if (a instanceof ItemStartUse)  p.setItem(cube.useItem(p.item()));
         else  throw new Error("unhandeled ItemAction!");
     }
     

@@ -12,7 +12,7 @@ import world.cubes.Cube;
 import world.events.Action;
 import world.events.ItemDrop;
 import world.events.ItemPickup;
-import world.events.ItemUse;
+import world.events.ItemStartUse;
 import world.events.PlayerMove;
 import world.events.PlayerSpawning;
 import world.objects.Container;
@@ -66,7 +66,7 @@ public class ActionTests {
         
         // these are the actions we are going to test
         Action pickup = new ItemPickup(0);
-        Action use    = new ItemUse   (0); // this is both pickup and put in
+        Action use    = new ItemStartUse   (0); // this is both pickup and put in
         Action drop   = new ItemDrop  (0);
 
         assertTrue (world.isValidAction(pickup));
