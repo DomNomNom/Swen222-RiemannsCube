@@ -53,6 +53,8 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
 
     private BufferedImage background;
     private ChatMessage message;
+
+    //TODO If there is time allow for different colors for different players
     private Map<Integer, Color> playerColors = new HashMap<Integer, Color>();
     
     public ChatMessage getChat() {
@@ -60,13 +62,9 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     }
 
     public void addMessage(ChatMessage message) {
-        Color col = playerColors.get(message.speakerID);
-        chatArea.setForeground(col);
-        
-        
         String name = frame.getClient().getWorld().players.get(message.speakerID).name();
         
-        chatArea.append("     [" + name + "]: " + message.message + "\n");
+        chatArea.append("[" + name + "]: " + message.message + "\n");
     }
 
     public static Animator animator; // the animator makes sure the chat is
@@ -131,9 +129,10 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         // Create and add the Text area.
         chatArea = new JTextArea();
         chatArea.setBackground(new Color(0, 0, 0, 0));
-        chatArea.setForeground(Color.green.brighter());
+        chatArea.setForeground(Color.GREEN.brighter()); //TODO Change if there is time. This by default will set text always green
+        chatArea.setLineWrap(true);
         chatArea.setEditable(false);
-        
+
         // Initialise Colors in map
         playerColors.put(0, Color.RED.brighter());
         playerColors.put(1, new Color(148, 0, 211));

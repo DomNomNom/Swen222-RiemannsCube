@@ -42,5 +42,4 @@ public class HostGame {
         window.init();
         window.execute();
 	}
-	
 }
