@@ -43,6 +43,7 @@ public class GameFrame extends JFrame {
     public static boolean noFloor = false; //is true to not render floor
     public static boolean showFps = false; //is true to display fps
     public static boolean waitAtSplash = true;
+    public static boolean sound = true;
     
     public ViewPort getViewPort(){
         return view;
@@ -126,6 +127,7 @@ public class GameFrame extends JFrame {
         ViewPort.free = free;
         ViewPort.noFloor = noFloor;
         ViewPort.showFps = showFps;
+        ViewPort.sound = sound;
         view = new ViewPort(this, 700, 600);
         
         client = new Client(ip, playerName); //create a new client with the ip

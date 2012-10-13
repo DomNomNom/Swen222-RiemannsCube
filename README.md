@@ -11,6 +11,8 @@ David:
 
 better chat panel, dialog panels
 obj file loading
+fix low graphics
+containers
 door animation
 transparency drawing
 players fix
@@ -20,7 +22,7 @@ planets
 
 ======================
 Alex:
-
+ df
 -hub design
 -fonts
 -dialog appearence
@@ -36,4 +38,5 @@ fix relative movement
 light source obj
 Markers
 Traps
+loading/saving
 

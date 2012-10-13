@@ -40,6 +40,7 @@ public class HostGame {
 		GameFrame.free = false;
 		GameFrame.noFloor = false;
 		GameFrame.showFps = false;
+		GameFrame.sound = false;
     	GameFrame window = new GameFrame("localhost");
         window.init();
         window.execute();

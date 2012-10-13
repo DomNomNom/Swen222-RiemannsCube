@@ -69,6 +69,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     public static boolean free = false; //is true when free camera is enabled
     public static boolean noFloor = false; //is true when the floor should not show
     public static boolean showFps = false; //is true to display fps
+    public static boolean sound = true; //is true when to play sound
     
     //openGL
     private GL2 ogl;
@@ -109,7 +110,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean pause = false; //is true when the game is paused
     private boolean firstFocus = false; //waits for the first focus
     private boolean regain = false; //is true when focus has just been regained
-    private boolean waitAtSplash = true; //is true while the game should wait at the splash screen
     
     private Float3 camPos = new Float3(); //the position of the camera
     
@@ -202,8 +202,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         updateCamera(); //update the camera position
         
-        Music music = new Music(64000L);
-        music.playSound("resources/audio/music/Cubism.wav");
+        if (sound) { //play the music
+	        Music music = new Music(64000L);
+	        music.playSound("resources/audio/music/Cubism.wav");
+        }
         
         requestFocus();
     }
@@ -331,8 +333,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         			if (obj instanceof Door) {
         				if (((Door) obj).isClosed()) Graphics.drawDoor(v, ((Door) obj).color());
         				else if (((Door) obj).playSound()) {
-        					Music doorSound = new Music();
-        					doorSound.playSound("resources/audio/fx/door.wav");
+        					if (sound) { //play door sound
+	        					Music doorSound = new Music();
+	        					doorSound.playSound("resources/audio/fx/door.wav");
+        					}
         					((Door) obj).soundPlayed();
         				}
         			}
@@ -394,8 +398,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	if (space) {
     		if (level.isValidAction(new ItemUseStart(player.id))) { //check if drop is valid
     			frame.getClient().push(new ItemUseStart(player.id));
-    			Music lockSound = new Music();
-    			lockSound.playSound("resources/audio/fx/lock.wav");
+    			if (sound) { //play lock sound
+	    			Music lockSound = new Music();
+	    			lockSound.playSound("resources/audio/fx/lock.wav");
+    			}
     		}
     	}
     	if (spaceReleased) { //release space
@@ -810,8 +816,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		}
 		if (keyUp == 17) ctrl = false; //ctrl is released
 		if (keyUp == 10) {
-			Music chatSound = new Music();
-			chatSound.playSound("resources/audio/fx/chat.wav");
+			if (sound) { //play chat sound
+				Music chatSound = new Music();
+				chatSound.playSound("resources/audio/fx/chat.wav");
+			}
 			if (regain) regain = false; //can now lose focus again
 			else {
 				regain = true; //has lost focus and will regain on return
@@ -823,8 +831,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int button = e.getButton();
-		Music rotateSound = new Music();
-		rotateSound.playSound("resources/audio/fx/rotate.wav");
+		if (sound) { //play rotation sound
+			Music rotateSound = new Music();
+			rotateSound.playSound("resources/audio/fx/rotate.wav");
+		}
 		if (button == 1) leftMouse = true; //left mouse has been be released
 		else if (button == 3) rightMouse = true; //right mouse has been released
 	}
