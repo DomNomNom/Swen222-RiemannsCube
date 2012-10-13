@@ -108,8 +108,8 @@ public class XMLParsingTests {
     /** very descriptive name */
     public void testStuff() {
         RiemannCube world = WorldTests.generateWorld();
-        assertTrue(world.equals(reParse(world))); // the base case
-        assertTrue(world != reParse(world)); // a small test of re-parse
+//        assertTrue(world.equals(reParse(world))); // the base case
+//        assertTrue(world != reParse(world)); // a small test of re-parse
         
         // now lets add some more suff
         Cube keyCube  = world.getCube(0, 0, 0);
@@ -120,15 +120,20 @@ public class XMLParsingTests {
         Trigger lock = new Lock(lockCube, lockID, world.triggers, Color.RED);
         world.triggers.put(1, lock);
         lockCube.addObject(lock);
-        assertTrue(world.equals(reParse(world)));
+//        assertTrue(world.equals(reParse(world)));
         
         Door door = new LevelDoor(doorCube, world.triggers, Color.RED);
         doorCube.addObject(door);
         door.addTrigger(lock.getID());
+        
+        assertEquals(world.toString(), reParse(world).toString());
+        
         assertTrue(world.equals(reParse(world)));
         
         Key key = new Key(keyCube, Color.RED);
         keyCube.addObject(key);
+
+        
         assertTrue(world.equals(reParse(world)));
     }
     

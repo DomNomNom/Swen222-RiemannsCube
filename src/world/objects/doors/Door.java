@@ -90,7 +90,7 @@ public abstract class Door extends GameObject {
     public boolean equals(Object o) {
         if (!super.equals(o)) return false;
         Door other = (Door) o;
-        if (triggerIDs.equals(other.triggerIDs)) return false;
+        if (!triggerIDs.equals(other.triggerIDs)) return false;
         return true;
     }
 }
