@@ -119,7 +119,8 @@ public class GameFrame extends JFrame {
     	}
 
     	if(playerName == null){
-    	    playerName = JOptionPane.showInputDialog("Enter your name:");
+    	    playerName = (String)JOptionPane.showInputDialog(this, "Your Name", "Enter your name:",
+                    JOptionPane.PLAIN_MESSAGE, null, null, null);
     	}
     	
     	//first create and draw the splash screen
