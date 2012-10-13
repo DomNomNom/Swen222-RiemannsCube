@@ -25,6 +25,7 @@ public class Graphics {
 	private static RiemannCube level = null; //a reference to the level
 	private static Player player = null; //a reference to the player
 	private static int portalRot = 0; //the rotation of the portals
+	private static float planetRot = 0.0f; //the rotation of the planets
 	
 	//METHODS
     /**Draws a openGL textured quad
@@ -91,9 +92,13 @@ public class Graphics {
     	gl.glScalef(scale, scale, scale);
     	
     	//apply the world orientation rotation
-    	gl.glRotatef(player.rotation.y*scale, 0.0f, 1.0f, 0.0f);
-    	gl.glRotatef(player.rotation.x*scale, 1.0f, 0.0f, 0.0f);
-    	gl.glRotatef(player.rotation.z*scale, 0.0f, 0.0f, 1.0f);
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glRotatef(scale*90.0f+270.0f, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(scale*90.0f+270.0f, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(scale*90.0f+270.0f, 0.0f, 0.0f, 1.0f);
     	
     	//apply the rotations
     	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
@@ -585,6 +590,55 @@ public class Graphics {
         gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,   0.00f, -1.0f);
         gl.glEnd();
     	gl.glEnable(GL.GL_DEPTH_TEST);
+    } 
+    
+    /**Draws a planet
+     * @param v the position vector of the planet
+     * @param rot the initial rotation of the planet
+     * @param radius the radius of the planet
+     * @param texID the planet's texture id
+     */
+	public static void drawPlanet(Float3 v, Float3 rot, int radius, int texID) {
+		gl.glPushMatrix();
+		gl.glTranslatef(v.x, v.y,v.z);
+		gl.glRotatef(rot.x, 1, 0, 0);
+		gl.glRotatef(rot.y, 0, 1, 0);
+		gl.glRotatef(rot.z, 0, 0, 1);
+		gl.glRotatef(planetRot, 0, 1, 0);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[texID]);
+		Graphics.drawSphere(radius, 50, 50);
+		gl.glPopMatrix();
+	}
+    
+	/**Draws a sphere
+	 * @param r the radius of the sphere
+	 * @param lats the number of latitude polygons
+	 * @param longs the number of longitude polygons
+	 */
+    public static void drawSphere(float r, int lats, int longs) {
+		for(int i = 1; i <= lats; i++) {
+			float lat0 = (float) (Math.PI*(-0.5f+(float)(i-1)/lats));
+			float z0  = (float) Math.sin(lat0);
+			float zr0 =  (float) Math.cos(lat0);
+			
+			float lat1 = (float) (Math.PI * (-0.5+(float)i/lats));
+			float z1 = (float) Math.sin(lat1);
+			float zr1 = (float) Math.cos(lat1);
+			
+			gl.glBegin(GL2.GL_QUAD_STRIP);
+			for(int j = 0; j <= longs; j++) {
+				float lng = (float) (2*Math.PI*(float)(j-1)/longs);
+				float x = (float) Math.cos(lng);
+				float y = (float) Math.sin(lng);
+				gl.glNormal3f(r*x*zr1, r*y*zr1, r*z1);
+				gl.glTexCoord2f((x*zr1)/2.0f, (y*zr1)/2.0f+0.5f);
+				gl.glVertex3f(r*x*zr1, r*y*zr1, r*z1);
+				gl.glNormal3f(r*x*zr0, r*y*zr0, r*z0);
+				gl.glTexCoord2f((x*zr0)/2.0f, (y*zr0)/2.0f+0.5f);
+				gl.glVertex3f(r*x*zr0, r*y*zr0, r*z0);
+			}
+			gl.glEnd();  
+		}
     }
     
     /**Prints the current fps to the screen*/
@@ -600,6 +654,12 @@ public class Graphics {
     public static void rotatePortal() {
     	++portalRot;
     	if (portalRot >= 360) portalRot = 1;
+    }
+    
+    /**Rotates the planets*/
+    public static void rotatePlanets() {
+    	planetRot += 0.001f;
+    	if (planetRot >= 360) planetRot = 0.001f;
     }
     
 	//SETTERS
@@ -622,4 +682,5 @@ public class Graphics {
 	public static void setPlayer(Player player) {
 		Graphics.player = player;
 	}
+
 }

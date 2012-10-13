@@ -29,7 +29,7 @@ import javax.media.opengl.GL2;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[13]; //where the texture ids are stored
+	private int[] texID = new int[17]; //where the texture ids are stored
 	//The 3D objects
 	private Object3D keyObj;
 	private Object3D buttonObj;
@@ -49,6 +49,10 @@ public class Resources {
 	private ByteBuffer pausedExitTex;
 	private ByteBuffer doorTex;
 	private ByteBuffer portalTex;
+	private ByteBuffer planet1Tex;
+	private ByteBuffer planet2Tex;
+	private ByteBuffer planet3Tex;
+	private ByteBuffer planet4Tex;
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
@@ -149,6 +153,30 @@ public class Resources {
 			portalImg = ImageIO.read(new File("resources/gfx/portal.png")); //open the image
 			portalTex = convertImageData(portalImg); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage planet1Img = null;
+		try {
+			planet1Img = ImageIO.read(new File("resources/gfx/planet1.png")); //open the image
+			planet1Tex = convertImageData(planet1Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage planet2Img = null;
+		try {
+			planet2Img = ImageIO.read(new File("resources/gfx/planet2.png")); //open the image
+			planet2Tex = convertImageData(planet2Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage planet3Img = null;
+		try {
+			planet3Img = ImageIO.read(new File("resources/gfx/planet3.png")); //open the image
+			planet3Tex = convertImageData(planet3Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage planet4Img = null;
+		try {
+			planet4Img = ImageIO.read(new File("resources/gfx/planet4.png")); //open the image
+			planet4Tex = convertImageData(planet4Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
 
 		
 		//create the texture IDs
@@ -232,6 +260,30 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1000,
             1000, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, portalTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[13]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1600,
+            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, planet1Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[14]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1600,
+            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, planet2Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[15]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1600,
+            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, planet3Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[16]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1600,
+            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, planet4Tex);
 	}
 	
 	/**Return an object that matches the given string

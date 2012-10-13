@@ -9,11 +9,11 @@ Swen222-RiemannsCube
 ======================
 David:
 
+lock view
 containers
 transparency drawing
 players fix
 lighting
-planets
 more ambient sounds
 ======================
 

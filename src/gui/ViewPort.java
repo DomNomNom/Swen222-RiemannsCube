@@ -7,9 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +29,6 @@ import world.cubes.Cube;
 import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Wall;
-import world.events.FullStateUpdate;
 import world.events.ItemDrop;
 import world.events.ItemUseStop;
 import world.events.ItemPickup;
@@ -49,8 +45,6 @@ import world.objects.doors.ExitDoor;
 import world.objects.items.Key;
 
 import com.jogamp.opengl.util.Animator;
-
-import data.XMLParser;
 
 /**
  * This is the pane that displays all player's view of the game
@@ -134,8 +128,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     //rendering lists
     private List<Float3> glassRender; //a list that hold all the glass to render
     private List<Pair<Float3, Integer>> playerRender; // a list of players to be rendered
-    private List<Pair<Float3, Color>> buttonRender; //a list of buttons to be rendered
-    private List<Pair<Float3, Color>> lockRender; //a list of locks to be rendered
 
     //CONSTRUCTOR
     /** Creates a new view port
@@ -190,6 +182,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         gl.glEnable(GL.GL_TEXTURE_2D); //enable 2d textures
         
+        
         //get the level and the player from the client from the client
         frame.getClient().update(17); //update the client for the first time
         level = frame.getClient().getWorld();
@@ -198,6 +191,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //set the graphics fields
         Graphics.setResources(resources);
         Graphics.setHigh(high);
+        
+        
         
         currentTime = System.currentTimeMillis(); //update the time before starting
         
@@ -297,8 +292,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //initialise rendering lists
         glassRender = new ArrayList<Float3>(); //create the glass render list
         playerRender = new ArrayList<Pair<Float3, Integer>>(); //create the player render list
-        buttonRender = new ArrayList<Pair<Float3, Color>>(); //create the button render list)
-        lockRender = new ArrayList<Pair<Float3, Color>>(); //create the lock render list
         
         //iterate through the level and draw all the tiles
         for (int x = 0; x < level.size.x; ++x) {
@@ -340,7 +333,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         				else {
         					float doorAnimate = ((Door) obj).animate(); //animate the door
         					if (doorAnimate != -1) Graphics.drawDoorHigh(v, ((Door) obj).color(), doorAnimate);
-        					if (obj instanceof EntranceDoor || obj instanceof ExitDoor) { //draw a portal
+        					else if (obj instanceof EntranceDoor || obj instanceof ExitDoor) { //draw a portal
         						if (high) Graphics.drawPortal(v); 
         					}
         					
@@ -354,39 +347,46 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         				}
         			}
         			else if (obj instanceof Key) Graphics.drawKey(v, ((Key) obj));
-        			else if (obj instanceof Button) buttonRender.add(new Pair<Float3, Color>(v, ((Button) obj).color()));
-        			else if(obj instanceof Lock) lockRender.add(new Pair<Float3, Color>(v, ((Lock) obj).color()));
+        			else if (obj instanceof Button) Graphics.drawButton(v,((Button) obj).color());
+        			else if(obj instanceof Lock)  Graphics.drawLock(v,((Lock) obj).color());
         			}
         		}
         	}
         }
         
+        //draw some planets
+        if (high) {
+	        Graphics.drawPlanet(new Float3(-13, -48, 17), new Float3(90, 0, 0), 8, 13);
+	        Graphics.drawPlanet(new Float3(76, -23, 64), new Float3(0, 45, 0), 10, 14);
+	        Graphics.drawPlanet(new Float3(12, 54, -76), new Float3(0, 0, 0), 12, 15);
+	        Graphics.drawPlanet(new Float3(-34, -1, 12), new Float3(0, 90, 0), 12, 16);
+        }
+        Graphics.rotatePlanets();
+        
+        
         //draw the glass around the outside of the cube
         if (high) Graphics.drawOuterGlassHigh();
         
-        //draw the players
-        for (Pair<Float3, Integer> p : playerRender) {
-        	Graphics.drawPlayer(p.first(), camPos, p.second());
-        }
-        
-        //draw buttons
-        for (Pair<Float3, Color> p : buttonRender) {
-         	Graphics.drawButton(p.first(), p.second());
-        }
-        
-        //draw locks
-        for (Pair<Float3, Color> p : lockRender) {
-        	Graphics.drawLock(p.first(), p.second());
-        }
-        
-        //draw the glass
-        for (Float3 p : glassRender) {
-        	if (high) Graphics.drawGlassHigh(p);
-        	else Graphics.drawGlassLow(p);
-        }
+       // while (!playerRender.isEmpty() && !glassRender.isEmpty()) {
+        	Pair<Float3, Integer> closetPlayer = null; //the closet player
+        	Float3 closetGlass = null; //the closet glass
+        	
+	        //draw the players
+	        for (Pair<Float3, Integer> p : playerRender) {
+	        	Graphics.drawPlayer(p.first(), camPos, p.second());
+	        }
+	        
+	        //draw the glass
+	        for (Float3 p : glassRender) {
+	        	if (high) Graphics.drawGlassHigh(p);
+	        	else Graphics.drawGlassLow(p);
+	        }
+        //}
         
         //draw the pause box over the screen
         if(pause && high) Graphics.drawPause();
+        
+        gl.glFlush();
     }
 
     /**update the camera's position from the player's position*/
@@ -420,9 +420,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     	}
     	if (spaceReleased) { //release space
     		if (level.isValidAction(new ItemUseStop(player.id))) { //check if drop is valid
-    			
     			frame.getClient().push(new ItemUseStop(player.id));
-
     		}
     	}
     	eDown = false;
@@ -835,7 +833,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int button = e.getButton();
-		if (sound) { //play rotation sound
+		if (sound && !pause) { //play rotation sound
 			Music rotateSound = new Music();
 			rotateSound.playSound("resources/audio/fx/rotate.wav");
 		}

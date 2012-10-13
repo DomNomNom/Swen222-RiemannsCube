@@ -33,6 +33,11 @@ public class Float3 implements Serializable {
         return this;
     }
     
+    /**return the magnitude of the vector*/
+    public float mag() {
+    	return (float) Math.sqrt(x*x+y*y+z*z);
+    }
+    
     public Float3 copy() { return new Float3(x,y,z); }
     
     public boolean isZero() {

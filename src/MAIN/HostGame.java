@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import data.XMLParser;
 import server.Server;
 import utils.Configurations;
-import utils.Int3;
 import world.RiemannCube;
 
 /**This hosts a new game by creating a new server and then a new client
