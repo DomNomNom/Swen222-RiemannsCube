@@ -18,9 +18,11 @@ import world.events.ItemUseStop;
 import world.events.PlayerMove;
 import world.events.PlayerRelPos;
 import world.events.PlayerSpawning;
+import world.objects.GameObject;
 import world.objects.GlobalHolder;
 import world.objects.Player;
 import world.objects.Trigger;
+import world.objects.doors.Door;
 import data.LevelPipeline;
 
 
@@ -177,18 +179,27 @@ public class RiemannCube {
             cube.addObject(p.item());
             p.setItem(null);
         }
-        else if (a instanceof ItemUseStart)  p.setItem(cube.useItemStart(p.item()));
+        else if (a instanceof ItemUseStart) p.setItem(cube.useItemStart(p.item()));
         else if (a instanceof ItemUseStop ) p.setItem(cube.useItemStop (p.item()));
         else  throw new Error("unhandeled ItemAction!");
+        
+        // hack alert: this is to prevent synchonization issues since the server isn't calling isClosed() on doors as it isn't drawing them.
+        // TODO: stop listening to jayden and do a push architecture
+        for (int x=0; x<size.x; ++x)
+            for (int y=0; y<size.y; ++y)
+                for (int z=0; z<size.z; ++z)
+                    for (GameObject o : getCube(x,y,z).objects())
+                        if (o instanceof Door)
+                            ((Door) o).isClosed();
     }
     
     private void movePlayer(PlayerMove action) {
         Player player = players.get(action.playerID); 
         Cube to = getCube(action.movement);
         if (!to.pos().equals(player.pos())) {
-        player.relPos.x -= 2*-(player.pos().x-to.pos().x);
-        player.relPos.y -= 2*-(player.pos().y-to.pos().y);
-        player.relPos.z -= 2*-(player.pos().z-to.pos().z);
+            player.relPos.x -= 2*-(player.pos().x-to.pos().x);
+            player.relPos.y -= 2*-(player.pos().y-to.pos().y);
+            player.relPos.z -= 2*-(player.pos().z-to.pos().z);
         }
 
         player.move(to); 
