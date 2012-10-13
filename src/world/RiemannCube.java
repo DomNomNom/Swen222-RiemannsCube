@@ -178,7 +178,7 @@ public class RiemannCube {
             p.setItem(null);
         }
         else if (a instanceof ItemUseStart)  p.setItem(cube.useItemStart(p.item()));
-        else if (a instanceof ItemUseStop )  p.setItem(cube.useItemStop (p.item()));
+        else if (a instanceof ItemUseStop ) p.setItem(cube.useItemStop (p.item()));
         else  throw new Error("unhandeled ItemAction!");
     }
     

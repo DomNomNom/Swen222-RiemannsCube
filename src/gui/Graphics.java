@@ -24,6 +24,7 @@ public class Graphics {
 	private static Resources resources = null; //a reference to the game resources
 	private static RiemannCube level = null; //a reference to the level
 	private static Player player = null; //a reference to the player
+	private static int portalRot = 0; //the rotation of the portals
 	
 	//METHODS
     /**Draws a openGL textured quad
@@ -273,7 +274,7 @@ public class Graphics {
     /**Draw a door object in high graphics
      * @param v the position vector of the door
      * @param col the colour of the door*/
-    public static void drawDoor(Float3 v, Color col) {
+    public static void drawDoorHigh(Float3 v, Color col) {
     	//draw the door block
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[11]); //bind the door texture
 		gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
@@ -284,7 +285,44 @@ public class Graphics {
 		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     
-    /**TODO: FIX THIS*/
+    /**Draw a door object in high graphics
+     * @param v the position vector of the door
+     * @param col the colour of the door*/ 
+    public static void drawDoorLow(Float3 v, Color col) {
+    	//draw the door block
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+		Float3 colour = new Float3(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f);
+		Graphics.drawQuadCol(v, new Float3(v.x-1, v.y, v.z  ), false, colour, 1.0f);
+		Graphics.drawQuadCol(v, new Float3(v.x+1, v.y, v.z  ), false, colour, 1.0f);
+		Graphics.drawQuadCol(v, new Float3(v.x,   v.y, v.z+1), false, colour, 1.0f);
+		Graphics.drawQuadCol(v, new Float3(v.x,   v.y, v.z-1), false, colour, 1.0f);
+		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+    
+    /**Draw a portal
+    @param v the position vector of the portal*/
+    public static void drawPortal(Float3 v) {
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[12]); //bind the portal texture
+    	
+    	//rotate the texture
+    	gl.glMatrixMode(GL.GL_TEXTURE);
+    	gl.glPushMatrix();
+    	gl.glLoadIdentity();
+    	gl.glTranslatef(0.5f, 0.5f, 0.0f); //translate to origin
+    	gl.glRotatef(portalRot, 0.0f, 0.0f, 1.0f); //rotate texture
+    	gl.glTranslatef(-0.5f, -0.5f, 0.0f); //translate back
+    	gl.glMatrixMode(GL2.GL_MODELVIEW); //switch back to model view
+    	 
+ 		Graphics.drawQuadTex(v, new Float3(v.x-1, v.y, v.z  ), false);
+ 		Graphics.drawQuadTex(v, new Float3(v.x+1, v.y, v.z  ), false);
+ 		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z+1), false);
+ 		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z-1), false);
+ 		
+ 		gl.glMatrixMode(GL.GL_TEXTURE);
+ 		gl.glPopMatrix();
+ 		gl.glMatrixMode(GL2.GL_MODELVIEW); //switch back to model view
+    }
+    
     public static void drawKey(Float3 v, Key k) {
     	gl.glPushMatrix(); //push new matrix
     	
@@ -297,7 +335,7 @@ public class Graphics {
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
-    	gl.glRotatef(k.rotation, 0, 1, 0);
+    	gl.glRotatef(k.rotate(), 0, 1, 0);
     	gl.glTranslatef(0.0f, -0.5f, 0.0f);
     	
     	gl.glColor4f(k.color().getRed()/255.0f, k.color().getGreen()/255.0f, k.color().getBlue()/255.0f, 1.0f);
@@ -506,6 +544,12 @@ public class Graphics {
     	if (frameTime > 0) currentFps = 1000/frameTime;
     	if (currentFps >= 60) currentFps = 60;
     	System.out.println(currentFps);
+    }
+    
+    /**Rotates the portal*/
+    public static void rotatePortal() {
+    	++portalRot;
+    	if (portalRot >= 360) portalRot = 1;
     }
     
 	//SETTERS

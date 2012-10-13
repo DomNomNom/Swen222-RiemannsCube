@@ -45,6 +45,7 @@ import world.objects.Lock;
 import world.objects.Player;
 import world.objects.doors.Door;
 import world.objects.doors.EntranceDoor;
+import world.objects.doors.ExitDoor;
 import world.objects.items.Key;
 
 import com.jogamp.opengl.util.Animator;
@@ -252,6 +253,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             frame.getClient().update(frameLength);
         	level = frame.getClient().getWorld();
         	player = frame.getClient().player();
+        	Graphics.rotatePortal();
         	
         	if (!pause && player!=null) {
 				//Process movement and rotation
@@ -328,25 +330,31 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         			}
         			
         			//draw the objects in the cubes
-        			GameObject obj = c.object(); //gets the object that the cube contains
+        			for (GameObject obj : c.objects()) { //gets all the objects that the cube contains
         			
         			if (obj instanceof Door) {
-        				if (((Door) obj).isClosed()) Graphics.drawDoor(v, ((Door) obj).color());
-        				else if (((Door) obj).playSound()) {
-        					if (sound) { //play door sound
-	        					Music doorSound = new Music();
-	        					doorSound.playSound("resources/audio/fx/door.wav");
+        				if (((Door) obj).isClosed()) {
+        					if (high) Graphics.drawDoorHigh(v, ((Door) obj).color());
+        					else Graphics.drawDoorLow(v, ((Door) obj).color());
+        				}
+        				else {
+        					if (obj instanceof EntranceDoor || obj instanceof ExitDoor) { //draw a portal
+        						if (high) Graphics.drawPortal(v); 
         					}
-        					((Door) obj).soundPlayed();
+        					
+	        				if (((Door) obj).playSound()) { //play door sound
+	        					if (sound) {
+		        					Music doorSound = new Music();
+		        					doorSound.playSound("resources/audio/fx/door.wav");
+	        					}
+	        					((Door) obj).soundPlayed();
+	        				}
         				}
         			}
-        			else if (obj instanceof Key) {
-        				Graphics.drawKey(v, ((Key) obj));
-        				if (((Key) obj).rotation > 360) ((Key) obj).rotation  = 2; 
-        				else ((Key) obj).rotation += 2;
-        			}
+        			else if (obj instanceof Key) Graphics.drawKey(v, ((Key) obj));
         			else if (obj instanceof Button) buttonRender.add(new Pair<Float3, Color>(v, ((Button) obj).color()));
         			else if(obj instanceof Lock) lockRender.add(new Pair<Float3, Color>(v, ((Lock) obj).color()));
+        			}
         		}
         	}
         }
@@ -356,7 +364,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         //draw the players
         for (Pair<Float3, Integer> p : playerRender) {
-        	Graphics.drawPlayer(p.first(), camPos, p.second()); //TODO: need a triple here to draw a player
+        	Graphics.drawPlayer(p.first(), camPos, p.second());
         }
         
         //draw buttons
@@ -409,7 +417,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     		}
     	}
     	if (spaceReleased) { //release space
+    		System.out.println("here");
     		if (level.isValidAction(new ItemUseStop(player.id))) { //check if drop is valid
+    			
     			frame.getClient().push(new ItemUseStop(player.id));
 
     		}
@@ -544,7 +554,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         Cube d = level.getCube(player.pos());
         if (d.object() instanceof EntranceDoor) {
         	RiemannCube newLevel = null;
-        	
+        	System.out.println("CRASH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         	try {
         		newLevel = XMLParser.readXML(new FileInputStream(new File(((EntranceDoor) d.object()).levelName())));
         	} catch (IOException e) {}
@@ -816,7 +826,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 		if (keyUp == 32) { //space is released
 			space = false;
 			spaceHeld = false;
-			spaceReleased = false;
+			spaceReleased = true;
 		}
 		if (keyUp == 17) ctrl = false; //ctrl is released
 		if (keyUp == 10) {

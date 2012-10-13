@@ -26,6 +26,7 @@ public abstract class Cube {
     public Int3 pos() { return pos; }
 
     protected final Collection<GameObject> objects = new HashSet<GameObject>();
+    public Collection<GameObject> objects() {return objects;}
 
     private boolean spawnPoint;
     public boolean isSpawnPoint(){ return spawnPoint; }

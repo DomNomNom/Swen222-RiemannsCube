@@ -20,7 +20,6 @@ import java.util.Hashtable;
 import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
 
 /**This class loads all the images that will be used as textures
  * and provides methods for accessing the images
@@ -49,7 +48,7 @@ public class Resources {
 	private ByteBuffer pausedResumeTex;
 	private ByteBuffer pausedExitTex;
 	private ByteBuffer doorTex;
-	private ByteBuffer doorLightsTex;
+	private ByteBuffer portalTex;
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
@@ -145,10 +144,10 @@ public class Resources {
 			doorTex = convertImageData(doorImg); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
 		
-		BufferedImage doorLightsImg = null;
+		BufferedImage portalImg = null;
 		try {
-			doorLightsImg = ImageIO.read(new File("resources/gfx/doorLights.png")); //open the image
-			doorLightsTex = convertImageData(doorLightsImg); //converts the image
+			portalImg = ImageIO.read(new File("resources/gfx/portal.png")); //open the image
+			portalTex = convertImageData(portalImg); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
 
 		
@@ -231,8 +230,8 @@ public class Resources {
         gl.glBindTexture(GL.GL_TEXTURE_2D, texID[12]);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
-            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, doorLightsTex);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1000,
+            1000, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, portalTex);
 	}
 	
 	/**Return an object that matches the given string

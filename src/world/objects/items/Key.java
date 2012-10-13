@@ -14,7 +14,8 @@ public class Key extends GameItem {
 
     // The colour identifies what locks it belongs to
     Color color;
-    public float rotation = 0;
+    private float rotation = 0; //the current rotation of the object
+    private float rotationSpeed; //the rotation speed of the key
     
     public Color color() {return color;  }
     
@@ -29,8 +30,16 @@ public class Key extends GameItem {
         this.color = color;
         Random rand = new Random();
         rotation = rand.nextInt(360);
+        rotationSpeed = (rand.nextFloat()*6)-3;
     }
     
+    /**rotate the key*/
+    public float rotate() {
+    	rotation += rotationSpeed;
+    	if (rotation >= 360) rotation -= 360;
+    	else if (rotation < 0) rotation += 360;
+    	return rotation;
+    }
 
     @Override
     public String getClassName() {

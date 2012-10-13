@@ -9,13 +9,14 @@ Swen222-RiemannsCube
 ======================
 David:
 
-fix low graphics
-containers
+entrance/exit door
 door animation
+containers
 transparency drawing
 players fix
 lighting
 planets
+more ambient sounds
 ======================
 
 ======================
