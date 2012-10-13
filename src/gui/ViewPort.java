@@ -7,6 +7,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +32,7 @@ import world.cubes.Cube;
 import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Wall;
+import world.events.FullStateUpdate;
 import world.events.ItemDrop;
 import world.events.ItemUseStop;
 import world.events.ItemPickup;
@@ -40,9 +44,12 @@ import world.objects.GameObject;
 import world.objects.Lock;
 import world.objects.Player;
 import world.objects.doors.Door;
+import world.objects.doors.EntranceDoor;
 import world.objects.items.Key;
 
 import com.jogamp.opengl.util.Animator;
+
+import data.XMLParser;
 
 /**
  * This is the pane that displays all player's view of the game
@@ -522,6 +529,17 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	player.relPos.x += newPos.x;
     		player.relPos.y += newPos.y;
     		player.relPos.z += newPos.z;
+        }
+        
+        Cube d = level.getCube(player.pos());
+        if (d.object() instanceof EntranceDoor) {
+        	RiemannCube newLevel = null;
+        	
+        	try {
+        		newLevel = XMLParser.readXML(new FileInputStream(new File(((EntranceDoor) d.object()).levelName())));
+        	} catch (IOException e) {}
+        	
+        	frame.getClient().push(new FullStateUpdate(newLevel.toString()));
         }
     }
     

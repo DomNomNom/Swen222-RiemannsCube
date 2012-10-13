@@ -133,7 +133,6 @@ public class Minimap extends GLJPanel implements GLEventListener {
 		Player player = frame.getClient().player();
 		if (player == null) return; // TODO re-visit to check that full state updates work
 		
-		Float3 rot = player.rotation; //get the player's rotation
 		Float3 pos = new Float3();
 		pos.x = frame.getClient().player().pos().x;
 		pos.y = frame.getClient().player().pos().y;

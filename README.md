@@ -9,7 +9,6 @@ Swen222-RiemannsCube
 ======================
 David:
 
-Sound fx
 better chat panel, dialog panels
 obj file loading
 door animation
