@@ -31,6 +31,9 @@ public class Resources {
 	
 	//FIELDS
 	private int[] texID = new int[15]; //where the texture ids are stored
+	//The 3D objects
+	public Object3D keyObj; //TODO: make getters
+	
 	//The textures
 	private ByteBuffer floorTex;
 	private ByteBuffer wallTex;
@@ -54,15 +57,14 @@ public class Resources {
 	/**Creates a new resources object
 	 * @param drawable*/
 	public Resources(GL2 gl) {
+		loadObj();
 		loadTextures(gl);
 	}
 	
 	//METHODS
-	/**Get the texture ids
-	 * @return the texture ids
-	 */
-	public int[] getIDs() {
-		return texID;
+	/**Loads the object files*/
+	private void loadObj() {
+		keyObj = new Object3D(new File("resources/obj/key.obj"));
 	}
 	
 	/**Loads all the textures that are needed
@@ -259,6 +261,12 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
             800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, lockTex);
+	}
+	
+	/**Get the texture ids
+	 * @return the texture ids*/
+	public int[] getIDs() {
+		return texID;
 	}
 	
 	/**Converts a buffered image to an array of byte buffer
