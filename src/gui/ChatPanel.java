@@ -131,6 +131,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         chatArea.setBackground(new Color(0, 0, 0, 0));
         chatArea.setForeground(Color.GREEN.brighter()); //TODO Change if there is time. This by default will set text always green
         chatArea.setLineWrap(true);
+        chatArea.setFont(new Font("xirod", Font.PLAIN, 9));
         chatArea.setEditable(false);
 
         // Initialise Colors in map

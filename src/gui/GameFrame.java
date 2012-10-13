@@ -84,6 +84,10 @@ public class GameFrame extends JFrame {
         //set option pane to be dark gray
         ui.put("OptionPane.background", Color.GRAY.darker());
         ui.put("Panel.background", Color.GRAY.darker());
+        ui.put("OptionPane.messageForeground", Color.GREEN);
+        //set option pane font
+        ui.put("OptionPane.messageFont", new Font("xirod", Font.BOLD, 12));
+        ui.put("OptionPane.buttonFont", new Font("xirod", Font.ITALIC, 10));
         
         try {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/xirod.ttf")));
