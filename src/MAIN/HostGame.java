@@ -18,6 +18,8 @@ import world.RiemannCube;
  * @author David Saxon*/
 public class HostGame {
 	
+	
+	
 	public static void main(String[] args) {
 	    Configurations.debugPrint = true;
 	    

@@ -9,56 +9,32 @@ Swen222-RiemannsCube
 ======================
 David:
 
-Door Textures
-Lock
-Containers
-Chat Panel
-Lighting
-Planets
-Optimizing Rotation (Caching)
+Sound fx
+better chat panel, dialog panels
+obj file loading
+door animation
+transparency drawing
+players fix
+lighting
+planets
 ======================
 
 ======================
 Alex:
 
-Chat Panel
+-hub design
+-fonts
+-dialog appearence
+-buttons in editor frame
+-Design maps
 =======================
 
 Priority Task Queue:
 
 Hub
-world - Full state transmission
-world - item pickup
-world - doors
-world - containers
-world - NPCs
-Smooth Movement - Viewing
-Splash Screen
 Scaling
-Light source objects
-
-
-Features:
-
+fix relative movement
+light source obj
+Markers
 Traps
-  - FOV
-  - Reversed Keys
-  - Cube Rotates
-  - No Mini-map
-  - Alcohol
-Music
-Marker
-Pings
-Golden Token, adds points at the end of the level
-
-Interactions
-  - '/wave' to adjacent player, etc.
-  - "Use item on player" to give?
-Extra items
-  - Food (carry, eat for stamina)
-  - Magic items
-    - Speed-mod
-    - Teleport
-    - All cubes as glass
-
 

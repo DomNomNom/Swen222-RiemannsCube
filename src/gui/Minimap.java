@@ -155,7 +155,7 @@ public class Minimap extends GLJPanel implements GLEventListener {
 					
 					if (c instanceof Wall) gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
 					else if (c instanceof Glass) gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-					else if (obj instanceof Door) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
+					else if (obj instanceof Door && ((Door) obj).isClosed()) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
 								((Door) obj).color().getGreen()/255.0f, ((Door) obj).color().getBlue()/255.0f, 1.0f);
 					else gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 					
@@ -211,7 +211,7 @@ public class Minimap extends GLJPanel implements GLEventListener {
 					
 					if (c instanceof Wall) gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
 					else if (c instanceof Glass) gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-					else if (obj instanceof Door) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
+					else if (obj instanceof Door && ((Door) obj).isClosed()) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
 								((Door) obj).color().getGreen()/255.0f, ((Door) obj).color().getBlue()/255.0f, 1.0f);
 					else gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 					
@@ -267,7 +267,7 @@ public class Minimap extends GLJPanel implements GLEventListener {
 					
 					if (c instanceof Wall) gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
 					else if (c instanceof Glass) gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-					else if (obj instanceof Door) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
+					else if (obj instanceof Door && ((Door) obj).isClosed()) gl.glColor4f(((Door) obj).color().getRed()/255.0f,
 								((Door) obj).color().getGreen()/255.0f, ((Door) obj).color().getBlue()/255.0f, 1.0f);
 					else gl.glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
 					

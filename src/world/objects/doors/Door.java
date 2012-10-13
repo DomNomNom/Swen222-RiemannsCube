@@ -26,6 +26,8 @@ public abstract class Door extends GameObject {
     private final Map<Integer, Trigger> triggersMap;
 
     private boolean open = false;
+    private boolean playSound = false;
+    private boolean soundPlayed = false;
     
     private Color color;
 
@@ -56,6 +58,9 @@ public abstract class Door extends GameObject {
 
     /** A door will stay open once isClosed() has been called while all the triggers where active (locks unlocked) */
     public boolean isClosed() {
+    	if (!soundPlayed) {
+    		playSound = soundPlayed = true;
+    	}
         if (open) return false;
     	for (Integer i : triggerIDs) {
     		if (!triggersMap.containsKey(i)) throw new Error("Someone didn't add a trigger to the triggerMap!");
@@ -71,5 +76,13 @@ public abstract class Door extends GameObject {
      */
     public boolean blocks(Player p) {
     	return isClosed();
+    }
+    
+    public boolean playSound() {
+    	return playSound;
+    }
+    
+    public void soundPlayed() {
+    	playSound = false;
     }
 }
