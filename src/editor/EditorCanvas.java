@@ -79,6 +79,16 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         return triggersLeftToPlace == 0;
     }
     
+    private void setTriggerID(){
+        int max = -1;
+        
+        for(Integer id : level.triggers.keySet()){
+            if(id > max) max = id;
+        }
+        
+        triggerID = max + 1;
+    }
+    
     /**
      * Draws canvas according to the current view mode.
      */
@@ -220,32 +230,32 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             g.setColor(Color.BLACK);
             g.drawRect(x + squareLength/4, y + squareLength/4, squareLength/2, squareLength/2);
             
-        } else if(obj instanceof Container){	// Containers
-        	Color col = ((Container) obj).color();
-        	int red = col.getRed();
-        	int blue = col.getBlue();
-        	int green = col.getGreen();
+        } else if(obj instanceof Container){    // Containers
+            Color col = ((Container) obj).color();
+            int red = col.getRed();
+            int blue = col.getBlue();
+            int green = col.getGreen();
 
-        	// Fills an oval of the color of the container, getting darker towards the middle
-			for (int i = 0; i < squareLength/2; i++) {
-				if(red - (i + i/4) < 0){
-					red = 0;
-				} else {
-					red -= (i + i/4);
-				}
-				if(green - (i + i/4) < 0) {
-					green = 0;
-				} else {
-					green -= (i + i/4);
-				}
-				if(blue - (i + i/4) < 0){
-					blue = 0;
-				} else {
-					blue -= (i + i/4);
-				}
-				g.setColor(new Color(red, green, blue));
-				g.fillOval(x + i, y + i, squareLength - (i * 2), squareLength - (i * 2));
-			}
+            // Fills an oval of the color of the container, getting darker towards the middle
+            for (int i = 0; i < squareLength/2; i++) {
+                if(red - (i + i/4) < 0){
+                    red = 0;
+                } else {
+                    red -= (i + i/4);
+                }
+                if(green - (i + i/4) < 0) {
+                    green = 0;
+                } else {
+                    green -= (i + i/4);
+                }
+                if(blue - (i + i/4) < 0){
+                    blue = 0;
+                } else {
+                    blue -= (i + i/4);
+                }
+                g.setColor(new Color(red, green, blue));
+                g.fillOval(x + i, y + i, squareLength - (i * 2), squareLength - (i * 2));
+            }
                 
         } else if (obj instanceof Trigger) {    //Trigger
             if(obj instanceof Lock){        //Lock
@@ -408,6 +418,8 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         y = 0;
         z = 0;
         repaint();
+        
+        setTriggerID();
     }
 
     /**
@@ -562,15 +574,15 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                 
             if (typed == 't'){ //Token
                 level.getCube(x,y,z).addObject((new Token(level.getCube(x, y, z))));
-			} else if (typed == 'c') { // Container
-			    if(numContainersPlaced > 0){
-			        level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), curContainerColor, null));
-			        numContainersPlaced--;
-			        return;
-			    }
-			        
-			    
-			    numContainersPlaced = 0;
+            } else if (typed == 'c') { // Container
+                if(numContainersPlaced > 0){
+                    level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), curContainerColor, null));
+                    numContainersPlaced--;
+                    return;
+                }
+                    
+                
+                numContainersPlaced = 0;
                 try {
                     numContainersPlaced = Integer.parseInt(JOptionPane.showInputDialog(
                             null, "How many containers?", "2"));
@@ -579,25 +591,25 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                             "Make sure you enter a number.");
                     return;
                 }
-			    
-				curContainerColor = JColorChooser.showDialog(null, "Chooser a color", Color.WHITE);
-				
-				if (curContainerColor == null) {
-				    numContainersPlaced = 0;
-					return;
-				}
-				
-				if(usedColors.contains(curContainerColor)){
-				    JOptionPane.showMessageDialog(null,
-                            "That Color has already been used.");
-				    numContainersPlaced = 0;
+                
+                curContainerColor = JColorChooser.showDialog(null, "Chooser a color", Color.WHITE);
+                
+                if (curContainerColor == null) {
+                    numContainersPlaced = 0;
                     return;
-				}
-				
-				Color temp = curContainerColor;
-				usedColors.add(temp);
-				level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), curContainerColor, null));
-				numContainersPlaced--;
+                }
+                
+                if(usedColors.contains(curContainerColor)){
+                    JOptionPane.showMessageDialog(null,
+                            "That Color has already been used.");
+                    numContainersPlaced = 0;
+                    return;
+                }
+                
+                Color temp = curContainerColor;
+                usedColors.add(temp);
+                level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), curContainerColor, null));
+                numContainersPlaced--;
             } else if (typed == 'd') { //Door
                 if (curDoor == null || allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {

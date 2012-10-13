@@ -40,7 +40,7 @@
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Floor" x="7">
-                <key color="#ff6666"/>
+                <key color="#ff9999"/>
             </cube>
         </floor>
         <floor y="4">
@@ -98,7 +98,7 @@
         <floor y="1">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Floor" x="1">
-                <key color="#0000ff"/>
+                <key color="#0033ff"/>
             </cube>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Floor" x="3"/>
@@ -120,16 +120,16 @@
         <floor y="3">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Floor" x="1">
-                <door color="#66ffff" levelname="Test.xml" triggerIDs="0 " type="entrance"/>
+                <door color="#00ffff" levelname="Test.xml" triggerIDs="0 " type="entrance"/>
             </cube>
             <cube spawn="false" type="Wall" x="2"/>
             <cube spawn="false" type="Wall" x="3"/>
             <cube spawn="false" type="Floor" x="4">
-                <door color="#ff6666" levelname="Test.xml" triggerIDs="1 " type="entrance"/>
+                <door color="#ff9999" levelname="Test.xml" triggerIDs="1 " type="entrance"/>
             </cube>
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Floor" x="6">
-                <door color="#33ff33" triggerIDs="2 " type="level"/>
+                <door color="#33ff66" triggerIDs="2 " type="level"/>
             </cube>
             <cube spawn="false" type="Wall" x="7"/>
         </floor>
@@ -146,11 +146,11 @@
         <floor y="5">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Floor" x="1">
-                <lock color="#ffff66" id="4"/>
+                <lock color="#ffff33" id="4"/>
             </cube>
             <cube spawn="false" type="Wall" x="2"/>
             <cube spawn="false" type="Floor" x="3">
-                <door color="#ffff66" levelname="Test.xml" triggerIDs="4 5 " type="entrance"/>
+                <door color="#ffff33" levelname="Test.xml" triggerIDs="4 5 " type="entrance"/>
             </cube>
             <cube spawn="false" type="Wall" x="4"/>
             <cube spawn="false" type="Floor" x="5"/>
@@ -182,7 +182,7 @@
         <floor y="0">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Floor" x="1">
-                <key color="#33ff33"/>
+                <key color="#33ff66"/>
             </cube>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Floor" x="3"/>
@@ -213,20 +213,20 @@
         </floor>
         <floor y="3">
             <cube spawn="false" type="Floor" x="0">
-                <key color="#66ffff"/>
+                <key color="#00ffff"/>
             </cube>
             <cube spawn="false" type="Floor" x="1"/>
             <cube spawn="false" type="Floor" x="2">
-                <lock color="#66ffff" id="0"/>
+                <lock color="#00ffff" id="0"/>
             </cube>
             <cube spawn="false" type="Floor" x="3"/>
             <cube spawn="false" type="Floor" x="4"/>
             <cube spawn="false" type="Floor" x="5">
-                <lock color="#ff6666" id="1"/>
+                <lock color="#ff9999" id="1"/>
             </cube>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Floor" x="7">
-                <lock color="#33ff33" id="2"/>
+                <lock color="#33ff66" id="2"/>
             </cube>
         </floor>
         <floor y="4">
@@ -262,15 +262,13 @@
         <floor y="7">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Floor" x="1">
-                <lock color="#ffff66" id="5"/>
+                <lock color="#ffff33" id="5"/>
             </cube>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Floor" x="3"/>
             <cube spawn="false" type="Floor" x="4"/>
             <cube spawn="false" type="Floor" x="5"/>
-            <cube spawn="false" type="Floor" x="6">
-                <lock color="#0000ff" id="1"/>
-            </cube>
+            <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Wall" x="7"/>
         </floor>
     </slice>
@@ -331,7 +329,7 @@
             <cube spawn="false" type="Glass" x="2"/>
             <cube spawn="false" type="Glass" x="3"/>
             <cube spawn="false" type="Floor" x="4">
-                <door color="#0000ff" triggerIDs="0 1 " type="level"/>
+                <door color="#0033ff" triggerIDs="3 " type="level"/>
             </cube>
             <cube spawn="false" type="Glass" x="5"/>
             <cube spawn="false" type="Glass" x="6"/>
@@ -414,12 +412,12 @@
             <cube spawn="false" type="Floor" x="1"/>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Floor" x="3">
-                <lock color="#0000ff" id="0"/>
+                <lock color="#0033ff" id="3"/>
             </cube>
             <cube spawn="false" type="Floor" x="4"/>
             <cube spawn="false" type="Floor" x="5"/>
             <cube spawn="false" type="Floor" x="6">
-                <key color="#ffff66"/>
+                <key color="#ffff33"/>
             </cube>
             <cube spawn="false" type="Wall" x="7"/>
         </floor>
@@ -453,7 +451,7 @@
             <cube spawn="false" type="Floor" x="4"/>
             <cube spawn="false" type="Floor" x="5"/>
             <cube spawn="false" type="Floor" x="6">
-                <key color="#ffff66"/>
+                <key color="#ffff33"/>
             </cube>
             <cube spawn="false" type="Wall" x="7"/>
         </floor>
@@ -524,9 +522,7 @@
             <cube spawn="false" type="Floor" x="3"/>
             <cube spawn="false" type="Floor" x="4"/>
             <cube spawn="false" type="Floor" x="5"/>
-            <cube spawn="false" type="Floor" x="6">
-                <key color="#0000ff"/>
-            </cube>
+            <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Wall" x="7"/>
         </floor>
     </slice>
