@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -64,6 +65,7 @@ public class XMLParsingTests {
             pipe.save(riemann, filewriter);
             load = XMLParser.readXML(new FileInputStream(file));
             
+            //assertTrue(load.equals(riemann));
          } catch (Exception e) {
              e.printStackTrace();
              fail();
@@ -98,4 +100,18 @@ public class XMLParsingTests {
     }
     
 
+    
+    // === Doms tests ===
+    
+    @Test
+    /** very descriptive name */
+    public void testStuff() {
+        RiemannCube world = WorldTests.generateWorld();
+        assertTrue(world.equals(reParse(world)));
+    }
+    
+    /** Serialises and then unserialises the RC and returns the result */
+    public RiemannCube reParse(RiemannCube r) {
+        return XMLParser.readXML(new ByteArrayInputStream(r.toString().getBytes()));
+    }
 }
