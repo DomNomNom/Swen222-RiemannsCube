@@ -402,8 +402,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             JOptionPane.showMessageDialog(null, "Level Was Null");
         }
         
-        System.out.println(level.toString());
-        
         this.level = level;
         slice = level.verticalSlice(0);
         x = 0;
