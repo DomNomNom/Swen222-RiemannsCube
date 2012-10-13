@@ -11,7 +11,6 @@ David:
 
 lock view
 containers
-transparency drawing
 players fix
 lighting
 more ambient sounds

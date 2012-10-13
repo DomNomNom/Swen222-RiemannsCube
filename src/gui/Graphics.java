@@ -242,12 +242,6 @@ public class Graphics {
     /**Draw a glass cube in high graphics
      * @param v the position vector of the cube*/
     public static void drawGlassHigh(Float3 v) {
-    	//draw the floor
-		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[0]); //bind the floor tile texture
-		Graphics.drawQuadTex(v, new Float3(v.x, v.y-1, v.z), true);
-		Graphics.drawQuadTex(v, new Float3(v.x, v.y+1, v.z), true);
-		Graphics.drawQuadTex(v, new Float3(v.x, v.y-1, v.z), false);
-		Graphics.drawQuadTex(v, new Float3(v.x, v.y+1, v.z), false);
     	//draw the 4 walls
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass texture
 		Graphics.drawQuadTex(v, new Float3(v.x-1, v.y, v.z), true);
@@ -658,8 +652,8 @@ public class Graphics {
     
     /**Rotates the planets*/
     public static void rotatePlanets() {
-    	planetRot += 0.001f;
-    	if (planetRot >= 360) planetRot = 0.001f;
+    	planetRot += 0.004f;
+    	if (planetRot >= 360) planetRot = 0.004f;
     }
     
 	//SETTERS

@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -311,7 +310,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         				else if (c instanceof Wall) Graphics.drawWallLow(v); //draw a wall cube
         			}
         			
-        			if (c instanceof Glass) glassRender.add(v);
+        			if (c instanceof Glass) {
+        				if (high) Graphics.drawFloorHigh(v);
+        				else Graphics.drawFloorLow(v); //draw a floor cube
+        				glassRender.add(v);
+        			}
         			
         			//draw players
         			Player p = c.player(); //get the player in the cube
@@ -359,29 +362,65 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	        Graphics.drawPlanet(new Float3(-13, -48, 17), new Float3(90, 0, 0), 8, 13);
 	        Graphics.drawPlanet(new Float3(76, -23, 64), new Float3(0, 45, 0), 10, 14);
 	        Graphics.drawPlanet(new Float3(12, 54, -76), new Float3(0, 0, 0), 12, 15);
-	        Graphics.drawPlanet(new Float3(-34, -1, 12), new Float3(0, 90, 0), 12, 16);
+	        Graphics.drawPlanet(new Float3(-34, -1, 12), new Float3(0, 270, 0), 12, 16);
+	        Graphics.rotatePlanets();
         }
-        Graphics.rotatePlanets();
-        
         
         //draw the glass around the outside of the cube
         if (high) Graphics.drawOuterGlassHigh();
         
-       // while (!playerRender.isEmpty() && !glassRender.isEmpty()) {
-        	Pair<Float3, Integer> closetPlayer = null; //the closet player
-        	Float3 closetGlass = null; //the closet glass
+        //for transparent objects
+        while (!playerRender.isEmpty() || !glassRender.isEmpty()) { //loop until all glass and players have been drawn
+        	Int3 playerPos = new Int3(player.pos().x*2, player.pos().y*2, player.pos().z*2);
+        	Pair<Float3, Integer> furthestPlayer = null; //the closet player
+        	float playerMag = 0;
+        	Float3 furthestGlass = null; //the closet glass
+        	float glassMag = 0;
         	
-	        //draw the players
+	        //search players
 	        for (Pair<Float3, Integer> p : playerRender) {
-	        	Graphics.drawPlayer(p.first(), camPos, p.second());
+	        	if (furthestPlayer == null) {
+	        		furthestPlayer = p;
+	        		playerMag = p.first().copy().sub(playerPos).mag();
+	        	}
+	        	else if (p.first().copy().sub(playerPos).mag() < playerMag) {
+	        		furthestPlayer = p;
+	        		playerMag = p.first().copy().sub(playerPos).mag();
+	        	}
 	        }
 	        
-	        //draw the glass
+	        //search glass
 	        for (Float3 p : glassRender) {
-	        	if (high) Graphics.drawGlassHigh(p);
-	        	else Graphics.drawGlassLow(p);
+	        	if (furthestGlass == null) {
+	        		furthestGlass = p;
+	        		glassMag = p.copy().sub(playerPos).mag();
+	        	}
+	        	else if (p.copy().sub(playerPos).mag() > glassMag) {
+	        		furthestGlass = p;
+	        		glassMag = p.copy().sub(playerPos).mag();
+	        	}
 	        }
-        //}
+	        
+	        //now draw
+	        if (furthestGlass == null) {
+	        	if (high) Graphics.drawPlayer(furthestPlayer.first(), camPos, furthestPlayer.second());
+	        	playerRender.remove(furthestPlayer);
+	        }
+	        else if (furthestPlayer == null) {
+	        	if (high) Graphics.drawGlassHigh(furthestGlass);
+	        	else Graphics.drawGlassLow(furthestGlass);
+	        	glassRender.remove(furthestGlass);
+	        }
+	        else if (glassMag < playerMag) {
+	        	if (high) Graphics.drawPlayer(furthestPlayer.first(), camPos, furthestPlayer.second());
+	        	playerRender.remove(furthestPlayer);
+	        }
+	        else {
+	        	if (high) Graphics.drawGlassHigh(furthestGlass);
+	        	else Graphics.drawGlassLow(furthestGlass);
+	        	glassRender.remove(furthestGlass);
+	        }
+        }
         
         //draw the pause box over the screen
         if(pause && high) Graphics.drawPause();
@@ -833,7 +872,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int button = e.getButton();
-		if (sound && !pause) { //play rotation sound
+		if (sound && !pause && !rotationAni) { //play rotation sound
 			Music rotateSound = new Music();
 			rotateSound.playSound("resources/audio/fx/rotate.wav");
 		}
