@@ -322,7 +322,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         			Player p = c.player(); //get the player in the cube
         			
         			if (p != null) {
-        				if (p.item() instanceof Key) Graphics.drawPlayerKey(v); //draw the key the player is holding
+        				if (p.item() instanceof Key) Graphics.drawPlayerKey(v, ((Key) p.item()).color()); //draw the key the player is holding
         				if (p.id != player.id) //only render the other players
         					playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
         			}
@@ -340,7 +340,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         					((Door) obj).soundPlayed();
         				}
         			}
-        			else if (obj instanceof Key) Graphics.drawKey(v);
+        			else if (obj instanceof Key) Graphics.drawKey(v, ((Key) obj).color());
         			else if (obj instanceof Button) buttonRender.add(new Pair<Float3, Color>(v, ((Button) obj).color()));
         			else if(obj instanceof Lock) lockRender.add(new Pair<Float3, Color>(v, ((Lock) obj).color()));
         		}

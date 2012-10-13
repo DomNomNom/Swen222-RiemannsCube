@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.media.opengl.GL2;
+
 import utils.Float3;
 
 /**Holds an object file that can be rendered onto the screen
@@ -33,21 +35,33 @@ public class Object3D {
 		Scanner scan = new Scanner(file);
 		while (scan.hasNext()) { //read through the entire file 
 			String tag = scan.next(); //read the tag
-			System.out.println(tag);
 			if (tag.equals("v")) { //read a vertex
-				scan.nextFloat();
-				scan.nextFloat();
-				scan.nextFloat();
+				vertexList.add(new Float3(scan.nextFloat(), scan.nextFloat(), scan.nextFloat()));
 			}
 			else if (tag.equals("f")) { //read a face
-				scan.nextInt();
-				scan.nextInt();
-				scan.nextInt();
-				scan.nextInt();
+				faceList.add(new Face(scan.nextInt(), scan.nextInt(), scan.nextInt(), scan.nextInt()));
 			}
 			else throw new Exception(); //bad
 		}
 		} catch (Exception e) {System.out.println("Not a valid wavefront file");};
+	}
+	
+	public void render(GL2 gl) {
+		for (Face f : faceList) {
+			//get the faces vertices
+			Float3 v1 = vertexList.get(f.first-1);
+			Float3 v2 = vertexList.get(f.second-1);
+			Float3 v3 = vertexList.get(f.third-1);
+			Float3 v4 = vertexList.get(f.fourth-1);
+			
+			//start drawing the face
+			gl.glBegin(GL2.GL_QUADS);
+			gl.glVertex3f(v1.x, v1.y, v1.z);
+			gl.glVertex3f(v2.x, v2.y, v2.z);
+			gl.glVertex3f(v3.x, v3.y, v3.z);
+			gl.glVertex3f(v4.x, v4.y, v4.z);
+			gl.glEnd();
+		}
 	}
 	
 	/**Represents a face of that holds indexes to its vertices*/

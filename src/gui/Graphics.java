@@ -284,7 +284,7 @@ public class Graphics {
     }
     
     /**TODO: FIX THIS*/
-    public static void drawKey(Float3 v) {
+    public static void drawKey(Float3 v, Color col) {
     	gl.glPushMatrix(); //push new matrix
     	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
@@ -298,67 +298,9 @@ public class Graphics {
     	
     	gl.glTranslatef(0.0f, -0.5f, 0.0f);
     	
-    	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+    	gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
     	
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(-0.191898f,  0.216380f,  0.028668f);
-    	gl.glVertex3f(-0.191898f, -0.216380f, 0.028668f);
-    	gl.glVertex3f(-0.191898f, 0.216380f, -0.028668f);
-    	gl.glVertex3f(-0.191898f, -0.216380f, -0.028668f);
-    	gl.glEnd();
-    	
-    	
-    	//v -0.191898 0.027047 0.000000
-    	//v -0.191898 -0.027047 0.000000
-    	//v 0.593430 0.081142 -0.000001
-    	//v 0.593430 -0.081142 -0.000001
-    	
-    	/*gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(-0.1f,  0.1f,  0.1f);
-    	gl.glVertex3f(-0.1f,  0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f,  0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(1.0f, 0.3f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(0.1f,  0.1f, -0.1f);
-    	gl.glVertex3f(0.1f,  0.1f,  0.1f);
-    	gl.glVertex3f(0.1f, -0.1f,  0.1f);
-    	gl.glVertex3f(0.1f, -0.1f, -0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(1.0f, 0.0f, 0.3f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f( 0.1f, 0.1f,  0.1f);
-    	gl.glVertex3f( 0.1f, 0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, 0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, 0.1f,  0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(0.75f, 0.0f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f( 0.1f, -0.1f, -0.1f);
-    	gl.glVertex3f( 0.1f, -0.1f,  0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f,  0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(1.0f, 0.3f, 0.2f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f( 0.1f, -0.1f, 0.1f);
-    	gl.glVertex3f( 0.1f,  0.1f, 0.1f);
-    	gl.glVertex3f(-0.1f,  0.1f, 0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f, 0.1f);
-    	gl.glEnd();
-    	
-    	gl.glColor4f(0.8f, 0.2f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f( 0.1f,  0.1f, -0.1f);
-    	gl.glVertex3f( 0.1f, -0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f, -0.1f, -0.1f);
-    	gl.glVertex3f(-0.1f,  0.1f, -0.1f);
-    	gl.glEnd();*/
+    	resources.keyObj.render(gl);
     	
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	
@@ -366,21 +308,23 @@ public class Graphics {
     }
     
     /**TODO: fix this*/
-    public static void drawPlayerKey(Float3 v) {
+    public static void drawPlayerKey(Float3 v, Color col) {
     	gl.glPushMatrix(); //push new matrix
     	
        	gl.glLoadIdentity(); //load the identity matrix
        	
+       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	
+       	gl.glRotatef(75, 0, 1, 0);
+       	
     	//draw the paused background
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-    	gl.glBegin(GL2.GL_QUADS);
-    	gl.glVertex3f(-0.08f, -0.04f, -0.5f);
-    	gl.glVertex3f(-0.08f, -0.2f, -0.5f);
-    	gl.glVertex3f( 0.08f, -0.2f, -0.5f);
-    	gl.glVertex3f( 0.08f, -0.04f, -0.5f);
-        gl.glEnd();
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+    	gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
+    	
+    	resources.keyObj.render(gl);
+    	
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	
     	gl.glPopMatrix();
     }
