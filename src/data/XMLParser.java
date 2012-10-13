@@ -148,7 +148,7 @@ public class XMLParser {
                     
                     riemannCube.setCube(w, h, d, cube);
                     
-                    System.out.println(cube.object() instanceof Button);
+                    //System.out.println(cube.object() instanceof Button);
                     w++;
                 }
 
