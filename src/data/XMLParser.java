@@ -33,6 +33,7 @@ import world.objects.items.GameItem;
 import world.objects.items.Key;
 import world.objects.items.LightSource;
 import world.objects.items.Token;
+import world.objects.Button;
 import world.objects.Container;
 import world.objects.GameObject;
 import world.objects.Lock;
@@ -146,6 +147,8 @@ public class XMLParser {
                     }
                     
                     riemannCube.setCube(w, h, d, cube);
+                    
+                    System.out.println(cube.object() instanceof Button);
                     w++;
                 }
 
@@ -205,7 +208,25 @@ public class XMLParser {
             ret = new Key(cube, newCol);
             ((Key)ret).setExit(exit);
 
-        } else if (n.getNodeName().equals("lock")) {
+        } else if(n.getNodeName().equals("button")){
+            // Get the color for the Button
+            Element e = (Element) n;
+            String col = e.getAttribute("color");
+            
+            Color newCol = null;
+            boolean exit = true;    // Defines whether or not this button opens an exit door
+            if(col.length() != 0){
+                newCol = Color.decode(col);
+                exit = false;   // If the button has a color then it isn't an exit lock
+            }
+
+            // Get the ID for the button
+            int id = Integer.parseInt(e.getAttribute("id"));
+
+            ret = new Button(cube, id, riemannCube.triggers, newCol);
+            ((Button)ret).setExit(exit);
+        }
+        else if (n.getNodeName().equals("lock")) {
             // Get the color for the lock
             Element e = (Element) n;
             String col = e.getAttribute("color");
@@ -248,8 +269,6 @@ public class XMLParser {
             // Adding the trigger IDs from the attribute of the door
             while (idScan.hasNext())
                 ((Door)ret).addTrigger(Integer.parseInt(idScan.next()));
-            
-            
 
         } else if (n.getNodeName().equals("token")) {
             ret = new Token(cube);

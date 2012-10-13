@@ -30,6 +30,7 @@ import world.cubes.Wall;
 import world.objects.Container;
 import world.objects.GameObject;
 import world.objects.Lock;
+import world.objects.Button;
 import world.objects.Trigger;
 import world.objects.doors.Door;
 import world.objects.doors.EntranceDoor;
@@ -46,17 +47,19 @@ import world.objects.items.Token;
 public class EditorCanvas extends JComponent implements MouseListener,  KeyListener {
 
     private RiemannCube level;
-    Cube[][] slice = new Cube[0][0];
+    private Cube[][] slice = new Cube[0][0];
     // x, y and z represent selected cube in 3D. i, j are selected square
     // and depend on your viewing angle.
-    int x, y, z, width, height, squareLength = 50, i = 0, j = 0, left = 350,
+    private int x, y, z, width, height, squareLength = 50, i = 0, j = 0, left = 350,
             top = 350;
-    String orientation = "horizontal";
-    boolean isometric = false;
-    Door curDoor = null;
-    Lock curLock = null;
-    int triggersLeftToPlace;
-    int lockID = 0;
+    private String orientation = "horizontal";
+    private boolean isometric = false;
+    private Door curDoor = null;
+    private Lock curLock = null;
+    private Button curButton;
+    private int triggerChoice;
+    private int triggersLeftToPlace;
+    private int triggerID = 0;
     private Set<Color> usedColors = new HashSet<Color>();
     
     private int numContainersPlaced;
@@ -73,7 +76,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
      * checks that we have placed all current triggers
      */
     private boolean allTriggersPlaced() {
-        return triggersLeftToPlace == 0; // FIXME NUM
+        return triggersLeftToPlace == 0;
     }
     
     /**
@@ -152,6 +155,9 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
      *            Co-ordinate
      */
     private void drawObject(Graphics g, GameObject obj, int x, int y) {
+        System.out.println("Drawing objects");
+        System.out.println(obj.getClassName());
+        
         if (obj instanceof LevelDoor) {
             g.setColor(((Door) obj).color());
             g.fillRect(x, y, squareLength, squareLength);
@@ -264,7 +270,29 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     g.drawOval(x, y, squareLength, squareLength);
 
                 }
-            } 
+            } else if(obj instanceof Button){   //Button
+                if(((Button)obj).isExit()){
+                    g.setColor(Color.RED);
+                    
+                    for(int i = 0; i < 8; i++)
+                        g.drawOval(x + i, y + i, squareLength - (i*2), squareLength - (i*2));
+                    
+                    g.setColor(Color.BLACK);
+                    for(int i = 0; i < 4; i++)
+                        g.drawOval(x + i, y + i, squareLength - (i*2), squareLength - (i*2));
+
+                    g.setFont(new Font("Serif", Font.BOLD, 30));
+                    g.drawString("X", x + squareLength/4 + 5, y + 3*squareLength/4);
+                } else {
+                    g.setColor(((Button) obj).color());
+                    g.fillOval(x, y, squareLength, squareLength);
+                    
+                    g.setColor(Color.BLACK);
+                    for (int i = 0; i < 4; i++)
+                        g.drawOval(x + i, y + i, squareLength - (i * 2), squareLength - (i * 2));
+
+                }
+            }
             
         }
     }
@@ -376,6 +404,9 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         if (level == null) {
             JOptionPane.showMessageDialog(null, "Level Was Null");
         }
+        
+        System.out.println(level.toString());
+        
         this.level = level;
         slice = level.verticalSlice(0);
         x = 0;
@@ -601,10 +632,14 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         usedColors.add(col);
                     }
 
+                    String[] triggerType = {"Locks", "Buttons"};
+                    triggerChoice = JOptionPane.showOptionDialog(null, "What type of trigger do you want?", "Door Type", JOptionPane.YES_NO_OPTION  
+                            , JOptionPane.PLAIN_MESSAGE, null, triggerType, null);
+                    
                     triggersLeftToPlace = 0;
                     try {
                         triggersLeftToPlace = Integer.parseInt(JOptionPane.showInputDialog(
-                                null, "How many locks?", "4"));
+                                null, "How many?", "2"));
                     } catch (NumberFormatException numE) {
                         JOptionPane.showMessageDialog(null,
                                 "Make sure you enter a number.");
@@ -638,7 +673,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     System.out
                             .println("Finish placing the locks for the last door!");
                 }
-            } else if (typed == 'l') { //Lock
+            } else if(typed == 'b'){
                 if (curDoor != null && !allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
@@ -646,7 +681,30 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         return;
                     }
 
-                    curLock = new Lock(currentCube, lockID++, level.triggers, curDoor.color());
+                    curButton = new Button(currentCube, triggerID++, level.triggers, curDoor.color());
+
+                    if(curDoor instanceof ExitDoor){
+                        curButton.setExit(true);
+                    }
+
+                    level.getCube(x, y, z).addObject(curButton);
+                    curDoor.addTrigger(curButton.getID());
+                    --triggersLeftToPlace;
+                }
+            }
+            else if (typed == 'l') { //Lock
+                if(triggerChoice == 1){
+                    return;
+                }
+                
+                if (curDoor != null && !allTriggersPlaced()) {
+                    if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
+                        JOptionPane.showMessageDialog(null,
+                                "You can only add objects to a floor cube.");
+                        return;
+                    }
+
+                    curLock = new Lock(currentCube, triggerID++, level.triggers, curDoor.color());
 
                     if(curDoor instanceof ExitDoor){
                         curLock.setExit(true);

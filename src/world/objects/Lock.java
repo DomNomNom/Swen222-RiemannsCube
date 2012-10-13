@@ -31,7 +31,13 @@ public class Lock extends Trigger {
     public boolean canUseStart(GameItem item) {
         if (!(item instanceof Key)) return false;
         Key k = (Key) item;
-        if (!k.color().equals(color)) return false; // must have the same 
+      
+        if(k.color() != null){
+            if (!k.color().equals(color)) return false; // must have the same
+        } else {
+            if(color != null) return false; // If the key doesn't have a color (exit door) lock must not have a color
+        }
+        
         if (currentState) return false; // we can't interact once we have used the key
         return true;
     }
