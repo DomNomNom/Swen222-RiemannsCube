@@ -155,9 +155,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
      *            Co-ordinate
      */
     private void drawObject(Graphics g, GameObject obj, int x, int y) {
-        System.out.println("Drawing objects");
-        System.out.println(obj.getClassName());
-        
         if (obj instanceof LevelDoor) {
             g.setColor(((Door) obj).color());
             g.fillRect(x, y, squareLength, squareLength);

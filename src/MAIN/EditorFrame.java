@@ -77,13 +77,9 @@ public class EditorFrame extends JFrame {
                 int width, height, depth;
                 try{
                 width = Integer.parseInt(JOptionPane.showInputDialog(null,
-                        "Width?", "3"));
-                
-                height = Integer.parseInt(JOptionPane.showInputDialog(null,
-                        "Height?", "3"));
-                
-                depth = Integer.parseInt(JOptionPane.showInputDialog(null,
-                        "Depth?", "3"));
+                        "Dimension?", "3"));
+                height = width;
+                depth = width;
                 }catch(NumberFormatException nfe){
                     return;
                 }
