@@ -70,6 +70,53 @@ public class Graphics {
         gl.glPopMatrix(); //pop the matrix
     }
     
+    /**Draws a openGL scaled textured quad
+     * @param v the position vector of the cube
+     * @param n the normal vector of the quad
+     * @param scale the scale*/
+    public static void drawQuadTexScaled(Float3 v, Float3 n, boolean inside, float scale) {
+    	//find the difference between the point and the normal
+    	Float3 dv = new Float3((n.x-v.x), (n.y-v.y), (n.z-v.z));
+    	
+    	//Find the rotation amounts
+    	float xRot = Math.abs(dv.y)*(90.0f+dv.y*90.0f);
+    	float yRot = Math.abs(dv.z)*(dv.z*90.0f);
+    	float zRot = Math.abs(dv.x)*(dv.x*90.0f);
+
+    	gl.glPushMatrix(); //push new matrix
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply scale
+    	gl.glScalef(scale, scale, scale);
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y*scale, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x*scale, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z*scale, 0.0f, 0.0f, 1.0f);
+    	
+    	//apply the rotations
+    	gl.glRotatef(zRot, 0.0f, 0.0f, 1.0f);
+    	gl.glRotatef(yRot, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(xRot, 1.0f, 0.0f, 0.0f);
+    	
+    	if (!inside) gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f); //flip if outside
+    	
+    	//translate to the edge of the cube
+    	if (inside) gl.glTranslatef(0, -0.995f, 0);
+    	else gl.glTranslatef(0, 0.995f, 0);
+    	
+    	//now draw the quad
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1.0f, 0, -1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1.0f, 0,  1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 1.0f, 0,  1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 1.0f, 0, -1.0f);
+        gl.glEnd();
+        
+        gl.glPopMatrix(); //pop the matrix
+    }
+    
     /**Draws a openGL coloured quad
      * @param v the position vector of the cube
      * @param n the normal vector of the quad
@@ -274,14 +321,17 @@ public class Graphics {
     /**Draw a door object in high graphics
      * @param v the position vector of the door
      * @param col the colour of the door*/
-    public static void drawDoorHigh(Float3 v, Color col) {
+    public static void drawDoorHigh(Float3 v, Color col, float scale) {
     	//draw the door block
 		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[11]); //bind the door texture
 		gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
-		Graphics.drawQuadTex(v, new Float3(v.x-1, v.y, v.z  ), false);
-		Graphics.drawQuadTex(v, new Float3(v.x+1, v.y, v.z  ), false);
-		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z+1), false);
-		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z-1), false);
+		
+		gl.glPushMatrix();
+		
+		Graphics.drawQuadTexScaled(v, new Float3(v.x-1, v.y, v.z  ), false, scale);
+		Graphics.drawQuadTexScaled(v, new Float3(v.x+1, v.y, v.z  ), false, scale);
+		Graphics.drawQuadTexScaled(v, new Float3(v.x,   v.y, v.z+1), false, scale);
+		Graphics.drawQuadTexScaled(v, new Float3(v.x,   v.y, v.z-1), false, scale);
 		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     

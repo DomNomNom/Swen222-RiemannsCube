@@ -60,7 +60,6 @@ public class Music {
             soundFile = new File(strFilename);
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(1);
         }
         
         musicPlayer = new MusicPlayer();
@@ -80,25 +79,19 @@ public class Music {
         }
         
         public void run(){
-            System.out.println("Starting");
             while(true){
                 if(!play()){
-                    if(!loop)    break;//loop until no longer playing.
-                    System.out.println("Looping");
+                    if(!loop) break; //loop until no longer playing.
                 }
             }
-            System.out.println("And we're done.");
         }
         
         private boolean play(){
-            
-            System.out.println("Playing");
 
             try {
                 audioStream = AudioSystem.getAudioInputStream(soundFile);
             } catch (Exception e){
                 e.printStackTrace();
-               System.exit(1);
             }
 
             audioFormat = audioStream.getFormat();
@@ -110,10 +103,8 @@ public class Music {
                 sourceLine.open(audioFormat);
             } catch (LineUnavailableException e) {
                 e.printStackTrace();
-                System.exit(1);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.exit(1);
             }
             
             sourceLine.start();

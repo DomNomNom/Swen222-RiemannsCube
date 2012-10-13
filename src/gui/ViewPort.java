@@ -334,10 +334,12 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         			
         			if (obj instanceof Door) {
         				if (((Door) obj).isClosed()) {
-        					if (high) Graphics.drawDoorHigh(v, ((Door) obj).color());
+        					if (high) Graphics.drawDoorHigh(v, ((Door) obj).color(), 1.0f);
         					else Graphics.drawDoorLow(v, ((Door) obj).color());
         				}
         				else {
+        					float doorAnimate = ((Door) obj).animate(); //animate the door
+        					if (doorAnimate != -1) Graphics.drawDoorHigh(v, ((Door) obj).color(), doorAnimate);
         					if (obj instanceof EntranceDoor || obj instanceof ExitDoor) { //draw a portal
         						if (high) Graphics.drawPortal(v); 
         					}
@@ -417,7 +419,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     		}
     	}
     	if (spaceReleased) { //release space
-    		System.out.println("here");
     		if (level.isValidAction(new ItemUseStop(player.id))) { //check if drop is valid
     			
     			frame.getClient().push(new ItemUseStop(player.id));
@@ -550,17 +551,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     		player.relPos.y += newPos.y;
     		player.relPos.z += newPos.z;
         }
-        
-        Cube d = level.getCube(player.pos());
-        if (d.object() instanceof EntranceDoor) {
-        	RiemannCube newLevel = null;
-        	System.out.println("CRASH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        	try {
-        		newLevel = XMLParser.readXML(new FileInputStream(new File(((EntranceDoor) d.object()).levelName())));
-        	} catch (IOException e) {}
-        	
-        	frame.getClient().push(new FullStateUpdate(newLevel.toString()));
-        }
     }
     
     /**Process the turning*/
@@ -676,7 +666,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	    				else {rotateTo.y += 90; rotateView.y -= 90; player.orientation(2);}
 	    			}
 	    			else {
-	    				if (leftMouse) {rotateTo.z += 90; rotateView.y -= 90; player.orientation(2); System.out.println("here");}
+	    				if (leftMouse) {rotateTo.z += 90; rotateView.y -= 90; player.orientation(2);}
 	    				else {rotateTo.z -= 90; rotateView.y += 90; player.orientation(3);}
 	    			}
     			}

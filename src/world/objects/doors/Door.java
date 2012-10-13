@@ -28,6 +28,7 @@ public abstract class Door extends GameObject {
     private boolean open = false;
     private boolean playSound = false;
     private boolean soundPlayed = false;
+    private float animateScale = 1.0f;
     
     private Color color;
 
@@ -83,6 +84,12 @@ public abstract class Door extends GameObject {
     
     public void soundPlayed() {
         playSound = false;
+    }
+    
+    /**animate the door*/
+    public float animate() {
+    	if (animateScale <= 0) return -1;
+    	return animateScale -= 0.02f;
     }
     
     @Override

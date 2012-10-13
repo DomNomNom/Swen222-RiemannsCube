@@ -9,8 +9,6 @@ Swen222-RiemannsCube
 ======================
 David:
 
-entrance/exit door
-door animation
 containers
 transparency drawing
 players fix
