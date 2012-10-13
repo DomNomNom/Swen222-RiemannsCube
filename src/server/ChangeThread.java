@@ -4,11 +4,19 @@ package server;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import data.LevelPipeline;
-
 import utils.Configurations;
 import utils.Int3;
-import world.events.*;
+import world.events.Action;
+import world.events.ActivateTrap;
+import world.events.ChatEvent;
+import world.events.ChatMessage;
+import world.events.Event;
+import world.events.FullStateUpdate;
+import world.events.PlayerAssign;
+import world.events.PlayerRelPos;
+import world.events.PlayerSpawning;
+import world.events.RequestPlayer;
+import data.LevelPipeline;
 
 /**
  * A thread that is responsible of handling the changes made to the 
@@ -68,7 +76,7 @@ public class ChangeThread extends Thread {
                 sendToClient(new PlayerAssign(newPlayerID), parentServer.clientsList.get(c.clientId));
             }
             else if (e instanceof FullStateUpdate)
-            	System.err.println(myName() + "players are not supposed to send FullStateUpdates!");
+            	sendToEveryone(e);
             else if (e instanceof ActivateTrap)
                 sendToEveryone(new ChatMessage("Activated a Trap!", ((ActivateTrap)e).playerID));
             else {

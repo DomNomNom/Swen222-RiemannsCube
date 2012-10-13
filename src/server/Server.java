@@ -2,21 +2,18 @@ package server;
 
 import gui.GameFrame;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import client.Client;
-import data.LevelPipeline;
-
 import utils.Int3;
 import world.RiemannCube;
-import world.events.Action;
-import world.events.ChatMessage;
-import world.events.FullStateUpdate;
-import world.events.PlayerMove;
 
 /**
  * A server for the game that holds all of the clients 
@@ -74,10 +71,5 @@ public class Server extends Thread {
         GameFrame window = new GameFrame(null);
         window.init();
         window.execute();
-        
-//        Client c = new Client("127.0.0.1", null);
-//        PlayerMove pm = new PlayerMove(0, new Int3());
-//        c.push(pm);
-        
     }
 }

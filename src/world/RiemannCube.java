@@ -1,28 +1,27 @@
     package world;
 
 import java.awt.Color;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import utils.Float3;
 import utils.Int3;
-import utils.Int2;
-import utils.Int3;
-import world.cubes.*;
+import world.cubes.Cube;
+import world.cubes.Floor;
 import world.events.Action;
 import world.events.ItemAction;
 import world.events.ItemDrop;
-import world.events.ItemUseStop;
 import world.events.ItemPickup;
 import world.events.ItemUseStart;
+import world.events.ItemUseStop;
 import world.events.PlayerMove;
-import world.events.PlayerSpawning;
 import world.events.PlayerRelPos;
-import world.objects.GameObject;
+import world.events.PlayerSpawning;
 import world.objects.GlobalHolder;
 import world.objects.Player;
 import world.objects.Trigger;
+import data.LevelPipeline;
 
 
 /** 
@@ -261,4 +260,16 @@ public class RiemannCube {
     // ===== other stuff =====
 
     private String myName() { return "[RiemanCube] "; }
+    
+    /**
+     * Returns a string representation of this RiemannCube in XML Format
+     */
+    public String toString(){
+    	LevelPipeline saveLoader = new LevelPipeline();
+    	
+    	StringWriter out = new StringWriter();
+        saveLoader.save(this, out);
+        
+        return out.toString();
+    }
 }

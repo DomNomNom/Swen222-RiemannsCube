@@ -1,20 +1,14 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
 
 import org.junit.Test;
 
-import data.LevelPipeline;
-import data.XMLParser;
-
 import world.RiemannCube;
 import world.events.FullStateUpdate;
+import data.XMLParser;
 
 public class EventTests {
 
@@ -24,12 +18,8 @@ public class EventTests {
     @Test
     public void testFullStateUpdate() {
         RiemannCube world1 = WorldTests.generateWorld();
-        LevelPipeline saveLoader = new LevelPipeline();
         
-        StringWriter out = new StringWriter();
-        saveLoader.save(world1, out);
-        
-        FullStateUpdate event = new FullStateUpdate(out.toString());
+        FullStateUpdate event = new FullStateUpdate(world1.toString());
         
         // ==== Here, the event would get sent over the network and received at the other client(s) ====
         
