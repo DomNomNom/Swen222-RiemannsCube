@@ -1,20 +1,27 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import client.Client;
 
@@ -33,6 +40,10 @@ public class GameFrame extends JFrame {
     private JFrame splash; //the splash screen
     private ViewPort view; //the view panel
     private ChatPanel chat; //the chat panel
+    
+    private UIManager ui = new UIManager(); //UI manager to set background color
+    private GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); //for setting the font
+
     
     private String ip; //the IP address of the level
     private String playerName; //Name of the player who ran this frame
@@ -70,6 +81,19 @@ public class GameFrame extends JFrame {
     public GameFrame(String ip) {
         super("Riemann's cube");
         this.ip = ip;
+        //set option pane to be dark gray
+        ui.put("OptionPane.background", Color.GRAY.darker());
+        ui.put("Panel.background", Color.GRAY.darker());
+        
+        try {
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("resources/fonts/xirod.ttf")));
+
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
     
     //Alternate contructor for the host

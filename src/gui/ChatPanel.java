@@ -120,7 +120,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
 
         // Create and add the label
         JLabel chatLabel = new JLabel("Chat");
-        chatLabel.setFont(new Font("Serif", Font.BOLD, 25));
+        chatLabel.setFont(new Font("xirod", Font.BOLD, 20));
         chatLabel.setForeground(Color.WHITE);
         chatLabel.setHorizontalAlignment(JLabel.CENTER);
 
