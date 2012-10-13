@@ -58,32 +58,31 @@ public abstract class Door extends GameObject {
 
     /** A door will stay open once isClosed() has been called while all the triggers where active (locks unlocked) */
     public boolean isClosed() {
-    	if (!soundPlayed) {
-    		playSound = soundPlayed = true;
-    	}
+        if (!soundPlayed) {
+            playSound = soundPlayed = true;
+        }
         if (open) return false;
-    	for (Integer i : triggerIDs) {
-    		if (!triggersMap.containsKey(i)) throw new Error("Someone didn't add a trigger to the triggerMap!");
-    		if (!triggersMap.get(i).state()) return true;
-    	}
-    	open = true;
-    	return false;
-    	
+        for (Integer i : triggerIDs) {
+            if (!triggersMap.containsKey(i)) throw new Error("Someone didn't add a trigger to the triggerMap!");
+            if (!triggersMap.get(i).state()) return true;
+        }
+        open = true;
+        return false;
     }
     @Override
     /** will block the player (return true) iff any of our triggers are off
      * calls isClosed()
      */
     public boolean blocks(Player p) {
-    	return isClosed();
+        return isClosed();
     }
     
     public boolean playSound() {
-    	return playSound;
+        return playSound;
     }
     
     public void soundPlayed() {
-    	playSound = false;
+        playSound = false;
     }
     
     @Override
