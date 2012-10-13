@@ -19,6 +19,7 @@ import data.XMLParser;
 
 import utils.Int3;
 import world.RiemannCube;
+import world.cubes.Cube;
 import world.objects.items.Key;
 import world.objects.Lock;
 import world.objects.Player;
@@ -107,11 +108,32 @@ public class XMLParsingTests {
     /** very descriptive name */
     public void testStuff() {
         RiemannCube world = WorldTests.generateWorld();
+        assertTrue(world.equals(reParse(world))); // the base case
+        assertTrue(world != reParse(world)); // a small test of re-parse
+        
+        // now lets add some more suff
+        Cube keyCube  = world.getCube(0, 0, 0);
+        Cube doorCube = world.getCube(0, 0, 1);
+        Cube lockCube = world.getCube(0, 1, 0);
+        
+        int lockID = 1;
+        Trigger lock = new Lock(lockCube, lockID, world.triggers, Color.RED);
+        world.triggers.put(1, lock);
+        lockCube.addObject(lock);
+        assertTrue(world.equals(reParse(world)));
+        
+        Door door = new LevelDoor(doorCube, world.triggers, Color.RED);
+        doorCube.addObject(door);
+        door.addTrigger(lock.getID());
+        assertTrue(world.equals(reParse(world)));
+        
+        Key key = new Key(keyCube, Color.RED);
+        keyCube.addObject(key);
         assertTrue(world.equals(reParse(world)));
     }
     
     /** Serialises and then unserialises the RC and returns the result */
-    public RiemannCube reParse(RiemannCube r) {
-        return XMLParser.readXML(new ByteArrayInputStream(r.toString().getBytes()));
+    public RiemannCube reParse(RiemannCube world) {
+        return XMLParser.readXML(new ByteArrayInputStream(world.toString().getBytes()));
     }
 }

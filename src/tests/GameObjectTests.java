@@ -17,6 +17,7 @@ import world.events.ItemUseStart;
 import world.events.PlayerMove;
 import world.objects.Container;
 import world.objects.Lock;
+import world.objects.Player;
 import world.objects.Trigger;
 import world.objects.doors.Door;
 import world.objects.doors.LevelDoor;
@@ -141,9 +142,7 @@ public class GameObjectTests {
         Cube doorCube = world.getCube(0, 0, 1);
         Cube lockCube = world.getCube(0, 1, 0);
         
-        int lockID = 1;
-        Trigger lock = new Lock(lockCube, lockID, world.triggers, Color.RED);
-        world.triggers.put(1, lock);
+        Trigger lock = new Lock(lockCube, 500, world.triggers, Color.RED);
         lockCube.addObject(lock);
         
         Door door = new LevelDoor(doorCube, world.triggers, Color.RED);
@@ -161,10 +160,76 @@ public class GameObjectTests {
         assertTrue(world.applyAction(new ItemPickup  (0                 )));
         assertTrue(world.applyAction(new PlayerMove  (0, lockCube.pos() )));
         assertTrue(world.applyAction(new ItemUseStart(0                 ))); // put the key in the lock (should unlock door)
-        assertTrue(world.applyAction(new ItemUseStop  (0                 ))); // lock is locked again but door still remains open
-        assertFalse(door.isClosed()); // this is a vital step for the door to keep track that it has been opened!
+        assertFalse(door.isClosed()); // this is VITAL to call this between a valid itemUse start/stop
+        assertTrue(world.applyAction(new ItemUseStop (0                 ))); // lock is locked again but door still remains open
+        assertFalse(door.isClosed()); // this isn't a vital step, but just checking
         assertTrue(world.applyAction(new PlayerMove(0, spwnCube.pos() ))); // move back
         assertTrue(world.applyAction(new PlayerMove(0, doorCube.pos() ))); // and now we're in the door cube :D
         
+    }
+    
+    @Test
+    /** tests a door with 2 locks.  */
+    public void testDoorsTwoPlayers() {
+        RiemannCube world = WorldTests.generateWorld(); // player is at (0,0,0)
+
+        Cube spwnCube = world.getCube(0, 0, 0); // both players spawn here
+        Cube doorCube = world.getCube(0, 0, 1);
+        Cube lockCube1 = world.getCube(0, 1, 0);
+        Cube lockCube2 = spwnCube;
+
+        Player player2 = new Player(world.getCube(new Int3(0,0,0)), 1, "OMNOMNOM");
+        world.players.put(player2.id, player2);
+        spwnCube.addObject(player2);
+        
+        Trigger lock1 = new Lock(lockCube1, 500, world.triggers, Color.RED);
+        lockCube1.addObject(lock1);
+        
+        Trigger lock2 = new Lock(lockCube2, 9001, world.triggers, Color.RED);
+        lockCube2.addObject(lock2);
+        
+        Door door = new LevelDoor(doorCube, world.triggers, Color.RED);
+        doorCube.addObject(door);
+        door.addTrigger(lock1.getID());
+        door.addTrigger(lock2.getID());
+
+        Key key1 = new Key(spwnCube, Color.RED);
+        Key key2 = new Key(spwnCube, Color.RED);
+        spwnCube.addObject(key1);
+        spwnCube.addObject(key2);
+
+        Action moveToDoorCube = new PlayerMove(1, doorCube.pos());
+
+        assertTrue(door.isClosed());
+        assertFalse(world.isValidAction(moveToDoorCube)); // we shouldn't be able into the cube with a locked door
+
+        assertTrue (world.applyAction(new ItemPickup  (0                 )));
+        assertTrue (world.applyAction(new ItemPickup  (1                 )));
+        assertTrue (world.applyAction(new PlayerMove  (0, lockCube1.pos())));
+        
+        // use/unuse lock1
+        assertTrue (world.applyAction(new ItemUseStart(0                 ))); // put the key in the lock (should unlock door)
+        assertTrue(door.isClosed());
+        assertFalse(world.applyAction(moveToDoorCube)); // we haven't unlocked both locks it yet
+        assertTrue (world.applyAction(new ItemUseStop (0                 ))); // lock is locked again but door still remains open
+        assertTrue(door.isClosed());
+        
+        // use/unuse lock2
+        assertTrue (world.applyAction(new ItemUseStart(1                  )));
+        assertTrue (door.isClosed());
+        assertFalse(world.applyAction(moveToDoorCube)); // we haven't unlocked both locks it yet
+        assertTrue (world.applyAction(new ItemUseStop (1                  )));
+        
+        // unlock both locks at the same time
+        assertTrue (world.applyAction(new ItemUseStart(0                  )));
+        assertTrue (door.isClosed());
+        assertTrue (world.applyAction(new ItemUseStart(1                  )));
+        assertFalse(door.isClosed());
+        assertTrue (world.applyAction(new ItemUseStop (0                  )));
+        assertFalse(door.isClosed());
+        assertTrue (world.applyAction(new ItemUseStop (1                  )));
+        
+
+        assertTrue (world.applyAction(moveToDoorCube)); // and now we're in the door cube :D
     }
 }

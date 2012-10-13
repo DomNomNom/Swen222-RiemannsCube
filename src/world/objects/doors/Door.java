@@ -85,4 +85,12 @@ public abstract class Door extends GameObject {
     public void soundPlayed() {
     	playSound = false;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) return false;
+        Door other = (Door) o;
+        if (triggerIDs.equals(other.triggerIDs)) return false;
+        return true;
+    }
 }

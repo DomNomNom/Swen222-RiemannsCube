@@ -30,7 +30,16 @@ public abstract class Trigger extends GameObject {
         this.ID = ID;
         globalIDs.put(ID, this);
     }
-
     
     public abstract Color color();
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) return false;
+        
+        Trigger t = (Trigger) obj; // safe as it is checked above
+        if (ID != t.ID) return false;
+        
+        return true;
+    }
 }

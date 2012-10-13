@@ -56,8 +56,7 @@ public class Lock extends Trigger {
     }
     @Override
     public GameItem useStop(GameItem item) {
-        insertedKey = (Key)item;
-        currentState = true;
+        currentState = false;
         Key ret = insertedKey;
         insertedKey = null;
         return ret; // we give the key back as we are nice locks :)
@@ -66,5 +65,16 @@ public class Lock extends Trigger {
     @Override
     public String getClassName() {
         return "Lock";
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) return false;
+        
+        Lock l = (Lock) obj; // safe as it is checked above
+        if ((color==null)? l.color!=null  :  !color.equals(l.color)) return false;
+        if ((insertedKey==null)? l.insertedKey!=null  : !insertedKey.equals(l.insertedKey)) return false;
+        
+        return true;
     }
 }
