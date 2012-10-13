@@ -82,8 +82,8 @@ public class GameFrame extends JFrame {
         super("Riemann's cube");
         this.ip = ip;
         //set option pane to be dark gray
-        ui.put("OptionPane.background", Color.GRAY.darker());
-        ui.put("Panel.background", Color.GRAY.darker());
+        ui.put("OptionPane.background", Color.GRAY.darker().darker().darker());
+        ui.put("Panel.background", Color.GRAY.darker().darker().darker());
         ui.put("OptionPane.messageForeground", Color.GREEN);
         //set option pane font
         ui.put("OptionPane.messageFont", new Font("xirod", Font.BOLD, 12));
@@ -111,16 +111,17 @@ public class GameFrame extends JFrame {
     //METHODS
     /**Initialises the game frame by creating the panels of the game*/
     public void init() {
+        ImageIcon icon = new ImageIcon("resources/gfx/icon.png");
     	if (ip == null) { //if an IP address has not been defined get one
     		ip = (String)JOptionPane.showInputDialog(this, "Enter the Host IP", "Select Server",
-    		                    JOptionPane.PLAIN_MESSAGE, null, null, null);
+    		                    JOptionPane.PLAIN_MESSAGE, icon, null, null);
     		
     		if (ip == null || ip.equals("")) ip = "localhost";
     	}
 
     	if(playerName == null){
     	    playerName = (String)JOptionPane.showInputDialog(this, "Your Name", "Enter your name:",
-                    JOptionPane.PLAIN_MESSAGE, null, null, null);
+                    JOptionPane.PLAIN_MESSAGE, icon, null, null);
     	}
     	
     	//first create and draw the splash screen
