@@ -30,9 +30,11 @@ import javax.media.opengl.GLAutoDrawable;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[15]; //where the texture ids are stored
+	private int[] texID = new int[13]; //where the texture ids are stored
 	//The 3D objects
-	public Object3D keyObj; //TODO: make getters
+	private Object3D keyObj;
+	private Object3D buttonObj;
+	private Object3D buttonBaseObj;
 	
 	//The textures
 	private ByteBuffer floorTex;
@@ -48,10 +50,6 @@ public class Resources {
 	private ByteBuffer pausedExitTex;
 	private ByteBuffer doorTex;
 	private ByteBuffer doorLightsTex;
-	//TODO: remove these only for testing
-	private ByteBuffer buttonTex;
-	private ByteBuffer lockTex;
-	
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
@@ -65,6 +63,8 @@ public class Resources {
 	/**Loads the object files*/
 	private void loadObj() {
 		keyObj = new Object3D(new File("resources/obj/key.obj"));
+		buttonObj = new Object3D(new File("resources/obj/button.obj"));
+		buttonBaseObj = new Object3D(new File("resources/obj/buttonBase.obj"));
 	}
 	
 	/**Loads all the textures that are needed
@@ -150,23 +150,7 @@ public class Resources {
 			doorLightsImg = ImageIO.read(new File("resources/gfx/doorLights.png")); //open the image
 			doorLightsTex = convertImageData(doorLightsImg); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
-		
-		
-		//TODO: remove these
-		BufferedImage buttonImg = null;
-		try {
-			buttonImg = ImageIO.read(new File("resources/gfx/button.png")); //open the image
-			buttonTex = convertImageData(buttonImg); //converts the image
-		} catch (IOException e) {e.printStackTrace();}
-		
-		BufferedImage lockImg = null;
-		try {
-			lockImg = ImageIO.read(new File("resources/gfx/lock.png")); //open the image
-			lockTex = convertImageData(lockImg); //converts the image
-		} catch (IOException e) {e.printStackTrace();}
-		
-		
-		
+
 		
 		//create the texture IDs
 		gl.glGenTextures(texID.length, texID, 0);
@@ -249,18 +233,18 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
             800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, doorLightsTex);
-        
-        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[13]);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
-            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, buttonTex);
-        
-        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[14]);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
-            800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, lockTex);
+	}
+	
+	/**Return an object that matches the given string
+	 * @param name the name of the required object
+	 * @return the object*/
+	public Object3D getObj(String name) {
+		if (name.equals("key")) return keyObj;
+		else if (name.equals("button")) return buttonObj;
+		else if (name.equals("buttonBase")) return buttonBaseObj;
+		
+		System.out.println("here");
+		return null;
 	}
 	
 	/**Get the texture ids

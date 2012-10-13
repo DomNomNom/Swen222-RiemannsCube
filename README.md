@@ -9,8 +9,6 @@ Swen222-RiemannsCube
 ======================
 David:
 
-better chat panel, dialog panels
-obj file loading
 fix low graphics
 containers
 door animation
@@ -22,11 +20,7 @@ planets
 
 ======================
 Alex:
- df
--hub design
--fonts
--dialog appearence
--buttons in editor frame
+
 -Design maps
 =======================
 

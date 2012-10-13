@@ -1,6 +1,7 @@
 package world.objects.items;
 
 import java.awt.Color;
+import java.util.Random;
 
 import world.cubes.Cube;
 
@@ -13,6 +14,8 @@ public class Key extends GameItem {
 
     // The colour identifies what locks it belongs to
     Color color;
+    public float rotation = 0;
+    
     public Color color() {return color;  }
     
     // Tells whether this key opens an exit door
@@ -24,6 +27,8 @@ public class Key extends GameItem {
     public Key(Cube pos, Color color){
         super(pos);
         this.color = color;
+        Random rand = new Random();
+        rotation = rand.nextInt(360);
     }
     
 

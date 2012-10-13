@@ -9,6 +9,7 @@ import utils.Float2;
 import utils.Float3;
 import world.RiemannCube;
 import world.objects.Player;
+import world.objects.items.Key;
 
 /** Graphics controls all rendering onto the view port
  * It consists of a set of static methods that can be
@@ -284,7 +285,7 @@ public class Graphics {
     }
     
     /**TODO: FIX THIS*/
-    public static void drawKey(Float3 v, Color col) {
+    public static void drawKey(Float3 v, Key k) {
     	gl.glPushMatrix(); //push new matrix
     	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
@@ -296,12 +297,11 @@ public class Graphics {
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
+    	gl.glRotatef(k.rotation, 0, 1, 0);
     	gl.glTranslatef(0.0f, -0.5f, 0.0f);
     	
-    	gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
-    	
-    	resources.keyObj.render(gl);
-    	
+    	gl.glColor4f(k.color().getRed()/255.0f, k.color().getGreen()/255.0f, k.color().getBlue()/255.0f, 1.0f);
+    	resources.getObj("key").render(gl);
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	
     	gl.glPopMatrix();
@@ -314,16 +314,11 @@ public class Graphics {
        	gl.glLoadIdentity(); //load the identity matrix
        	
        	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
-       	
        	gl.glRotatef(75, 0, 1, 0);
        	
-    	//draw the paused background
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-
     	gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
-    	
-    	resources.keyObj.render(gl);
-    	
+    	resources.getObj("key").render(gl);
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	
     	gl.glPopMatrix();
@@ -331,7 +326,6 @@ public class Graphics {
     
     /**TODO: fix this*/
     public static void drawButton(Float3 v, Color col) {
-    	System.out.println("here");
     	gl.glPushMatrix();
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
@@ -341,15 +335,14 @@ public class Graphics {
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[13]); //bind the lock glass texture
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	gl.glColor4f(0.9f, 0.9f, 0.9f, 1.0f);
+    	
+    	resources.getObj("buttonBase").render(gl); //draw the base
+    	
     	gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
     	
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1.0f, -0.5f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 1.0f, -0.5f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 1.0f, -0.5f,  1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-1.0f, -0.5f,  1.0f);
-        gl.glEnd();
+    	resources.getObj("button").render(gl);
         
         gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         
@@ -364,18 +357,19 @@ public class Graphics {
     	
     	//apply the world orientation rotation
     	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
-        gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[14]); //bind the lock glass texture
+    	gl.glTranslatef(0, -1.0f, 0);
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	gl.glColor4f(0.1f, 0.1f, 0.1f, 1.0f);
+    	
+    	resources.getObj("buttonBase").render(gl); //draw the base
+    	
     	gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
     	
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.8f, -0.95f, -0.8f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.8f, -0.95f, -0.8f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.8f, -0.95f,  0.8f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.8f, -0.95f,  0.8f);
-        gl.glEnd();
+    	resources.getObj("button").render(gl);
         
         gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         

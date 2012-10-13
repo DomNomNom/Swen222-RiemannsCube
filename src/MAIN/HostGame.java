@@ -26,7 +26,7 @@ public class HostGame {
 		//load the level for the server
 		RiemannCube world = null;
         try {   //read the world from a file
-			world = XMLParser.readXML(new FileInputStream(new File("Levels/Hub.xml")));
+			world = XMLParser.readXML(new FileInputStream(new File("Levels/Hub2.xml")));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}

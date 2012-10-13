@@ -340,7 +340,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         					((Door) obj).soundPlayed();
         				}
         			}
-        			else if (obj instanceof Key) Graphics.drawKey(v, ((Key) obj).color());
+        			else if (obj instanceof Key) {
+        				Graphics.drawKey(v, ((Key) obj));
+        				if (((Key) obj).rotation > 360) ((Key) obj).rotation  = 2; 
+        				else ((Key) obj).rotation += 2;
+        			}
         			else if (obj instanceof Button) buttonRender.add(new Pair<Float3, Color>(v, ((Button) obj).color()));
         			else if(obj instanceof Lock) lockRender.add(new Pair<Float3, Color>(v, ((Lock) obj).color()));
         		}
