@@ -9,9 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.JColorChooser;
@@ -27,10 +25,11 @@ import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Space;
 import world.cubes.Wall;
+import world.objects.Button;
 import world.objects.Container;
 import world.objects.GameObject;
+import world.objects.LightSource;
 import world.objects.Lock;
-import world.objects.Button;
 import world.objects.Trigger;
 import world.objects.doors.Door;
 import world.objects.doors.EntranceDoor;
@@ -230,7 +229,15 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             g.setColor(Color.BLACK);
             g.drawRect(x + squareLength/4, y + squareLength/4, squareLength/2, squareLength/2);
             
-        } else if(obj instanceof Container){    // Containers
+        } else if(obj instanceof LightSource){
+            g.setColor(Color.GRAY.darker());
+            g.fillRect(x + squareLength/2, y, squareLength/6, squareLength);
+            g.setColor(Color.YELLOW);
+            g.fillRect(x + squareLength/2, y, squareLength/6, squareLength/6);
+            g.setColor(Color.GRAY.darker());
+            g.drawRect(x + squareLength/2, y, squareLength/6, squareLength/6);
+        }
+        else if(obj instanceof Container){    // Containers
             Color col = ((Container) obj).color();
             int red = col.getRed();
             int blue = col.getBlue();
@@ -574,7 +581,10 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                 
             if (typed == 't'){ //Token
                 level.getCube(x,y,z).addObject((new Token(level.getCube(x, y, z))));
-            } else if (typed == 'c') { // Container
+            } else if(typed == 'i'){
+                level.getCube(x,y,z).addObject((new LightSource(level.getCube(x, y, z))));
+            }
+            else if (typed == 'c') { // Container
                 if(numContainersPlaced > 0){
                     level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), curContainerColor, null));
                     numContainersPlaced--;

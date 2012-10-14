@@ -1,15 +1,9 @@
 package data;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -29,19 +22,19 @@ import world.cubes.Floor;
 import world.cubes.Glass;
 import world.cubes.Space;
 import world.cubes.Wall;
-import world.objects.items.GameItem;
-import world.objects.items.Key;
-import world.objects.items.LightSource;
-import world.objects.items.Token;
 import world.objects.Button;
 import world.objects.Container;
 import world.objects.GameObject;
+import world.objects.LightSource;
 import world.objects.Lock;
 import world.objects.Player;
 import world.objects.doors.Door;
 import world.objects.doors.EntranceDoor;
 import world.objects.doors.ExitDoor;
 import world.objects.doors.LevelDoor;
+import world.objects.items.GameItem;
+import world.objects.items.Key;
+import world.objects.items.Token;
 
 /**
  * Class to parse an XMLFile into a 3D Array which can be loaded by the game.
@@ -170,7 +163,6 @@ public class XMLParser {
     private static GameObject createInternalObject(Node n, RiemannCube riemannCube, Cube cube) {
         GameObject ret = null;
 
-        //TODO Let parser also add the items the player is holding to the player.
         if (n.getNodeName().equals("player")){
         	Element e = (Element) n;
         	
@@ -269,10 +261,13 @@ public class XMLParser {
             // Adding the trigger IDs from the attribute of the door
             while (idScan.hasNext())
                 ((Door)ret).addTrigger(Integer.parseInt(idScan.next()));
+            
+            idScan.close();
 
         } else if (n.getNodeName().equals("token")) {
             ret = new Token(cube);
         } else if (n.getNodeName().equals("lightsource")) {
+            System.out.println("Made a lightsource");
             ret = new LightSource(cube);
         } else if(n.getNodeName().equals("container")){
             Element e = (Element) n;
@@ -283,6 +278,9 @@ public class XMLParser {
             ret = new Container(cube, newCol, riemannCube.containers);
         } 
         
+        if(ret instanceof LightSource){
+            System.out.println("Returned a lightsource");
+        }
         return ret;
     }
 }

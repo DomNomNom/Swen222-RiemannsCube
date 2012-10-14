@@ -5,33 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Collections;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
-
-import world.objects.Container;
-import world.objects.Player;
-import world.objects.Trigger;
-import world.RiemannCube;
-import world.cubes.Cube;
-import world.objects.items.GameItem;
-import world.objects.items.Key;
-import world.objects.items.Token;
-import world.objects.GameObject;
-import world.objects.doors.Door;
-import world.objects.doors.EntranceDoor;
-import world.objects.doors.ExitDoor;
-import world.objects.doors.LevelDoor;
 
 import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
@@ -41,6 +17,27 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+
+import world.RiemannCube;
+import world.cubes.Cube;
+import world.objects.Container;
+import world.objects.GameObject;
+import world.objects.Player;
+import world.objects.Trigger;
+import world.objects.doors.Door;
+import world.objects.doors.EntranceDoor;
+import world.objects.doors.ExitDoor;
+import world.objects.doors.LevelDoor;
+import world.objects.items.GameItem;
+import world.objects.items.Key;
+import world.objects.items.Token;
+
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 /**
  * 
@@ -248,7 +245,7 @@ public class LevelPipeline {
             element = doc.createElement(obj.getClassName().toLowerCase());
             element.setAttribute("color", hexCode(((Container) obj).color()));
         } else {
-            element = doc.createElement(obj.getClassName());
+            element = doc.createElement(obj.getClassName().toLowerCase());
         }
 
         return element;
