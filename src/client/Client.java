@@ -81,7 +81,6 @@ public class Client {
             if (e instanceof Action) {
                 if (!world.applyAction((Action) e) ) {
                     System.err.println(myName() + " wasnt able to apply the servers action: " + e);
-                    // TODO: request a full state update and apply it
                 }
             }
             else if (e instanceof ChatMessage) {

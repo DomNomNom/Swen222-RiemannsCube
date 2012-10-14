@@ -94,7 +94,7 @@ public class ChangeThread extends Thread {
         return new FullStateUpdate(out.toString());
     }
     
-    /* Sends a an event to the client that made it */
+    /** Sends a an event to the client that made it */
     public void sendToClient(Event e, RemotePlayer rp) {
         try {
             rp.out.writeObject(e); // rp.out is a object out stream that you can write the objects out too
