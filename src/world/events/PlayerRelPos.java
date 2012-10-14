@@ -17,4 +17,8 @@ public class PlayerRelPos extends Action {
         this.playerID = playerID;
         this.relpos = relpos;
     }
+    
+    public String toString() {
+        return "PlayerRelPos[" + relpos+"]";
+    }
 }
