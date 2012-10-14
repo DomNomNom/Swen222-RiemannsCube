@@ -9,7 +9,6 @@ Swen222-RiemannsCube
 ======================
 David:
 
-update and draw methods for lag resistance
 Scaling
 lighting
 players fix

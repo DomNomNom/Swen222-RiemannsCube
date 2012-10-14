@@ -113,7 +113,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private Float3 rotateTo = new Float3(); //the rotation the player needs to rotate to
     private Float3 rotateView = new Float3();
     
-    private float moveSpeed = 0.04f; //the move speed of the camera
+    private float moveSpeed = 0.045f; //the move speed of the camera
     private float turnSpeed = 10.0f; //the turn speed of the camera
     private int rotationSpeed = 2; //the speed that the rotation animation happens
     
@@ -191,8 +191,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         Graphics.setResources(resources);
         Graphics.setHigh(high);
         
-        
-        
         currentTime = System.currentTimeMillis(); //update the time before starting
         
         updateCamera(); //update the camera position
@@ -247,7 +245,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             frame.getClient().update(frameLength);
             level = frame.getClient().getWorld();
             player = frame.getClient().player();
-            Graphics.rotatePortal();
             
             if (!pause && player!=null) {
                 //Process movement and rotation
@@ -256,6 +253,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                 if (!rotationAni && !spaceHeld) processMovement();//if rotating you can't move
                 updateCamera(); //update the camera position
                 processTurning();
+                
+                updateWorld(); //update the world
 
                 robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
             }
@@ -272,7 +271,42 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         if (player == null) return; //if there is no player yet don't start drawing
         
-        //START DRAWING
+        drawWorld(gl); //draw the world
+
+    }
+    
+    /**updates the world*/
+    private void updateWorld() {        
+        //iterate through the level
+        for (int x = 0; x < level.size.x; ++x) {
+            for (int y = 0; y < level.size.y; ++y) {
+                for (int z = 0; z < level.size.z; ++z) {
+                    Cube c = level.getCube(x, y, z); //get the current cube
+                    
+                    //get the objects in the cubes
+                    for (GameObject obj : c.objects()) { //gets all the objects that the cube contains
+	                    if (obj instanceof Door) {
+	                        if (!((Door) obj).isClosed()) {
+	                            ((Door) obj).animate(); //animate the door
+	                            if (((Door) obj).playSound()) { //play door sound
+	                                if (sound) {
+	                                    Music doorSound = new Music();
+	                                    doorSound.playSound("resources/audio/fx/door.wav");
+	                                }
+	                                ((Door) obj).soundPlayed();
+	                            }
+	                        }
+                        }
+                    }
+                }
+            }
+        }
+        Graphics.rotatePlanets();
+        Graphics.rotatePortal();
+    }
+    
+    /**draws the world*/
+    private void drawWorld(GL2 gl) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); //clear the screen
         
         gl.glLoadIdentity(); //load the identity matrix
@@ -334,18 +368,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                             else Graphics.drawDoorLow(v, ((Door) obj).color());
                         }
                         else {
-                            float doorAnimate = ((Door) obj).animate(); //animate the door
-                            if (doorAnimate != -1) Graphics.drawDoorHigh(v, ((Door) obj).color(), doorAnimate);
+                            if (((Door) obj).getAnimate() != -1) Graphics.drawDoorHigh(v, ((Door) obj).color(), ((Door) obj).getAnimate());
                             else if (obj instanceof EntranceDoor || obj instanceof ExitDoor) { //draw a portal
                                 if (high) Graphics.drawPortal(v); 
-                            }
-                            
-                            if (((Door) obj).playSound()) { //play door sound
-                                if (sound) {
-                                    Music doorSound = new Music();
-                                    doorSound.playSound("resources/audio/fx/door.wav");
-                                }
-                                ((Door) obj).soundPlayed();
                             }
                         }
                     }
@@ -363,7 +388,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             Graphics.drawPlanet(new Float3(76, -23, 64), new Float3(0, 45, 0), 10, 14);
             Graphics.drawPlanet(new Float3(12, 54, -76), new Float3(0, 0, 0), 12, 15);
             Graphics.drawPlanet(new Float3(-34, -1, 12), new Float3(0, 270, 0), 12, 16);
-            Graphics.rotatePlanets();
         }
         
         //draw the glass around the outside of the cube

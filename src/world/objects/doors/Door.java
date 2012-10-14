@@ -89,7 +89,13 @@ public abstract class Door extends GameObject {
     /**animate the door*/
     public float animate() {
     	if (animateScale <= 0) return -1;
-    	return animateScale -= 0.02f;
+    	return animateScale -= 0.04f;
+    }
+    
+    /**animate the door*/
+    public float getAnimate() {
+    	if (animateScale <= 0) return -1;
+    	return animateScale;
     }
     
     @Override
