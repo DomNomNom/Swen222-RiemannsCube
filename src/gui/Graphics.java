@@ -384,7 +384,7 @@ public class Graphics {
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
-    	gl.glRotatef(k.rotate(), 0, 1, 0);
+    	gl.glRotatef(k.getRotate(), 0, 1, 0);
     	gl.glTranslatef(0.0f, -0.5f, 0.0f);
     	
     	gl.glColor4f(k.color().getRed()/255.0f, k.color().getGreen()/255.0f, k.color().getBlue()/255.0f, 1.0f);

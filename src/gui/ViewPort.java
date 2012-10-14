@@ -83,7 +83,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private Player player; //the player associated with this level
     private Resources resources; //the resources
     
-    private Int2 windowDim; //the window dimension
+    private Float2 windowDim; //the window dimension
     
     private Float2 mouse = new Float2(0f, 0f); //the current mouse x position
     private Int2 mouseCentre = new Int2(450, 300); //the mouse x centre
@@ -138,7 +138,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         addGLEventListener(this);
         addMouseListener(this);
         this.frame = frame;
-        windowDim = new Int2(width, height);
+        windowDim = new Float2(width, height);
         
         mouse = new Float2((float) MouseInfo.getPointerInfo().getLocation().getX(),
                            (float) MouseInfo.getPointerInfo().getLocation().getY());
@@ -170,7 +170,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
-
+        
         glu.gluPerspective(45.0f, windowDim.x/windowDim.y, 0.001f, 200.0f);
 
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
@@ -297,6 +297,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	                            }
 	                        }
                         }
+	                    else if (obj instanceof Key) {
+	                    	((Key) obj).rotate();
+	                    }
                     }
                 }
             }

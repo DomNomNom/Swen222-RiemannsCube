@@ -150,7 +150,11 @@ public class GameFrame extends JFrame {
     	splash.requestFocus();
     	
     	//set window properties
-    	setSize(900, 600);
+    	Toolkit tk = Toolkit.getDefaultToolkit();  
+    	int xSize = ((int) tk.getScreenSize().getWidth());  
+    	int ySize = ((int) tk.getScreenSize().getHeight());
+
+    	setSize(xSize, ySize);
         
     	//create the viewport
         ViewPort.high = high;
@@ -158,7 +162,7 @@ public class GameFrame extends JFrame {
         ViewPort.noFloor = noFloor;
         ViewPort.showFps = showFps;
         ViewPort.sound = sound;
-        view = new ViewPort(this, 700, 600);
+        view = new ViewPort(this, xSize-200, ySize);
         
         client = new Client(ip, playerName); //create a new client with the ip
         chat = new ChatPanel(this);
@@ -188,12 +192,8 @@ public class GameFrame extends JFrame {
         
         //remove the splash screen
         splash.setVisible(false);
-        splash = null;
-    }
-    
-    /**Removes the splash screen and makes the game window visible*/
-    public void begin() {
         
+        splash = null;
     }
     
     /**Quits the game*/

@@ -82,10 +82,8 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     public ChatPanel(GameFrame frame) {
         addGLEventListener(this);
         this.frame = frame;
-        width = frame.getSize().width;
         height = frame.getSize().height;
-        setPreferredSize(new java.awt.Dimension((int) (width * panelScale),
-                height));
+        setPreferredSize(new java.awt.Dimension(250, height));
         setLayout(new BorderLayout());
 
         this.setBackground(Color.gray.darker());
@@ -93,8 +91,8 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         createCenterPanel();
         
         //add the minimap panel
-        minimapPanel = new Minimap(frame, 200, 200);
-        minimapPanel.setPreferredSize(new Dimension(200, 200));
+        minimapPanel = new Minimap(frame, 250, 250);
+        minimapPanel.setPreferredSize(new Dimension(250, 250));
         add(minimapPanel, BorderLayout.SOUTH);
         minimapPanel.addGLEventListener(this);
     }
@@ -114,7 +112,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         JPanel center = new JPanel(new BorderLayout()){
             public void paintComponent(Graphics g){
                 //TODO Check dimensions are correct
-                g.drawImage(background, 0, 0, (int)(width*panelScale), height - 220, null);
+                g.drawImage(background, 0, 0, 250, height-250, null);
             }
         };
 
@@ -189,11 +187,8 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        if (frame.getSize().width != width) { // if the width has changed then
-                                              // scale the chat panel
-            width = frame.getSize().width;
-            setPreferredSize(new java.awt.Dimension((int) (width * panelScale),
-                    frame.getSize().height));
+        if (frame.getSize().height != height) { //if the width has changed then scale the chat panel
+            setPreferredSize(new java.awt.Dimension(250, frame.getSize().height));
         }
         
         minimapPanel.display(drawable); //display the minimap panel

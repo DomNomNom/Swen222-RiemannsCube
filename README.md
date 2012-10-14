@@ -9,7 +9,7 @@ Swen222-RiemannsCube
 ======================
 David:
 
-Scaling
+pause fonts
 lighting
 players fix
 containers

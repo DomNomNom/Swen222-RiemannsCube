@@ -4,13 +4,12 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
+import utils.Float2;
 import utils.Float3;
-import utils.Int2;
 import utils.Int3;
 import world.RiemannCube;
 import world.cubes.Cube;
@@ -25,8 +24,9 @@ import client.Client;
 public class Minimap extends GLJPanel implements GLEventListener {
 
 	//FIELDS
+	private static final long serialVersionUID = 1L;
 	private GameFrame frame; //the window this is in
-	private Int2 dimensions = new Int2(); //the windows dimensions
+	private Float2 dimensions = new Float2(); //the windows dimensions
 	private RiemannCube level; //the current level
 	
 	static GLU glu = new GLU(); //for GLU methods

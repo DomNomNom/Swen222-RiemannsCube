@@ -30,14 +30,17 @@ public class Key extends GameItem {
         this.color = color;
         Random rand = new Random();
         rotation = rand.nextInt(360);
-        rotationSpeed = (rand.nextFloat()*6)-3;
+        rotationSpeed = (rand.nextFloat()*10)-5;
     }
     
     /**rotate the key*/
-    public float rotate() {
+    public void rotate() {
     	rotation += rotationSpeed;
     	if (rotation >= 360) rotation -= 360;
     	else if (rotation < 0) rotation += 360;
+    }
+    
+    public float getRotate() {
     	return rotation;
     }
 
