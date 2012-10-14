@@ -17,7 +17,7 @@ import world.RiemannCube;
  * @author David Saxon*/
 public class HostGame {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         Configurations.debugPrint = true;
         
         //load the level for the server
@@ -37,7 +37,7 @@ public class HostGame {
         GameFrame.free = false;
         GameFrame.noFloor = false;
         GameFrame.showFps = false;
-        GameFrame.sound = true;
+        GameFrame.sound = true ;
         GameFrame window = new GameFrame("localhost");
         window.init();
         window.execute();

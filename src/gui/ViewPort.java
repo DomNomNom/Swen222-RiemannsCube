@@ -592,6 +592,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             rotation.y += (float) ((mouse.x-mouseCentre.x)/turnSpeed);
         }
         if (mouse.y != mouseCentre.y) { //turn up or down
+        	if ((mouse.y-mouseCentre.y > 0 && rotation.x < 90) || 
+            	(mouse.y-mouseCentre.y < 0 && rotation.x > -90))
             rotation.x += (float) (((mouse.y-mouseCentre.y)/turnSpeed));
         }
         

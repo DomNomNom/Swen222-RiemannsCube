@@ -169,7 +169,8 @@ public class RiemannCube {
     }
     
     private void applyPlayerRelPos(PlayerRelPos a) {
-        players.get(a.playerID).relPos.set(a.relpos);  
+        if (a.relpos.x > -1 && a.relpos.x < 1 && a.relpos.y > -1 && a.relpos.y < 1
+            && a.relpos.z > -1 && a.relpos.z < 1) players.get(a.playerID).relPos.set(a.relpos);  
     }
     private void applyItemAction(ItemAction a) {
         Player p = players.get(a.playerID);
