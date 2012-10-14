@@ -51,16 +51,6 @@ public class Client {
         this.playerName = playerName;
         networking = new ClientNetworking(ip);
         networking.start();
-        
-        /*
-        // (don't) read the world from a file
-        try {
-			this.world = XMLParser.readXML(new FileInputStream(new File("Levels/Test.xml")));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-        */
-        
     }
     
     /** used to initialize chat. this is not in the constructor to resolve a circular dependency */

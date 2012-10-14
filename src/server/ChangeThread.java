@@ -41,8 +41,6 @@ public class ChangeThread extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //test printout
-            //if(Configurations.debugPrint)  System.out.printf(myName() + " Got a change from client #%d\n", c.clientId);
             
             // process the change and apply it to the world
             Event e = c.event;
@@ -54,7 +52,7 @@ public class ChangeThread extends Thread {
                 }
                 
                 // send the change back since it's valid
-                if (act instanceof PlayerRelPos)    sendToEveryoneExcept(e, parentServer.clientsList.get(c.clientId)); // TODO maybe a nicer way of getting the remote player
+                if (act instanceof PlayerRelPos)    sendToEveryoneExcept(e, parentServer.clientsList.get(c.clientId));
                 else                                sendToEveryone(e);
             }
             else if (e instanceof ChatEvent) { // object is a chat events
@@ -81,7 +79,6 @@ public class ChangeThread extends Thread {
                 sendToEveryone(new ChatMessage("Activated a Trap!", ((ActivateTrap)e).playerID));
             else {
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);
-                //sendToEveryone(e);
             }
         }
     }
