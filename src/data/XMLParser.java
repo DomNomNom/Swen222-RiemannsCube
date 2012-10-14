@@ -267,7 +267,6 @@ public class XMLParser {
         } else if (n.getNodeName().equals("token")) {
             ret = new Token(cube);
         } else if (n.getNodeName().equals("lightsource")) {
-            System.out.println("Made a lightsource");
             ret = new LightSource(cube);
         } else if(n.getNodeName().equals("container")){
             Element e = (Element) n;
@@ -277,10 +276,6 @@ public class XMLParser {
             
             ret = new Container(cube, newCol, riemannCube.containers);
         } 
-        
-        if(ret instanceof LightSource){
-            System.out.println("Returned a lightsource");
-        }
         return ret;
     }
 }
