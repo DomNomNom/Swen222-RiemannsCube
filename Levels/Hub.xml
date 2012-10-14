@@ -126,7 +126,7 @@
         <floor y="3">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Floor" x="1">
-                <door color="#00ffff" levelname="Test.xml" triggerIDs="0 " type="entrance"/>
+                <door color="#cc9900" levelname="Test.xml" triggerIDs="8 " type="entrance"/>
             </cube>
             <cube spawn="false" type="Wall" x="2"/>
             <cube spawn="false" type="Wall" x="3"/>
@@ -225,11 +225,11 @@
         </floor>
         <floor y="3">
             <cube spawn="false" type="Floor" x="0">
-                <key color="#00ffff"/>
+                <key color="#cc9900"/>
             </cube>
             <cube spawn="false" type="Floor" x="1"/>
             <cube spawn="false" type="Floor" x="2">
-                <lock color="#00ffff" id="0"/>
+                <lock color="#cc9900" id="8"/>
             </cube>
             <cube spawn="false" type="Floor" x="3"/>
             <cube spawn="false" type="Floor" x="4"/>
