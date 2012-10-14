@@ -234,20 +234,20 @@ public class Resources {
         gl.glBindTexture(GL.GL_TEXTURE_2D, texID[8]);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1022,
-            171, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedTitleTex);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1668,
+            200, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedTitleTex);
         
         gl.glBindTexture(GL.GL_TEXTURE_2D, texID[9]);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1096,
-            114, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedResumeTex);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1670,
+            134, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedResumeTex);
         
         gl.glBindTexture(GL.GL_TEXTURE_2D, texID[10]);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1004,
-            112, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedExitTex);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1670,
+            139, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, pausedExitTex);
         
         gl.glBindTexture(GL.GL_TEXTURE_2D, texID[11]);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);

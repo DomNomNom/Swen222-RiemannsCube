@@ -91,6 +91,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     //keys
     private int forBack = 0; //0: none, 1: forwards, 2: backwards
     private int leftRight = 0; //0: none, 1: left, 2: right
+    private boolean quit; //is true when to quit the game
     private boolean shift = false; //is true if shift is pressed
     private boolean space = false; //is true if space is pressed
     private boolean spaceHeld = false;
@@ -221,9 +222,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         final GL2 gl = drawable.getGL().getGL2();
         Graphics.setGL(gl); //pass the gl to the graphics
         
-        if (exit) frame.exit(); //TODO: quick exit, remove this
-        
-        if(pause && space) frame.exit(); //quit the game
+        if(pause && quit) frame.exit(); //quit the game
         
         if (!frame.isActive()) {
             if(firstFocus) pause = true;
@@ -257,6 +256,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                 updateWorld(); //update the world
 
                 robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
+                quit = false;
             }
 
             accumTime -= frameLength;
@@ -849,6 +849,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         if (keyDown == 83 && forBack == 0) forBack = 2; //s is down
         if (keyDown == 65 && leftRight == 0) leftRight = 1; //a is down
         if (keyDown == 68 && leftRight == 0) leftRight = 2; //d is down
+        if (keyDown == 81) quit = true; //q is down
         if (keyDown == 16) shift = true; //shift is down
         if (keyDown == 32) {
             space = true; //space is down

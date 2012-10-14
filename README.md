@@ -25,7 +25,7 @@ Alex:
 
 Priority Task Queue:
 
-Hub
-fix relative movement
+level transitions
+spawning on correct spawn tiles
 loading/saving
 

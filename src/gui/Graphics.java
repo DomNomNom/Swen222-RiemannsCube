@@ -372,6 +372,9 @@ public class Graphics {
  		gl.glMatrixMode(GL2.GL_MODELVIEW); //switch back to model view
     }
     
+    /**Draws a key that is on the floor
+     * @param v the position vector of the key
+     * @param k the key that is being drawn*/
     public static void drawKey(Float3 v, Key k) {
     	gl.glPushMatrix(); //push new matrix
     	
@@ -394,7 +397,9 @@ public class Graphics {
     	gl.glPopMatrix();
     }
     
-    /**TODO: fix this*/
+    /**Draws a key that player is holding
+     * @param v the position vector of the key
+     * @param col the colour of the key*/
     public static void drawPlayerKey(Float3 v, Color col) {
     	gl.glPushMatrix(); //push new matrix
     	
@@ -411,7 +416,9 @@ public class Graphics {
     	gl.glPopMatrix();
     }
     
-    /**TODO: fix this*/
+    /**Draws a button
+     * @param v the position vector of the button
+     * @param col the colour of the button*/
     public static void drawButton(Float3 v, Color col) {
     	gl.glPushMatrix();
     	
@@ -436,7 +443,9 @@ public class Graphics {
         gl.glPopMatrix();
     }
     
-    /**TODO: fix this*/
+    /**Draws a lock
+     * @param v the position vector of the lock
+     * @param col the colour of the lock*/
     public static void drawLock(Float3 v, Color col) {
     	gl.glPushMatrix();
     	
@@ -562,26 +571,26 @@ public class Graphics {
         //draw the paused title
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[8]);
     	gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,  0.37f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  0.25f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  0.25f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,  0.37f, -1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.6f,  0.39f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.6f,  0.23f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.6f,  0.23f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.6f,  0.39f, -1.0f);
         gl.glEnd();
         //draw the pause resume text
         gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[9]);
     	gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,  0.15f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  0.07f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  0.07f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,  0.15f, -1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.6f,  0.17f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.6f,  0.05f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.6f,  0.05f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.6f,  0.17f, -1.0f);
         gl.glEnd();
         //draw the exit text
         gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[10]);
     	gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.3f,   0.00f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.3f,  -0.08f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.3f,  -0.08f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.3f,   0.00f, -1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.6f,   0.02f, -1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.6f,  -0.10f, -1.0f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.6f,  -0.10f, -1.0f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.6f,   0.02f, -1.0f);
         gl.glEnd();
     	gl.glEnable(GL.GL_DEPTH_TEST);
     } 
@@ -635,8 +644,7 @@ public class Graphics {
 		}
     }
     
-    /**Prints the current fps to the screen*/
-    /*TODO: fix this to actually print to screen*/
+    /**Prints the current fps to the terminal*/
     public static void printFps(int frameTime) {
     	double currentFps = 60;
     	if (frameTime > 0) currentFps = 1000/frameTime;
