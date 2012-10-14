@@ -15,6 +15,7 @@ public class Int3 implements Serializable{
     
     public final int x, y, z;
     
+    public final static Int3 ZERO = new Int3();
     
     /** Default constructor. Initializes ints to (0 0 0) */
     public Int3()                    { x=0; y=0; z=0; }

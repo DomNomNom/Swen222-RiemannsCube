@@ -201,7 +201,6 @@ public class RiemannCube {
             player.relPos.y -= 2*(to.pos().y-player.pos().y);
             player.relPos.z -= 2*(to.pos().z-player.pos().z);
         }
-
         player.move(to); 
     }
     
