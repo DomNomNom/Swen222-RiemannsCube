@@ -15,7 +15,7 @@ public class PlayerRelPos extends Action {
     
     public PlayerRelPos(int playerID, Float3 relpos) {
         this.playerID = playerID;
-        this.relpos = relpos;
+        this.relpos = relpos.copy();
     }
     
     public String toString() {

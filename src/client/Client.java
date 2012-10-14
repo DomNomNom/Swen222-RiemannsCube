@@ -108,6 +108,7 @@ public class Client {
      */
     public void push(Event e) {
         networking.push(e);
+        System.out.println(myName()+ " pushing: " + e);
     }
     
     private String myName() { return "[Client #" + ((player==null)? null : player.id()) + "]"; }

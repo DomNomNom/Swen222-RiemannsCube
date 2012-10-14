@@ -25,6 +25,7 @@ public class Int3 implements Serializable{
      */
     public Int3 add(Int3 o)              { return new Int3(x+o.x, y+o.y, z+o.z); }
     public Int3 add(int X, int Y, int Z) { return new Int3(x+  X, y+  Y, z+  Z); }
+    public Int3 sub(Int3 o)              { return new Int3(x-o.x, y-o.y, z-o.z); }
     
     @Override
     public int hashCode() {

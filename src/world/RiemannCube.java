@@ -197,9 +197,9 @@ public class RiemannCube {
         Player player = players.get(action.playerID); 
         Cube to = getCube(action.movement);
         if (!to.pos().equals(player.pos())) {
-            player.relPos.x -= 2*-(player.pos().x-to.pos().x);
-            player.relPos.y -= 2*-(player.pos().y-to.pos().y);
-            player.relPos.z -= 2*-(player.pos().z-to.pos().z);
+            player.relPos.x -= 2*(to.pos().x-player.pos().x);
+            player.relPos.y -= 2*(to.pos().y-player.pos().y);
+            player.relPos.z -= 2*(to.pos().z-player.pos().z);
         }
 
         player.move(to); 
