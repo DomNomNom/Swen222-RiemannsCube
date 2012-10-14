@@ -10,10 +10,13 @@ Swen222-RiemannsCube
 David:
 
 lock view
-containers
-players fix
+update and draw methods for lag resistance
+Scaling
 lighting
-more ambient sounds
+players fix
+containers
+Markers
+Traps
 ======================
 
 ======================
@@ -25,10 +28,6 @@ Alex:
 Priority Task Queue:
 
 Hub
-Scaling
 fix relative movement
-light source obj
-Markers
-Traps
 loading/saving
 
