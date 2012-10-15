@@ -37,6 +37,7 @@ import world.events.LevelChange;
 import world.events.PlayerMove;
 import world.events.PlayerRelPos;
 import world.objects.Button;
+import world.objects.Container;
 import world.objects.GameObject;
 import world.objects.LightSource;
 import world.objects.Lock;
@@ -302,6 +303,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	                    else if (obj instanceof Key) {
 	                    	((Key) obj).rotate();
 	                    }
+	                    else if (obj instanceof Container) {
+	                    	((Container) obj).animate();
+	                    }
                     }
                 }
             }
@@ -382,6 +386,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     else if (obj instanceof Button) Graphics.drawButton(v,((Button) obj).color());
                     else if(obj instanceof Lock)  Graphics.drawLock(v,((Lock) obj).color());
                     else if (obj instanceof LightSource) Graphics.drawLight(v);
+                    else if (obj instanceof Container) Graphics.drawContainer(v, (Container) obj);
                     }
                 }
             }

@@ -15,6 +15,11 @@ public class Container extends GameObject{
 
     private final Map<Color, GlobalHolder> containers;
     
+    private int rotation = 0;
+    private float loop1 = 0.05f;
+    private float loop2 = 0.1f;
+    private float loop3 = 0.15f;
+    
     private Color color;
     public Color color(){ return color;}
     
@@ -45,6 +50,15 @@ public class Container extends GameObject{
             containers.get(color).setItem(i);
             return null;
         }
+    }
+    
+    public void animate() {
+    	++rotation;
+    	if (rotation == 360) rotation = 0;
+    }
+    
+    public int getRotate() {
+    	return rotation;
     }
     
     @Override
