@@ -353,7 +353,7 @@ public class Graphics {
     
     /**Draw a portal
     @param v the position vector of the portal*/
-    public static void drawPortal(Float3 v) {
+    public static void drawPortal(Float3 v, Color col) {
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[12]); //bind the portal texture
     	
     	//rotate the texture
@@ -364,6 +364,9 @@ public class Graphics {
     	gl.glRotatef(portalRot, 0.0f, 0.0f, 1.0f); //rotate texture
     	gl.glTranslatef(-0.5f, -0.5f, 0.0f); //translate back
     	gl.glMatrixMode(GL2.GL_MODELVIEW); //switch back to model view
+    	
+    	if (col == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	else gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
     	 
  		Graphics.drawQuadTex(v, new Float3(v.x-1, v.y, v.z  ), false);
  		Graphics.drawQuadTex(v, new Float3(v.x+1, v.y, v.z  ), false);
@@ -375,6 +378,8 @@ public class Graphics {
  		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z-1), true);
  		Graphics.drawQuadTex(v, new Float3(v.x, v.y-0.9f, v.z), true);
     	Graphics.drawQuadTex(v, new Float3(v.x, v.y+0.9f, v.z), true);
+    	
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
  		
  		gl.glMatrixMode(GL.GL_TEXTURE);
  		gl.glPopMatrix();

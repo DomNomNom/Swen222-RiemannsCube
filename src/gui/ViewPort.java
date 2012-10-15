@@ -386,7 +386,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                         else {
                             if (((Door) obj).getAnimate() != -1) Graphics.drawDoorHigh(v, ((Door) obj).color(), ((Door) obj).getAnimate());
                             else if (obj instanceof EntranceDoor || obj instanceof ExitDoor) { //draw a portal
-                                if (high) Graphics.drawPortal(v); 
+                                if (high) Graphics.drawPortal(v, ((Door) obj).color()); 
                             }
                         }
                     }

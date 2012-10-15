@@ -9,7 +9,6 @@ Swen222-RiemannsCube
 ======================
 David:
 
-exit portal colour
 fix low graphics
 full screen
 players fix
