@@ -29,11 +29,13 @@ import javax.media.opengl.GL2;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[18]; //where the texture ids are stored
+	private int[] texID = new int[20]; //where the texture ids are stored
 	//The 3D objects
 	private Object3D keyObj;
 	private Object3D buttonObj;
 	private Object3D buttonBaseObj;
+	private Object3D lightBaseObj;
+	private Object3D lightObj;
 	
 	//The textures
 	private ByteBuffer floorTex;
@@ -54,6 +56,8 @@ public class Resources {
 	private ByteBuffer planet3Tex;
 	private ByteBuffer planet4Tex;
 	private ByteBuffer starTex;
+	private ByteBuffer container1Tex;
+	private ByteBuffer container2Tex;
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
@@ -69,6 +73,8 @@ public class Resources {
 		keyObj = new Object3D(new File("resources/obj/key.obj"));
 		buttonObj = new Object3D(new File("resources/obj/button.obj"));
 		buttonBaseObj = new Object3D(new File("resources/obj/buttonBase.obj"));
+		lightBaseObj = new Object3D(new File("resources/obj/lightBase.obj"));
+		lightObj = new Object3D(new File("resources/obj/light.obj"));
 	}
 	
 	/**Loads all the textures that are needed
@@ -184,6 +190,18 @@ public class Resources {
 			starImg = ImageIO.read(new File("resources/gfx/star.png")); //open the image
 			starTex = convertImageData(starImg); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage container1Img = null;
+		try {
+			container1Img = ImageIO.read(new File("resources/gfx/container1.png")); //open the image
+			container1Tex = convertImageData(container1Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage container2Img = null;
+		try {
+			container2Img = ImageIO.read(new File("resources/gfx/container2.png")); //open the image
+			container2Tex = convertImageData(container2Img); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
 
 		
 		//create the texture IDs
@@ -297,6 +315,18 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 800,
             800, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, starTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[18]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 500,
+            500, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, container1Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[19]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 550,
+            550, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, container2Tex);
 	}
 	
 	/**Return an object that matches the given string
@@ -306,8 +336,8 @@ public class Resources {
 		if (name.equals("key")) return keyObj;
 		else if (name.equals("button")) return buttonObj;
 		else if (name.equals("buttonBase")) return buttonBaseObj;
-		
-		System.out.println("here");
+		else if (name.equals("lightBase")) return lightBaseObj;
+		else if (name.equals("light")) return lightObj;
 		return null;
 	}
 	

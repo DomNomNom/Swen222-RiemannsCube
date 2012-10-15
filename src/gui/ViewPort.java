@@ -38,6 +38,7 @@ import world.events.PlayerMove;
 import world.events.PlayerRelPos;
 import world.objects.Button;
 import world.objects.GameObject;
+import world.objects.LightSource;
 import world.objects.Lock;
 import world.objects.Player;
 import world.objects.doors.Door;
@@ -357,7 +358,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     Player p = c.player(); //get the player in the cube
                     
                     if (p != null) {
-                        if (p.item() instanceof Key) Graphics.drawPlayerKey(v, ((Key) p.item()).color()); //draw the key the player is holding
+                        if (p == player && p.item() instanceof Key) Graphics.drawPlayerKey(v, ((Key) p.item()).color()); //draw the key the player is holding
                         if (p.id != player.id) //only render the other players
                             playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
                     }
@@ -380,6 +381,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     else if (obj instanceof Key) Graphics.drawKey(v, ((Key) obj));
                     else if (obj instanceof Button) Graphics.drawButton(v,((Button) obj).color());
                     else if(obj instanceof Lock)  Graphics.drawLock(v,((Lock) obj).color());
+                    else if (obj instanceof LightSource) Graphics.drawLight(v);
                     }
                 }
             }

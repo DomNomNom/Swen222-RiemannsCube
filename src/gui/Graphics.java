@@ -479,6 +479,38 @@ public class Graphics {
         gl.glPopMatrix();
     }
     
+    /**Draws a light source
+     * @param v the position vector of the light*/
+    public static void drawLight(Float3 v) {
+    	gl.glPushMatrix();
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glTranslatef(0, 1.0f, 0);
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	gl.glColor4f(0.1f, 0.1f, 0.1f, 1.0f);
+    	
+    	resources.getObj("lightBase").render(gl); //draw the base
+    	
+    	gl.glColor4f(1.0f, 0.0f, 0.4f, 1.0f);
+    	
+    	resources.getObj("light").render(gl);
+    	
+    	gl.glTranslatef(0.2f, 0.0f, 0);
+    	
+    	resources.getObj("light").render(gl);
+        
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        
+        gl.glPopMatrix();
+    }
+    
     /**Draws an outer box of glass around the level in high graphics*/
     public static void drawOuterGlassHigh() {
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[2]); //bind the glass texture
