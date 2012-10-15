@@ -36,17 +36,23 @@ public class ActionTests {
     
     @Test
     public void testSpawnAction() {
-        RiemannCube world  = WorldTests.generateWorld();
+        
+        RiemannCube world1 = WorldTests.generateWorld();
         RiemannCube world2 = WorldTests.generateWorld();
-        
-        assertTrue(world.applyAction(new PlayerSpawning(1, new Int3(1, 0, 0), "placeHolder")));
-        assertFalse(world.equals(world2));
-        
-        assertFalse(world.applyAction(new PlayerSpawning(1, new Int3(1, 0, 0), "placeHolder"))); // duplicate IDs
-        assertFalse(world.applyAction(new PlayerSpawning(1, new Int3(2, 0, 0), "placeHolder")));
 
-        assertTrue(world2.applyAction(new PlayerSpawning(1, new Int3(1, 0, 0), "placeHolder")));
-        assertTrue(world.equals(world2));
+        Int3 spawnPos = new Int3(1,0,0);
+        world1.spawnCubes.put(1, world1.getCube(spawnPos));
+        world2.spawnCubes.put(1, world2.getCube(spawnPos));
+        
+        
+        assertTrue(world1.applyAction(new PlayerSpawning(1, spawnPos, "placeHolder")));
+        assertFalse(world1.equals(world2));
+        
+        assertFalse(world1.applyAction(new PlayerSpawning(1, spawnPos, "placeHolder"))); // duplicate IDs
+        assertFalse(world1.applyAction(new PlayerSpawning(1, new Int3(2,0,0), "placeHolder")));
+
+        assertTrue(world2.applyAction(new PlayerSpawning(1, spawnPos, "placeHolder")));
+        assertTrue(world1.equals(world2));
     }
 
     

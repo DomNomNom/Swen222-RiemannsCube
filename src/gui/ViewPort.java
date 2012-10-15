@@ -32,6 +32,7 @@ import world.events.ItemDrop;
 import world.events.ItemUseStop;
 import world.events.ItemPickup;
 import world.events.ItemUseStart;
+import world.events.LevelChange;
 import world.events.PlayerMove;
 import world.events.PlayerRelPos;
 import world.objects.Button;
@@ -595,8 +596,17 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                 frame.getClient().push(new PlayerRelPos(player.id, player.relPos));
                 // note: we (kindof) applied this event straight away to reduce felt lag
             }
-            if (canMove && !cubeMove.equals(Int3.ZERO))
+            if (canMove && !cubeMove.equals(Int3.ZERO)) {
                 frame.getClient().push(new PlayerMove(player.id, newCubePos));
+                
+                // send the levelchange if we are on a EntranceDoor
+                for (GameObject go : frame.getClient().getWorld().getCube(newCubePos).objects()) {
+                    if (go instanceof EntranceDoor) {
+                        EntranceDoor e = (EntranceDoor) go;
+                        frame.getClient().push(new LevelChange(e.levelName()));
+                    }
+                }
+            }
         }
         else { //in free camera mode
             if (shift) moveSpeed = 0.16f; //move at double speed if shift
