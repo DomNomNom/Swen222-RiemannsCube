@@ -71,7 +71,7 @@ public class ChangeThread extends Thread {
                 if(Configurations.debugPrint)  System.out.println(myName() + "player has been requested");
             	int newPlayerID = c.clientId; // this should be expanded if we want re-loading of levels
             	String playerName = ((RequestPlayer)e).playerName();
-            	PlayerSpawning spawnEvent = new PlayerSpawning(newPlayerID, new Int3(1, 1, 6), playerName);
+            	PlayerSpawning spawnEvent = new PlayerSpawning(newPlayerID, new Int3(0, 0, 0), playerName);
             	if (!parentServer.world.applyAction(spawnEvent)) {
                     System.err.println(myName() + " OMG, the player could not spawn: " + spawnEvent);
                     continue; // don't broadcast

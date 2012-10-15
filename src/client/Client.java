@@ -34,7 +34,10 @@ public class Client {
     private RiemannCube world;
 
     private int playerID = -1;
-    public  Player player(){ return world.players.get(playerID); }
+    public  Player player(){ 
+    	if (world == null) return null;
+    	return world.players.get(playerID);
+    	}
     private String playerName;
     
     private ClientNetworking networking;

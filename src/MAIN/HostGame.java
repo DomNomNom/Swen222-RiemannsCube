@@ -12,7 +12,7 @@ import utils.Configurations;
 import world.RiemannCube;
 
 /**This hosts a new game by creating a new server and then a new client
- * that is connected to the server using localhost
+ * that is connected to the server using local host
  *
  * @author David Saxon*/
 public class HostGame {

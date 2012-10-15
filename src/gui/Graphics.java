@@ -479,6 +479,27 @@ public class Graphics {
         gl.glPopMatrix();
     }
     
+    public static void drawContainer(Float3 v) {
+    	gl.glPushMatrix();
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glTranslatef(0, -0.99f, 0);
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[18]); //unbind textures
+    	
+    	//gl.glDrawQuad
+        
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        
+        gl.glPopMatrix();
+    }
+    
     /**Draws a light source
      * @param v the position vector of the light*/
     public static void drawLight(Float3 v) {
