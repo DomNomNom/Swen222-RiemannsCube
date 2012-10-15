@@ -113,6 +113,7 @@ public class Graphics {
     	
     	//now draw the quad
     	gl.glBegin(GL2.GL_QUADS);
+    	gl.glNormal3f(-1.0f, 0.0f, 0.0f);
     	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-1.0f, 0, -1.0f);
         gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-1.0f, 0,  1.0f);
         gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 1.0f, 0,  1.0f);
@@ -366,6 +367,12 @@ public class Graphics {
  		Graphics.drawQuadTex(v, new Float3(v.x+1, v.y, v.z  ), false);
  		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z+1), false);
  		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z-1), false);
+ 		Graphics.drawQuadTex(v, new Float3(v.x-1, v.y, v.z  ), true);
+ 		Graphics.drawQuadTex(v, new Float3(v.x+1, v.y, v.z  ), true);
+ 		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z+1), true);
+ 		Graphics.drawQuadTex(v, new Float3(v.x,   v.y, v.z-1), true);
+ 		Graphics.drawQuadTex(v, new Float3(v.x, v.y-0.9f, v.z), true);
+    	Graphics.drawQuadTex(v, new Float3(v.x, v.y+0.9f, v.z), true);
  		
  		gl.glMatrixMode(GL.GL_TEXTURE);
  		gl.glPopMatrix();

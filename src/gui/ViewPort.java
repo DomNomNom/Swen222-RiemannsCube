@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,8 +169,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set the clear colour
         gl.glClearDepth(1000.0f); // set the clear depth
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); // clear the screen for the first time
-        
-        //set up lighting
 
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
