@@ -190,12 +190,9 @@ public class XMLParser {
             Element e = (Element) n;
             String col = e.getAttribute("color");
 
-            Color newCol = null;
-            boolean exit = true;    // Defines whether or not this key opens an exit door
-            if(col.length() != 0){
-                newCol = Color.decode(col);
-                exit = false;   // If the key has a color then it isn't an exit key
-            }
+            boolean exit = false;    // Defines whether or not this lock opens an exit door
+            Color newCol = Color.decode(col);
+            if(newCol.equals(Color.WHITE)) exit = true;	// White locks are exit locks
             
             ret = new Key(cube, newCol);
             ((Key)ret).setExit(exit);
@@ -205,12 +202,9 @@ public class XMLParser {
             Element e = (Element) n;
             String col = e.getAttribute("color");
             
-            Color newCol = null;
-            boolean exit = true;    // Defines whether or not this button opens an exit door
-            if(col.length() != 0){
-                newCol = Color.decode(col);
-                exit = false;   // If the button has a color then it isn't an exit lock
-            }
+            boolean exit = false;    // Defines whether or not this lock opens an exit door
+            Color newCol = Color.decode(col);
+            if(newCol.equals(Color.WHITE)) exit = true;	// White locks are exit locks
 
             // Get the ID for the button
             int id = Integer.parseInt(e.getAttribute("id"));
@@ -223,12 +217,9 @@ public class XMLParser {
             Element e = (Element) n;
             String col = e.getAttribute("color");
             
-            Color newCol = null;
-            boolean exit = true;    // Defines whether or not this lock opens an exit door
-            if(col.length() != 0){
-                newCol = Color.decode(col);
-                exit = false;   // If the lock has a color then it isn't an exit lock
-            }
+            boolean exit = false;    // Defines whether or not this lock opens an exit door
+            Color newCol = Color.decode(col);
+            if(newCol.equals(Color.WHITE)) exit = true;	// White locks are exit locks
 
             // Get the ID for the Lock
             int id = Integer.parseInt(e.getAttribute("id"));
