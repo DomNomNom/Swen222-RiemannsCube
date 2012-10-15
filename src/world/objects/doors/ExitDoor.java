@@ -18,7 +18,7 @@ public class ExitDoor extends Door {
     // No color for the exit door, maybe a specific texture
     
     public ExitDoor(Cube cube, Map<Integer, Trigger> triggers) {
-        super(cube, triggers, null);
+        super(cube, triggers, Color.WHITE);
     }
 
 }
