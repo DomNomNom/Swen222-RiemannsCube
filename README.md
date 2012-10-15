@@ -9,23 +9,22 @@ Swen222-RiemannsCube
 ======================
 David:
 
-pause fonts
-lighting
+exit portal colour
+fix low graphics
+full screen
 players fix
-containers
+other player's holding items
+lighting
+orientation fix
 Markers
-Traps
 ======================
 
 ======================
 Alex:
 
--Design maps
 =======================
 
 Priority Task Queue:
 
-level transitions
-spawning on correct spawn tiles
 loading/saving
 
