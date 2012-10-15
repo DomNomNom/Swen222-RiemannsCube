@@ -1,27 +1,34 @@
 package server;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 
 import utils.Configurations;
 import utils.Int3;
+import world.RiemannCube;
 import world.events.Action;
 import world.events.ActivateTrap;
 import world.events.ChatEvent;
 import world.events.ChatMessage;
 import world.events.Event;
 import world.events.FullStateUpdate;
+import world.events.LevelChange;
 import world.events.PlayerAssign;
 import world.events.PlayerRelPos;
 import world.events.PlayerSpawning;
 import world.events.RequestPlayer;
+import world.objects.Player;
 import data.LevelPipeline;
+import data.XMLParser;
 
 /**
  * A thread that is responsible of handling the changes made to the 
  * world instance. It handles Actions, Chat events and player requests.   
- * @author feshersiva
+ * @author feshersiva, schmiddomi
  */
 public class ChangeThread extends Thread {
     
@@ -67,14 +74,30 @@ public class ChangeThread extends Thread {
             	String playerName = ((RequestPlayer)e).playerName();
             	PlayerSpawning spawnEvent = new PlayerSpawning(newPlayerID, new Int3(1, 1, 6), playerName);
             	if (!parentServer.world.applyAction(spawnEvent)) {
-                    System.err.println(myName() + " OMG, the player though this action was right: " + spawnEvent);
+                    System.err.println(myName() + " OMG, the player could not spawn: " + spawnEvent);
                     continue; // don't broadcast
                 }
                 sendToEveryone(spawnEvent);
                 sendToClient(new PlayerAssign(newPlayerID), parentServer.clientsList.get(c.clientId));
             }
-            else if (e instanceof FullStateUpdate)
-            	sendToEveryone(e);
+            else if (e instanceof LevelChange) {
+                LevelChange l = (LevelChange) e;
+                
+                try {
+                    RiemannCube oldWord = parentServer.world;
+                    parentServer.world = XMLParser.readXML(new FileInputStream(new File("Levels/Hub.xml")));
+                    RiemannCube newWord = parentServer.world;
+                    
+                    // spawn the players in the new Riemann 
+                    for (Player p : oldWord.players.values())
+                        newWord.applyAction(new PlayerSpawning(p.id, p.pos(), p.name)); // assuming the level can hold the players
+                        
+                    sendToEveryone(new FullStateUpdate(newWord.toString()));
+                    // TODO? send a player assign maybe
+                }
+                catch (FileNotFoundException e1) {    e1.printStackTrace();   }
+
+            }
             else if (e instanceof ActivateTrap)
                 sendToEveryone(new ChatMessage("Activated a Trap!", ((ActivateTrap)e).playerID));
             else {

@@ -33,8 +33,8 @@ public class Client {
     private ChatPanel chat;
     private RiemannCube world;
 
-    private Player player;
-    public  Player player(){ return player; }
+    private int playerID = -1;
+    public  Player player(){ return world.players.get(playerID); }
     private String playerName;
     
     private ClientNetworking networking;
@@ -77,13 +77,13 @@ public class Client {
                 chat.addMessage((ChatMessage) e);
             }
             else if (e instanceof PlayerAssign) {
-                int id = ((PlayerAssign)e).playerID;
-                player = world.players.get(id);
+                playerID = ((PlayerAssign)e).playerID;
             }
             else if(e instanceof FullStateUpdate){
             	this.world = XMLParser.readXML(new ByteArrayInputStream(((FullStateUpdate)e).level.getBytes()));
-            	if (myFirstFullStateUpdate){
-            	    networking.push(new RequestPlayer(playerName)); // request a player
+            	if (myFirstFullStateUpdate){ // request a player when we first connect
+            	    networking.push(new RequestPlayer(playerName)); 
+            	    myFirstFullStateUpdate = false;
             	}
             }
             else 
@@ -100,5 +100,5 @@ public class Client {
         System.out.println(myName()+ " pushing: " + e);
     }
     
-    private String myName() { return "[Client #" + ((player==null)? null : player.id()) + "]"; }
+    private String myName() { return "[Client #" + playerID + "]"; }
 }
