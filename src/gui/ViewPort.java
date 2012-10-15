@@ -131,6 +131,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     //rendering lists
     private List<Float3> glassRender; //a list that hold all the glass to render
     private List<Pair<Float3, Integer>> playerRender; // a list of players to be rendered
+    private List<Pair<Float3, Container>> containerRender; //a list of containers to be rendered
 
     //CONSTRUCTOR
     /** Creates a new view port
@@ -238,7 +239,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         if (showFps) Graphics.printFps(frameTime);
         
-        if (frameTime > 55) frameTime = 55; //limit the max frame time
         currentTime = newTime; //update the current time
         accumTime += frameTime; //Accumulate the frame time
         
@@ -616,6 +616,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                 for (GameObject go : frame.getClient().getWorld().getCube(newCubePos).objects()) {
                     if (go instanceof EntranceDoor) {
                         EntranceDoor e = (EntranceDoor) go;
+                        frame.getClient().push(new LevelChange(e.levelName()));
+                    }
+                    else if (go instanceof ExitDoor) {
+                        ExitDoor e = (ExitDoor) go;
                         frame.getClient().push(new LevelChange(e.levelName()));
                     }
                 }

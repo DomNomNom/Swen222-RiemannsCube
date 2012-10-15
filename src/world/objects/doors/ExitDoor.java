@@ -14,11 +14,15 @@ import world.objects.Trigger;
  */
 public class ExitDoor extends Door {
 
-    public final String hubLevel = "";  //TODO Create HubLevel
+    public final String hubLevel = "Hub.xml";  //TODO Create HubLevel
     // No color for the exit door, maybe a specific texture
     
     public ExitDoor(Cube cube, Map<Integer, Trigger> triggers) {
         super(cube, triggers, Color.WHITE);
+    }
+    
+    public String levelName() {
+    	return hubLevel;
     }
 
 }
