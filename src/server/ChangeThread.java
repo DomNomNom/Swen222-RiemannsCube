@@ -85,7 +85,7 @@ public class ChangeThread extends Thread {
                 
                 try {
                     RiemannCube oldWord = parentServer.world;
-                    parentServer.world = XMLParser.readXML(new FileInputStream(new File("Levels/Hub.xml")));
+                    parentServer.world = XMLParser.readXML(new FileInputStream(new File("Levels/"+l.levelName)));
                     RiemannCube newWord = parentServer.world;
                     
                     // spawn the players in the new Riemann 
