@@ -548,7 +548,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         	if (player.pos().equals(markerPos)) markerPos = new Int3(-1, -1, -1);
         	else markerPos = new Int3(player.pos().x, player.pos().y, player.pos().z);
         }
-        if (space) {
+        if (space && !spaceHeld) {
             if (level.isValidAction(new ItemUseStart(player.id))) { //check if drop is valid
                 frame.getClient().push(new ItemUseStart(player.id));
                 if (sound) { //play lock sound
@@ -556,6 +556,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     lockSound.playSound("resources/audio/fx/lock.wav");
                 }
             }
+            spaceHeld = true;
         }
         if (spaceReleased) { //release space
             if (level.isValidAction(new ItemUseStop(player.id))) { //check if drop is valid
@@ -940,7 +941,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         if (keyDown == 16) shift = true; //shift is down
         if (keyDown == 32) {
             space = true; //space is down
-            spaceHeld = true;
         }
         if (keyDown == 17) ctrl = true; //ctrl is down
         if (keyDown == 69) eDown = true; //the e key is down
@@ -950,6 +950,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             pause = !pause; //pause or unpause the game
             frame.showMouse(pause);
             robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
+        }
+        if (keyDown != 32) {
+            space = false;
+            spaceHeld = false;
+            spaceReleased = true;
         }
     }
 
@@ -961,11 +966,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         if (keyUp == 65 && leftRight == 1) leftRight = 0; //a is released
         if (keyUp == 68 && leftRight == 2) leftRight = 0; //d is released
         if (keyUp == 16) shift = false; //shift is released
-        if (keyUp == 32) { //space is released
-            space = false;
-            spaceHeld = false;
-            spaceReleased = true;
-        }
         if (keyUp == 17) ctrl = false; //ctrl is released
         if (keyUp == 77) mDown = false;
         if (keyUp == 10) {
