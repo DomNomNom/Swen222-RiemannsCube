@@ -218,7 +218,7 @@
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Wall" x="6"/>
             <cube spawn="false" type="Floor" x="7">
-                <door triggerIDs="23 22 24 " type="exit"/>
+                <door triggerIDs="23 22 " type="exit"/>
             </cube>
             <cube spawn="false" type="Wall" x="8"/>
             <cube spawn="false" type="Wall" x="9"/>
@@ -353,7 +353,7 @@
             </cube>
             <cube spawn="false" type="Floor" x="7"/>
             <cube spawn="false" type="Floor" x="8">
-                <lock color="#ffffff" id="24"/>
+                <lock color="#ffffff" id="23"/>
             </cube>
             <cube spawn="false" type="Floor" x="9">
                 <lightsource/>
