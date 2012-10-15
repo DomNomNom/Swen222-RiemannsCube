@@ -6,7 +6,7 @@ public class PlayerSpawning extends Action {
     
     public final int playerID;
     public final String playerName;
-    public final Int3 pos;  // change in position
+    public final Int3 pos;  // change in position TODO this isn't used anymore
     
     
     public PlayerSpawning(int playerID, Int3 pos, String playerName){

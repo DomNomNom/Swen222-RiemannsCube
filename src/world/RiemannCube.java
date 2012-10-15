@@ -208,10 +208,10 @@ public class RiemannCube {
     private void spawnPlayer(PlayerSpawning action) {
         int id = action.playerID;
         String playerName = action.playerName;
-        Int3 pos = action.pos;
+        Cube spawnCube = spawnCubes.get(id);
         
-        Player p = new Player(getCube(pos), id, playerName);
-        getCube(pos).addObject(p);
+        Player p = new Player(spawnCube, id, playerName);
+        spawnCube.addObject(p);
         players.put(p.id, p);
     }
 
