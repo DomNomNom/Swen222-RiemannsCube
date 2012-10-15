@@ -7,7 +7,7 @@ import java.util.Set;
 import utils.Int3;
 import world.objects.Player;
 import world.objects.GameObject;
-import world.objects.items.GameItem;
+import world.objects.items.*;
 
 /**
  * The base class for all "tile" cubes 
@@ -88,7 +88,12 @@ public abstract class Cube {
         GameItem i = null;
         for (GameObject o : objects)
             if (o instanceof GameItem)
-                i = (GameItem) o;
+            	if(o instanceof Token){
+            	    i = (Token) o;
+            	} else {
+            	    i = (GameItem) o;
+            	}
+        
         objects.remove(i);
         return i; 
     }
