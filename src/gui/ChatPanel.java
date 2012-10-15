@@ -62,6 +62,15 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     }
 
     public void addMessage(ChatMessage message) {
+        int numLines = (height-300)/10;
+        
+        System.out.println("Line count: " + chatArea.getLineCount());
+        System.out.println("Height: " + height);
+        
+        if(chatArea.getLineCount() > numLines){
+            chatArea.setText("");
+        }
+        
         String name = frame.getClient().getWorld().players.get(message.speakerID).name();
         
         chatArea.append("[" + name + "]: " + message.message + "\n");
