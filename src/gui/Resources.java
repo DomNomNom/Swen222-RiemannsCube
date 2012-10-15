@@ -29,7 +29,7 @@ import javax.media.opengl.GL2;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[20]; //where the texture ids are stored
+	private int[] texID = new int[25]; //where the texture ids are stored
 	//The 3D objects
 	private Object3D keyObj;
 	private Object3D buttonObj;
@@ -58,6 +58,11 @@ public class Resources {
 	private ByteBuffer starTex;
 	private ByteBuffer container1Tex;
 	private ByteBuffer container2Tex;
+	private ByteBuffer lightBaseTex;
+	private ByteBuffer lightTex;
+	private ByteBuffer keyTex;
+	private ByteBuffer buttonBaseTex;
+	private ByteBuffer buttonTex;
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
@@ -202,6 +207,36 @@ public class Resources {
 			container2Img = ImageIO.read(new File("resources/gfx/container2.png")); //open the image
 			container2Tex = convertImageData(container2Img); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage lightBaseImg = null;
+		try {
+			lightBaseImg = ImageIO.read(new File("resources/gfx/lightBase.png")); //open the image
+			lightBaseTex = convertImageData(lightBaseImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage lightImg = null;
+		try {
+			lightImg = ImageIO.read(new File("resources/gfx/light.png")); //open the image
+			lightTex = convertImageData(lightImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage keyImg = null;
+		try {
+			keyImg = ImageIO.read(new File("resources/gfx/key.png")); //open the image
+			keyTex = convertImageData(keyImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage buttonBaseImg = null;
+		try {
+			buttonBaseImg = ImageIO.read(new File("resources/gfx/buttonBase.png")); //open the image
+			buttonBaseTex = convertImageData(buttonBaseImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage buttonImg = null;
+		try {
+			buttonImg = ImageIO.read(new File("resources/gfx/button.png")); //open the image
+			buttonTex = convertImageData(buttonImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
 
 		
 		//create the texture IDs
@@ -327,6 +362,36 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 550,
             550, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, container2Tex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[20]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 100,
+            100, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, lightBaseTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[21]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 100,
+            20, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, lightTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[22]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 10,
+            10, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, keyTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[23]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 50,
+            50, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, buttonBaseTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[24]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 400,
+            400, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, buttonTex);
 	}
 	
 	/**Return an object that matches the given string

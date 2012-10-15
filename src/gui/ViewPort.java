@@ -306,6 +306,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	                    }
 	                    else if (obj instanceof Container) {
 	                    	((Container) obj).animate();
+	                    	GameObject go = ((Container) obj).containers.get(((Container) obj).color()).getItem();
+	                    	if (go instanceof Key) {
+	                    		((Key) go).rotate();
+	                    	}
 	                    }
                     }
                 }
@@ -334,6 +338,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //initialise rendering lists
         glassRender = new ArrayList<Float3>(); //create the glass render list
         playerRender = new ArrayList<Pair<Float3, Integer>>(); //create the player render list
+        containerRender = new ArrayList<Pair<Float3, Container>>(); //create the container render list
         
         //iterate through the level and draw all the tiles
         for (int x = 0; x < level.size.x; ++x) {
@@ -386,9 +391,9 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     else if (obj instanceof Key) Graphics.drawKey(v, ((Key) obj));
                     else if (obj instanceof Button) Graphics.drawButton(v,((Button) obj).color());
                     else if(obj instanceof Lock)  Graphics.drawLock(v,((Lock) obj).color());
-                    else if (obj instanceof LightSource) Graphics.drawLight(v);
+                    else if (obj instanceof LightSource && high) Graphics.drawLight(v);
                     else if (obj instanceof Container) {
-                    	Graphics.drawContainer(v, (Container) obj);
+                    	containerRender.add(new Pair<Float3, Container>(v, (Container) obj));
                     	GameObject go = ((Container) obj).containers.get(((Container) obj).color()).getItem();
                     	if (go instanceof Key) {
                     		Graphics.drawKeyContainer(v, (Key) go);
@@ -412,12 +417,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         if (high) Graphics.drawOuterGlassHigh();
         
         //for transparent objects
-        while (!playerRender.isEmpty() || !glassRender.isEmpty()) { //loop until all glass and players have been drawn
+        while (!playerRender.isEmpty() || !glassRender.isEmpty() || !containerRender.isEmpty()) { //loop until all glass and players have been drawn
             Int3 playerPos = new Int3(player.pos().x*2, player.pos().y*2, player.pos().z*2);
-            Pair<Float3, Integer> furthestPlayer = null; //the closet player
-            float playerMag = 0;
-            Float3 furthestGlass = null; //the closet glass
-            float glassMag = 0;
+            Pair<Float3, Integer> furthestPlayer = null; //the furthest player
+            float playerMag = -1;
+            Float3 furthestGlass = null; //the furthest glass
+            float glassMag = -1;
+            Pair<Float3, Container> furthestCon = null; //the furthest container
+            float conMag = -1;
             
             //search players
             for (Pair<Float3, Integer> p : playerRender) {
@@ -443,26 +450,45 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                 }
             }
             
+            //search containers
+            for (Pair<Float3, Container> p : containerRender) {
+                if (furthestCon == null) {
+                    furthestCon = p;
+                    conMag = p.first().copy().sub(playerPos).mag();
+                }
+                else if (p.first().copy().sub(playerPos).mag() < conMag) {
+                    furthestCon = p;
+                    conMag = p.first().copy().sub(playerPos).mag();
+                }
+            }
+            
             //now draw
-            if (furthestGlass == null) {
-                if (high) Graphics.drawPlayer(furthestPlayer.first(), camPos, furthestPlayer.second());
+            float[] mags = {playerMag, glassMag, conMag};
+            float maxMag = -1;
+            float maxIndex = -1;
+            for (int i = 0; i < mags.length; ++i) { //find the maximum magnitude
+            	if (mags[i] > maxMag){
+            		maxMag = mags[i];
+            		maxIndex = i;
+            	}
+            }
+            
+            if (maxIndex == 0) {
+            	if (high) Graphics.drawPlayer(furthestPlayer.first(), camPos, furthestPlayer.second());
                 playerRender.remove(furthestPlayer);
             }
-            else if (furthestPlayer == null) {
-                if (high) Graphics.drawGlassHigh(furthestGlass);
+            else if (maxIndex == 1) {
+            	if (high) Graphics.drawGlassHigh(furthestGlass);
                 else Graphics.drawGlassLow(furthestGlass);
                 glassRender.remove(furthestGlass);
             }
-            else if (glassMag < playerMag) {
-                if (high) Graphics.drawPlayer(furthestPlayer.first(), camPos, furthestPlayer.second());
-                playerRender.remove(furthestPlayer);
-            }
-            else {
-                if (high) Graphics.drawGlassHigh(furthestGlass);
-                else Graphics.drawGlassLow(furthestGlass);
-                glassRender.remove(furthestGlass);
+            else if (maxIndex == 2) {
+            	if (high) Graphics.drawContainerHigh(furthestCon.first(), furthestCon.second());
+            	else Graphics.drawContainerLow(furthestCon.first(), furthestCon.second());
+            	containerRender.remove(furthestCon);
             }
         }
+
         
         //draw the pause box over the screen
         if(pause && high) Graphics.drawPause();

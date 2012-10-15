@@ -386,7 +386,7 @@ public class Graphics {
     public static void drawKey(Float3 v, Key k) {
     	gl.glPushMatrix(); //push new matrix
     	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[22]);
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
     	
@@ -400,7 +400,7 @@ public class Graphics {
     	
     	if (k.color() == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	else gl.glColor4f(k.color().getRed()/255.0f, k.color().getGreen()/255.0f, k.color().getBlue()/255.0f, 1.0f);
-    	resources.getObj("key").render(gl);
+    	resources.getObj("key").renderTex(gl);
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	
     	gl.glPopMatrix();
@@ -412,7 +412,7 @@ public class Graphics {
     public static void drawKeyContainer(Float3 v, Key k) {
     	gl.glPushMatrix(); //push new matrix
     	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[22]);
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
     	
@@ -421,13 +421,14 @@ public class Graphics {
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
-    	gl.glRotatef(90.0f, 1, 0, 0);
+    	
     	gl.glRotatef(k.getRotate(), 0, 1, 0);
-    	gl.glTranslatef(0.0f, -0.5f, 0.0f);
+    	gl.glRotatef(90.0f, 0, 0, 1);
+    	gl.glTranslatef(0.0f, 0.0f, 0.0f);
     	
     	if (k.color() == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	else gl.glColor4f(k.color().getRed()/255.0f, k.color().getGreen()/255.0f, k.color().getBlue()/255.0f, 1.0f);
-    	resources.getObj("key").render(gl);
+    	resources.getObj("key").renderTex(gl);
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	
     	gl.glPopMatrix();
@@ -444,10 +445,10 @@ public class Graphics {
        	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
        	gl.glRotatef(75, 0, 1, 0);
        	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[22]);
     	if (col == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	else  gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
-    	resources.getObj("key").render(gl);
+    	resources.getObj("key").renderTex(gl);
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	
     	gl.glPopMatrix();
@@ -466,14 +467,14 @@ public class Graphics {
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    	gl.glColor4f(0.9f, 0.9f, 0.9f, 1.0f);
     	
-    	resources.getObj("buttonBase").render(gl); //draw the base
+    	
+    	resources.getObj("buttonBase").renderTex(gl); //draw the base
     	
     	gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
     	
-    	resources.getObj("button").render(gl);
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[24]);
+    	resources.getObj("button").renderTex(gl);
         
         gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         
@@ -495,22 +496,22 @@ public class Graphics {
     	
     	gl.glTranslatef(0, -1.0f, 0);
     	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    	gl.glColor4f(0.1f, 0.1f, 0.1f, 1.0f);
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[23]);
     	
-    	resources.getObj("buttonBase").render(gl); //draw the base
+    	resources.getObj("buttonBase").renderTex(gl); //draw the base
     	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[24]);
     	if (col == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	else gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
     	
-    	resources.getObj("button").render(gl);
+    	resources.getObj("button").renderTex(gl);
         
         gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         
         gl.glPopMatrix();
     }
     
-    public static void drawContainer(Float3 v, Container c) {
+    public static void drawContainerHigh(Float3 v, Container c) {
     	gl.glPushMatrix();
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
@@ -559,6 +560,34 @@ public class Graphics {
         gl.glPopMatrix();
     }
     
+    public static void drawContainerLow(Float3 v, Container c) {
+    	gl.glPushMatrix();
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glRotatef(c.getRotate(), 0, 1, 0);
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	if (c.color() == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	else gl.glColor4f(c.color().getRed()/255.0f, c.color().getGreen()/255.0f, c.color().getBlue()/255.0f, 1.0f);
+    	
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glVertex3f(-0.8f, -0.99f, -0.8f);
+        gl.glVertex3f(-0.8f, -0.99f,  0.8f);
+        gl.glVertex3f( 0.8f, -0.99f,  0.8f);
+        gl.glVertex3f( 0.8f, -0.99f, -0.8f);
+        gl.glEnd();
+        
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        
+        gl.glPopMatrix();
+    }
+    
     /**Draws a light source
      * @param v the position vector of the light*/
     public static void drawLight(Float3 v) {
@@ -573,18 +602,32 @@ public class Graphics {
     	
     	gl.glTranslatef(0, 1.0f, 0);
     	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0); //unbind textures
-    	gl.glColor4f(0.1f, 0.1f, 0.1f, 1.0f);
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[20]);
     	
-    	resources.getObj("lightBase").render(gl); //draw the base
+    	resources.getObj("lightBase").renderTex(gl); //draw the base
     	
-    	gl.glColor4f(1.0f, 0.0f, 0.4f, 1.0f);
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[21]);
     	
-    	resources.getObj("light").render(gl);
-    	
-    	gl.glTranslatef(0.2f, 0.0f, 0);
-    	
-    	resources.getObj("light").render(gl);
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.02f, -0.1f, -0.25f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.02f, -0.1f, -0.25f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.02f, -0.1f,  0.13f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.02f, -0.1f,  0.13f);
+        gl.glEnd();
+        
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.18f, -0.1f, -0.25f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.22f, -0.1f, -0.25f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.22f, -0.1f,  0.13f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.18f, -0.1f,  0.13f);
+        gl.glEnd();
+        
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.22f, -0.1f, -0.25f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.18f, -0.1f, -0.25f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.18f, -0.1f,  0.13f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.22f, -0.1f,  0.13f);
+        gl.glEnd();
         
         gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         

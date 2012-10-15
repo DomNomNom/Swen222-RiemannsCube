@@ -64,6 +64,24 @@ public class Object3D {
 		}
 	}
 	
+	public void renderTex(GL2 gl) {
+		for (Face f : faceList) {
+			//get the faces vertices
+			Float3 v1 = vertexList.get(f.first-1);
+			Float3 v2 = vertexList.get(f.second-1);
+			Float3 v3 = vertexList.get(f.third-1);
+			Float3 v4 = vertexList.get(f.fourth-1);
+			
+			//start drawing the face
+			gl.glBegin(GL2.GL_QUADS);
+			gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(v1.x, v1.y, v1.z);
+			gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(v2.x, v2.y, v2.z);
+			gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(v3.x, v3.y, v3.z);
+			gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(v4.x, v4.y, v4.z);
+			gl.glEnd();
+		}
+	}
+	
 	/**Represents a face of that holds indexes to its vertices*/
 	private class Face {
 		
