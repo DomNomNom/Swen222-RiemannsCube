@@ -449,7 +449,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
      *            horizontal, vertical or orthogonal
      */
     public void flip(String orientation) {
-        isometric = false;
+        if(isometric) changeIsometric();
         this.orientation = orientation;
         if (orientation.equals("horizontal")) {
             slice = level.horizontalSlice(y);
@@ -528,6 +528,8 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             this.j = z;
             System.out.println(x + " " + y + " " + z + " floorheight: "+ floorHeight);*/
         }
+        Cube selected = level.getCube(new Int3(x,y,z));
+        //if(selected.object() instanceof Door) curDoor = (Door) selected.object();
         repaint();
     }
 
