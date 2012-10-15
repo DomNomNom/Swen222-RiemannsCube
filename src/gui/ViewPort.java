@@ -46,6 +46,7 @@ import world.objects.doors.Door;
 import world.objects.doors.EntranceDoor;
 import world.objects.doors.ExitDoor;
 import world.objects.items.Key;
+import world.objects.items.Token;
 
 import com.jogamp.opengl.util.Animator;
 
@@ -619,8 +620,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                         frame.getClient().push(new LevelChange(e.levelName()));
                     }
                     else if (go instanceof ExitDoor) {
-                        ExitDoor e = (ExitDoor) go;
-                        frame.getClient().push(new LevelChange(e.levelName()));
+                    	if(player.item() instanceof Token){
+                    		ExitDoor e = (ExitDoor) go;
+                    		frame.getClient().push(new LevelChange(e.levelName()));
+                    	}
                     }
                 }
             }
