@@ -670,7 +670,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     }
                     level.getCube(x, y, z).addObject(curDoor);
 
-            } else if(typed == 'b'){
+            } else if(typed == 'b'){	// Button
                 if (curDoor != null) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
