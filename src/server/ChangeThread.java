@@ -11,7 +11,6 @@ import utils.Configurations;
 import utils.Int3;
 import world.RiemannCube;
 import world.events.Action;
-import world.events.ActivateTrap;
 import world.events.ChatEvent;
 import world.events.ChatMessage;
 import world.events.Event;
@@ -98,8 +97,6 @@ public class ChangeThread extends Thread {
                 catch (FileNotFoundException e1) {    e1.printStackTrace();   }
 
             }
-            else if (e instanceof ActivateTrap)
-                sendToEveryone(new ChatMessage("Activated a Trap!", ((ActivateTrap)e).playerID));
             else {
                 System.err.println(myName() + " Unknown event has been sent by the player: " + e);
             }

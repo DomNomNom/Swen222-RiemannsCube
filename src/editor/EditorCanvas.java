@@ -57,7 +57,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
     private Lock curLock = null;
     private Button curButton;
     private int triggerChoice;
-    private int triggersLeftToPlace;
     private int triggerID = 0;
     private Set<Color> usedColors = new HashSet<Color>();
     
@@ -69,13 +68,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
         super();
         setPreferredSize(new Dimension(1000, 1000));
         addMouseListener(this);
-    }
-
-    /**
-     * checks that we have placed all current triggers
-     */
-    private boolean allTriggersPlaced() {
-        return triggersLeftToPlace == 0;
     }
     
     private void setTriggerID(){
@@ -529,7 +521,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
             System.out.println(x + " " + y + " " + z + " floorheight: "+ floorHeight);*/
         }
         Cube selected = level.getCube(new Int3(x,y,z));
-        //if(selected.object() instanceof Door) curDoor = (Door) selected.object();
+        if(selected.object() instanceof Door) curDoor = (Door) selected.object();
         repaint();
     }
 
@@ -623,7 +615,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                 level.getCube(x, y, z).addObject(new Container(level.getCube(x, y, z), curContainerColor, null));
                 numContainersPlaced--;
             } else if (typed == 'd') { //Door
-                if (curDoor == null || allTriggersPlaced()) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
                                 "You can only add objects to a floor cube.");
@@ -655,16 +646,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     triggerChoice = JOptionPane.showOptionDialog(null, "What type of trigger do you want?", "Door Type", JOptionPane.YES_NO_OPTION  
                             , JOptionPane.PLAIN_MESSAGE, null, triggerType, null);
                     
-                    triggersLeftToPlace = 0;
-                    try {
-                        triggersLeftToPlace = Integer.parseInt(JOptionPane.showInputDialog(
-                                null, "How many?", "2"));
-                    } catch (NumberFormatException numE) {
-                        JOptionPane.showMessageDialog(null,
-                                "Make sure you enter a number.");
-                        return;
-                    }
-                    
                     switch (choice) {
                     case 0:
                         curDoor = new LevelDoor(currentCube, level.triggers, col);
@@ -688,12 +669,9 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                         break;
                     }
                     level.getCube(x, y, z).addObject(curDoor);
-                } else {
-                    System.out
-                            .println("Finish placing the locks for the last door!");
-                }
+
             } else if(typed == 'b'){
-                if (curDoor != null && !allTriggersPlaced()) {
+                if (curDoor != null) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
                                 "You can only add objects to a floor cube.");
@@ -708,7 +686,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
 
                     level.getCube(x, y, z).addObject(curButton);
                     curDoor.addTrigger(curButton.getID());
-                    --triggersLeftToPlace;
                 }
             }
             else if (typed == 'l') { //Lock
@@ -716,7 +693,7 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     return;
                 }
                 
-                if (curDoor != null && !allTriggersPlaced()) {
+                if (curDoor != null) {
                     if (level.cubes[x][y][z].type() != CubeType.FLOOR) {
                         JOptionPane.showMessageDialog(null,
                                 "You can only add objects to a floor cube.");
@@ -731,7 +708,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
 
                     level.getCube(x, y, z).addObject(curLock);
                     curDoor.addTrigger(curLock.getID());
-                    --triggersLeftToPlace;
                 }
             } else if (typed == 'k') { //Key
                 if (curLock != null) {
@@ -749,8 +725,6 @@ public class EditorCanvas extends JComponent implements MouseListener,  KeyListe
                     level.getCube(x, y, z).addObject(newKey);
                     curLock = null;
                 }
-            } else if(typed == 'c') {   //Container
-                
             }
         }
         if (!isometric)

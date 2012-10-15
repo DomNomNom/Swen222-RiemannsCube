@@ -7,6 +7,11 @@ import world.cubes.Cube;
 import world.objects.items.GameItem;
 import world.objects.items.Key;
 
+/**Locks are objects the prevent a door from opening, until all have a key acting upon them.
+ * 
+ * @author schmiddomi, mudgejayd
+ *
+ */
 public class Lock extends Trigger {
 
     private Color color;

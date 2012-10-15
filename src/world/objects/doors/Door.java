@@ -18,7 +18,7 @@ import world.objects.Trigger;
  * It uses poll rather than push architecture.  (push would be preferred but more complex)
  * A door will stay open once isClosed() has been called while all the triggers where active (locks unlocked) 
  *
- * @author schmiddomi
+ * @author schmiddomi, mudgejayd
  */
 public abstract class Door extends GameObject {
 

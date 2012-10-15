@@ -1,5 +1,10 @@
 package world.cubes;
 
+/**
+ * 
+ * @author mudgejayd
+ *
+ */
 public enum CubeType {
 	
 	SPACE, FLOOR, WALL, GLASS;

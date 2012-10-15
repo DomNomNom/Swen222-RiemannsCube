@@ -10,6 +10,8 @@ import world.objects.Trigger;
 
 /**
  * Class that creates the most simple type of door, to be used in levels
+ * 
+ * @author schmiddomi, mudgejayd
  */
 public class LevelDoor extends Door{
 
