@@ -9,13 +9,10 @@ Swen222-RiemannsCube
 ======================
 David:
 
-fix low graphics
-full screen
 players fix
 other player's holding items
 lighting
 orientation fix
-Markers
 ======================
 
 ======================

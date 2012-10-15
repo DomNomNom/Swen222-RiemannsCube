@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +92,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private Float2 mouse = new Float2(0f, 0f); //the current mouse x position
     private Int2 mouseCentre = new Int2(450, 300); //the mouse x centre
     
+    private Int3 markerPos = new Int3(-1, -1, -1);
+    
     //keys
     private int forBack = 0; //0: none, 1: forwards, 2: backwards
     private int leftRight = 0; //0: none, 1: left, 2: right
@@ -104,6 +105,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean ctrl = false; //is true if crtl is pressed
     private boolean eDown = false; //if the key is pressed
     private boolean fDown = false; //if the f key is pressed
+    private boolean mDown = false;
     private boolean leftMouse = false; //is true if the left mouse has been released
     private boolean rightMouse = false; //is true if right mouse has been released
     private boolean pause = false; //is true when the game is paused
@@ -261,6 +263,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 
                 robot.mouseMove(mouseCentre.x, mouseCentre.y); //move the mouse to the centre of the window
                 quit = false;
+                mDown = false;
             }
 
             accumTime -= frameLength;
@@ -369,8 +372,14 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     Player p = c.player(); //get the player in the cube
                     
                     if (p != null) {
-                        if (p == player && p.item() instanceof Key) Graphics.drawPlayerKey(v, ((Key) p.item()).color()); //draw the key the player is holding
-                        if (p == player && p.item() instanceof Token) Graphics.drawPlayerTokenHigh(v);
+                        if (p == player && p.item() instanceof Key) {
+                        	if (high) Graphics.drawPlayerKeyHigh(v, ((Key) p.item()).color()); //draw the key the player is holding
+                        	else Graphics.drawPlayerKeyLow(v, ((Key) p.item()).color());
+                        }
+                        if (p == player && p.item() instanceof Token) {
+                        	if (high) Graphics.drawPlayerTokenHigh(v);
+                        	else Graphics.drawPlayerTokenLow(v);
+                        }
                         if (p.id != player.id) //only render the other players
                             playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
                     }
@@ -379,33 +388,49 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     for (GameObject obj : c.objects()) { //gets all the objects that the cube contains
                     
                     if (obj instanceof Door) {
-                        if (((Door) obj).isClosed()) {
-                            if (high) Graphics.drawDoorHigh(v, ((Door) obj).color(), 1.0f);
-                            else Graphics.drawDoorLow(v, ((Door) obj).color());
-                        }
-                        else {
-                            if (((Door) obj).getAnimate() != -1) Graphics.drawDoorHigh(v, ((Door) obj).color(), ((Door) obj).getAnimate());
-                            else if (obj instanceof EntranceDoor || obj instanceof ExitDoor) { //draw a portal
-                                if (high) Graphics.drawPortal(v, ((Door) obj).color()); 
-                            }
-                        }
-                    }
-                    else if (obj instanceof Key) Graphics.drawKey(v, ((Key) obj));
-                    else if (obj instanceof Button) Graphics.drawButton(v,((Button) obj).color());
-                    else if(obj instanceof Lock)  Graphics.drawLock(v,((Lock) obj).color());
-                    else if (obj instanceof LightSource && high) Graphics.drawLight(v);
-                    else if (obj instanceof Container) {
-                    	containerRender.add(new Pair<Float3, Container>(v, (Container) obj));
-                    	GameObject go = ((Container) obj).containers.get(((Container) obj).color()).getItem();
-                    	if (go instanceof Key) {
-                    		Graphics.drawKeyContainer(v, (Key) go);
-                    	}
-                    }
-                    else if (obj instanceof Token) if (high) Graphics.drawTokenHigh(v);
+	                        if (((Door) obj).isClosed()) {
+	                            if (high) Graphics.drawDoorHigh(v, ((Door) obj).color(), 1.0f);
+	                            else Graphics.drawDoorLow(v, ((Door) obj).color());
+	                        }
+	                        else {
+	                            if (((Door) obj).getAnimate() != -1) Graphics.drawDoorHigh(v, ((Door) obj).color(), ((Door) obj).getAnimate());
+	                            else if (obj instanceof EntranceDoor || obj instanceof ExitDoor) { //draw a portal
+	                                if (high) Graphics.drawPortal(v, ((Door) obj).color()); 
+	                            }
+	                        }
+	                    }
+	                    else if (obj instanceof Key) {
+	                    	if (high) Graphics.drawKeyHigh(v, ((Key) obj));
+	                    	else Graphics.drawKeyLow(v, ((Key) obj));
+	                    }
+	                    else if (obj instanceof Button) {
+	                    	if (high) Graphics.drawButtonHigh(v,((Button) obj).color());
+	                    	else Graphics.drawButtonLow(v,((Button) obj).color());
+	                    }
+	                    else if(obj instanceof Lock) {
+	                    	if (high) Graphics.drawLockHigh(v,((Lock) obj).color());
+	                    	else Graphics.drawLockLow(v,((Lock) obj).color());
+	                    }
+	                    else if (obj instanceof LightSource && high) Graphics.drawLight(v);
+	                    else if (obj instanceof Container) {
+	                    	containerRender.add(new Pair<Float3, Container>(v, (Container) obj));
+	                    	GameObject go = ((Container) obj).containers.get(((Container) obj).color()).getItem();
+	                    	if (go instanceof Key) {
+	                    		if (high) Graphics.drawKeyContainerLow(v, (Key) go);
+	                    		else Graphics.drawKeyContainerHigh(v, (Key) go);
+	                    	}
+	                    }
+	                    else if (obj instanceof Token) {
+	                    	if (high) Graphics.drawTokenHigh(v);
+	                    	else Graphics.drawTokenLow(v);
+	                    }
                     }
                 }
             }
         }
+        
+        //draw the marker
+        if (markerPos.x > -1) Graphics.drawMarker(new Float3(markerPos.x*2, markerPos.y*2, markerPos.z*2));
         
         //draw some planets and star
         if (high) {
@@ -518,6 +543,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             if (level.isValidAction(new ItemDrop(player.id))) { //check if drop is valid
                 frame.getClient().push(new ItemDrop(player.id));
             }
+        }
+        if (mDown) {
+        	if (player.pos().equals(markerPos)) markerPos = new Int3(-1, -1, -1);
+        	else markerPos = new Int3(player.pos().x, player.pos().y, player.pos().z);
         }
         if (space) {
             if (level.isValidAction(new ItemUseStart(player.id))) { //check if drop is valid
@@ -916,6 +945,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         if (keyDown == 17) ctrl = true; //ctrl is down
         if (keyDown == 69) eDown = true; //the e key is down
         if (keyDown == 70) fDown = true; //the f key is down
+        if (keyDown == 77) mDown = true;
         if (keyDown == 27) {
             pause = !pause; //pause or unpause the game
             frame.showMouse(pause);
@@ -937,6 +967,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             spaceReleased = true;
         }
         if (keyUp == 17) ctrl = false; //ctrl is released
+        if (keyUp == 77) mDown = false;
         if (keyUp == 10) {
             if (sound) { //play chat sound
                 Music chatSound = new Music();

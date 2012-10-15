@@ -389,7 +389,7 @@ public class Graphics {
     /**Draws a key that is on the floor
      * @param v the position vector of the key
      * @param k the key that is being drawn*/
-    public static void drawKey(Float3 v, Key k) {
+    public static void drawKeyHigh(Float3 v, Key k) {
     	gl.glPushMatrix(); //push new matrix
     	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[22]);
@@ -412,10 +412,33 @@ public class Graphics {
     	gl.glPopMatrix();
     }
     
+    public static void drawKeyLow(Float3 v, Key k) {
+    	gl.glPushMatrix(); //push new matrix
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glRotatef(k.getRotate(), 0, 1, 0);
+    	gl.glTranslatef(0.0f, -0.5f, 0.0f);
+    	
+    	if (k.color() == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	else gl.glColor4f(k.color().getRed()/255.0f, k.color().getGreen()/255.0f, k.color().getBlue()/255.0f, 1.0f);
+    	resources.getObj("key").render(gl);
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	
+    	gl.glPopMatrix();
+    }
+    
     /**Draws a key that is in a container
      * @param v the position vector of the key
      * @param k the key that is being drawn*/
-    public static void drawKeyContainer(Float3 v, Key k) {
+    public static void drawKeyContainerHigh(Float3 v, Key k) {
     	gl.glPushMatrix(); //push new matrix
     	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[22]);
@@ -440,10 +463,38 @@ public class Graphics {
     	gl.glPopMatrix();
     }
     
+    /**Draws a key that is in a container
+     * @param v the position vector of the key
+     * @param k the key that is being drawn*/
+    public static void drawKeyContainerLow(Float3 v, Key k) {
+    	gl.glPushMatrix(); //push new matrix
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	
+    	gl.glRotatef(k.getRotate(), 0, 1, 0);
+    	gl.glRotatef(90.0f, 0, 0, 1);
+    	gl.glTranslatef(0.0f, 0.0f, 0.0f);
+    	
+    	if (k.color() == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	else gl.glColor4f(k.color().getRed()/255.0f, k.color().getGreen()/255.0f, k.color().getBlue()/255.0f, 1.0f);
+    	resources.getObj("key").render(gl);
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	
+    	gl.glPopMatrix();
+    }
+    
     /**Draws a key that player is holding
      * @param v the position vector of the key
      * @param col the colour of the key*/
-    public static void drawPlayerKey(Float3 v, Color col) {
+    public static void drawPlayerKeyHigh(Float3 v, Color col) {
     	gl.glPushMatrix(); //push new matrix
     	
        	gl.glLoadIdentity(); //load the identity matrix
@@ -460,10 +511,30 @@ public class Graphics {
     	gl.glPopMatrix();
     }
     
+    /**Draws a key that player is holding
+     * @param v the position vector of the key
+     * @param col the colour of the key*/
+    public static void drawPlayerKeyLow(Float3 v, Color col) {
+    	gl.glPushMatrix(); //push new matrix
+    	
+       	gl.glLoadIdentity(); //load the identity matrix
+       	
+       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glRotatef(75, 0, 1, 0);
+       	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	if (col == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	else  gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
+    	resources.getObj("key").render(gl);
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	
+    	gl.glPopMatrix();
+    }
+    
     /**Draws a button
      * @param v the position vector of the button
      * @param col the colour of the button*/
-    public static void drawButton(Float3 v, Color col) {
+    public static void drawButtonHigh(Float3 v, Color col) {
     	gl.glPushMatrix();
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
@@ -487,10 +558,35 @@ public class Graphics {
         gl.glPopMatrix();
     }
     
+    /**Draws a button
+     * @param v the position vector of the button
+     * @param col the colour of the button*/
+    public static void drawButtonLow(Float3 v, Color col) {
+    	gl.glPushMatrix();
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	resources.getObj("buttonBase").renderTex(gl); //draw the base
+    	
+    	gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	resources.getObj("button").render(gl);
+        
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        
+        gl.glPopMatrix();
+    }
+    
     /**Draws a lock
      * @param v the position vector of the lock
      * @param col the colour of the lock*/
-    public static void drawLock(Float3 v, Color col) {
+    public static void drawLockHigh(Float3 v, Color col) {
     	gl.glPushMatrix();
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
@@ -511,6 +607,36 @@ public class Graphics {
     	else gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
     	
     	resources.getObj("button").renderTex(gl);
+        
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        
+        gl.glPopMatrix();
+    }
+    
+    /**Draws a lock
+     * @param v the position vector of the lock
+     * @param col the colour of the lock*/
+    public static void drawLockLow(Float3 v, Color col) {
+    	gl.glPushMatrix();
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glTranslatef(0, -1.0f, 0);
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	
+    	resources.getObj("buttonBase").renderTex(gl); //draw the base
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[24]);
+    	if (col == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	else gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
+    	
+    	resources.getObj("button").render(gl);
         
         gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         
@@ -649,6 +775,64 @@ public class Graphics {
     	gl.glPopMatrix();
     }
     
+    public static void drawTokenLow(Float3 v) {
+    	gl.glPushMatrix(); //push new matrix
+
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glRotatef(tokenRot, 0, 1, 0);
+    	gl.glTranslatef(0.0f, -0.5f, 0.0f);
+    	
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, 0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, 0.1f,  0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, 0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, 0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	
+    	gl.glPopMatrix();
+    	
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+    
     public static void drawPlayerTokenHigh(Float3 v) {
     	gl.glPushMatrix(); //push new matrix
     	
@@ -697,6 +881,59 @@ public class Graphics {
     	gl.glEnd();
     	
     	gl.glPopMatrix();
+    }
+    
+    public static void drawPlayerTokenLow(Float3 v) {
+    	gl.glPushMatrix(); //push new matrix
+    	
+       	gl.glLoadIdentity(); //load the identity matrix
+       	
+       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glRotatef(75, 0, 1, 0);
+       	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, 0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, 0.1f,  0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, 0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, 0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	
+    	gl.glPopMatrix();
+    	
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     
     /**Draws a light source
@@ -825,6 +1062,33 @@ public class Graphics {
         gl.glTexCoord2f(5.0f, 5.0f); gl.glVertex3f( 100.0f, 100.0f,  100.0f);
         gl.glTexCoord2f(5.0f, 0.0f); gl.glVertex3f(-100.0f, 100.0f,  100.0f);
         gl.glEnd();
+    }
+    
+    public static void drawMarker(Float3 v) {
+    	gl.glPushMatrix();
+    	gl.glDisable(GL.GL_DEPTH_TEST);
+    	
+    	gl.glTranslatef(v.x, v.y, v.z);
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glBegin(GL.GL_LINE_LOOP);
+        gl.glVertex3f(-1.0f, -0.95f, -1.0f);
+        gl.glVertex3f(-1.0f, -0.95f,  1.0f);
+        gl.glVertex3f( 1.0f, -0.95f,  1.0f);
+        gl.glVertex3f( 1.0f, -0.95f, -1.0f);
+        gl.glEnd();
+        
+    	gl.glEnable(GL.GL_DEPTH_TEST);
+    	gl.glPopMatrix();
+    	
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     
     /**Draws the pause screen overlay*/

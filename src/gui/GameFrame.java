@@ -80,6 +80,7 @@ public class GameFrame extends JFrame {
      @param ip the IP address of server*/
     public GameFrame(String ip) {
         super("Riemann's cube");
+        setExtendedState(MAXIMIZED_BOTH);
         this.ip = ip;
         //set option pane to be dark gray
         ui.put("OptionPane.background", Color.GRAY.darker().darker().darker());
