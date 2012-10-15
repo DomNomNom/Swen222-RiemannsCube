@@ -50,7 +50,9 @@
             <cube spawn="false" type="Wall" x="8"/>
         </floor>
         <floor y="4">
-            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="0">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="1"/>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Wall" x="3"/>
@@ -58,7 +60,9 @@
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Floor" x="7"/>
-            <cube spawn="false" type="Floor" x="8"/>
+            <cube spawn="false" type="Floor" x="8">
+                <container color="#ff00ff"/>
+            </cube>
         </floor>
         <floor y="5">
             <cube spawn="false" type="Wall" x="0"/>
@@ -98,7 +102,9 @@
             <cube spawn="false" type="Wall" x="8"/>
         </floor>
         <floor y="8">
-            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="0">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="1"/>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Floor" x="3"/>
@@ -108,7 +114,9 @@
             <cube spawn="false" type="Floor" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Floor" x="7"/>
-            <cube spawn="false" type="Floor" x="8"/>
+            <cube spawn="false" type="Floor" x="8">
+                <lightsource/>
+            </cube>
         </floor>
     </slice>
     <slice z="1">
@@ -126,14 +134,16 @@
         <floor y="1">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Floor" x="1">
-                <container color="#ff33cc"/>
+                <container color="#ff00ff"/>
             </cube>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Wall" x="3"/>
             <cube spawn="false" type="Wall" x="4"/>
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
-            <cube spawn="false" type="Floor" x="7"/>
+            <cube spawn="false" type="Floor" x="7">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Wall" x="8"/>
         </floor>
         <floor y="2">
@@ -182,13 +192,17 @@
         </floor>
         <floor y="6">
             <cube spawn="false" type="Floor" x="0"/>
-            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="1">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Wall" x="3"/>
             <cube spawn="false" type="Wall" x="4"/>
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
-            <cube spawn="false" type="Floor" x="7"/>
+            <cube spawn="false" type="Floor" x="7">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="8"/>
         </floor>
         <floor y="7">
@@ -305,7 +319,9 @@
             <cube spawn="false" type="Floor" x="1"/>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Floor" x="3"/>
-            <cube spawn="false" type="Floor" x="4"/>
+            <cube spawn="false" type="Floor" x="4">
+                <container color="#0000ff"/>
+            </cube>
             <cube spawn="false" type="Floor" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Floor" x="7"/>
@@ -338,11 +354,15 @@
         <floor y="1">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Wall" x="1"/>
-            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="2">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Wall" x="3"/>
             <cube spawn="false" type="Wall" x="4"/>
             <cube spawn="false" type="Wall" x="5"/>
-            <cube spawn="false" type="Floor" x="6"/>
+            <cube spawn="false" type="Floor" x="6">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Wall" x="7"/>
             <cube spawn="false" type="Wall" x="8"/>
         </floor>
@@ -350,9 +370,13 @@
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Wall" x="1"/>
             <cube spawn="false" type="Wall" x="2"/>
-            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="3">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="4"/>
-            <cube spawn="false" type="Floor" x="5"/>
+            <cube spawn="false" type="Floor" x="5">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Wall" x="6"/>
             <cube spawn="false" type="Wall" x="7"/>
             <cube spawn="false" type="Wall" x="8"/>
@@ -374,9 +398,13 @@
             <cube spawn="false" type="Floor" x="2">
                 <lock color="#ff0033" id="15"/>
             </cube>
-            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="3">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="4"/>
-            <cube spawn="false" type="Floor" x="5"/>
+            <cube spawn="false" type="Floor" x="5">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Wall" x="7"/>
             <cube spawn="false" type="Wall" x="8"/>
@@ -406,11 +434,15 @@
         <floor y="7">
             <cube spawn="false" type="Wall" x="0"/>
             <cube spawn="false" type="Wall" x="1"/>
-            <cube spawn="false" type="Floor" x="2"/>
+            <cube spawn="false" type="Floor" x="2">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="3"/>
             <cube spawn="false" type="Floor" x="4"/>
             <cube spawn="false" type="Floor" x="5"/>
-            <cube spawn="false" type="Floor" x="6"/>
+            <cube spawn="false" type="Floor" x="6">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Wall" x="7"/>
             <cube spawn="false" type="Wall" x="8"/>
         </floor>
@@ -525,7 +557,7 @@
             <cube spawn="false" type="Wall" x="2"/>
             <cube spawn="false" type="Floor" x="3"/>
             <cube spawn="false" type="Floor" x="4">
-                <container color="#ff33cc"/>
+                <lightsource/>
             </cube>
             <cube spawn="false" type="Floor" x="5"/>
             <cube spawn="false" type="Wall" x="6"/>
@@ -616,9 +648,13 @@
             <cube spawn="false" type="Floor" x="2">
                 <lock color="#ff0033" id="16"/>
             </cube>
-            <cube spawn="false" type="Floor" x="3"/>
+            <cube spawn="false" type="Floor" x="3">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="4"/>
-            <cube spawn="false" type="Floor" x="5"/>
+            <cube spawn="false" type="Floor" x="5">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Wall" x="7"/>
             <cube spawn="false" type="Wall" x="8"/>
@@ -662,7 +698,7 @@
             <cube spawn="false" type="Wall" x="2"/>
             <cube spawn="false" type="Floor" x="3"/>
             <cube spawn="false" type="Floor" x="4">
-                <container color="#ff33cc"/>
+                <container color="#ff00ff"/>
             </cube>
             <cube spawn="false" type="Floor" x="5"/>
             <cube spawn="false" type="Wall" x="6"/>
@@ -856,24 +892,32 @@
         </floor>
         <floor y="6">
             <cube spawn="false" type="Floor" x="0"/>
-            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="1">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Wall" x="3"/>
             <cube spawn="false" type="Wall" x="4"/>
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
-            <cube spawn="false" type="Floor" x="7"/>
+            <cube spawn="false" type="Floor" x="7">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="8"/>
         </floor>
         <floor y="7">
             <cube spawn="false" type="Wall" x="0"/>
-            <cube spawn="false" type="Floor" x="1"/>
+            <cube spawn="false" type="Floor" x="1">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Wall" x="3"/>
             <cube spawn="false" type="Wall" x="4"/>
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
-            <cube spawn="false" type="Floor" x="7"/>
+            <cube spawn="false" type="Floor" x="7">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Wall" x="8"/>
         </floor>
         <floor y="8">
@@ -934,7 +978,9 @@
             <cube spawn="false" type="Wall" x="8"/>
         </floor>
         <floor y="4">
-            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="0">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="1"/>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Wall" x="3"/>
@@ -942,7 +988,9 @@
             <cube spawn="false" type="Wall" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Floor" x="7"/>
-            <cube spawn="false" type="Floor" x="8"/>
+            <cube spawn="false" type="Floor" x="8">
+                <container color="#0000ff"/>
+            </cube>
         </floor>
         <floor y="5">
             <cube spawn="false" type="Wall" x="0"/>
@@ -982,7 +1030,9 @@
             <cube spawn="false" type="Wall" x="8"/>
         </floor>
         <floor y="8">
-            <cube spawn="false" type="Floor" x="0"/>
+            <cube spawn="false" type="Floor" x="0">
+                <lightsource/>
+            </cube>
             <cube spawn="false" type="Floor" x="1"/>
             <cube spawn="false" type="Floor" x="2"/>
             <cube spawn="false" type="Floor" x="3"/>
@@ -990,7 +1040,9 @@
             <cube spawn="false" type="Floor" x="5"/>
             <cube spawn="false" type="Floor" x="6"/>
             <cube spawn="false" type="Floor" x="7"/>
-            <cube spawn="false" type="Floor" x="8"/>
+            <cube spawn="false" type="Floor" x="8">
+                <lightsource/>
+            </cube>
         </floor>
     </slice>
 </riemann>
