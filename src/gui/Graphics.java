@@ -595,6 +595,21 @@ public class Graphics {
     	gl.glEnable(GL.GL_DEPTH_TEST);
     } 
     
+    /**Draw a star
+     * @param v the position vector of the star*/
+    public static void drawStar(Float3 v) {
+    	gl.glPushMatrix();
+		gl.glTranslatef(v.x, v.y,v.z);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[17]);
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(0.0f, 30.0f, 30.0f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(0.0f, -30.0f, 30.0f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(0.0f, -30.0f, -30.0f);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(0.0f, 30.0f, -30.0f);
+        gl.glEnd();
+        gl.glPopMatrix();
+    }
+   
     /**Draws a planet
      * @param v the position vector of the planet
      * @param rot the initial rotation of the planet

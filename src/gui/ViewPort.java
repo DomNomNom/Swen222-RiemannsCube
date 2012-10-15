@@ -102,7 +102,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private boolean fDown = false; //if the f key is pressed
     private boolean leftMouse = false; //is true if the left mouse has been released
     private boolean rightMouse = false; //is true if right mouse has been released
-    private boolean exit = false; //is true when to exit
     private boolean pause = false; //is true when the game is paused
     private boolean firstFocus = false; //waits for the first focus
     private boolean regain = false; //is true when focus has just been regained
@@ -169,6 +168,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set the clear colour
         gl.glClearDepth(1000.0f); // set the clear depth
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); // clear the screen for the first time
+        
+        //set up lighting
 
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
@@ -305,7 +306,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                 }
             }
         }
-        Graphics.rotatePlanets();
         Graphics.rotatePortal();
     }
     
@@ -386,12 +386,13 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             }
         }
         
-        //draw some planets
+        //draw some planets and star
         if (high) {
             Graphics.drawPlanet(new Float3(-13, -48, 17), new Float3(90, 0, 0), 8, 13);
             Graphics.drawPlanet(new Float3(76, -23, 64), new Float3(0, 45, 0), 10, 14);
             Graphics.drawPlanet(new Float3(12, 54, -76), new Float3(0, 0, 0), 12, 15);
-            Graphics.drawPlanet(new Float3(-34, -1, 12), new Float3(0, 270, 0), 12, 16);
+            Graphics.drawPlanet(new Float3(-98, -16, 12), new Float3(0, 270, 0), 38, 16);
+            Graphics.drawStar(new Float3(-95, 5, -19));
         }
         
         //draw the glass around the outside of the cube
@@ -854,7 +855,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     @Override
     public void keyPressed(KeyEvent e) {
         int keyDown = e.getKeyCode(); //get the key code
-        if (keyDown == 118) exit = true; //f7 is down
         if (keyDown == 87 && forBack == 0) forBack = 1; //w is down
         if (keyDown == 83 && forBack == 0) forBack = 2; //s is down
         if (keyDown == 65 && leftRight == 0) leftRight = 1; //a is down
