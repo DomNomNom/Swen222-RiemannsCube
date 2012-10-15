@@ -8,4 +8,8 @@ public class LevelChange extends Event {
     public LevelChange(String levelName) {
         this.levelName = levelName;
     }
+    
+    public String toString() {
+        return "LevelChange[" + levelName + "]";
+    }
 }
