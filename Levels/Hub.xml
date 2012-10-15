@@ -156,7 +156,7 @@
             </cube>
             <cube spawn="false" type="Wall" x="2"/>
             <cube spawn="false" type="Floor" x="3">
-                <door color="#ffff33" levelname="Level1.xml" triggerIDs="4 5 " type="entrance"/>
+                <door color="#ffff33" levelname="Level2.xml" triggerIDs="4 5 " type="entrance"/>
             </cube>
             <cube spawn="false" type="Wall" x="4"/>
             <cube spawn="false" type="Floor" x="5"/>
