@@ -13,7 +13,7 @@ import world.objects.items.GameItem;
  */
 public class Container extends GameObject{
 
-    private final Map<Color, GlobalHolder> containers;
+    public final Map<Color, GlobalHolder> containers;
     
     private int rotation = 0;
     private float loop1 = 0.00f;

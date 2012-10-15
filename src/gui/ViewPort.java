@@ -386,7 +386,13 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     else if (obj instanceof Button) Graphics.drawButton(v,((Button) obj).color());
                     else if(obj instanceof Lock)  Graphics.drawLock(v,((Lock) obj).color());
                     else if (obj instanceof LightSource) Graphics.drawLight(v);
-                    else if (obj instanceof Container) Graphics.drawContainer(v, (Container) obj);
+                    else if (obj instanceof Container) {
+                    	Graphics.drawContainer(v, (Container) obj);
+                    	GameObject go = ((Container) obj).containers.get(((Container) obj).color()).getItem();
+                    	if (go instanceof Key) {
+                    		Graphics.drawKeyContainer(v, (Key) go);
+                    	}
+                    }
                     }
                 }
             }

@@ -406,6 +406,33 @@ public class Graphics {
     	gl.glPopMatrix();
     }
     
+    /**Draws a key that is in a container
+     * @param v the position vector of the key
+     * @param k the key that is being drawn*/
+    public static void drawKeyContainer(Float3 v, Key k) {
+    	gl.glPushMatrix(); //push new matrix
+    	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glRotatef(90.0f, 1, 0, 0);
+    	gl.glRotatef(k.getRotate(), 0, 1, 0);
+    	gl.glTranslatef(0.0f, -0.5f, 0.0f);
+    	
+    	if (k.color() == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	else gl.glColor4f(k.color().getRed()/255.0f, k.color().getGreen()/255.0f, k.color().getBlue()/255.0f, 1.0f);
+    	resources.getObj("key").render(gl);
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	
+    	gl.glPopMatrix();
+    }
+    
     /**Draws a key that player is holding
      * @param v the position vector of the key
      * @param col the colour of the key*/
