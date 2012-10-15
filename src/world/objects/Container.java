@@ -16,9 +16,9 @@ public class Container extends GameObject{
     private final Map<Color, GlobalHolder> containers;
     
     private int rotation = 0;
-    private float loop1 = 0.05f;
-    private float loop2 = 0.1f;
-    private float loop3 = 0.15f;
+    private float loop1 = 0.00f;
+    private float loop2 = 0.05f;
+    private float loop3 = 0.1f;
     
     private Color color;
     public Color color(){ return color;}
@@ -54,7 +54,25 @@ public class Container extends GameObject{
     
     public void animate() {
     	++rotation;
+    	loop1 += 0.005f;
+    	if (loop1 >= 0.15f) loop1 = 0.01f;
+    	loop2 += 0.005f;
+    	if (loop2 >= 0.15f) loop2 = 0.01f;
+    	loop3 += 0.005f;
+    	if (loop3 >= 0.15f) loop3 = 0.01f;
     	if (rotation == 360) rotation = 0;
+    }
+    
+    public float getLoop1() {
+    	return loop1;
+    }
+    
+    public float getLoop2() {
+    	return loop2;
+    }
+    
+    public float getLoop3() {
+    	return loop3;
     }
     
     public int getRotate() {

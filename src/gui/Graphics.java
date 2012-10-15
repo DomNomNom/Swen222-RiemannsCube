@@ -495,17 +495,36 @@ public class Graphics {
     	
     	gl.glRotatef(c.getRotate(), 0, 1, 0);
     	
-    	gl.glTranslatef(0, -0.99f, 0);
-    	
-    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[18]); //unbind textures
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[18]);
     	if (c.color() == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     	else gl.glColor4f(c.color().getRed()/255.0f, c.color().getGreen()/255.0f, c.color().getBlue()/255.0f, 1.0f);
     	
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.8f, 0.0f, -0.8f);
-        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.8f, 0.0f,  0.8f);
-        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.8f, 0.0f,  0.8f);
-        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.8f, 0.0f, -0.8f);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.8f, -0.99f, -0.8f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.8f, -0.99f,  0.8f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.8f, -0.99f,  0.8f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.8f, -0.99f, -0.8f);
+        gl.glEnd();
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[19]);
+        
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.87f, -0.98f, -0.8f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.87f, -0.98f,  0.8f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.87f, -0.98f,  0.8f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.87f, -0.98f, -0.8f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.87f, -0.93f, -0.8f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.87f, -0.93f,  0.8f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.87f, -0.93f,  0.8f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.87f, -0.93f, -0.8f);
+        gl.glEnd();
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.87f, -0.87f, -0.8f);
+        gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.87f, -0.87f,  0.8f);
+        gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.87f, -0.87f,  0.8f);
+        gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.87f, -0.87f, -0.8f);
         gl.glEnd();
         
         gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
