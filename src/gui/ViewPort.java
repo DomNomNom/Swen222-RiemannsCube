@@ -316,6 +316,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             }
         }
         Graphics.rotatePortal();
+        Graphics.rotateToken();
     }
     
     /**draws the world*/
@@ -369,6 +370,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     
                     if (p != null) {
                         if (p == player && p.item() instanceof Key) Graphics.drawPlayerKey(v, ((Key) p.item()).color()); //draw the key the player is holding
+                        if (p == player && p.item() instanceof Token) Graphics.drawPlayerTokenHigh(v);
                         if (p.id != player.id) //only render the other players
                             playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
                     }
@@ -399,6 +401,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                     		Graphics.drawKeyContainer(v, (Key) go);
                     	}
                     }
+                    else if (obj instanceof Token) if (high) Graphics.drawTokenHigh(v);
                     }
                 }
             }

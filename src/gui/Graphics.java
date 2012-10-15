@@ -27,6 +27,7 @@ public class Graphics {
 	private static Player player = null; //a reference to the player
 	private static int portalRot = 0; //the rotation of the portals
 	private static float planetRot = 0.0f; //the rotation of the planets
+	private static int tokenRot = 0;
 	
 	//METHODS
     /**Draws a openGL textured quad
@@ -588,6 +589,111 @@ public class Graphics {
         gl.glPopMatrix();
     }
     
+    public static void drawTokenHigh(Float3 v) {
+    	gl.glPushMatrix(); //push new matrix
+
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[25]);
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate world to position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	gl.glRotatef(tokenRot, 0, 1, 0);
+    	gl.glTranslatef(0.0f, -0.5f, 0.0f);
+    	
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, 0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, 0.1f,  0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, 0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, 0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	
+    	gl.glPopMatrix();
+    }
+    
+    public static void drawPlayerTokenHigh(Float3 v) {
+    	gl.glPushMatrix(); //push new matrix
+    	
+       	gl.glLoadIdentity(); //load the identity matrix
+       	
+       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glRotatef(75, 0, 1, 0);
+       	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[25]);
+
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, 0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, 0.1f,  0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, 0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, 0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	
+    	gl.glPopMatrix();
+    }
+    
     /**Draws a light source
      * @param v the position vector of the light*/
     public static void drawLight(Float3 v) {
@@ -839,6 +945,12 @@ public class Graphics {
     public static void rotatePlanets() {
     	planetRot += 0.004f;
     	if (planetRot >= 360) planetRot = 0.004f;
+    }
+    
+    /**Rotates the token*/
+    public static void rotateToken() {
+    	++tokenRot;
+    	if (tokenRot >= 360) tokenRot = 1;
     }
     
 	//SETTERS

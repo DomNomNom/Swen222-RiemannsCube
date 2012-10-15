@@ -29,7 +29,7 @@ import javax.media.opengl.GL2;
 public class Resources {
 	
 	//FIELDS
-	private int[] texID = new int[25]; //where the texture ids are stored
+	private int[] texID = new int[26]; //where the texture ids are stored
 	//The 3D objects
 	private Object3D keyObj;
 	private Object3D buttonObj;
@@ -63,6 +63,7 @@ public class Resources {
 	private ByteBuffer keyTex;
 	private ByteBuffer buttonBaseTex;
 	private ByteBuffer buttonTex;
+	private ByteBuffer tokenTex;
 	
 	//CONSTRUCTOR
 	/**Creates a new resources object
@@ -237,6 +238,12 @@ public class Resources {
 			buttonImg = ImageIO.read(new File("resources/gfx/button.png")); //open the image
 			buttonTex = convertImageData(buttonImg); //converts the image
 		} catch (IOException e) {e.printStackTrace();}
+		
+		BufferedImage tokenImg = null;
+		try {
+			tokenImg = ImageIO.read(new File("resources/gfx/token.png")); //open the image
+			tokenTex = convertImageData(tokenImg); //converts the image
+		} catch (IOException e) {e.printStackTrace();}
 
 		
 		//create the texture IDs
@@ -392,6 +399,12 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 400,
             400, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, buttonTex);
+        
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texID[25]);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 100,
+            100, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, tokenTex);
 	}
 	
 	/**Return an object that matches the given string
