@@ -1155,6 +1155,29 @@ public class Graphics {
 	    	
 	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
     	}
+    	if (orientation == 2) {
+	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 3) {
+	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));	
+	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 4) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 5) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));	
+	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	
     	
     	gl.glTranslatef(0, 0.9f, 0);
     	
