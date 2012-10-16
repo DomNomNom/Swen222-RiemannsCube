@@ -1287,7 +1287,12 @@ public class Graphics {
     	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
     	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
-    	gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+    	
+    	if (player.id == 0) gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+        else if (player.id == 1) gl.glColor4f(0.6f, 0.0f, 0.6f, 1.0f);
+        else if (player.id == 2) gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+        else if (player.id == 3) gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+        else                gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
     	
     	gl.glBegin(GL.GL_LINE_LOOP);
         gl.glVertex3f(-1.0f, -0.95f, -1.0f);
