@@ -1332,10 +1332,10 @@ public class Graphics {
     	//gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
     	
     	gl.glBegin(GL2.GL_QUADS);
-    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-2.4f,  0.15f, 0);
-    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 2.4f,  0.15f, 0);
-    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 2.4f, -0.15f, 0);
-    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-2.4f, -0.15f, 0);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-2.4f,  0.09f, 0);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 2.4f,  0.09f, 0);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 2.4f, -0.09f, 0);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-2.4f, -0.09f, 0);
     	gl.glEnd();
     	
     	gl.glPopMatrix();

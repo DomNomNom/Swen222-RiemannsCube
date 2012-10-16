@@ -417,7 +417,7 @@ public class Resources {
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, 1000,
-            100, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, lightFlareTex);
+            60, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, lightFlareTex);
 	}
 	
 	/**Return an object that matches the given string
