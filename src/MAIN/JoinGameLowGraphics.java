@@ -5,21 +5,18 @@ import world.cubes.Glass;
 import world.cubes.Wall;
 import gui.GameFrame;
 
-/**A testing class that runs the GUI
+/**A testing class that runs the GUI in the low grahics mode
  * 
  * @author David Saxon 300199370
  */
-public class GUITest {
+public class JoinGameLowGraphics {
     
     public static void main(String[] args) {
-    	//create a level for testing the game
-    
-		//settings
-		GameFrame.high = true;
-		GameFrame.free = false;
-		GameFrame.noFloor = false;
-		GameFrame.showFps = false;
-		GameFrame.sound = true;
+    	
+    	//settings
+    	GameFrame.high = false;
+		GameFrame.free = true;
+		GameFrame.noFloor = true;
     	GameFrame window = new GameFrame(null);
         window.init();
         window.execute();
