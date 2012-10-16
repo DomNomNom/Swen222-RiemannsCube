@@ -113,6 +113,7 @@ public class XMLParser {
                     
                     Cube cube = null;
 
+                    // Get which type of cube it is.
                     if (type.equals("Space")) {
                         cube = new Space(new Int3(x, y, z));
                     } else if (type.equals("Floor")) {
@@ -123,6 +124,7 @@ public class XMLParser {
                         cube = new Glass(new Int3(x, y, z));
                     }
                     
+                    // Set whether or not this cube can spawn a player
                     if(spawn.equals("true")){
                         cube.setSpawnPoint(true);
                         riemannCube.spawnCubes.put(spawnCount, cube);
@@ -135,13 +137,11 @@ public class XMLParser {
 
                     NodeList obs = c.getChildNodes();
                     for (int o = 1; o < obs.getLength(); o += 2) {
-                        cube.addObject(createInternalObject(obs.item(o),
-                                riemannCube, cube));
+                        // Get every object that the XML file says this cube has, and add them to it.
+                        cube.addObject(createInternalObject(obs.item(o), riemannCube, cube));
                     }
                     
                     riemannCube.setCube(w, h, d, cube);
-                    
-                    //System.out.println(cube.object() instanceof Button);
                     w++;
                 }
 

@@ -26,22 +26,24 @@ import editor.HelpFrame;
 import data.LevelPipeline;
 
 /**
- * 
- * @author mudgejayd Creates a new frame, for running the Level Editor in.
+ * Creates a new frame, for running the Level Editor in.
+ * @author mudgejayd, sandilalex
  * 
  */
 public class EditorFrame extends JFrame {
 
-    JPanel contentPane = new JPanel(new BorderLayout());
-    EditorCanvas canvas = new EditorCanvas();
-    LevelPipeline pipe;
-    String levelName = "New Level";
+    private JPanel contentPane = new JPanel(new BorderLayout());
+    
+    private EditorCanvas canvas = new EditorCanvas();   //  Where the level is displayed
+    private LevelPipeline pipe;     // Allows saving and loading the design the XML file.
+    private String levelName = "New Level"; // Name of the file you are saving/loading from.
 
     public EditorFrame() {
         super("Level Editor");
         setLayout(new BorderLayout());
         add(canvas, BorderLayout.CENTER);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         this.addKeyListener(canvas);
         pack();
         setVisible(true);
@@ -65,45 +67,57 @@ public class EditorFrame extends JFrame {
     }
 
     /**
-     * Creates a menu bar on the North, for menu commands.
+     * Creates a menu bar on the North, for menu commands. Has: New, Save, Load.
      */
     private void addMenuBar() {
         JMenuBar menuBar = new JMenuBar();
+
+        // The main menu button --> File
         JMenu file = new JMenu("File");
+        
         // "New" option in the menu bar, to create empty map.
         JMenuItem item = new JMenuItem("New");
         item.addActionListener(new ActionListener() {
+            
+            // Allows the user to make a new level, asks for the dimension.
             public void actionPerformed(ActionEvent e) {
-                int width, height, depth;
+                int width, height, depth;   // The dimensions of the level.
+                
                 try{
-                width = Integer.parseInt(JOptionPane.showInputDialog(null,
-                        "Dimension?", "3"));
-                height = width;
-                depth = width;
+                    // Choose the dimesion of the level
+                    width = Integer.parseInt(JOptionPane.showInputDialog(null, "Dimension?", "3"));
+                    height = width;
+                    depth = width;
                 }catch(NumberFormatException nfe){
                     return;
                 }
                 
-                canvas.setLevel(new RiemannCube(new Int3(width, height, depth)));
+                canvas.setLevel(new RiemannCube(new Int3(width, height, depth)));   // Create the new Level (ie New RiemannCube)
                 contentPane.add(canvas, BorderLayout.CENTER);
                 setContentPane(contentPane);
             }
         });
 
+        // Add "New" to the File button
         file.add(item);
+        
         // "Save" option in the menu bar, to save to XML
         item = new JMenuItem("Save");
         item.addActionListener(new ActionListener() {
+           
+            // Saves the level to an XML file
             public void actionPerformed(ActionEvent e) {
                 pipe = new LevelPipeline();
-                String fname = JOptionPane.showInputDialog(null, "What name?",
-                        levelName);
+                
+                // Lets the user choose the name for their level.
+                String fname = JOptionPane.showInputDialog(null, "What name?", levelName);
 
                 if(fname == null){
                     JOptionPane.showMessageDialog(null, "Enter a valid name for the level (no extension).");
                     return;
                 }
                 
+                // Levels are saved with a file writer, initialize it here and pass it into LevelPipeline
                 FileWriter filewriter;
                 try {
                     filewriter = new FileWriter(new File("Levels/"+fname + ".xml"));
@@ -114,13 +128,21 @@ public class EditorFrame extends JFrame {
                 }
             }
         });
+        
+        // Add "Save" to the File Button
         file.add(item);
 
+        // Load option in the menu bar, to load an XML file into the editor
         item = new JMenuItem("Load");
         item.addActionListener(new ActionListener() {
+            
+            // Prompts the user to choose a file to load into the editor.s
             public void actionPerformed(ActionEvent e) {
+                
+                // The load method in LevelPipeline uses a JFileChooser to load files
                 RiemannCube cube = pipe.load();
                 levelName = pipe.getLastFileName();
+
                 if (cube == null) {
                     JOptionPane.showMessageDialog(null, "File was not vaild.");
                 } else {
@@ -130,6 +152,8 @@ public class EditorFrame extends JFrame {
                 }
             }
         });
+        
+        // Add "Load" to the File button
         file.add(item);
 
         // Creates the buttons that lets the user open a help screen.
@@ -139,10 +163,13 @@ public class EditorFrame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                
+                // Creates a new JFrame that displays an image with instructions on how to use the editor
                 new HelpFrame();
             }
         });
 
+        // Add "Help" to the menu bar
         help.add(item);
 
         menuBar.add(file);
@@ -155,6 +182,7 @@ public class EditorFrame extends JFrame {
      * performing important actions.
      */
     private void addSideBar() {
+        // Changes the view perspective to be horizontal
         JPanel sideBar = new JPanel(new GridLayout(20, 1));
         JButton button = new JButton("View Horizontal");
         button.addActionListener(new ActionListener() {
@@ -163,7 +191,10 @@ public class EditorFrame extends JFrame {
                 requestFocusInWindow();
             }
         });
+
         sideBar.add(button);
+
+        // Changes the view perspective to be vertical
         button = new JButton("View Vertical");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -171,7 +202,11 @@ public class EditorFrame extends JFrame {
                 requestFocusInWindow();
             }
         });
+        
         sideBar.add(button);
+        
+        
+        // Changes the view perspective to be orthogonal
         button = new JButton("View Orthogonal");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -179,7 +214,10 @@ public class EditorFrame extends JFrame {
                 requestFocusInWindow();
             }
         });
+        
         sideBar.add(button);
+        
+        // Moves the current slice up in the cube
         button = new JButton("Go up");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -187,7 +225,10 @@ public class EditorFrame extends JFrame {
                 requestFocusInWindow();
             }
         });
+        
         sideBar.add(button);
+
+        // Moves the current slice down in the cube
         button = new JButton("Go down");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -195,7 +236,10 @@ public class EditorFrame extends JFrame {
                 requestFocusInWindow();
             }
         });
+        
         sideBar.add(button);
+        
+        // Switch to Isomorphic view
         button = new JButton("View Isometric");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -203,7 +247,9 @@ public class EditorFrame extends JFrame {
                 requestFocusInWindow();
             }
         });
+        
         sideBar.add(button);
+        
         sideBar.addKeyListener(canvas);
         contentPane.add(sideBar, BorderLayout.WEST);
     }
