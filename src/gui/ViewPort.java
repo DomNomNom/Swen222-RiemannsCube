@@ -381,6 +381,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                         	if (high) Graphics.drawPlayerTokenHigh(v);
                         	else Graphics.drawPlayerTokenLow(v);
                         }
+                        if (p != player && p.item() instanceof Key) {
+                        	if (high) Graphics.drawOtherPlayerKey(v.copy().add(p.relPos), camPos, player.orientation(), ((Key) p.item()).color());
+                        }
+                        if (p != player && p.item() instanceof Token)
+                        	if (high) Graphics.drawOtherPlayerToken(v, camPos.copy().add(p.relPos), player.orientation());
                         if (p.id != player.id) //only render the other players
                             playerRender.add(new Pair<Float3, Integer>(v.copy().add(p.relPos), p.id));
                     }
@@ -456,6 +461,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         
         //draw the glass around the outside of the cube
         if (high) Graphics.drawOuterGlassHigh();
+        
+        //search flares
+        for (Float3 p : flareRender) {
+        	Graphics.drawLightFlare(p, camPos, player.orientation());
+        }
         
         //for transparent objects
         while (!playerRender.isEmpty() || !glassRender.isEmpty() || !containerRender.isEmpty()) { //loop until all glass and players have been drawn
@@ -542,7 +552,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             	else Graphics.drawContainerLow(furthestCon.first(), furthestCon.second());
             	containerRender.remove(furthestCon);
             }
-            else {
+            else if (maxIndex == 3) {
             	if (high) Graphics.drawLightFlare(furthestFlare, camPos, player.orientation());
             	flareRender.remove(furthestFlare);
             }

@@ -178,7 +178,6 @@ public class Graphics {
 	 * @param v the position vector of the player
 	 * @param playerId the player to be drawn id*/
     public static void drawPlayer(Float3 v, Float3 camPos, int orientation, int playerId) {
-    	//TODO: fix for other rotations
     	if (high) {
 	    	if (playerId == 0) {
 	    		gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[4]); //bind the player1 texture
@@ -202,26 +201,45 @@ public class Graphics {
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate to world position
     	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
     	//find the angle to rotate by
-    	if (orientation == 0 || orientation == 1) {
+    	if (orientation == 0) {
 	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.z-v.z);
 	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
 	    	
 	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
     	}
-    	else if (orientation == 2 || orientation == 3) {
-	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
-	    	float xAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+    	if (orientation == 1) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
 	    	
-	    	gl.glRotatef((xAngle+90.0f), 1.0f, 0.0f, 0.0f);
+	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
     	}
-    	else if (orientation == 4 || orientation == 5) {
+    	if (orientation == 2) {
+	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 3) {
+	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));	
+	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 4) {
 	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
-	    	float zAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
 	    	
-	    	gl.glRotatef(90, 1.0f, 0.0f, 0.0f); //apply the y rotation
-	    	gl.glRotatef(-(zAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
-	    	
+	    	gl.glRotatef(-(yAngle-90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 5) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));	
+	    	gl.glRotatef((yAngle-90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
     	}
     	
     	//draw the player onto a quad
@@ -1065,6 +1083,155 @@ public class Graphics {
     	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
     
+    public static void drawOtherPlayerKey(Float3 v, Float3 camPos, int orientation, Color col) {
+    	gl.glPushMatrix(); //push a new matrix
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate to world position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	//find the angle to rotate by
+    	if (orientation == 0) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 1) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 2) {
+	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 3) {
+	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));	
+	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 4) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle-90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 5) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));	
+	    	gl.glRotatef((yAngle-90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	
+       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glRotatef(75, 0, 1, 0);
+       	
+    	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[22]);
+    	if (col == null) gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	else  gl.glColor4f(col.getRed()/255.0f, col.getGreen()/255.0f, col.getBlue()/255.0f, 1.0f);
+    	resources.getObj("key").renderTex(gl);
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    	
+    	gl.glPopMatrix(); //pop the matrix
+    }
+    
+    public static void drawOtherPlayerToken(Float3 v, Float3 camPos, int orientation) {
+    	gl.glPushMatrix(); //push a new matrix
+    	
+    	gl.glTranslatef(v.x, v.y, v.z); //translate to world position
+    	
+    	//apply the world orientation rotation
+    	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
+    	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+    	gl.glRotatef(player.rotation.z, 0.0f, 0.0f, 1.0f);
+    	
+    	//find the angle to rotate by
+    	if (orientation == 0) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 1) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 2) {
+	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 3) {
+	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));	
+	    	gl.glRotatef((yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 4) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
+	    	
+	    	gl.glRotatef(-(yAngle-90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	if (orientation == 5) {
+	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
+	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));	
+	    	gl.glRotatef((yAngle-90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
+    	}
+    	
+       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glRotatef(75, 0, 1, 0);
+       	
+       	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, 0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, 0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, 0.1f,  0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f, -0.1f, 0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, 0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, 0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f( 0.1f, -0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f( 0.1f,  0.1f, -0.1f);
+    	gl.glEnd();
+    	gl.glBegin(GL2.GL_QUADS);
+    	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f,  0.1f);
+    	gl.glTexCoord2f(1.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f,  0.1f);
+    	gl.glTexCoord2f(0.0f, 1.0f); gl.glVertex3f(-0.1f,  0.1f, -0.1f);
+    	gl.glTexCoord2f(0.0f, 0.0f); gl.glVertex3f(-0.1f, -0.1f, -0.1f);
+    	gl.glEnd();
+    	
+    	gl.glPopMatrix();
+    	
+    	gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+    
     /**Draws a light source
      * @param v the position vector of the light*/
     public static void drawLight(Float3 v) {
@@ -1116,27 +1283,6 @@ public class Graphics {
     	
     	gl.glTranslatef(v.x, v.y, v.z); //translate to world position
     	
-    	/*//find the angle to rotate by
-    	if (orientation == 0 || orientation == 1) {
-	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.z-v.z);
-	    	float yAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
-	    	
-	    	gl.glRotatef(-(yAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
-    	}
-    	else if (orientation == 2 || orientation == 3) {
-	    	Float2 vectorBetween = new Float2(camPos.y-v.y, camPos.z-v.z);
-	    	float xAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
-	    	
-	    	gl.glRotatef((xAngle+90.0f), 1.0f, 0.0f, 0.0f);
-    	}
-    	else if (orientation == 4 || orientation == 5) {
-	    	Float2 vectorBetween = new Float2(camPos.x-v.x, camPos.y-v.y);
-	    	float zAngle = (float) (vectorBetween.heading()*(180.0f/Math.PI));
-	    	
-	    	//gl.glRotatef(90, 1.0f, 0.0f, 0.0f); //apply the y rotation
-	    	//gl.glRotatef(-(zAngle+90.0f), 0.0f, 1.0f, 0.0f); //apply the y rotation
-    	}*/
-    	
     	//apply the world orientation rotation
     	gl.glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
     	gl.glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
@@ -1182,6 +1328,8 @@ public class Graphics {
     	gl.glTranslatef(0, 0.9f, 0);
     	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[26]);
+    	//gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+    	//gl.glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
     	
     	gl.glBegin(GL2.GL_QUADS);
     	gl.glTexCoord2f(1.0f, 0.0f); gl.glVertex3f(-2.4f,  0.15f, 0);
