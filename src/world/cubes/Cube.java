@@ -1,8 +1,7 @@
 package world.cubes;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import utils.Int3;
 import world.objects.Player;
@@ -25,7 +24,7 @@ public abstract class Cube {
     protected Int3 pos;
     public Int3 pos() { return pos; }
 
-    protected final Collection<GameObject> objects = new HashSet<GameObject>();
+    protected final Collection<GameObject> objects = new ArrayList<GameObject>();
     public Collection<GameObject> objects() {return objects;}
 
     private boolean spawnPoint;
