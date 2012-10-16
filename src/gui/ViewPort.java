@@ -33,6 +33,7 @@ import world.events.ItemUseStop;
 import world.events.ItemPickup;
 import world.events.ItemUseStart;
 import world.events.LevelChange;
+import world.events.MarkerCreated;
 import world.events.PlayerMove;
 import world.events.PlayerRelPos;
 import world.objects.Button;
@@ -91,8 +92,6 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     
     private Float2 mouse = new Float2(0f, 0f); //the current mouse x position
     private Int2 mouseCentre = new Int2(450, 300); //the mouse x centre
-    
-    private Int3 markerPos = new Int3(-1, -1, -1);
     
     //keys
     private int forBack = 0; //0: none, 1: forwards, 2: backwards
@@ -441,8 +440,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         }
         
         //draw the marker
-        if (markerPos.x > -1) Graphics.drawMarker(new Float3(markerPos.x*2, markerPos.y*2, markerPos.z*2));
-        
+        for (Player p : level.players.values()) {
+            Int3 markerPos = p.markerPos; // TODO
+            if (markerPos.x > -1) Graphics.drawMarker(new Float3(markerPos.x*2, markerPos.y*2, markerPos.z*2));
+        }
+            
         //draw some planets and star
         if (high) {
             Graphics.drawPlanet(new Float3(-13, -48, 17), new Float3(90, 0, 0), 8, 13);
@@ -574,8 +576,11 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             }
         }
         if (mDown) {
-        	if (player.pos().equals(markerPos)) markerPos = new Int3(-1, -1, -1);
-        	else markerPos = new Int3(player.pos().x, player.pos().y, player.pos().z);
+            //if (player.pos().equals(markerPos)) markerPos = new Int3(-1, -1, -1);
+            //else markerPos = new Int3(player.pos().x, player.pos().y, player.pos().z);
+            // create a marker created event
+            if (player.pos().equals(player.markerPos)) frame.getClient().push(new MarkerCreated(player.id(), new Int3(-1, -1, -1)));
+            else frame.getClient().push(new MarkerCreated(player.id(),new Int3(player.pos().x, player.pos().y, player.pos().z)));
         }
         if (space && !spaceHeld) {
             if (level.isValidAction(new ItemUseStart(player.id))) { //check if drop is valid

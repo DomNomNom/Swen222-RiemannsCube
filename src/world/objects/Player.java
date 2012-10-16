@@ -14,6 +14,8 @@ public class Player extends GameObject {
     //They are stupid, aren't they! Thank you.
     public int orientation() {return orientation;}
     public void orientation(int o) {orientation = o;}
+    public Int3 markerPos = new Int3(-1, -1, -1);
+    
     
     private int score = 0;
     public void incrementScore(int i){score+=i;}

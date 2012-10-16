@@ -15,6 +15,7 @@ import world.events.ItemDrop;
 import world.events.ItemPickup;
 import world.events.ItemUseStart;
 import world.events.ItemUseStop;
+import world.events.MarkerCreated;
 import world.events.PlayerMove;
 import world.events.PlayerRelPos;
 import world.events.PlayerSpawning;
@@ -110,7 +111,8 @@ public class RiemannCube {
         if (a instanceof PlayerMove    )  return isValidMovePlayer ((PlayerMove)     a);
         if (a instanceof PlayerSpawning)  return isValidSpawnPlayer((PlayerSpawning) a);
         if (a instanceof ItemAction    )  return isValidItemAction ((ItemAction)     a);
-        if (a instanceof PlayerRelPos  )  return isValidPlayer(((PlayerRelPos)a).playerID);
+        if (a instanceof PlayerRelPos  )  return isValidPlayer(((PlayerRelPos )a).playerID);
+        if (a instanceof MarkerCreated )  return isValidPlayer(((MarkerCreated)a).playerID);
         
         System.err.println(myName()+"OMG I haven't coded stuff for this action: " + a);
         return false;
@@ -123,7 +125,7 @@ public class RiemannCube {
         if (a instanceof ItemPickup) return pos.hasItem() && !p.isHoldingItem(); 
         if (a instanceof ItemDrop  ) return p.isHoldingItem() && pos.canAddObject(p.item());
         if (a instanceof ItemUseStart ) return pos.canUseItemStart(p.item());
-        if (a instanceof ItemUseStop   ) return pos.canUseItemStop(p.item());
+        if (a instanceof ItemUseStop  ) return pos.canUseItemStop( p.item());
         
         System.err.println(myName()+"OMG I haven't coded stuff for this ITEM action: " + a);
         return false;
@@ -160,12 +162,17 @@ public class RiemannCube {
         else if (a instanceof PlayerSpawning)  spawnPlayer((PlayerSpawning) a);
         else if (a instanceof ItemAction    )  applyItemAction((ItemAction) a);
         else if (a instanceof PlayerRelPos  )  applyPlayerRelPos((PlayerRelPos)a);
+        else if (a instanceof MarkerCreated )  applyMarkerCreated((MarkerCreated)a);
         else {
             System.err.println(myName()+"OMG I haven't coded stuff for this: " + a);
             return false;
         }
         
         return true;
+    }
+    
+    private void applyMarkerCreated(MarkerCreated a) {
+        players.get(a.playerID).markerPos = a.pos;
     }
     
     private void applyPlayerRelPos(PlayerRelPos a) {
