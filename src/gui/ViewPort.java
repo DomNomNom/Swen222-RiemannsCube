@@ -135,6 +135,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
     private List<Float3> glassRender; //a list that hold all the glass to render
     private List<Pair<Float3, Integer>> playerRender; // a list of players to be rendered
     private List<Pair<Float3, Container>> containerRender; //a list of containers to be rendered
+    private List<Float3> flareRender;
 
     //CONSTRUCTOR
     /** Creates a new view port
@@ -343,6 +344,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         glassRender = new ArrayList<Float3>(); //create the glass render list
         playerRender = new ArrayList<Pair<Float3, Integer>>(); //create the player render list
         containerRender = new ArrayList<Pair<Float3, Container>>(); //create the container render list
+        flareRender = new ArrayList<Float3>();
         
         //iterate through the level and draw all the tiles
         for (int x = 0; x < level.size.x; ++x) {
@@ -411,13 +413,22 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
 	                    	if (high) Graphics.drawLockHigh(v,((Lock) obj).color());
 	                    	else Graphics.drawLockLow(v,((Lock) obj).color());
 	                    }
-	                    else if (obj instanceof LightSource && high) Graphics.drawLight(v);
+	                    else if (obj instanceof LightSource && high) {
+	                    	if (high) {
+	                    		Graphics.drawLight(v);
+	                    		flareRender.add(v.copy());
+	                    	}
+	                    }
 	                    else if (obj instanceof Container) {
 	                    	containerRender.add(new Pair<Float3, Container>(v, (Container) obj));
 	                    	GameObject go = ((Container) obj).containers.get(((Container) obj).color()).getItem();
 	                    	if (go instanceof Key) {
-	                    		if (high) Graphics.drawKeyContainerLow(v, (Key) go);
-	                    		else Graphics.drawKeyContainerHigh(v, (Key) go);
+	                    		if (high) Graphics.drawKeyContainerHigh(v, (Key) go);
+	                    		else Graphics.drawKeyContainerLow(v, (Key) go);
+	                    	}
+	                    	else if (go instanceof Token) {
+	                    		if (high) Graphics.drawContainerTokenHigh(v);
+	                    		else Graphics.drawContainerTokenLow(v);
 	                    	}
 	                    }
 	                    else if (obj instanceof Token) {
@@ -453,6 +464,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             float glassMag = -1;
             Pair<Float3, Container> furthestCon = null; //the furthest container
             float conMag = -1;
+            Float3 furthestFlare = null;
+            float flareMag = 0;
             
             //search players
             for (Pair<Float3, Integer> p : playerRender) {
@@ -490,8 +503,20 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                 }
             }
             
+            //search flares
+            for (Float3 p : flareRender) {
+                if (furthestFlare == null) {
+                    furthestFlare = p;
+                    flareMag = p.copy().sub(playerPos).mag();
+                }
+                else if (p.copy().sub(playerPos).mag() > flareMag) {
+                    furthestFlare = p;
+                    flareMag = p.copy().sub(playerPos).mag();
+                }
+            }
+            
             //now draw
-            float[] mags = {playerMag, glassMag, conMag};
+            float[] mags = {playerMag, glassMag, conMag, flareMag};
             float maxMag = -1;
             float maxIndex = -1;
             for (int i = 0; i < mags.length; ++i) { //find the maximum magnitude
@@ -502,7 +527,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             }
             
             if (maxIndex == 0) {
-            	if (high) Graphics.drawPlayer(furthestPlayer.first(), camPos, furthestPlayer.second());
+            	if (high) Graphics.drawPlayer(furthestPlayer.first(), camPos, player.orientation(), furthestPlayer.second());
                 playerRender.remove(furthestPlayer);
             }
             else if (maxIndex == 1) {
@@ -514,6 +539,10 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
             	if (high) Graphics.drawContainerHigh(furthestCon.first(), furthestCon.second());
             	else Graphics.drawContainerLow(furthestCon.first(), furthestCon.second());
             	containerRender.remove(furthestCon);
+            }
+            else {
+            	if (high) Graphics.drawLightFlare(furthestFlare, camPos, player.orientation());
+            	flareRender.remove(furthestFlare);
             }
         }
 
