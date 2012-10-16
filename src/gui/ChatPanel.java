@@ -34,7 +34,7 @@ import com.jogamp.opengl.util.Animator;
  * This is the chat panel that the player can use to communicate with the other
  * players
  * 
- * @author David Saxon 300199370
+ * @author David Saxon 300199370, sandilalex
  */
 public class ChatPanel extends GLJPanel implements GLEventListener {
 
