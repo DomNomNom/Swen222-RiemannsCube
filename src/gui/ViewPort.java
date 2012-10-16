@@ -442,7 +442,7 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
         //draw the marker
         for (Player p : level.players.values()) {
             Int3 markerPos = p.markerPos; // TODO
-            if (markerPos.x > -1) Graphics.drawMarker(new Float3(markerPos.x*2, markerPos.y*2, markerPos.z*2));
+            if (markerPos.x > -1) Graphics.drawMarker(p);
         }
             
         //draw some planets and star

@@ -1275,7 +1275,8 @@ public class Graphics {
         gl.glEnd();
     }
     
-    public static void drawMarker(Float3 v) {
+    public static void drawMarker(Player p) {
+        Float3 v = new Float3(p.markerPos.x*2, p.markerPos.y*2, p.markerPos.z*2);
     	gl.glPushMatrix();
     	gl.glDisable(GL.GL_DEPTH_TEST);
     	
@@ -1288,10 +1289,10 @@ public class Graphics {
     	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
     	
-    	if (player.id == 0) gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-        else if (player.id == 1) gl.glColor4f(0.6f, 0.0f, 0.6f, 1.0f);
-        else if (player.id == 2) gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-        else if (player.id == 3) gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+    	if (p.id == 0) gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+        else if (p.id == 1) gl.glColor4f(0.6f, 0.0f, 0.6f, 1.0f);
+        else if (p.id == 2) gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+        else if (p.id == 3) gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
         else                gl.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
     	
     	gl.glBegin(GL.GL_LINE_LOOP);
