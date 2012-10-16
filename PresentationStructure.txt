@@ -1,0 +1,35 @@
+hub:
+    player0 walk around
+    player0 wall collision (while looking sideways to the wall!)
+    player0 music
+    
+    player1 other players spawn, show them moving around
+
+    player0 pickup key
+    player0 drop   key
+    player1 pickup key
+
+    rotate down to 'lobby' (always rotating along a long-ish corridor axis)
+
+    player1 moves to 'lobby', player0 observes him coming though the roof
+
+    player1 puts key in container
+    player0 observes it is in all containers
+    player0 gets key out of container
+
+    player0 goes back up to spawn area
+
+    player0 unlock level1 door (look at the door!)
+    player0 go though level1 door.
+
+level1:
+
+    cube-marking (m)
+
+editor:
+    show editor
+    help menu
+
+
+expanatnion of non-features:
+    blaarrg! 
