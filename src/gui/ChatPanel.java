@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
@@ -20,7 +19,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLJPanel;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -64,14 +62,15 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
     public void addMessage(ChatMessage message) {
         int numLines = (height-300)/10;
         
-        System.out.println("Line count: " + chatArea.getLineCount());
-        System.out.println("Height: " + height);
-        
         if(chatArea.getLineCount() > numLines){
             chatArea.setText("");
-        }
+        } 
         
         String name = frame.getClient().getWorld().players.get(message.speakerID).name();
+        if(name.equalsIgnoreCase("/clear")){
+        	chatArea.setText("");
+        	return;
+        }
         
         chatArea.append("[" + name + "]: " + message.message + "\n");
     }
