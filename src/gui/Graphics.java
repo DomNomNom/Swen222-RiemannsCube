@@ -28,6 +28,8 @@ public class Graphics {
 	private static int portalRot = 0; //the rotation of the portals
 	private static float planetRot = 0.0f; //the rotation of the planets
 	private static int tokenRot = 0;
+	private static float itemAni = 0.0f;
+	private static float itemBob = 0f; //the bob of the item the player is holding.
 	
 	//METHODS
     /**Draws a openGL textured quad
@@ -533,7 +535,7 @@ public class Graphics {
     	
        	gl.glLoadIdentity(); //load the identity matrix
        	
-       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glTranslatef(-0.07f-itemBob/4.0f, -0.15f+itemBob, -0.5f);
        	gl.glRotatef(75, 0, 1, 0);
        	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[22]);
@@ -553,7 +555,7 @@ public class Graphics {
     	
        	gl.glLoadIdentity(); //load the identity matrix
        	
-       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glTranslatef(-0.07f, -0.15f+itemBob, -0.5f);
        	gl.glRotatef(75, 0, 1, 0);
        	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
@@ -874,7 +876,7 @@ public class Graphics {
     	
        	gl.glLoadIdentity(); //load the identity matrix
        	
-       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glTranslatef(-0.07f, -0.15f+itemBob, -0.5f);
        	gl.glRotatef(75, 0, 1, 0);
        	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, resources.getIDs()[25]);
@@ -1035,7 +1037,7 @@ public class Graphics {
     	
        	gl.glLoadIdentity(); //load the identity matrix
        	
-       	gl.glTranslatef(-0.07f, -0.15f, -0.5f);
+       	gl.glTranslatef(-0.07f, -0.15f+itemBob, -0.5f);
        	gl.glRotatef(75, 0, 1, 0);
        	
     	gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
@@ -1585,6 +1587,13 @@ public class Graphics {
     public static void rotateToken() {
     	++tokenRot;
     	if (tokenRot >= 360) tokenRot = 1;
+    }
+    
+    /**Bobs the item the player is holding*/
+    public static void bobItem() {
+    	itemAni += 0.1f;
+    	if (itemAni >= 3.14f) itemAni = 0.01f;
+    	itemBob = (float) (Math.sin(itemAni))/150.0f;
     }
     
 	//SETTERS

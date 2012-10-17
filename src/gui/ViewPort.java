@@ -664,6 +664,8 @@ public class ViewPort extends GLCanvas implements GLEventListener, KeyListener, 
                 else stepCycle = 0.0f;
 
                 newPos.y -= (float) (stepHeight*Math.cos(stepCycle));
+                
+                Graphics.bobItem();
             }
 
             //if the player is rotated shift their direction based on rotation
