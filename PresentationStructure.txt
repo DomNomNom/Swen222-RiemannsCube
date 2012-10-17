@@ -1,9 +1,10 @@
 hub:
+    "This is the hublevel"
     player0 walk around
     player0 wall collision (while looking sideways to the wall!)
     player0 music
     
-    player background story (2d characters)
+    background story of player  (2d characters)
     player1 other players spawn, show them moving around
 
     player0 pickup key
