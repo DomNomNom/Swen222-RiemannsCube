@@ -745,7 +745,7 @@
                 <door color="#0000cc" triggerIDs="24 " type="level"/>
             </cube>
             <cube spawn="false" type="Floor" x="8">
-                <door color="#ffff00" triggerIDs="25 31 " type="level"/>
+                <door color="#ffff00" triggerIDs="31 " type="level"/>
             </cube>
             <cube spawn="false" type="Glass" x="9"/>
         </floor>
