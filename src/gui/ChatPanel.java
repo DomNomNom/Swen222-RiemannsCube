@@ -67,7 +67,7 @@ public class ChatPanel extends GLJPanel implements GLEventListener {
         } 
         
         String name = frame.getClient().getWorld().players.get(message.speakerID).name();
-        if(name.equalsIgnoreCase("/clear")){
+        if(message.message.equalsIgnoreCase("/clear")){
         	chatArea.setText("");
         	return;
         }
